@@ -5,4 +5,4 @@
 	<meta name="twitter:creator" content="@jrib_" />
 </svelte:head>
 
-<div />
+<slot />

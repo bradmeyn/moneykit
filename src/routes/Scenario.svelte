@@ -130,18 +130,18 @@
 		}
 	});
 
-	$: {
-		const data = scenario.outcomes;
+	// $: if (scenario && chart) {
+	// 	const data = scenario.outcomes;
 
-		// Update the chart data
-		chart.data.labels = data.chartYears;
-		chart.data.datasets[0].data = data.chartYears.map(() => scenario.inputs.startingValue);
-		chart.data.datasets[1].data = data.chartContributions;
-		chart.data.datasets[2].data = data.chartInterest;
+	// 	// Update the chart data
+	// 	chart.data.labels = data.chartYears;
+	// 	chart.data.datasets[0].data = data.chartYears.map(() => scenario.inputs.startingValue);
+	// 	chart.data.datasets[1].data = data.chartContributions;
+	// 	chart.data.datasets[2].data = data.chartInterest;
 
-		// Update the chart
-		chart.update();
-	}
+	// 	// Update the chart
+	// 	chart.update();
+	// }
 </script>
 
 <section class="flex h-full flex-1">

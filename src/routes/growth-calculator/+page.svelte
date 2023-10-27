@@ -12,15 +12,6 @@
 	} from 'chart.js';
 	import Icon from '@iconify/svelte';
 
-	let frequencyOptions = [
-		{ name: 'Weekly', value: 52 },
-		{ name: 'Fortnightly', value: 26 },
-		{ name: 'Monthly', value: 12 },
-		{ name: 'Quarterly', value: 4 },
-		{ name: 'Half Yearly', value: 2 },
-		{ name: 'Yearly', value: 1 }
-	];
-
 	let chartId: HTMLCanvasElement;
 	let chart: Chart;
 

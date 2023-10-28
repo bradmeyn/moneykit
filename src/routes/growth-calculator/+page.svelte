@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { Label, Input, Select, NumberInput } from 'flowbite-svelte';
 	import {
 		Chart,
 		BarController,
@@ -10,7 +9,8 @@
 		Legend,
 		Tooltip
 	} from 'chart.js';
-	import Icon from '@iconify/svelte';
+	import Sidebar from '$lib/components/growth-calculator/Sidebar.svelte';
+	import Results from '$lib/components/growth-calculator/Results.svelte';
 
 	let chartId: HTMLCanvasElement;
 	let chart: Chart;
@@ -185,62 +185,19 @@
 
 <main class="flex flex-col flex-1 container mx-auto border border-sky-800">
 	<h1 class="text-3xl font-bold p-3">Investment Growth Calculator</h1>
-	<section class="flex h-full flex-1">
-		<aside class="max-w-[1000px] min-w-[300px] p-3">
-			<Label class="space-y-1 mb-3">
-				<span>Starting amount</span>
-				<Input let:props class="rounded-none" size="lg">
-					<Icon icon="carbon:currency-dollar" slot="left" class="w-4 h-4" />
-					<input type="number" {...props} bind:value={startingValue} />
-				</Input>
-			</Label>
 
-			<Label class="space-y-1 mb-3">
-				<span>Contributions</span>
-				<div class="flex items-center">
-					<Input let:props class="rounded-none" size="lg">
-						<Icon icon="carbon:currency-dollar" slot="left" class="w-4 h-4" />
-						<input type="number" {...props} bind:value={contributionValue} />
-					</Input>
-					<Select class="rounded-none w-32" items={frequencyOptions} bind:value={frequency} />
-				</div>
-			</Label>
+	<section class="md:flex">
+		<Sidebar
+			bind:startingValue
+			bind:contributionValue
+			bind:interestValue
+			bind:frequency
+			bind:yearsValue
+		/>
 
-			<Label class="space-y-1 mb-3">
-				<span>Annual Return</span>
-				<Input let:props class="rounded-none" size="lg">
-					<Icon icon="carbon:percentage" slot="right" class="w-4 h-4" />
-					<input type="number" {...props} bind:value={interestValue} />
-				</Input>
-			</Label>
-
-			<Label class="space-y-1 mb-3">
-				<span>Years</span>
-				<NumberInput class="rounded-none" bind:value={yearsValue} size="lg" />
-			</Label>
-		</aside>
 		<div class="w-full p-3">
-			<div class="grid grid-cols-5 gap-3">
-				<div class="border p-3">
-					<h2 class="text-sm">Start Value</h2>
-					<p class="font-semibold text-xl">{formatCurrency(startingValue)}</p>
-				</div>
-				<div class="border p-3">
-					<h2 class="text-sm">Total Contributions</h2>
-					<p class="font-semibold text-xl">{formatCurrency(totalContributions)}</p>
-				</div>
-
-				<div class="border p-3">
-					<h2 class="text-sm">Total Interest</h2>
-					<p class="font-semibold text-xl">{formatCurrency(totalInterest)}</p>
-				</div>
-
-				<div class="border p-3 col-span-2">
-					<h2 class="text-sm">Total Value</h2>
-					<p class="font-bold text-xl">{formatCurrency(totalValue)}</p>
-				</div>
-			</div>
-			<div class="w-full h-[600px] p-6"><canvas bind:this={chartId} /></div>
+			<Results bind:startingValue bind:totalContributions bind:totalInterest bind:totalValue />
+			<div class="h-[600px] p-6"><canvas bind:this={chartId} /></div>
 		</div>
 	</section>
 </main>

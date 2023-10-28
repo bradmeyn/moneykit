@@ -1,43 +1,55 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { scenarios, addScenario } from './scenariosStore';
-	import type { Scenario as ScenarioType } from './scenariosStore';
-	import Scenario from './Scenario.svelte';
-
-	let activeScenario: ScenarioType;
-
-	onMount(() => {
-		// Set the initial active scenario
-		if ($scenarios.length > 0) {
-			activeScenario = $scenarios[0];
-		}
-	});
-
-	const setActiveScenario = (scenario: ScenarioType) => {
-		activeScenario = scenario;
-	};
 </script>
 
-<main class="flex flex-col flex-1 container mx-auto border border-sky-800">
-	<h1 class="text-3xl font-bold p-3">Investment Growth Calculator</h1>
+<main class="flex flex-col flex-1 border border-sky-800">
+	<h1 class="text-4xl md:text-6xl lg:text-6xl text-center font-bold p-3 my-12 md:my-16 lg:my-20">
+		Tools to manage investments & grow wealth
+	</h1>
 
-	<div class="flex gap-3">
-		{#each $scenarios as scenario}
-			<button
-				on:click={() => setActiveScenario(scenario)}
-				class="bg-slate-700 text-white rounded p-3 mx-2"
-			>
-				{scenario.id}
-			</button>
-		{/each}
+	<div class="flex justify-center gap-3">
+		<a class="border-sky-800 p-4 border" href="/growth-calculator">
+			<h2 class="text-2xl bold">Growth Calculator</h2>
+		</a>
 
-		<button on:click={addScenario}> Add Scenario </button>
+		<a class="border-sky-800 p-4 border" href="/portfolio-builder">
+			<h2 class="text-2xl bold">Portfolio Builder</h2>
+		</a>
 	</div>
 
-	<!-- Render the active scenario details -->
-	{#if activeScenario}
-		<div>
-			<h2 class="text-8xl">{activeScenario.id}</h2>
+	<div
+		class="my-5 opacity-1 animate-[fade-in-up_0.6s_800ms]"
+		style="animation-fill-mode: forwards;"
+	>
+		<p class="text-center">Built with:</p>
+		<div class="flex gap-8 justify-center items-center mt-5">
+			<div>
+				<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 128 120"
+					><path
+						fill="#38bdf8"
+						d="M64.004 25.602c-17.067 0-27.73 8.53-32 25.597c6.398-8.531 13.867-11.73 22.398-9.597c4.871 1.214 8.352 4.746 12.207 8.66C72.883 56.629 80.145 64 96.004 64c17.066 0 27.73-8.531 32-25.602c-6.399 8.536-13.867 11.735-22.399 9.602c-4.87-1.215-8.347-4.746-12.207-8.66c-6.27-6.367-13.53-13.738-29.394-13.738zM32.004 64c-17.066 0-27.73 8.531-32 25.602C6.402 81.066 13.87 77.867 22.402 80c4.871 1.215 8.352 4.746 12.207 8.66c6.274 6.367 13.536 13.738 29.395 13.738c17.066 0 27.73-8.53 32-25.597c-6.399 8.531-13.867 11.73-22.399 9.597c-4.87-1.214-8.347-4.746-12.207-8.66C55.128 71.371 47.868 64 32.004 64zm0 0"
+					/></svg
+				>
+			</div>
+			<div>
+				<svg xmlns="http://www.w3.org/2000/svg" width="26" viewBox="0 0 256 308"
+					><path
+						fill="#FF3E00"
+						d="M239.682 40.707C211.113-.182 154.69-12.301 113.895 13.69L42.247 59.356a82.198 82.198 0 0 0-37.135 55.056a86.566 86.566 0 0 0 8.536 55.576a82.425 82.425 0 0 0-12.296 30.719a87.596 87.596 0 0 0 14.964 66.244c28.574 40.893 84.997 53.007 125.787 27.016l71.648-45.664a82.182 82.182 0 0 0 37.135-55.057a86.601 86.601 0 0 0-8.53-55.577a82.409 82.409 0 0 0 12.29-30.718a87.573 87.573 0 0 0-14.963-66.244"
+					/><path
+						fill="#FFF"
+						d="M106.889 270.841c-23.102 6.007-47.497-3.036-61.103-22.648a52.685 52.685 0 0 1-9.003-39.85a49.978 49.978 0 0 1 1.713-6.693l1.35-4.115l3.671 2.697a92.447 92.447 0 0 0 28.036 14.007l2.663.808l-.245 2.659a16.067 16.067 0 0 0 2.89 10.656a17.143 17.143 0 0 0 18.397 6.828a15.786 15.786 0 0 0 4.403-1.935l71.67-45.672a14.922 14.922 0 0 0 6.734-9.977a15.923 15.923 0 0 0-2.713-12.011a17.156 17.156 0 0 0-18.404-6.832a15.78 15.78 0 0 0-4.396 1.933l-27.35 17.434a52.298 52.298 0 0 1-14.553 6.391c-23.101 6.007-47.497-3.036-61.101-22.649a52.681 52.681 0 0 1-9.004-39.849a49.428 49.428 0 0 1 22.34-33.114l71.664-45.677a52.218 52.218 0 0 1 14.563-6.398c23.101-6.007 47.497 3.036 61.101 22.648a52.685 52.685 0 0 1 9.004 39.85a50.559 50.559 0 0 1-1.713 6.692l-1.35 4.116l-3.67-2.693a92.373 92.373 0 0 0-28.037-14.013l-2.664-.809l.246-2.658a16.099 16.099 0 0 0-2.89-10.656a17.143 17.143 0 0 0-18.398-6.828a15.786 15.786 0 0 0-4.402 1.935l-71.67 45.674a14.898 14.898 0 0 0-6.73 9.975a15.9 15.9 0 0 0 2.709 12.012a17.156 17.156 0 0 0 18.404 6.832a15.841 15.841 0 0 0 4.402-1.935l27.345-17.427a52.147 52.147 0 0 1 14.552-6.397c23.101-6.006 47.497 3.037 61.102 22.65a52.681 52.681 0 0 1 9.003 39.848a49.453 49.453 0 0 1-22.34 33.12l-71.664 45.673a52.218 52.218 0 0 1-14.563 6.398"
+					/></svg
+				>
+			</div>
+			<div>
+				<svg viewBox="0 0 24 24" width="30px" fill="none" xmlns="http://www.w3.org/2000/svg"
+					><path d="M0 0h24v24H0V0z" fill="#fff" /><path
+						d="M0 12v12h24V0H0v12zm19.34-.956c.61.152 1.075.423 1.502.865.221.236.549.667.575.77.008.03-1.036.73-1.669 1.123-.022.015-.114-.083-.217-.236-.309-.45-.632-.644-1.128-.678-.727-.05-1.2.332-1.192.967a.88.88 0 00.103.45c.16.332.457.53 1.39.934 1.718.739 2.453 1.226 2.91 1.92.51.773.625 2.008.278 2.926-.38.998-1.325 1.676-2.655 1.9-.411.073-1.386.062-1.828-.018-.964-.171-1.878-.647-2.442-1.272-.221-.244-.651-.88-.625-.926.011-.015.11-.076.221-.141l.892-.514.69-.4.145.213c.201.31.643.732.91.873.766.404 1.817.346 2.335-.118.221-.202.312-.412.312-.72 0-.279-.033-.4-.178-.61-.187-.266-.568-.49-1.65-.96-1.239-.533-1.772-.864-2.26-1.39a3.167 3.167 0 01-.659-1.2c-.091-.34-.114-1.189-.042-1.531.255-1.2 1.158-2.031 2.462-2.279.422-.08 1.406-.05 1.82.054v-.002zm-5.633 1.001l.007.983H10.59v8.876H8.381v-8.876H5.257v-.964l.027-.99c.01-.015 1.912-.022 4.217-.019l4.194.012.012.978z"
+						fill="#007ACC"
+					/></svg
+				>
+			</div>
 		</div>
-	{/if}
+	</div>
 </main>

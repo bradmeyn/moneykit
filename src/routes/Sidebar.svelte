@@ -2,7 +2,7 @@
 	import CurrencyInput from '$lib/components/CurrencyInput.svelte';
 	import { Label, Input, Select, NumberInput } from 'flowbite-svelte';
 	import Icon from '@iconify/svelte';
-	import { frequencyOptions } from '$lib/utilities';
+	import { frequencyOptions } from '$lib/utils';
 
 	export let startingValue: number;
 	export let contributionValue: number;

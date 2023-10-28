@@ -3,7 +3,7 @@ export interface FrequencyOption {
 	value: number;
 }
 
-export const frequencyOptions = [
+export const FREQUENCY_OPTIONS = [
 	{ name: 'Weekly', value: 52 },
 	{ name: 'Fortnightly', value: 26 },
 	{ name: 'Monthly', value: 12 },

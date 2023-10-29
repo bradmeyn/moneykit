@@ -4,7 +4,7 @@
 
 <main class="flex flex-col flex-1 border border-sky-800">
 	<h1 class="text-4xl md:text-6xl lg:text-6xl text-center font-bold p-3 my-12 md:my-16 lg:my-20">
-		Tools to manage investments & grow wealth
+		Tools to manage money & grow wealth
 	</h1>
 
 	<div class="flex justify-center gap-3">

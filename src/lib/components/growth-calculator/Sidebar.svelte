@@ -4,11 +4,11 @@
 	import Icon from '@iconify/svelte';
 
 	// props
-	export let startingValue: number;
-	export let contributionValue: number;
-	export let interestValue: number;
-	export let frequency: number;
-	export let yearsValue: number;
+	export let principal: number;
+	export let contributionAmount: number;
+	export let interestRate: number;
+	export let contributionFrequency: number;
+	export let years: number;
 </script>
 
 <aside class="max-w-[1000px] min-w-[300px] p-3">
@@ -17,7 +17,7 @@
 		<span>Starting amount</span>
 		<Input let:props class="rounded-none" size="lg">
 			<Icon icon="carbon:currency-dollar" slot="left" class="w-4 h-4" />
-			<input type="number" {...props} bind:value={startingValue} />
+			<input type="number" {...props} bind:value={principal} />
 		</Input>
 	</Label>
 
@@ -26,9 +26,13 @@
 		<div class="flex items-center">
 			<Input let:props class="rounded-none" size="lg">
 				<Icon icon="carbon:currency-dollar" slot="left" class="w-4 h-4" />
-				<input type="number" {...props} bind:value={contributionValue} />
+				<input type="number" {...props} bind:value={contributionAmount} />
 			</Input>
-			<Select class="rounded-none w-32" items={FREQUENCY_OPTIONS} bind:value={frequency} />
+			<Select
+				class="rounded-none w-32"
+				items={FREQUENCY_OPTIONS}
+				bind:value={contributionFrequency}
+			/>
 		</div>
 	</Label>
 
@@ -36,12 +40,12 @@
 		<span>Annual Return</span>
 		<Input let:props class="rounded-none" size="lg">
 			<Icon icon="carbon:percentage" slot="right" class="w-4 h-4" />
-			<input type="number" {...props} bind:value={interestValue} />
+			<input type="number" {...props} bind:value={interestRate} />
 		</Input>
 	</Label>
 
 	<Label class="space-y-1 mb-3">
 		<span>Years</span>
-		<NumberInput class="rounded-none" bind:value={yearsValue} size="lg" />
+		<NumberInput class="rounded-none" bind:value={years} size="lg" />
 	</Label>
 </aside>

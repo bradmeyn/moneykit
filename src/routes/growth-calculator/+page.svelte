@@ -6,11 +6,11 @@
 	import { calculateCompoundInterest } from '$lib/utils';
 
 	// Inputs
-	let startingValue: number = 100000;
-	let contributionValue: number = 1000;
-	let interestValue: number = 6;
-	let frequency: number = 52;
-	let yearsValue: number = 10;
+	let principal: number = 100000;
+	let contributionAmount: number = 1000;
+	let interestRate: number = 6;
+	let contributionFrequency: number = 52;
+	let years: number = 10;
 
 	// Results
 	let totalContributions: number = 0;
@@ -24,21 +24,21 @@
 	let startingByYear: number[] = [];
 
 	$: {
-		const {
-			totalValue,
-			totalContributions,
-			totalInterest,
-			chartYears,
-			contributionsByYear,
-			interestByYear,
-			startingByYear
-		} = calculateCompoundInterest(
-			startingValue,
-			contributionValue,
-			interestValue,
-			frequency,
-			yearsValue
+		const results = calculateCompoundInterest(
+			principal,
+			interestRate,
+			years,
+			contributionAmount,
+			contributionFrequency
 		);
+
+		totalValue = results.totalValue;
+		totalContributions = results.totalContributions;
+		totalInterest = results.totalInterest;
+		chartYears = results.chartYears;
+		contributionsByYear = results.contributionsByYear;
+		interestByYear = results.interestByYear;
+		startingByYear = results.startingByYear;
 	}
 </script>
 
@@ -47,15 +47,15 @@
 
 	<section class="md:flex">
 		<Sidebar
-			bind:startingValue
-			bind:contributionValue
-			bind:interestValue
-			bind:frequency
-			bind:yearsValue
+			bind:principal
+			bind:contributionAmount
+			bind:interestRate
+			bind:contributionFrequency
+			bind:years
 		/>
 
 		<div class="w-full p-3">
-			<Results bind:startingValue bind:totalContributions bind:totalInterest bind:totalValue />
+			<Results bind:principal bind:totalContributions bind:totalInterest bind:totalValue />
 			<Chart bind:startingByYear bind:chartYears bind:interestByYear bind:contributionsByYear />
 		</div>
 	</section>

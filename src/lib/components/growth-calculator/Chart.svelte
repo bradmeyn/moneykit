@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { formatCurrency } from '$lib/utils';
 	import {
 		Chart,
 		BarController,
@@ -22,6 +21,7 @@
 
 	// Register the BarController and BarElement
 	Chart.register(BarController, BarElement, CategoryScale, LinearScale, Legend, Tooltip);
+
 	onMount(() => {
 		chart = new Chart(chartId, {
 			type: 'bar',
@@ -127,4 +127,16 @@
 			}
 		});
 	});
+
+	$: if (chart) {
+		chart.data.labels = chartYears;
+		chart.data.datasets[0].data = startingByYear;
+		chart.data.datasets[1].data = contributionsByYear;
+		chart.data.datasets[2].data = interestByYear;
+		chart.update();
+	}
 </script>
+
+<div class="p-3 w-full min-h-[500px] md:min-h-[600px]">
+	<canvas bind:this={chartId} />
+</div>

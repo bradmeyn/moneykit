@@ -35,6 +35,7 @@
 	"type": "module",
 	"dependencies": {
 		"chart.js": "^4.4.0",
+		"chartist": "^1.3.0",
 		"flowbite-svelte-icons": "^0.4.4",
 		"nanoid": "^5.0.2"
 	}

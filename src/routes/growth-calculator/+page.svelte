@@ -2,8 +2,9 @@
 	import Sidebar from '$lib/components/growth-calculator/Sidebar.svelte';
 	import Results from '$lib/components/growth-calculator/Results.svelte';
 	import Chart from '$lib/components/growth-calculator/Chart.svelte';
-
 	import { calculateCompoundInterest } from '$lib/utils';
+	import Toggle from '$lib/components/growth-calculator/Toggle.svelte';
+	import Table from '$lib/components/growth-calculator/Table.svelte';
 
 	// Inputs
 	let principal: number = 100000;
@@ -16,6 +17,8 @@
 	let totalContributions: number = 0;
 	let totalInterest: number = 0;
 	let totalValue: number = 0;
+
+	let showingChart: boolean = true;
 
 	// Chart
 	let chartYears: number[] = [];
@@ -56,7 +59,16 @@
 
 		<div class="w-full p-3">
 			<Results bind:principal bind:totalContributions bind:totalInterest bind:totalValue />
-			<Chart bind:startingByYear bind:chartYears bind:interestByYear bind:contributionsByYear />
+
+			<Toggle bind:showingChart />
+
+			<div class="flex justify-end">
+				{#if showingChart}
+					<Chart bind:chartYears bind:contributionsByYear bind:interestByYear bind:startingByYear />
+				{:else}
+					<Table bind:chartYears bind:contributionsByYear bind:interestByYear bind:startingByYear />
+				{/if}
+			</div>
 		</div>
 	</section>
 </main>

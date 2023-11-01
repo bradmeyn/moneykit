@@ -66,7 +66,7 @@
 				{#if showingChart}
 					<Chart bind:chartYears bind:contributionsByYear bind:interestByYear bind:startingByYear />
 				{:else}
-					<Table bind:chartYears bind:contributionsByYear bind:interestByYear bind:startingByYear />
+					<Table bind:chartYears bind:contributionsByYear bind:interestByYear bind:principal />
 				{/if}
 			</div>
 		</div>

@@ -137,6 +137,6 @@
 	}
 </script>
 
-<div class="p-3 w-full relative">
-	<canvas class="w-full absolute" bind:this={chartId} />
+<div class="p-3 w-full relative border border-sky-800 min-h-[400px] md:min-h-[500px]">
+	<canvas class="w-full absolute h-full" bind:this={chartId} />
 </div>

@@ -7,11 +7,12 @@
 		TableHead,
 		TableHeadCell
 	} from 'flowbite-svelte';
+	import { formatCurrency } from '$lib/utils';
 
 	export let chartYears: number[];
 	export let interestByYear: number[];
 	export let contributionsByYear: number[];
-	export let startingByYear: number[];
+	export let principal: number;
 </script>
 
 <div class="w-full">
@@ -23,25 +24,26 @@
 			<TableHeadCell>Contribution</TableHeadCell>
 			<TableHeadCell>End</TableHeadCell>
 		</TableHead>
-		<TableBody class="divide-y">
-			<TableBodyRow>
-				<TableBodyCell>Apple MacBook Pro 17"</TableBodyCell>
-				<TableBodyCell>Sliver</TableBodyCell>
-				<TableBodyCell>Laptop</TableBodyCell>
-				<TableBodyCell>$2999</TableBodyCell>
-			</TableBodyRow>
-			<TableBodyRow>
-				<TableBodyCell>Microsoft Surface Pro</TableBodyCell>
-				<TableBodyCell>White</TableBodyCell>
-				<TableBodyCell>Laptop PC</TableBodyCell>
-				<TableBodyCell>$1999</TableBodyCell>
-			</TableBodyRow>
-			<TableBodyRow>
-				<TableBodyCell>Magic Mouse 2</TableBodyCell>
-				<TableBodyCell>Black</TableBodyCell>
-				<TableBodyCell>Accessories</TableBodyCell>
-				<TableBodyCell>$99</TableBodyCell>
-			</TableBodyRow>
+		<TableBody>
+			{#each chartYears as year, i}
+				<TableBodyRow>
+					<TableBodyCell>{year}</TableBodyCell>
+					{#if i === 0}
+						<TableBodyCell>{formatCurrency(principal)}</TableBodyCell>
+					{:else}
+						<TableBodyCell
+							>{formatCurrency(
+								principal + interestByYear[i - 1] + contributionsByYear[i - 1]
+							)}</TableBodyCell
+						>
+					{/if}
+					<TableBodyCell>{formatCurrency(interestByYear[i])}</TableBodyCell>
+					<TableBodyCell>{formatCurrency(contributionsByYear[i])}</TableBodyCell>
+					<TableBodyCell
+						>{formatCurrency(principal + interestByYear[i] + contributionsByYear[i])}</TableBodyCell
+					>
+				</TableBodyRow>
+			{/each}
 		</TableBody>
 	</Table>
 </div>

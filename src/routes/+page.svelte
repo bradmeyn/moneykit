@@ -2,18 +2,41 @@
 	import { onMount } from 'svelte';
 </script>
 
-<main class="flex flex-col flex-1 border border-sky-800">
-	<h1 class="text-4xl md:text-6xl lg:text-6xl text-center font-bold p-3 my-12 md:my-16 lg:my-20">
-		Tools to manage money & grow wealth
+<main class="flex flex-col flex-1">
+	<h1
+		class="text-4xl md:text-6xl lg:text-6xl text-center font-bold p-3 my-12 md:my-16 lg:my-20 text-white"
+	>
+		Tools to manage money &
+		<span class="text-emerald-500 block">grow wealth</span>
 	</h1>
 
-	<div class="flex justify-center gap-3">
-		<a class="border-sky-800 p-4 border" href="/growth-calculator">
-			<h2 class="text-2xl bold">Growth Calculator</h2>
+	<div class="flex justify-center gap-6">
+		<a
+			class="bg-slate-800 border-slate-700 p-10 border w-96 text-center rounded"
+			href="/growth-calculator"
+		>
+			<h2 class="text-3xl font-semibold text-white">Growth Calculator</h2>
+			<div class="flex justify-center p-4 text-4xl">
+				<svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512" fill="#10b981"
+					><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path
+						d="M32 32c17.7 0 32 14.3 32 32V400c0 8.8 7.2 16 16 16H480c17.7 0 32 14.3 32 32s-14.3 32-32 32H80c-44.2 0-80-35.8-80-80V64C0 46.3 14.3 32 32 32zM160 224c17.7 0 32 14.3 32 32v64c0 17.7-14.3 32-32 32s-32-14.3-32-32V256c0-17.7 14.3-32 32-32zm128-64V320c0 17.7-14.3 32-32 32s-32-14.3-32-32V160c0-17.7 14.3-32 32-32s32 14.3 32 32zm64 32c17.7 0 32 14.3 32 32v96c0 17.7-14.3 32-32 32s-32-14.3-32-32V224c0-17.7 14.3-32 32-32zM480 96V320c0 17.7-14.3 32-32 32s-32-14.3-32-32V96c0-17.7 14.3-32 32-32s32 14.3 32 32z"
+					/></svg
+				>
+			</div>
 		</a>
 
-		<a class="border-sky-800 p-4 border" href="/portfolio-builder">
-			<h2 class="text-2xl bold">Portfolio Builder</h2>
+		<a
+			class="bg-slate-800 border-slate-700 p-10 border w-96 text-center rounded"
+			href="/portfolio-builder"
+		>
+			<h2 class="text-3xl font-semibold text-white">Portfolio Builder</h2>
+			<div class="flex justify-center p-4 text-4xl">
+				<svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 576 512" fill="#10b981"
+					><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path
+						d="M304 240V16.6c0-9 7-16.6 16-16.6C443.7 0 544 100.3 544 224c0 9-7.6 16-16.6 16H304zM32 272C32 150.7 122.1 50.3 239 34.3c9.2-1.3 17 6.1 17 15.4V288L412.5 444.5c6.7 6.7 6.2 17.7-1.5 23.1C371.8 495.6 323.8 512 272 512C139.5 512 32 404.6 32 272zm526.4 16c9.3 0 16.6 7.8 15.4 17c-7.7 55.9-34.6 105.6-73.9 142.3c-6 5.6-15.4 5.2-21.2-.7L320 288H558.4z"
+					/></svg
+				>
+			</div>
 		</a>
 	</div>
 
@@ -21,7 +44,7 @@
 		class="my-5 opacity-1 animate-[fade-in-up_0.6s_800ms]"
 		style="animation-fill-mode: forwards;"
 	>
-		<p class="text-center">Built with:</p>
+		<p class="text-center text-slate-300">Built with:</p>
 		<div class="flex gap-8 justify-center items-center mt-5">
 			<div>
 				<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 128 120"

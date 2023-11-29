@@ -3,7 +3,9 @@
 	let year = new Date().getFullYear();
 </script>
 
-<footer class=" mt-auto items-center p-4 bg-neutral text-neutral-content justify-center">
+<footer
+	class=" mt-auto items-center p-4 bg-neutral text-neutral-content justify-center text-slate-100"
+>
 	<div class="text-center">
 		<p class=" mb-2 flex items-center justify-center text-sm">
 			<span class="mr-2">Developed by</span>

@@ -4,7 +4,7 @@
 
 <main class="flex flex-col flex-1">
 	<h1
-		class="text-4xl md:text-6xl lg:text-6xl text-center font-bold p-3 my-12 md:my-16 lg:my-20 text-white"
+		class="text-4xl md:text-6xl lg:text-6xl text-center font-bold p-3 my-12 md:my-16 lg:my-20 dark:text-white text-slate-700"
 	>
 		<div>
 			Tools to manage <span
@@ -23,10 +23,10 @@
 
 	<div class="flex flex-col md:flex-row justify-center items-center gap-6">
 		<a
-			class="bg-slate-800 border-slate-700 p-8 border w-80 text-center rounded"
+			class="dark:bg-slate-800 border-slate-300 dark:border-slate-600 hover:border-emerald-500 bg-slate-100 p-8 border-2 w-80 text-center rounded"
 			href="/growth-calculator"
 		>
-			<h2 class="text-3xl font-semibold text-white">Growth Calculator</h2>
+			<h2 class="text-3xl font-semibold dark:text-white text-slate-700">Growth Calculator</h2>
 			<div class="flex justify-center p-4 text-6xl">
 				<svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512" fill="#10b981"
 					><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path
@@ -37,10 +37,10 @@
 		</a>
 
 		<a
-			class="bg-slate-800 border-slate-700 p-8 border w-80 text-center rounded"
+			class="dark:bg-slate-800 border-slate-300 dark:border-slate-600 hover:border-emerald-500 bg-slate-100 p-8 border-2 w-80 text-center rounded"
 			href="/portfolio-builder"
 		>
-			<h2 class="text-3xl font-semibold text-white">Portfolio Builder</h2>
+			<h2 class="text-3xl font-semibold dark:text-white text-slate-700">Portfolio Builder</h2>
 			<div class="flex justify-center p-4 text-6xl">
 				<svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 576 512" fill="#10b981"
 					><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path

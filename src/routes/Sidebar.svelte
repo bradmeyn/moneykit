@@ -12,13 +12,12 @@
 </script>
 
 <aside class="max-w-[1000px] min-w-[300px] p-3">
-	<CurrencyInput label="Starting Value" bind:value={startingValue} />
+	<CurrencyInput label="Starting Amount" bind:value={startingValue} />
 
 	<Label class="space-y-1 mb-3">
 		<span>Contributions</span>
 		<div class="flex items-center">
 			<Input let:props class="rounded-none" size="lg">
-				<Icon icon="carbon:currency-dollar" slot="left" class="w-4 h-4" />
 				<input type="number" {...props} bind:value={contributionValue} />
 			</Input>
 			<Select class="rounded-none w-32" items={frequencyOptions} bind:value={frequency} />
@@ -28,7 +27,7 @@
 	<Label class="space-y-1 mb-3">
 		<span>Annual Return</span>
 		<Input let:props class="rounded-none" size="lg">
-			<Icon icon="carbon:percentage" slot="right" class="w-4 h-4" />
+			<!-- <Icon icon="carbon:percentage" slot="right" class="w-4 h-4" /> -->
 			<input type="number" {...props} bind:value={interestValue} />
 		</Input>
 	</Label>
@@ -38,3 +37,9 @@
 		<NumberInput class="rounded-none" bind:value={yearsValue} size="lg" />
 	</Label>
 </aside>
+
+<style>
+	div svg {
+		color: green;
+	}
+</style>

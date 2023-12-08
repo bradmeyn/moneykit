@@ -4,7 +4,7 @@
 </script>
 
 <footer
-	class=" mt-auto items-center p-4 bg-neutral text-neutral-content justify-center text-slate-100"
+	class=" mt-auto items-center p-4 bg-neutral text-neutral-content justify-center dark:text-slate-100 text-slate-700"
 >
 	<div class="text-center">
 		<p class=" mb-2 flex items-center justify-center text-sm">

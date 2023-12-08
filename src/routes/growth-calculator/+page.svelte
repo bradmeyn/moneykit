@@ -45,7 +45,7 @@
 	}
 </script>
 
-<main class="flex flex-col flex-1 container mx-auto border border-sky-800">
+<main class="flex flex-col flex-1 container mx-auto dark:text-white text-slate-700">
 	<h1 class="text-3xl font-bold p-3">Investment Growth Calculator</h1>
 
 	<section class="md:flex">

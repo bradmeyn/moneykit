@@ -23,12 +23,6 @@ export const calculateCompoundInterest = (
 	contributionAmount: number = 0,
 	contributionFrequency: number = 0
 ) => {
-	console.log('principal', principal);
-	console.log('interestRate', interestRate);
-	console.log('years', years);
-	console.log('contributionAmount', contributionAmount);
-	console.log('contributionFrequency', contributionFrequency);
-
 	let totalValue = principal;
 	let totalInterest = 0;
 	let totalContributions = 0;

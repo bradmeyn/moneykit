@@ -8,8 +8,8 @@
 
 <Label class="space-y-1 mb-3">
 	<span>{label}</span>
-	<Input let:props class="rounded-none" size="lg">
-		<!-- <Icon icon="carbon:currency-dollar" slot="left" class="w-4 h-4" /> -->
+	<Input let:props class="rounded">
+		<Icon icon="carbon:currency-dollar" slot="left" class="w-6 h-6 text-emerald-300" />
 		<input type="number" {...props} bind:value />
 	</Input>
 </Label>

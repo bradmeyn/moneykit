@@ -29,19 +29,19 @@
 				labels: chartYears,
 				datasets: [
 					{
-						label: 'Initial Investment',
+						label: 'Principal',
 						data: startingByYear,
-						backgroundColor: '#224970'
+						backgroundColor: '#065F46'
 					},
 					{
-						label: 'Contribution',
+						label: 'Contributions',
 						data: contributionsByYear,
-						backgroundColor: '#4186cc'
+						backgroundColor: '#10B981'
 					},
 					{
-						label: 'Interest Earned',
+						label: 'Interest',
 						data: interestByYear,
-						backgroundColor: '#93c8fc'
+						backgroundColor: '#A7F3D0'
 					}
 				]
 			},
@@ -60,7 +60,11 @@
 							font: {
 								size: 16,
 								family: 'Inter'
-							}
+							},
+							color: '#E2E8F0'
+						},
+						ticks: {
+							color: '#CBD5E1'
 						}
 					},
 					y: {
@@ -68,13 +72,14 @@
 						beginAtZero: true,
 						ticks: {
 							callback: function (value) {
-								return '$' + value; // Modify as per your needs
+								return '$ ' + value;
 							},
 							font: {
 								size: 12,
 								family: 'Inter',
 								weight: '300'
-							}
+							},
+							color: '#CBD5E1'
 						}
 					}
 				},
@@ -82,7 +87,6 @@
 					tooltip: {
 						enabled: true,
 						position: 'nearest',
-
 						mode: 'index',
 						intersect: false,
 						titleAlign: 'center',
@@ -99,6 +103,7 @@
 							left: 10,
 							right: 10
 						},
+						bodyColor: 'white',
 
 						callbacks: {
 							title: (tooltip) => `After ${tooltip[0].label} Years`,
@@ -107,9 +112,6 @@
 								const value = context.parsed.y !== null ? context.parsed.y : context.raw;
 
 								return `${label}: ${value}`;
-
-								// // You need to implement or import the formatCurrency function
-								// return `${label}: ${formatCurrency(value)}`;
 							}
 						}
 					},
@@ -120,7 +122,9 @@
 								size: 14,
 								family: 'Inter',
 								weight: '300'
-							}
+							},
+							color: 'white',
+							boxWidth: 15
 						}
 					}
 				}
@@ -137,6 +141,6 @@
 	}
 </script>
 
-<div class="p-3 w-full relative border border-sky-800 min-h-[400px] md:min-h-[500px]">
+<div class="p-3 w-full relative min-h-[400px] md:min-h-[500px]">
 	<canvas class="w-full absolute h-full" bind:this={chartId} />
 </div>

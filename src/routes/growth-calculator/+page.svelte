@@ -17,8 +17,7 @@
 	let totalContributions: number = 0;
 	let totalInterest: number = 0;
 	let totalValue: number = 0;
-
-	let showingChart: boolean = true;
+	let isChartView: boolean = true;
 
 	// Chart
 	let chartYears: number[] = [];
@@ -46,9 +45,9 @@
 </script>
 
 <main class="flex flex-col flex-1 container mx-auto dark:text-white text-slate-700">
-	<h1 class="text-3xl font-bold p-3">Investment Growth Calculator</h1>
+	<h1 class="text-3xl font-light p-3">Growth Calculator</h1>
 
-	<section class="md:flex">
+	<section class="md:flex gap-5">
 		<Sidebar
 			bind:principal
 			bind:contributionAmount
@@ -57,18 +56,25 @@
 			bind:years
 		/>
 
-		<div class="w-full p-3">
-			<Results bind:principal bind:totalContributions bind:totalInterest bind:totalValue />
+		{#if principal != 0 && contributionAmount != 0}
+			<div class="w-full p-3">
+				<Results bind:principal bind:totalContributions bind:totalInterest bind:totalValue />
 
-			<Toggle bind:showingChart />
+				<Toggle bind:isChartView />
 
-			<div class="flex justify-end">
-				{#if showingChart}
-					<Chart bind:chartYears bind:contributionsByYear bind:interestByYear bind:startingByYear />
-				{:else}
-					<Table bind:chartYears bind:contributionsByYear bind:interestByYear bind:principal />
-				{/if}
+				<div class="flex justify-end">
+					{#if isChartView}
+						<Chart
+							bind:chartYears
+							bind:contributionsByYear
+							bind:interestByYear
+							bind:startingByYear
+						/>
+					{:else}
+						<Table bind:chartYears bind:contributionsByYear bind:interestByYear bind:principal />
+					{/if}
+				</div>
 			</div>
-		</div>
+		{/if}
 	</section>
 </main>

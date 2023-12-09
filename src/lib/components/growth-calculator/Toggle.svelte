@@ -1,22 +1,22 @@
 <script lang="ts">
-	export let showingChart: boolean = true;
+	export let isChartView: boolean = true;
 </script>
 
-<div class="flex justify-center p-3">
-	<div class="border border-slate-300 bg-slate-200 rounded p-1 w-64 flex gap-3 justify-between">
+<div class="flex justify-center my-6">
+	<div class=" bg-slate-800 rounded p-2 w-64 flex gap-3 justify-between">
 		<button
 			class={`text-sm font-semibold px-2 py-2 rounded flex-grow ${
-				showingChart ? 'text-white bg-emerald-600' : 'text-emerald-600 '
+				isChartView ? 'text-white bg-emerald-600' : 'text-emerald-600 '
 			}`}
-			on:click={() => (showingChart = true)}
+			on:click={() => (isChartView = true)}
 		>
 			Chart
 		</button>
 		<button
 			class={` text-sm font-semibold px-2 py-2 rounded flex-grow ${
-				!showingChart ? 'text-white bg-emerald-700' : 'text-emerald-700 '
+				!isChartView ? 'text-white bg-emerald-600' : 'text-emerald-600 '
 			}`}
-			on:click={() => (showingChart = false)}>Table</button
+			on:click={() => (isChartView = false)}>Table</button
 		>
 	</div>
 </div>

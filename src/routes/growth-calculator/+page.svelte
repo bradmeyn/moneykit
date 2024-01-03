@@ -44,7 +44,7 @@
 	}
 </script>
 
-<main class="flex flex-col flex-1 container mx-auto dark:text-white text-slate-700">
+<main class="flex flex-col flex-1 container mx-auto text-white">
 	<h1 class="text-3xl font-light p-3">Growth Calculator</h1>
 
 	<section class="md:flex gap-5">
@@ -56,25 +56,16 @@
 			bind:years
 		/>
 
-		{#if principal != 0 && contributionAmount != 0}
-			<div class="w-full p-3">
-				<Results bind:principal bind:totalContributions bind:totalInterest bind:totalValue />
-
-				<Toggle bind:isChartView />
-
-				<div class="flex justify-end">
-					{#if isChartView}
-						<Chart
-							bind:chartYears
-							bind:contributionsByYear
-							bind:interestByYear
-							bind:startingByYear
-						/>
-					{:else}
-						<Table bind:chartYears bind:contributionsByYear bind:interestByYear bind:principal />
-					{/if}
-				</div>
+		<div class="w-full p-3">
+			<Results bind:principal bind:totalContributions bind:totalInterest bind:totalValue />
+			<Toggle bind:isChartView />
+			<div class="flex justify-end">
+				{#if isChartView}
+					<Chart bind:chartYears bind:contributionsByYear bind:interestByYear bind:startingByYear />
+				{:else}
+					<Table bind:chartYears bind:contributionsByYear bind:interestByYear bind:principal />
+				{/if}
 			</div>
-		{/if}
+		</div>
 	</section>
 </main>

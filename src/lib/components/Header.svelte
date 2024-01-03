@@ -1,16 +1,12 @@
 <script>
 	import { DarkMode } from 'flowbite-svelte';
 	import Icon from '@iconify/svelte';
-	let btnClass =
-		'text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg text-xl p-2';
+	let btnClass = 'text-gray-400 hover:bg-gray-700 rounded-lg text-xl p-2';
 </script>
 
 <header>
 	<div class="container mx-auto flex justify-between items-center py-3">
-		<a
-			href="/"
-			class="font-semibold text-xl dark:text-white text-slate-900 flex items-center gap-2"
-		>
+		<a href="/" class="font-semibold text-xl text-white flex items-center gap-2">
 			<Icon icon="streamline:bag-dollar-solid" slot="left" class="w-6 h-6 text-emerald-500" /><span
 				>WealthKit</span
 			></a
@@ -32,6 +28,5 @@
 				</li>
 			</ul>
 		</nav> -->
-		<DarkMode {btnClass} />
 	</div>
 </header>

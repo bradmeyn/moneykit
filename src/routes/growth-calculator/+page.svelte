@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Sidebar from '$lib/components/growth-calculator/Sidebar.svelte';
+	import Inputs from '$lib/components/growth-calculator/Inputs.svelte';
 	import Results from '$lib/components/growth-calculator/Results.svelte';
 	import Chart from '$lib/components/growth-calculator/Chart.svelte';
 	import { calculateCompoundInterest } from '$lib/utils';
@@ -48,7 +48,7 @@
 	<h1 class="text-3xl font-light p-3">Growth Calculator</h1>
 
 	<section class="md:flex gap-5">
-		<Sidebar
+		<Inputs
 			bind:principal
 			bind:contributionAmount
 			bind:interestRate

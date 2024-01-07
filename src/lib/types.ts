@@ -15,5 +15,6 @@ export type Investment = {
 
 export type Holding = {
 	investment: Investment;
+	allocation: number;
 	value: number;
 };

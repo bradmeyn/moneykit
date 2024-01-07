@@ -2,6 +2,9 @@
 	import { INVESTMENTS } from '$lib/constants';
 	import { Modal, Button, Input } from 'flowbite-svelte';
 	import Icon from '@iconify/svelte';
+	import type { Holding, Investment } from '$lib/types';
+
+	export let addHolding: (holding: Holding) => void;
 
 	let clickOutsideModal = false;
 	let searchTerm = ''; // Reactive variable for the search term
@@ -14,6 +17,15 @@
 					investment.name.toLowerCase().includes(searchTerm.toLowerCase())
 		  )
 		: INVESTMENTS;
+
+	function handleClick(investment: Investment) {
+		// Add the holding to the portfolio
+		// addHolding({
+		// 	investment,
+		// 	value: 0
+		// });
+		clickOutsideModal = false;
+	}
 </script>
 
 <Button class="mt-5 rounded ml-auto block" on:click={() => (clickOutsideModal = true)}>
@@ -41,11 +53,12 @@
 	</div>
 	<div class="max-h-60 overflow-y-auto">
 		{#each filteredInvestments as investment}
-			<div
+			<button
+				on:click={() => handleClick(investment)}
 				class="text-sm p-2 border-t border-1 border-slate-700 text-slate-200 hover:text-white hover:bg-emerald-700 cursor-pointer"
 			>
 				<span class="w-14 inline-block">{investment.code}</span><span>{investment.name}</span>
-			</div>
+			</button>
 		{/each}
 	</div>
 </Modal>

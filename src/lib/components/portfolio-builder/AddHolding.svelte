@@ -20,10 +20,11 @@
 
 	function handleClick(investment: Investment) {
 		// Add the holding to the portfolio
-		// addHolding({
-		// 	investment,
-		// 	value: 0
-		// });
+		addHolding({
+			investment,
+			allocation: 0,
+			value: 0
+		});
 		clickOutsideModal = false;
 	}
 </script>

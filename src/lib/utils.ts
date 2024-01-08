@@ -7,6 +7,14 @@ export function formatCurrency(value: number) {
 	}).format(value);
 }
 
+export function formatPercentage(value: number) {
+	return new Intl.NumberFormat('en-US', {
+		style: 'percent',
+		minimumFractionDigits: 1,
+		maximumFractionDigits: 1
+	}).format(value);
+}
+
 export const frequencyOptions = [
 	{ name: 'Weekly', value: 52 },
 	{ name: 'Fortnightly', value: 26 },

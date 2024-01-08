@@ -7,10 +7,10 @@
 		TableHead,
 		TableHeadCell
 	} from 'flowbite-svelte';
-	import { portfolio } from '$lib/stores/portfolioStore';
-
+	import { portfolio, holdings, addHolding } from '$lib/stores/portfolioStore';
+	import AddHolding from './AddHolding.svelte';
 	import CurrencyInput from '../CurrencyInput.svelte';
-	import { formatCurrency } from '$lib/utils';
+	import { formatCurrency, formatPercentage } from '$lib/utils';
 </script>
 
 <div class="max-w-lg">
@@ -21,22 +21,24 @@
 		<TableHead>
 			<TableHeadCell>Code</TableHeadCell>
 			<TableHeadCell>Investment</TableHeadCell>
+			<TableHeadCell>Cost ($)</TableHeadCell>
 			<TableHeadCell>Value ($)</TableHeadCell>
 		</TableHead>
 		<TableBody>
-			{#each $portfolio.holdings as { investment, value }}
+			{#each $holdings as { investment, allocation, value, cost }}
 				<TableBodyRow>
 					<TableBodyCell>{investment.code}</TableBodyCell>
 					<TableBodyCell>{investment.name}</TableBodyCell>
-					<TableBodyCell>{formatCurrency(value)}</TableBodyCell>
+					<TableBodyCell>{formatCurrency(cost)}</TableBodyCell>
+					<TableBodyCell>{formatPercentage(allocation)}</TableBodyCell>
 				</TableBodyRow>
 			{/each}
 			<TableBodyRow>
-				<TableBodyCell colspan="2" class="font-bold text-lg">Total</TableBodyCell>
+				<TableBodyCell colspan="3" class="font-bold text-lg">Total</TableBodyCell>
 				<TableBodyCell class="font-bold text-lg">{formatCurrency($portfolio.value)}</TableBodyCell>
 			</TableBodyRow>
 		</TableBody>
 	</Table>
 
-	<!-- <AddHolding {addHolding} /> -->
+	<AddHolding {addHolding} />
 </div>

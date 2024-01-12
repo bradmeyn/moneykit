@@ -16,7 +16,7 @@
 <div class="max-w-lg">
 	<CurrencyInput label="Portfolio value" bind:value={$portfolio.value} />
 </div>
-<div class="w-full max-w-5xl">
+<div class="w-full">
 	<Table>
 		<TableHead>
 			<TableHeadCell>Code</TableHeadCell>
@@ -29,8 +29,8 @@
 				<TableBodyRow>
 					<TableBodyCell>{investment.code}</TableBodyCell>
 					<TableBodyCell>{investment.name}</TableBodyCell>
-					<TableBodyCell>{formatCurrency(cost)}</TableBodyCell>
 					<TableBodyCell>{formatPercentage(allocation)}</TableBodyCell>
+					<TableBodyCell>{formatCurrency(value)}</TableBodyCell>
 				</TableBodyRow>
 			{/each}
 			<TableBodyRow>

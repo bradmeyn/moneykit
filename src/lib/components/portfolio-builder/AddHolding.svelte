@@ -6,8 +6,9 @@
 
 	export let addHolding: (holding: Holding) => void;
 
-	let clickOutsideModal = false;
+	let isModalOpen = false; // Reactive variable for the modal
 	let searchTerm = ''; // Reactive variable for the search term
+	let selectedInvestments: Investment[] = []; // Reactive variable for the selected investment
 
 	// Reactive filtering of investments
 	$: filteredInvestments = searchTerm
@@ -19,26 +20,35 @@
 		: INVESTMENTS;
 
 	function handleClick(investment: Investment) {
-		// Add the holding to the portfolio
-		addHolding({
-			investment,
-			allocation: 0,
-			value: 0
+		if (selectedInvestments.includes(investment)) {
+			selectedInvestments = selectedInvestments.filter((i) => i !== investment);
+		} else {
+			selectedInvestments = [...selectedInvestments, investment];
+		}
+	}
+
+	function addHoldings() {
+		selectedInvestments.forEach((investment) => {
+			addHolding({
+				investment,
+				allocation: 0,
+				cost: 0,
+				value: 0
+			});
 		});
-		clickOutsideModal = false;
+		isModalOpen = false;
 	}
 </script>
 
-<Button class="mt-5 rounded ml-auto block" on:click={() => (clickOutsideModal = true)}>
+<Button class="mt-5 rounded ml-auto block" on:click={() => (isModalOpen = true)}>
 	Add holding
 </Button>
 
 <Modal
 	title="Add Portfolio Holding"
-	bind:open={clickOutsideModal}
+	bind:open={isModalOpen}
 	placement={'top-center'}
 	class="mt-20"
-	autoclose
 	outsideclose
 >
 	<div class="mb-6">
@@ -56,10 +66,25 @@
 		{#each filteredInvestments as investment}
 			<button
 				on:click={() => handleClick(investment)}
-				class="text-sm p-2 border-t border-1 border-slate-700 text-slate-200 hover:text-white hover:bg-emerald-700 cursor-pointer"
+				class={'text-sm p-2 flex items-center justify-start w-full border-t border-1 border-slate-700  cursor-pointer ' +
+					(selectedInvestments.includes(investment)
+						? 'bg-slate-600 text-white'
+						: 'bg-transparent text-slate-200 hover:bg-emerald-600 hover:text-white')}
 			>
-				<span class="w-14 inline-block">{investment.code}</span><span>{investment.name}</span>
+				<span class="w-14 inline-block text-start">{investment.code}</span><span
+					>{investment.name}</span
+				>
+				{#if selectedInvestments.includes(investment)}
+					<Icon icon="carbon:checkmark" class="w-5 h-5 ml-auto" />
+				{/if}
 			</button>
 		{/each}
 	</div>
+	<Button
+		class="mt-5 rounded ml-auto block"
+		disabled={selectedInvestments.length === 0}
+		on:click={addHoldings}
+	>
+		Add holdings
+	</Button>
 </Modal>

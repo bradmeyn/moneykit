@@ -26,10 +26,33 @@ export function addHolding(holding: Holding) {
 	});
 }
 
+export function updateHolding(updatedHolding: Holding) {
+	portfolio.update(($portfolio) => {
+		const index = $portfolio.holdings.findIndex(
+			(h) => h.investment.code === updatedHolding.investment.code
+		);
+		if (index !== -1) {
+			$portfolio.holdings[index] = updatedHolding;
+		}
+		return $portfolio;
+	});
+}
+
+export function removeHolding(investmentCode: string) {
+	portfolio.update(($portfolio) => {
+		$portfolio.holdings = $portfolio.holdings.filter((h) => h.investment.code !== investmentCode);
+		return $portfolio;
+	});
+}
+
 export const holdings = derived(portfolio, ($portfolio) => {
 	return $portfolio.holdings.map((holding) => ({
 		...holding,
 		value: $portfolio.value * holding.allocation,
 		cost: holding.investment.cost * holding.value
 	}));
+});
+
+export const totalPercentage = derived(holdings, ($holdings) => {
+	return $holdings.reduce((acc, holding) => acc + holding.allocation, 0);
 });

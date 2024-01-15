@@ -11,6 +11,11 @@
 			name: 'Portfolio Builder',
 			href: 'portfolio-builder',
 			svgName: 'pie-chart.svg'
+		},
+		{
+			name: 'Personal Tax Calculator',
+			href: 'personal-tax-calculator',
+			svgName: 'calculator.svg'
 		}
 	];
 </script>

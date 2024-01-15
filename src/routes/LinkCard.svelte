@@ -4,6 +4,7 @@
 
 	import barChart from '$lib/assets/bar-chart.svg';
 	import pieChart from '$lib/assets/pie-chart.svg';
+	import taxCalculator from '$lib/assets/tax-calculator.svg';
 
 	let src = '';
 
@@ -12,8 +13,8 @@
 			src = pieChart;
 		} else if (name === 'Growth Calculator') {
 			src = barChart;
-		} else {
-			src = '';
+		} else if (name === 'Personal Tax Calculator') {
+			src = taxCalculator;
 		}
 	}
 </script>

@@ -12,7 +12,10 @@
 
 	function handleInput(event: Event) {
 		const target = event.target as HTMLInputElement;
-		updateHolding({ ...holding, allocation: Number(target.value) / 100 });
+		const valueAsNumber = Number(target.value);
+		const allocation = Number((valueAsNumber / 100).toFixed(2)); // Round to two decimal places
+
+		updateHolding({ ...holding, allocation: allocation });
 	}
 </script>
 

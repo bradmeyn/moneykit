@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { TableBodyCell, TableBodyRow, Input } from 'flowbite-svelte';
+	import { TableBodyCell, TableBodyRow, Input, Label } from 'flowbite-svelte';
 	import { formatCurrency, formatPercentage } from '$lib/utils';
 	import Icon from '@iconify/svelte';
 	import type { Holding } from '$lib/types';
@@ -25,18 +25,19 @@
 	<TableBodyCell>{formatCurrency(holding.value)}</TableBodyCell>
 	{#if editActive}
 		<TableBodyCell>
-			<Input let:props class="rounded ">
-				<Icon icon="carbon:percentage" slot="right" class="w-5 h-5 text-emerald-300" />
-				<input
+			<Label class="space-y-1 w-28 mb-3">
+				<Input
+					let:props
+					class="rounded "
 					value={holding.allocation * 100}
-					type="number"
 					step="1"
-					{...props}
 					on:blur={() => (editActive = false)}
 					autofocus
 					on:input={handleInput}
-				/>
-			</Input>
+				>
+					<Icon icon="carbon:percentage" slot="right" class="w-5 h-5 text-emerald-300" />
+				</Input>
+			</Label>
 		</TableBodyCell>
 	{:else}
 		<TableBodyCell>{formatPercentage(holding.allocation)}</TableBodyCell>
@@ -49,7 +50,7 @@
 			class="p-3 text-slate-400 hover:bg-slate-700 rounded hover:text-emerald-600"
 		>
 			{#if editActive}
-				<Icon icon="bi:x" class="w-5 h-5" />
+				<Icon icon="bi:x-lg" class="w-5 h-5" />
 			{:else}
 				<Icon icon="bi:pencil" class="w-5 h-5" />
 			{/if}

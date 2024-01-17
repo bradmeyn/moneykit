@@ -3,7 +3,7 @@
 	import { Modal, Button, Input } from 'flowbite-svelte';
 	import Icon from '@iconify/svelte';
 	import type { Holding, Investment } from '$lib/types';
-	import PercentageInput from '../PercentageInput.svelte';
+	import PercentageInput from '../../../lib/components/PercentageInput.svelte';
 
 	// Props
 	export let addHolding: (holding: Holding) => void;

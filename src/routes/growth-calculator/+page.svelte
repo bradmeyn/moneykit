@@ -1,10 +1,10 @@
 <script lang="ts">
-	import Inputs from '$lib/components/growth-calculator/Inputs.svelte';
-	import Results from '$lib/components/growth-calculator/Results.svelte';
-	import Chart from '$lib/components/growth-calculator/Chart.svelte';
+	import Inputs from './_components/Inputs.svelte';
+	import Results from './_components/Results.svelte';
+	import Chart from './_components/Chart.svelte';
 	import { calculateCompoundInterest } from '$lib/utils';
-	import Toggle from '$lib/components/growth-calculator/Toggle.svelte';
-	import Table from '$lib/components/growth-calculator/Table.svelte';
+	import Toggle from './_components/Toggle.svelte';
+	import Table from './_components/Table.svelte';
 
 	// Inputs
 	let principal: number = 100000;

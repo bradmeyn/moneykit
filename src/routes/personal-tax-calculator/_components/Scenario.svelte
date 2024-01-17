@@ -3,6 +3,8 @@
 	let income = 0;
 </script>
 
-<div>
+<div class="md:flex gap-5">
 	<Inputs bind:income />
+
+	<div class="w-full p-3">Output</div>
 </div>

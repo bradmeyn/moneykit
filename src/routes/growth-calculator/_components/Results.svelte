@@ -8,7 +8,7 @@
 	export let totalValue: number;
 </script>
 
-<h2 class="text-2xl bold mb-2">Results</h2>
+<h2 class="text-2xl bold mb-2">Outcome</h2>
 <div class="grid grid-cols-3 gap-3">
 	<div class=" p-3 bg-slate-800">
 		<h2 class="text-sm">Start Value</h2>

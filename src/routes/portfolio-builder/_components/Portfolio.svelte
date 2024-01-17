@@ -15,9 +15,8 @@
 		removeHolding
 	} from '$lib/stores/portfolioStore';
 	import AddHolding from './AddHolding.svelte';
-	import CurrencyInput from '../CurrencyInput.svelte';
+	import CurrencyInput from '$lib/components/CurrencyInput.svelte';
 	import { formatCurrency, formatPercentage } from '$lib/utils';
-	import Icon from '@iconify/svelte';
 	import PortfolioItem from './PortfolioItem.svelte';
 </script>
 

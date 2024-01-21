@@ -76,8 +76,7 @@
 							},
 							font: {
 								size: 12,
-								family: 'Inter',
-								weight: '300'
+								family: 'Inter'
 							},
 							color: '#CBD5E1'
 						}
@@ -120,8 +119,7 @@
 						labels: {
 							font: {
 								size: 14,
-								family: 'Inter',
-								weight: '300'
+								family: 'Inter'
 							},
 							color: 'white',
 							boxWidth: 15

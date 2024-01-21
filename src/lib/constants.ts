@@ -14,6 +14,24 @@ export const FREQUENCY_OPTIONS = [
 	{ name: 'Yearly', value: 1 }
 ];
 
+export const FINANCIAL_YEARS = [
+	{ name: '2022-23', value: 2023 },
+	{ name: '2023-24', value: 2024 }
+];
+
+export const INCOME_TAX_RATES = [
+	{
+		financialYear: 2023,
+		thresholds: [
+			{ min: 0, max: 18200, rate: 0 },
+			{ min: 18201, max: 45000, rate: 0.19 },
+			{ min: 45001, max: 120000, rate: 0.325 },
+			{ min: 120001, max: 180000, rate: 0.37 },
+			{ min: 180001, max: Infinity, rate: 0.45 }
+		]
+	}
+];
+
 export const INVESTMENTS: Investment[] = [
 	{
 		name: 'Vanguard Australian Shares Index ETF',

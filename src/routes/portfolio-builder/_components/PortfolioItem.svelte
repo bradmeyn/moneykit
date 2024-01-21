@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { TableBodyCell, TableBodyRow, Input, Label } from 'flowbite-svelte';
-	import { formatCurrency, formatPercentage } from '$lib/utils';
+	import { formatAsCurrency, formatAsPercentage } from '$lib/utils';
 	import Icon from '@iconify/svelte';
 	import type { Holding } from '$lib/types';
 	import { removeHolding, updateHolding } from '$lib/stores/portfolioStore';
@@ -22,7 +22,7 @@
 <TableBodyRow>
 	<TableBodyCell>{holding.investment.code}</TableBodyCell>
 	<TableBodyCell>{holding.investment.name}</TableBodyCell>
-	<TableBodyCell>{formatCurrency(holding.value)}</TableBodyCell>
+	<TableBodyCell>{formatAsCurrency(holding.value)}</TableBodyCell>
 	{#if editActive}
 		<TableBodyCell>
 			<Label class="space-y-1 w-28 mb-3">
@@ -40,7 +40,7 @@
 			</Label>
 		</TableBodyCell>
 	{:else}
-		<TableBodyCell>{formatPercentage(holding.allocation)}</TableBodyCell>
+		<TableBodyCell>{formatAsPercentage(holding.allocation)}</TableBodyCell>
 	{/if}
 	<TableBodyCell>
 		<button

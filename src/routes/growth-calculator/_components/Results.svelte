@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { formatCurrency } from '$lib/utils';
+	import { formatAsCurrency } from '$lib/utils';
 
 	// props
 	export let principal: number;
@@ -12,20 +12,22 @@
 <div class="grid grid-cols-3 gap-3">
 	<div class=" p-3 bg-slate-800">
 		<h2 class="text-sm">Start Value</h2>
-		<p class="font-semibold text-lg md:text-xl">{formatCurrency(principal)}</p>
+		<p class="font-semibold text-lg md:text-xl">{formatAsCurrency(principal, false, true)}</p>
 	</div>
 	<div class=" p-3 bg-slate-800">
 		<h2 class="text-sm">Contributions</h2>
-		<p class="font-semibold text-lg md:text-xl">{formatCurrency(totalContributions)}</p>
+		<p class="font-semibold text-lg md:text-xl">
+			{formatAsCurrency(totalContributions, false, true)}
+		</p>
 	</div>
 
 	<div class=" p-3 bg-slate-800">
 		<h2 class="text-sm">Interest</h2>
-		<p class="font-semibold text-lg md:text-xl">{formatCurrency(totalInterest)}</p>
+		<p class="font-semibold text-lg md:text-xl">{formatAsCurrency(totalInterest, false, true)}</p>
 	</div>
 
 	<div class=" p-3 bg-slate-800 col-span-3">
 		<h2 class="text-sm">Total Value</h2>
-		<p class="font-bold text-2xl md:text-2xl">{formatCurrency(totalValue)}</p>
+		<p class="font-bold text-2xl md:text-2xl">{formatAsCurrency(totalValue, false, true)}</p>
 	</div>
 </div>

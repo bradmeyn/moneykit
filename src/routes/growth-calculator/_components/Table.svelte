@@ -7,7 +7,7 @@
 		TableHead,
 		TableHeadCell
 	} from 'flowbite-svelte';
-	import { formatCurrency } from '$lib/utils';
+	import { formatAsCurrency } from '$lib/utils';
 
 	export let chartYears: number[];
 	export let interestByYear: number[];
@@ -29,18 +29,20 @@
 				<TableBodyRow>
 					<TableBodyCell>{year}</TableBodyCell>
 					{#if i === 0}
-						<TableBodyCell>{formatCurrency(principal)}</TableBodyCell>
+						<TableBodyCell>{formatAsCurrency(principal)}</TableBodyCell>
 					{:else}
 						<TableBodyCell
-							>{formatCurrency(
+							>{formatAsCurrency(
 								principal + interestByYear[i - 1] + contributionsByYear[i - 1]
 							)}</TableBodyCell
 						>
 					{/if}
-					<TableBodyCell>{formatCurrency(interestByYear[i])}</TableBodyCell>
-					<TableBodyCell>{formatCurrency(contributionsByYear[i])}</TableBodyCell>
+					<TableBodyCell>{formatAsCurrency(interestByYear[i])}</TableBodyCell>
+					<TableBodyCell>{formatAsCurrency(contributionsByYear[i])}</TableBodyCell>
 					<TableBodyCell
-						>{formatCurrency(principal + interestByYear[i] + contributionsByYear[i])}</TableBodyCell
+						>{formatAsCurrency(
+							principal + interestByYear[i] + contributionsByYear[i]
+						)}</TableBodyCell
 					>
 				</TableBodyRow>
 			{/each}

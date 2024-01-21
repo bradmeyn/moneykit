@@ -1,21 +1,13 @@
 <script lang="ts">
 	import { Input, Label, type FormSizeType } from 'flowbite-svelte';
 	import Icon from '@iconify/svelte';
+	import { formatAsCurrency, parseCurrency } from '$lib/utils';
 
 	// Props
-	export let label: string;
+	export let label: string = '';
 	export let size: FormSizeType = 'md';
 	export let value: number;
-
-	// Function to format the value as a number with commas, without the currency symbol
-	function formatAsCurrency(value: number) {
-		return value.toLocaleString('en-US');
-	}
-
-	// Function to parse the formatted value back to an integer
-	function parseCurrency(value: string) {
-		return parseInt(value.replace(/[^0-9]+/g, ''));
-	}
+	export let inputClass: string = '';
 
 	// Reactive statement to format value whenever it changes
 	$: formattedValue = formatAsCurrency(value);
@@ -30,12 +22,12 @@
 	}
 </script>
 
-<Label class="space-y-1 mb-3">
+<Label class="space-y-1 {inputClass}">
 	{#if label}
 		<div class="text-sm text-slate-200">{label}</div>
 	{/if}
 
-	<Input {size} let:props class="rounded max">
+	<Input {size} let:props class="rounded">
 		<Icon icon="carbon:currency-dollar" slot="left" class="w-5 h-5 text-emerald-300" />
 		<input type="text" {...props} value={formattedValue} on:input={handleInput} />
 	</Input>

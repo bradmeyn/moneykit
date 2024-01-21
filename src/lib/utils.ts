@@ -1,13 +1,6 @@
-export function formatCurrency(value: number) {
-	return new Intl.NumberFormat('en-US', {
-		style: 'currency',
-		currency: 'USD',
-		minimumFractionDigits: 0,
-		maximumFractionDigits: 0
-	}).format(value);
-}
+import { INCOME_TAX_RATES } from './constants';
 
-export function formatPercentage(value: number) {
+export function formatAsPercentage(value: number) {
 	return new Intl.NumberFormat('en-US', {
 		style: 'percent',
 		minimumFractionDigits: 1,
@@ -15,22 +8,43 @@ export function formatPercentage(value: number) {
 	}).format(value);
 }
 
-export const frequencyOptions = [
-	{ name: 'Weekly', value: 52 },
-	{ name: 'Fortnightly', value: 26 },
-	{ name: 'Monthly', value: 12 },
-	{ name: 'Quarterly', value: 4 },
-	{ name: 'Half Yearly', value: 2 },
-	{ name: 'Yearly', value: 1 }
-];
+export function formatAsCurrency(
+	value: number,
+	includeCents: boolean = false,
+	includeSymbol: boolean = false
+): string {
+	const options: Intl.NumberFormatOptions = {
+		minimumFractionDigits: includeCents ? 2 : 0,
+		maximumFractionDigits: includeCents ? 2 : 0
+	};
 
-export const calculateCompoundInterest = (
+	if (includeSymbol) {
+		options.style = 'currency';
+		options.currency = 'USD';
+	} else {
+		// If the currency symbol is not included, we use 'decimal' style
+		options.style = 'decimal';
+	}
+
+	return new Intl.NumberFormat('en-US', options).format(value);
+}
+// Function to parse the formatted value back to an integer
+export function parseCurrency(value: string) {
+	return parseInt(value.replace(/[^0-9]+/g, ''));
+}
+
+export function getTaxRates(financialYear: number) {
+	const taxRates = INCOME_TAX_RATES.find((taxRate) => taxRate.financialYear === financialYear);
+	return taxRates;
+}
+
+export function calculateCompoundInterest(
 	principal: number = 0,
 	interestRate: number = 0,
 	years: number = 0,
 	contributionAmount: number = 0,
 	contributionFrequency: number = 0
-) => {
+) {
 	let totalValue = principal;
 	let totalInterest = 0;
 	let totalContributions = 0;
@@ -69,4 +83,4 @@ export const calculateCompoundInterest = (
 		contributionsByYear,
 		startingByYear
 	};
-};
+}

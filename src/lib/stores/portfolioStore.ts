@@ -98,7 +98,7 @@ export const portfolioDetails = derived(portfolio, ($portfolio) => {
 	updatedHoldings.forEach((holding) => {
 		// Loop each asset allocation key and add the value of the holding to the asset allocation
 
-		Object.keys(holding.investment.assetAllocation).forEach((key: keyof AssetAllocation) => {
+		Object.keys(holding.investment.assetAllocation).forEach((key) => {
 			const index = assetAllocation.findIndex((a) => a.key === key);
 			assetAllocation[index].value += holding.value * holding.investment.assetAllocation[key];
 		});

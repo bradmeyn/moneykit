@@ -1,19 +1,13 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import {
-		Chart,
-		DoughnutController,
-		ArcElement,
-		Tooltip,
-		Legend,
-		type ChartConfiguration
-	} from 'chart.js';
+	import { Chart, DoughnutController, ArcElement, Tooltip, Legend } from 'chart.js';
 	import { formatAsPercentage } from '$lib/utils';
 
 	// Props
 	export let labels: string[];
 	export let dataValues: number[];
 	export let backgroundColors: string[] = ['#065F46', '#10B981', '#A7F3D0'];
+	export let legendPosition: 'top' | 'bottom' | 'left' | 'right' = 'top';
 
 	let chartId: HTMLCanvasElement;
 	let doughnutChart: Chart;
@@ -22,8 +16,7 @@
 	Chart.register(DoughnutController, ArcElement, Tooltip, Legend);
 
 	onMount(() => {
-		//@ts-ignore
-		chart = new Chart(chartId, {
+		doughnutChart = new Chart(chartId, {
 			type: 'doughnut',
 			data: {
 				labels: labels,
@@ -49,10 +42,11 @@
 							label: function (context) {
 								return formatAsPercentage(context.parsed);
 							}
-						}
+						},
+						boxPadding: 5
 					},
 					legend: {
-						position: 'top',
+						position: legendPosition,
 						labels: {
 							font: {
 								size: 20
@@ -61,7 +55,6 @@
 							boxWidth: 18
 						}
 					},
-
 					title: {
 						display: true,
 						text: 'Chart.js Doughnut Chart'

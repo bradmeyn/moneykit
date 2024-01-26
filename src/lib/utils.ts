@@ -84,3 +84,22 @@ export function calculateCompoundInterest(
 		startingByYear
 	};
 }
+
+const assetAllocationLabels = {
+	ausEquities: 'Aus Equities',
+	intEquities: 'Int Equities',
+	ausProperty: 'Aus Property',
+	intProperty: 'Int Property',
+	ausBonds: 'Aus Bonds',
+	intBonds: 'Int Bonds',
+	cash: 'Cash'
+};
+
+export function getReadableLabel(key: string): string {
+	// @ts-expect-error - TS doesn't know that the key will be a valid key of AssetAllocation
+	if (!assetAllocationLabels[key]) {
+		return key;
+	}
+	// @ts-expect-error - TS doesn't know that the key will be a valid key of AssetAllocation
+	return assetAllocationLabels[key];
+}

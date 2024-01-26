@@ -22,7 +22,7 @@
 <TableBodyRow>
 	<TableBodyCell>{holding.investment.code}</TableBodyCell>
 	<TableBodyCell>{holding.investment.name}</TableBodyCell>
-	<TableBodyCell>{formatAsCurrency(holding.value)}</TableBodyCell>
+	<TableBodyCell>{formatAsCurrency(holding.value, false, true)}</TableBodyCell>
 	{#if editActive}
 		<TableBodyCell>
 			<Label class="space-y-1 w-28 mb-3">

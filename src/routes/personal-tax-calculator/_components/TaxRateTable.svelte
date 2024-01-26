@@ -8,15 +8,15 @@
 		TableHead,
 		TableHeadCell
 	} from 'flowbite-svelte';
-	import { get } from 'svelte/store';
 
 	export let financialYear = 2023;
 
-	const taxRates = getTaxRates(financialYear);
+	$: taxRates = getTaxRates(financialYear);
 </script>
 
-<div class="w-full p-3">
+<div class="min-w-96 p-3">
 	{#if taxRates}
+		<h2 class="text-2xl bold mb-2">Tax Rates for {taxRates.name}</h2>
 		<Table>
 			<TableHead>
 				<TableHeadCell>Taxable Income</TableHeadCell>

@@ -14,14 +14,12 @@ export const FREQUENCY_OPTIONS = [
 	{ name: 'Yearly', value: 1 }
 ];
 
-export const FINANCIAL_YEARS = [
-	{ name: '2022-23', value: 2023 },
-	{ name: '2023-24', value: 2024 }
-];
+export const FINANCIAL_YEARS = [{ name: '2022-23', value: 2023 }];
 
 export const INCOME_TAX_RATES = [
 	{
 		financialYear: 2023,
+		name: '2022-23',
 		thresholds: [
 			{ min: 0, max: 18200, rate: 0 },
 			{ min: 18201, max: 45000, rate: 0.19 },
@@ -32,13 +30,26 @@ export const INCOME_TAX_RATES = [
 	}
 ];
 
+export const CHART_COLOURS = [
+	'#0DCAF0', // Sky blue
+	'#FFC107', // Amber
+	'#DC3545', // Red
+	'#20C997', // Teal
+	'#FD7E14', // Orange
+	'#6F42C1', // Purple
+	'#6610F2', // Indigo
+	'#198754', // Green
+	'#D63384', // Pink
+	'#0D6EFD' // Blue
+];
+
 export const INVESTMENTS: Investment[] = [
 	{
 		name: 'Vanguard Australian Shares Index ETF',
 		code: 'VAS',
 		cost: 0.07,
 		assetAllocation: {
-			ausEquities: 100,
+			ausEquities: 1,
 			intEquities: 0,
 			ausProperty: 0,
 			intProperty: 0,
@@ -53,7 +64,7 @@ export const INVESTMENTS: Investment[] = [
 		cost: 0.18,
 		assetAllocation: {
 			ausEquities: 0,
-			intEquities: 100,
+			intEquities: 1,
 			ausProperty: 0,
 			intProperty: 0,
 			ausBonds: 0,
@@ -68,7 +79,7 @@ export const INVESTMENTS: Investment[] = [
 		assetAllocation: {
 			ausEquities: 0,
 			intEquities: 0,
-			ausProperty: 100,
+			ausProperty: 1,
 			intProperty: 0,
 			ausBonds: 0,
 			intBonds: 0,
@@ -85,7 +96,7 @@ export const INVESTMENTS: Investment[] = [
 			intEquities: 0,
 			ausProperty: 0,
 			intProperty: 0,
-			ausBonds: 100,
+			ausBonds: 1,
 			intBonds: 0,
 			cash: 0
 		}
@@ -100,7 +111,7 @@ export const INVESTMENTS: Investment[] = [
 			ausProperty: 0,
 			intProperty: 0,
 			ausBonds: 0,
-			intBonds: 100,
+			intBonds: 1,
 			cash: 0
 		}
 	},
@@ -110,7 +121,7 @@ export const INVESTMENTS: Investment[] = [
 		cost: 0.32,
 		assetAllocation: {
 			ausEquities: 0,
-			intEquities: 100,
+			intEquities: 1,
 			ausProperty: 0,
 			intProperty: 0,
 			ausBonds: 0,
@@ -124,7 +135,7 @@ export const INVESTMENTS: Investment[] = [
 		cost: 0.48,
 		assetAllocation: {
 			ausEquities: 0,
-			intEquities: 100,
+			intEquities: 1,
 			ausProperty: 0,
 			intProperty: 0,
 			ausBonds: 0,
@@ -138,7 +149,7 @@ export const INVESTMENTS: Investment[] = [
 		cost: 0.4,
 		assetAllocation: {
 			ausEquities: 0,
-			intEquities: 100,
+			intEquities: 1,
 			ausProperty: 0,
 			intProperty: 0,
 			ausBonds: 0,

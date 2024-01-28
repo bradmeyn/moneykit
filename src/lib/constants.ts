@@ -31,16 +31,13 @@ export const INCOME_TAX_RATES = [
 ];
 
 export const CHART_COLOURS = [
-	'#0DCAF0', // Sky blue
-	'#FFC107', // Amber
-	'#DC3545', // Red
-	'#20C997', // Teal
-	'#FD7E14', // Orange
-	'#6F42C1', // Purple
-	'#6610F2', // Indigo
-	'#198754', // Green
-	'#D63384', // Pink
-	'#0D6EFD' // Blue
+	'rgb(2 132 199)', // tw sky-600
+	'rgb(219 39 119)', // tw pink-600
+	'rgb(202 138 4)', // tw yellow-600
+	'rgb(22 163 74)', // tw green-600
+	'rgb(79 70 229)', // tw indigo-600
+	'rgb(190 18 60)', // tw rose-600
+	'rgb(13 148 136)' // tw teal-600
 ];
 
 export const INVESTMENTS: Investment[] = [
@@ -158,3 +155,18 @@ export const INVESTMENTS: Investment[] = [
 		}
 	}
 ];
+
+export const UNALLOCATED_INVESTMENT: Investment = {
+	name: 'Unallocated Cash',
+	code: 'CASH',
+	cost: 0.0,
+	assetAllocation: {
+		ausEquities: 0,
+		intEquities: 0,
+		ausProperty: 0,
+		intProperty: 0,
+		ausBonds: 0,
+		intBonds: 0,
+		cash: 1
+	}
+};

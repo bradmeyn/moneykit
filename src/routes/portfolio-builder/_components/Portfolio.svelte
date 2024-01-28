@@ -23,7 +23,7 @@
 <div>
 	{#if $portfolioDetails.holdings.length > 0}
 		<div class="flex flex-col lg:flex-row w-full gap-5">
-			<div class="flex-1 min-w-[600px]">
+			<div class="flex-1 lg:min-w-[600px]">
 				<Table>
 					<TableHead>
 						<TableHeadCell>Code</TableHeadCell>
@@ -57,7 +57,7 @@
 				<AddHolding {addHolding} />
 			</div>
 
-			<div class="w-full lg:max-w-[400px] mx-auto">
+			<div class="w-full lg:max-w-[300px] mx-auto">
 				<DoughnutChart
 					labels={$portfolioDetails.holdings.map((holding) => holding.investment.code)}
 					dataValues={$portfolioDetails.holdings.map((holding) => holding.allocation)}
@@ -66,7 +66,9 @@
 		</div>
 
 		<div class="w-full flex-1 flex-shrink-0">
-			<AssetAllocation portfolioValue={$portfolio.value} />
+			<div class="flex flex-col lg:flex-row w-full gap-5">
+				<AssetAllocation portfolioValue={$portfolio.value} />
+			</div>
 		</div>
 	{:else}
 		<AddHolding {addHolding} />

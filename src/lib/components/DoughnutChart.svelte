@@ -1,6 +1,13 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { Chart, DoughnutController, ArcElement, Tooltip, Legend } from 'chart.js';
+	import {
+		Chart,
+		DoughnutController,
+		ArcElement,
+		Tooltip,
+		Legend,
+		type ChartConfiguration
+	} from 'chart.js';
 	import { formatAsPercentage } from '$lib/utils';
 
 	// Props
@@ -16,7 +23,7 @@
 	Chart.register(DoughnutController, ArcElement, Tooltip, Legend);
 
 	onMount(() => {
-		doughnutChart = new Chart(chartId, {
+		const config: ChartConfiguration = {
 			type: 'doughnut',
 			data: {
 				labels: labels,
@@ -32,10 +39,6 @@
 			options: {
 				responsive: true,
 				maintainAspectRatio: false,
-				animation: {
-					animateScale: false,
-					animateRotate: true
-				},
 				plugins: {
 					tooltip: {
 						callbacks: {
@@ -47,21 +50,20 @@
 					},
 					legend: {
 						position: legendPosition,
+
 						labels: {
 							font: {
-								size: 20
+								size: 16
 							},
 							color: '#fff',
 							boxWidth: 18
 						}
-					},
-					title: {
-						display: true,
-						text: 'Chart.js Doughnut Chart'
 					}
 				}
 			}
-		});
+		};
+
+		doughnutChart = new Chart(chartId, config);
 	});
 
 	// Update chart when props change

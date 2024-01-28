@@ -12,6 +12,11 @@
 	let searchTerm = '';
 	let newHoldings: Holding[] = [];
 
+	$: if (!isModalOpen) {
+		searchTerm = '';
+		newHoldings = [];
+	}
+
 	// Reactive filtering of investments
 	$: filteredInvestments = searchTerm
 		? INVESTMENTS.filter(
@@ -65,7 +70,10 @@
 	<div class="max-h-40 overflow-y-auto">
 		{#each filteredInvestments as investment, i}
 			<button
-				on:click={() => selectInvestment(investment)}
+				on:click={() =>
+					selectedInvestments.includes(investment)
+						? unselectInvestment(investment)
+						: selectInvestment(investment)}
 				class={'text-sm p-2 flex items-center justify-start w-full border-t border-1 border-slate-700 cursor-pointer ' +
 					(selectedInvestments.includes(investment)
 						? 'bg-slate-600 text-white'

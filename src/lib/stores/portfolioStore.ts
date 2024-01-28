@@ -1,7 +1,6 @@
-import { INVESTMENTS } from '$lib/constants';
+import { INVESTMENTS, UNALLOCATED_INVESTMENT } from '$lib/constants';
 import { writable, derived } from 'svelte/store';
-import type { AssetAllocation, Holding } from '$lib/types';
-import { updated } from '$app/stores';
+import type { Holding } from '$lib/types';
 
 // // Define the base structure for your portfolio
 export const portfolio = writable({
@@ -14,6 +13,10 @@ export const portfolio = writable({
 		{
 			investment: INVESTMENTS[1],
 			allocation: 0.3
+		},
+		{
+			investment: UNALLOCATED_INVESTMENT,
+			allocation: 0.1
 		}
 	]
 });
@@ -46,45 +49,64 @@ export function removeHolding(investmentCode: string) {
 
 export const portfolioDetails = derived(portfolio, ($portfolio) => {
 	// Update the value of each holding
-	const updatedHoldings = $portfolio.holdings.map((holding) => {
-		const updatedHolding = {
-			...holding,
-			value: $portfolio.value * holding.allocation,
-			cost: holding.investment.cost * ($portfolio.value * holding.allocation)
-		};
-		return updatedHolding;
-	});
+	let holdingtotal = 0;
+	let updatedHoldings = $portfolio.holdings
+		.filter((h) => h.investment.code !== 'CASH')
+		.map((holding) => {
+			holdingtotal += $portfolio.value * holding.allocation;
+			const updatedHolding = {
+				...holding,
+				value: $portfolio.value * holding.allocation,
+				cost: holding.investment.cost * ($portfolio.value * holding.allocation)
+			};
+			return updatedHolding;
+		});
 
-	console.log(updatedHoldings);
+	const unallocated = 1 - holdingtotal / $portfolio.value;
+
+	console.log('unallocated', unallocated);
+
+	// Add the unallocated cash
+	if (unallocated < 1) {
+		updatedHoldings = [
+			...updatedHoldings,
+			{
+				investment: UNALLOCATED_INVESTMENT,
+				allocation: unallocated,
+				value: $portfolio.value * unallocated,
+				cost: 0
+			}
+		];
+	}
 
 	const assetAllocation = [
 		{
-			name: 'Australian Equities',
+			name: 'Aus Equities',
 			key: 'ausEquities',
 			value: 0
 		},
 		{
-			name: 'International Equities',
+			name: 'Int Equities',
 			key: 'intEquities',
 			value: 0
 		},
 		{
-			name: 'Australian Property',
+			name: 'Aus Property',
 			key: 'ausProperty',
 			value: 0
 		},
 		{
-			name: 'International Property',
+			name: 'Int Property',
 			key: 'intProperty',
 			value: 0
 		},
 		{
-			name: 'Australian Bonds',
+			name: 'Aus Bonds',
 			key: 'ausBonds',
 			value: 0
 		},
 		{
-			name: 'International Bonds',
+			name: 'Int Bonds',
 			key: 'intBonds',
 			value: 0
 		},
@@ -95,17 +117,18 @@ export const portfolioDetails = derived(portfolio, ($portfolio) => {
 		}
 	];
 
+	// Update the asset allocation
 	updatedHoldings.forEach((holding) => {
-		// Loop each asset allocation key and add the value of the holding to the asset allocation
-
 		Object.keys(holding.investment.assetAllocation).forEach((key) => {
 			const index = assetAllocation.findIndex((a) => a.key === key);
+			// @ts-expect-error - I know this is a number
 			assetAllocation[index].value += holding.value * holding.investment.assetAllocation[key];
 		});
 	});
-	console.log(assetAllocation);
 
-	const totalPercentage = updatedHoldings.reduce((acc, holding) => acc + holding.allocation, 0);
+	const totalPercentage = Math.round(
+		updatedHoldings.reduce((acc, holding) => acc + holding.allocation, 0)
+	);
 
 	return { holdings: updatedHoldings, assetAllocation, totalPercentage };
 });

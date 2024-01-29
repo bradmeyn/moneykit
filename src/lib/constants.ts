@@ -20,12 +20,43 @@ export const INCOME_TAX_RATES = [
 	{
 		financialYear: 2023,
 		name: '2022-23',
-		thresholds: [
+		personal: [
 			{ min: 0, max: 18200, rate: 0 },
 			{ min: 18201, max: 45000, rate: 0.19 },
 			{ min: 45001, max: 120000, rate: 0.325 },
 			{ min: 120001, max: 180000, rate: 0.37 },
 			{ min: 180001, max: Infinity, rate: 0.45 }
+		],
+		medicareLevy: {
+			threshold: 22800,
+			rate: 0.02
+		},
+		medicareLevySurcharge: [
+			{ min: 0, max: 90000, rate: 0 },
+			{ min: 90001, max: 105000, rate: 0.01 },
+			{ min: 105001, max: 140000, rate: 0.0125 },
+			{ min: 140001, max: Infinity, rate: 0.015 }
+		]
+	},
+	{
+		financialYear: 2024,
+		name: '2023-24',
+		personal: [
+			{ min: 0, max: 18200, rate: 0 },
+			{ min: 18201, max: 45000, rate: 0.19 },
+			{ min: 45001, max: 120000, rate: 0.325 },
+			{ min: 120001, max: 180000, rate: 0.37 },
+			{ min: 180001, max: Infinity, rate: 0.45 }
+		],
+		medicareLevy: {
+			threshold: 22800,
+			rate: 0.02
+		},
+		medicareLevySurcharge: [
+			{ min: 0, max: 93000, rate: 0 },
+			{ min: 93001, max: 108000, rate: 0.01 },
+			{ min: 108001, max: 144000, rate: 0.0125 },
+			{ min: 144001, max: Infinity, rate: 0.015 }
 		]
 	}
 ];

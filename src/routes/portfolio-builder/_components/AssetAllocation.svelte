@@ -15,7 +15,7 @@
 	export let portfolioValue: number = 0;
 </script>
 
-<div class="flex-1 lg:min-w-[600px] mt-10">
+<div class="flex-1 lg:min-w-[600px] mt-5">
 	<h2 class="text-2xl font-bold mb-2">Asset Allocation</h2>
 	<Table>
 		<TableHead>

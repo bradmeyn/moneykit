@@ -8,7 +8,7 @@
 	let hasInsurance = false;
 </script>
 
-<div class="md:flex gap-5">
+<div class="md:flex gap-10">
 	<Inputs bind:income bind:deductions bind:hasInsurance bind:financialYear />
 
 	<TaxRateTable {financialYear} />

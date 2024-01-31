@@ -4,7 +4,7 @@ export function formatAsPercentage(value: number) {
 	return new Intl.NumberFormat('en-US', {
 		style: 'percent',
 		minimumFractionDigits: 1,
-		maximumFractionDigits: 1
+		maximumFractionDigits: 3
 	}).format(value);
 }
 

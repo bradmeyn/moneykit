@@ -23,6 +23,7 @@
 	<TableBodyCell>{holding.investment.code}</TableBodyCell>
 	<TableBodyCell>{holding.investment.name}</TableBodyCell>
 	<TableBodyCell>{formatAsCurrency(holding.value, false, true)}</TableBodyCell>
+
 	{#if editActive}
 		<TableBodyCell>
 			<Label class="space-y-1 w-28 mb-3">
@@ -40,6 +41,13 @@
 		</TableBodyCell>
 	{:else}
 		<TableBodyCell>{formatAsPercentage(holding.allocation)}</TableBodyCell>
+	{/if}
+	{#if holding.investment.code !== 'CASH'}
+		<TableBodyCell>{formatAsPercentage(holding.costPercentage)}</TableBodyCell>
+		<TableBodyCell>{formatAsCurrency(holding.cost, true, true)}</TableBodyCell>
+	{:else}
+		<TableBodyCell />
+		<TableBodyCell />
 	{/if}
 	<TableBodyCell>
 		{#if holding.investment.code !== 'CASH'}

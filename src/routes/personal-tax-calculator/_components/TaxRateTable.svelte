@@ -14,7 +14,7 @@
 	$: taxRates = getTaxRates(financialYear);
 </script>
 
-<div class="min-w-96 p-3 flex gap-5">
+<div class="min-w-96 p-3 flex gap-10">
 	{#if taxRates}
 		<div>
 			<h2 class="text-2xl bold mb-2">Tax Rates for {taxRates.name}</h2>

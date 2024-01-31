@@ -30,6 +30,8 @@
 						<TableHeadCell>Investment</TableHeadCell>
 						<TableHeadCell>Value ($)</TableHeadCell>
 						<TableHeadCell>Allocation (%)</TableHeadCell>
+						<TableHeadCell>Cost (%)</TableHeadCell>
+						<TableHeadCell>Cost ($)</TableHeadCell>
 						<TableHeadCell />
 					</TableHead>
 					<TableBody>
@@ -49,6 +51,12 @@
 								>
 									{formatAsPercentage($portfolioDetails.totalPercentage)}
 								</span></TableBodyCell
+							>
+							<TableBodyCell
+								>{formatAsPercentage($portfolioDetails.totalCostPercentage)} pa</TableBodyCell
+							>
+							<TableBodyCell
+								>{formatAsCurrency($portfolioDetails.totalCost, true, true)} pa</TableBodyCell
 							>
 							<TableBodyCell />
 						</TableBodyRow>

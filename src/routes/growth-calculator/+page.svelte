@@ -50,7 +50,7 @@
 </script>
 
 <main class="flex flex-col flex-1 container mx-auto text-white">
-	<h1 class="text-3xl font-light">Growth Calculator</h1>
+	<h1 class="text-5xl mb-3 font-semibold">Growth Calculator</h1>
 
 	<section class="md:flex gap-5">
 		<Inputs

@@ -130,5 +130,18 @@ export const portfolioDetails = derived(portfolio, ($portfolio) => {
 		updatedHoldings.reduce((acc, holding) => acc + holding.allocation, 0)
 	);
 
-	return { holdings: updatedHoldings, assetAllocation, totalPercentage };
+	const totalCost = updatedHoldings.reduce((acc, holding) => acc + holding.cost, 0);
+
+	const totalCostPercentage = totalCost / $portfolio.value;
+
+	console.log('totalCost', totalCost);
+	console.log('value', $portfolio.value);
+
+	return {
+		holdings: updatedHoldings,
+		assetAllocation,
+		totalPercentage,
+		totalCost,
+		totalCostPercentage
+	};
 });

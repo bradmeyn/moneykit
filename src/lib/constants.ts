@@ -75,7 +75,7 @@ export const INVESTMENTS: Investment[] = [
 	{
 		name: 'Vanguard Australian Shares Index ETF',
 		code: 'VAS',
-		cost: 0.07,
+		cost: 0.0007,
 		assetAllocation: {
 			ausEquities: 1,
 			intEquities: 0,
@@ -89,7 +89,7 @@ export const INVESTMENTS: Investment[] = [
 	{
 		name: 'Vanguard International Shares Index ETF',
 		code: 'VGS',
-		cost: 0.18,
+		cost: 0.0018,
 		assetAllocation: {
 			ausEquities: 0,
 			intEquities: 1,
@@ -103,7 +103,7 @@ export const INVESTMENTS: Investment[] = [
 	{
 		name: 'Vanguard Australian Property Securities Index ETF',
 		code: 'VAP',
-		cost: 0.23,
+		cost: 0.0023,
 		assetAllocation: {
 			ausEquities: 0,
 			intEquities: 0,
@@ -118,7 +118,7 @@ export const INVESTMENTS: Investment[] = [
 	{
 		name: 'Vanguard Australian Fixed Interest Index ETF',
 		code: 'VAF',
-		cost: 0.2,
+		cost: 0.002,
 		assetAllocation: {
 			ausEquities: 0,
 			intEquities: 0,
@@ -132,7 +132,7 @@ export const INVESTMENTS: Investment[] = [
 	{
 		name: 'Vanguard International Fixed Interest Index ETF',
 		code: 'VIF',
-		cost: 0.2,
+		cost: 0.002,
 		assetAllocation: {
 			ausEquities: 0,
 			intEquities: 0,
@@ -146,7 +146,7 @@ export const INVESTMENTS: Investment[] = [
 	{
 		name: 'Vanguard MSCI International Small Companies Index ETF',
 		code: 'VISM',
-		cost: 0.32,
+		cost: 0.0032,
 		assetAllocation: {
 			ausEquities: 0,
 			intEquities: 1,
@@ -160,7 +160,7 @@ export const INVESTMENTS: Investment[] = [
 	{
 		name: 'Vanguard FTSE Emerging Markets Shares ETF',
 		code: 'VGE',
-		cost: 0.48,
+		cost: 0.0048,
 		assetAllocation: {
 			ausEquities: 0,
 			intEquities: 1,
@@ -174,7 +174,7 @@ export const INVESTMENTS: Investment[] = [
 	{
 		name: 'Vanguard FTSE Asia ex Japan Shares Index ETF',
 		code: 'VAE',
-		cost: 0.4,
+		cost: 0.004,
 		assetAllocation: {
 			ausEquities: 0,
 			intEquities: 1,

@@ -5,7 +5,7 @@
 </script>
 
 <svelte:head>
-	<title>Wealthkit</title>
+	<title>Wealthkit | Portfolio Builder</title>
 	<!-- <meta name="description" content={meta_description} />
 	<meta name="og:description" content={meta_description} /> -->
 	<meta name="twitter:creator" content="@jrib_" />

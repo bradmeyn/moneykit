@@ -43,7 +43,7 @@
 		<TableBodyCell>{formatAsPercentage(holding.allocation)}</TableBodyCell>
 	{/if}
 	{#if holding.investment.code !== 'CASH'}
-		<TableBodyCell>{formatAsPercentage(holding.costPercentage)}</TableBodyCell>
+		<TableBodyCell>{formatAsPercentage(holding.investment.cost)}</TableBodyCell>
 		<TableBodyCell>{formatAsCurrency(holding.cost, true, true)}</TableBodyCell>
 	{:else}
 		<TableBodyCell />

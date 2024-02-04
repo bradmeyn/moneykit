@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Inputs from './_components/Inputs.svelte';
-	import Outcome from './_components/Outcome.svelte';
+	import Results from './_components/Results.svelte';
 	import Chart from './_components/Chart.svelte';
 	import { calculateCompoundInterest } from '$lib/utils';
 	import ViewToggle from '$lib/components/ViewToggle.svelte';
@@ -53,16 +53,18 @@
 	<h1 class="text-5xl mb-3 font-semibold">Growth Calculator</h1>
 
 	<section class="md:flex gap-5">
-		<Inputs
-			bind:principal
-			bind:contributionAmount
-			bind:interestRate
-			bind:contributionFrequency
-			bind:years
-		/>
+		<aside class="max-w-[1000px] min-w-[300px]">
+			<Inputs
+				bind:principal
+				bind:contributionAmount
+				bind:interestRate
+				bind:contributionFrequency
+				bind:years
+			/>
+		</aside>
 
 		<div class="w-full p-3">
-			<Outcome bind:principal bind:totalContributions bind:totalInterest bind:totalValue />
+			<Results bind:principal bind:totalContributions bind:totalInterest bind:totalValue />
 			<ViewToggle {viewOptions} bind:selectedView />
 
 			<div class="flex justify-end">

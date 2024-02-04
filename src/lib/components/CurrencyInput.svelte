@@ -15,10 +15,8 @@
 	// Handle input event
 	function handleInput(event: Event) {
 		const target = event.target as HTMLInputElement;
-		value = parseCurrency(target.value);
-		if (isNaN(value)) {
-			value = 0;
-		}
+		const newValue = target.value.replace(/[^0-9.]+/g, '');
+		value = +newValue;
 	}
 </script>
 

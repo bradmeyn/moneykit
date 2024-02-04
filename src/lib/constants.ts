@@ -14,22 +14,42 @@ export const FREQUENCY_OPTIONS = [
 	{ name: 'Yearly', value: 1 }
 ];
 
-export const FINANCIAL_YEARS = [{ name: '2022-23', value: 2023 }];
-
 export const INCOME_TAX_RATES = [
 	{
 		financialYear: 2023,
 		name: '2022-23',
-		personal: [
-			{ min: 0, max: 18200, rate: 0 },
-			{ min: 18201, max: 45000, rate: 0.19 },
-			{ min: 45001, max: 120000, rate: 0.325 },
-			{ min: 120001, max: 180000, rate: 0.37 },
-			{ min: 180001, max: Infinity, rate: 0.45 }
-		],
+		incomeTax: {
+			brackets: [
+				{ min: 0, max: 18200, rate: 0 },
+				{ min: 18201, max: 45000, rate: 0.19 },
+				{ min: 45001, max: 120000, rate: 0.325 },
+				{ min: 120001, max: 180000, rate: 0.37 },
+				{ min: 180001, max: Infinity, rate: 0.45 }
+			],
+			offsets: {
+				lowIncome: {
+					brackets: [
+						{ min: 0, max: 37500, reduction: 0, amount: 700 },
+						{ min: 37501, max: 45000, reduction: 0.05, amount: 700 },
+						{ min: 45001, max: 66667, reduction: 0.0125, amount: 325 }
+					]
+				}
+			}
+		},
 		medicareLevy: {
-			threshold: 22800,
-			rate: 0.02
+			rate: 0.02,
+			offsets: {
+				seniors: {
+					min: 38365,
+					max: 47956,
+					offset: 0.1
+				},
+				lowIncome: {
+					min: 24276,
+					max: 30345,
+					offset: 0.105
+				}
+			}
 		},
 		medicareLevySurcharge: [
 			{ min: 0, max: 90000, rate: 0 },
@@ -41,16 +61,38 @@ export const INCOME_TAX_RATES = [
 	{
 		financialYear: 2024,
 		name: '2023-24',
-		personal: [
-			{ min: 0, max: 18200, rate: 0 },
-			{ min: 18201, max: 45000, rate: 0.19 },
-			{ min: 45001, max: 120000, rate: 0.325 },
-			{ min: 120001, max: 180000, rate: 0.37 },
-			{ min: 180001, max: Infinity, rate: 0.45 }
-		],
+		incomeTax: {
+			brackets: [
+				{ min: 0, max: 18200, rate: 0 },
+				{ min: 18201, max: 45000, rate: 0.19 },
+				{ min: 45001, max: 120000, rate: 0.325 },
+				{ min: 120001, max: 180000, rate: 0.37 },
+				{ min: 180001, max: Infinity, rate: 0.45 }
+			],
+			offsets: {
+				lowIncome: {
+					brackets: [
+						{ min: 0, max: 37500, reduction: 0, amount: 700 },
+						{ min: 37501, max: 45000, reduction: 0.05, amount: 700 },
+						{ min: 45001, max: 66667, reduction: 0.0125, amount: 325 }
+					]
+				}
+			}
+		},
 		medicareLevy: {
-			threshold: 22800,
-			rate: 0.02
+			rate: 0.02,
+			offsets: {
+				seniors: {
+					min: 38365,
+					max: 47956,
+					offset: 0.1
+				},
+				lowIncome: {
+					min: 24276,
+					max: 30345,
+					offset: 0.105
+				}
+			}
 		},
 		medicareLevySurcharge: [
 			{ min: 0, max: 93000, rate: 0 },
@@ -60,6 +102,13 @@ export const INCOME_TAX_RATES = [
 		]
 	}
 ];
+
+export const TAX_YEARS = INCOME_TAX_RATES.map((taxYear) => {
+	return {
+		name: taxYear.name,
+		value: taxYear.financialYear
+	};
+});
 
 export const CHART_COLOURS = [
 	'rgb(2 132 199)', // tw sky-600

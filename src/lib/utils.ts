@@ -1,4 +1,5 @@
 import { INCOME_TAX_RATES } from './constants';
+import type { PersonalTaxScenario } from './types';
 
 export function formatAsPercentage(value: number) {
 	return new Intl.NumberFormat('en-US', {
@@ -36,6 +37,51 @@ export function parseCurrency(value: string) {
 export function getTaxRates(financialYear: number) {
 	const taxRates = INCOME_TAX_RATES.find((taxRate) => taxRate.financialYear === financialYear);
 	return taxRates;
+}
+
+export function calculatePersonalTax(inputs: PersonalTaxScenario) {
+	let incomeTax = 0;
+	let medicareLevy = 0;
+	let medicareLevySurcharge = 0;
+	let totalTax = 0;
+
+	const { income, deductions, hasInsurance, taxRates } = inputs;
+	const taxableIncome = income - deductions;
+
+	// Calculate income tax based on brackets
+	for (const bracket of taxRates.incomeTax.brackets) {
+		if (taxableIncome > bracket.max) {
+			incomeTax += (bracket.max - bracket.min) * bracket.rate;
+		} else if (taxableIncome > bracket.min) {
+			incomeTax += (taxableIncome - bracket.min) * bracket.rate;
+			break; // Exiting the loop as the taxable income falls within this bracket
+		}
+	}
+
+	// Calculate medicare levy (assuming a flat rate for simplicity)
+	medicareLevy = taxableIncome * taxRates.medicareLevy.rate;
+
+	// Calculate medicare levy surcharge if applicable
+	if (!hasInsurance) {
+		for (const surcharge of taxRates.medicareLevySurcharge) {
+			if (taxableIncome > surcharge.min) {
+				medicareLevySurcharge = taxableIncome * surcharge.rate;
+				break; // Assuming only one surcharge rate applies
+			}
+		}
+	}
+
+	totalTax = incomeTax + medicareLevy + medicareLevySurcharge;
+
+	return {
+		income,
+		deductions,
+		taxableIncome, // Added to return for clarity
+		incomeTax,
+		medicareLevy,
+		medicareLevySurcharge,
+		totalTax
+	};
 }
 
 export function calculateCompoundInterest(

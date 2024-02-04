@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { getTaxRates, formatAsPercentage, formatAsCurrency } from '$lib/utils';
+	import type { TaxRateConfiguration } from '$lib/types';
+	import { formatAsPercentage, formatAsCurrency } from '$lib/utils';
 	import {
 		Table,
 		TableBody,
@@ -9,77 +10,64 @@
 		TableHeadCell
 	} from 'flowbite-svelte';
 
-	export let financialYear = 2023;
+	export let taxRates: TaxRateConfiguration;
 
-	$: taxRates = getTaxRates(financialYear);
+	function formatMax(max: number) {
+		return max === Infinity ? '+' : ` - ${formatAsCurrency(max, false, true)}`;
+	}
 </script>
 
-<div class="min-w-96 p-3 flex gap-10">
-	{#if taxRates}
-		<div>
-			<h2 class="text-2xl bold mb-2">Tax Rates for {taxRates.name}</h2>
-			<Table>
-				<TableHead>
-					<TableHeadCell>Taxable Income</TableHeadCell>
-					<TableHeadCell>Rate</TableHeadCell>
-					<!-- <TableHeadCell>Tax Payable</TableHeadCell> -->
-				</TableHead>
-				<TableBody>
-					{#each taxRates.personal as { min, max, rate }}
-						<TableBodyRow>
-							{#if max === Infinity}
-								<TableBodyCell>{formatAsCurrency(min, false, true)} +</TableBodyCell>
-							{:else}
-								<TableBodyCell>
-									{formatAsCurrency(min, false, true)} - {formatAsCurrency(max, false, true)}
-								</TableBodyCell>
-							{/if}
+<div>
+	<h2 class="text-2xl font-bold mb-2">Tax Rates for {taxRates.name}</h2>
+	<Table>
+		<TableHead>
+			<TableHeadCell>Taxable Income</TableHeadCell>
+			<TableHeadCell>Rate</TableHeadCell>
+		</TableHead>
+		<TableBody>
+			{#each taxRates.incomeTax.brackets as { min, max, rate }}
+				<TableBodyRow>
+					<TableBodyCell>
+						{formatAsCurrency(min, false, true)}{formatMax(max)}
+					</TableBodyCell>
+					<TableBodyCell>{formatAsPercentage(rate)}</TableBodyCell>
+				</TableBodyRow>
+			{/each}
+		</TableBody>
+	</Table>
+</div>
+<div>
+	<h2 class="text-2xl font-bold mb-2">Medicare Levy</h2>
+	<!-- Assuming you want to display the medicare levy rate and offsets separately -->
+	<Table>
+		<TableHead>
+			<TableHeadCell>Condition</TableHeadCell>
+			<TableHeadCell>Rate</TableHeadCell>
+		</TableHead>
+		<TableBody>
+			<TableBodyRow>
+				<TableBodyCell>General Rate</TableBodyCell>
+				<TableBodyCell>{formatAsPercentage(taxRates.medicareLevy.rate)}</TableBodyCell>
+			</TableBodyRow>
+			<!-- Iterate over offsets if needed -->
+		</TableBody>
+	</Table>
 
-							<TableBodyCell>{formatAsPercentage(rate)}</TableBodyCell>
-						</TableBodyRow>
-					{/each}
-				</TableBody>
-			</Table>
-		</div>
-		<div>
-			<h2 class="text-2xl bold mb-2">Medicare Levy</h2>
-			<Table>
-				<TableHead>
-					<TableHeadCell>Taxable Income</TableHeadCell>
-					<TableHeadCell>Rate</TableHeadCell>
-				</TableHead>
-				<TableBody>
-					<TableBodyRow>
-						<TableBodyCell
-							>{formatAsCurrency(taxRates.medicareLevy.threshold, false, true)} +</TableBodyCell
-						>
-						<TableBodyCell>{formatAsPercentage(taxRates.medicareLevy.rate)}</TableBodyCell>
-					</TableBodyRow>
-				</TableBody>
-			</Table>
-
-			<h2 class="text-2xl bold mb-2 mt-6">Medicare Levy Surcharge</h2>
-			<Table>
-				<TableHead>
-					<TableHeadCell>Taxable Income</TableHeadCell>
-					<TableHeadCell>Rate</TableHeadCell>
-				</TableHead>
-				<TableBody>
-					{#each taxRates.medicareLevySurcharge as { min, max, rate }}
-						<TableBodyRow>
-							{#if max === Infinity}
-								<TableBodyCell>{formatAsCurrency(min, false, true)} +</TableBodyCell>
-							{:else}
-								<TableBodyCell>
-									{formatAsCurrency(min, false, true)} - {formatAsCurrency(max, false, true)}
-								</TableBodyCell>
-							{/if}
-
-							<TableBodyCell>{formatAsPercentage(rate)}</TableBodyCell>
-						</TableBodyRow>
-					{/each}
-				</TableBody>
-			</Table>
-		</div>
-	{/if}
+	<h2 class="text-2xl font-bold mb-2 mt-6">Medicare Levy Surcharge</h2>
+	<Table>
+		<TableHead>
+			<TableHeadCell>Taxable Income</TableHeadCell>
+			<TableHeadCell>Rate</TableHeadCell>
+		</TableHead>
+		<TableBody>
+			{#each taxRates.medicareLevySurcharge as { min, max, rate }}
+				<TableBodyRow>
+					<TableBodyCell>
+						{formatAsCurrency(min, false, true)}{formatMax(max)}
+					</TableBodyCell>
+					<TableBodyCell>{formatAsPercentage(rate)}</TableBodyCell>
+				</TableBodyRow>
+			{/each}
+		</TableBody>
+	</Table>
 </div>

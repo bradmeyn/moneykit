@@ -1,24 +1,32 @@
 <script lang="ts">
-	type Props = {
+	import type { TaxRateConfiguration } from '$lib/types';
+
+	type Results = {
 		income: number;
 		deductions: number;
 		incomeTax: number;
+		lowIncomeOffset: number;
 		medicareLevy: number;
 		medicareLevySurcharge: number;
 		totalTax: number;
 	};
-	// props
-	export let results: Props;
+
+	export let taxRates: TaxRateConfiguration;
+	export let results: Results;
+
 	import { formatAsCurrency } from '$lib/utils';
 	import ResultsTable from './ResultsTable.svelte';
 	import ViewToggle from '$lib/components/ViewToggle.svelte';
 	import PieChart from '$lib/components/PieChart.svelte';
+	import TaxBand from './TaxBand.svelte';
 
 	let viewOptions = [
 		{ label: 'Chart', value: 'chart' },
 		{ label: 'Table', value: 'table' }
 	];
 	let selectedView = 'chart';
+
+	$: taxableIncome = results.income - results.deductions;
 </script>
 
 <h2 class="text-2xl bold mb-2">Outcome</h2>
@@ -55,10 +63,11 @@
 
 {#if selectedView === 'chart'}
 	<div>
-		<PieChart
-			labels={['Taxable Income', 'Tax']}
-			dataValues={[results.income - results.deductions, results.totalTax]}
-		/>
+		<PieChart labels={['Taxable Income', 'Tax']} dataValues={[taxableIncome, results.totalTax]} />
+
+		<div>
+			<TaxBand {taxRates} {taxableIncome} />
+		</div>
 	</div>
 {:else}
 	<ResultsTable {results} />

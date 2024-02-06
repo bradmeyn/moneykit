@@ -13,7 +13,7 @@
 	// Props
 	export let labels: string[];
 	export let dataValues: number[];
-	export let backgroundColors: string[] = ['#065F46', '#10B981', '#A7F3D0'];
+	export let backgroundColors: string[] = ['#065F46', '#10B981', '#A7F3D0', '#6EE7B7', '#34D399'];
 	export let legendPosition: 'top' | 'bottom' | 'left' | 'right' = 'top';
 
 	let chartId: HTMLCanvasElement;

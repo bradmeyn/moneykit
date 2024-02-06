@@ -3,6 +3,7 @@
 		income: number;
 		deductions: number;
 		incomeTax: number;
+		lowIncomeOffset: number;
 		medicareLevy: number;
 		medicareLevySurcharge: number;
 		totalTax: number;
@@ -58,6 +59,14 @@
 					<TableBodyCell>Income Tax</TableBodyCell>
 					<TableBodyCell>{formatAsCurrency(results.incomeTax, false, true)}</TableBodyCell>
 				</TableBodyRow>
+				{#if results.lowIncomeOffset > 0}
+					<TableBodyRow>
+						<TableBodyCell>Low Income Offset</TableBodyCell>
+						<TableBodyCell>({formatAsCurrency(results.lowIncomeOffset, false, true)})</TableBodyCell
+						>
+					</TableBodyRow>
+				{/if}
+
 				<TableBodyRow>
 					<TableBodyCell>Medicare Levy</TableBodyCell>
 					<TableBodyCell>{formatAsCurrency(results.medicareLevy, false, true)}</TableBodyCell>
@@ -69,7 +78,7 @@
 					>
 				</TableBodyRow>
 				<TableBodyRow>
-					<TableBodyCell>Total Tax</TableBodyCell>
+					<TableBodyCell>Total Tax Payable</TableBodyCell>
 					<TableBodyCell>{formatAsCurrency(results.totalTax, false, true)}</TableBodyCell>
 				</TableBodyRow>
 			</TableBody>

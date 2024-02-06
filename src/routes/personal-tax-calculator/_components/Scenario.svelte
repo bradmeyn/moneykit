@@ -17,6 +17,7 @@
 		income: 0,
 		deductions: 0,
 		incomeTax: 0,
+		lowIncomeOffset: 0,
 		medicareLevy: 0,
 		medicareLevySurcharge: 0,
 		totalTax: 0
@@ -38,8 +39,8 @@
 		<Inputs bind:income bind:deductions bind:hasInsurance bind:financialYear />
 	</aside>
 	<section class="w-full flex flex-col">
-		{#if income > 0}
-			<Results {results} />
+		{#if income > 0 && taxRates}
+			<Results {results} {taxRates} />
 		{:else if taxRates}
 			<TaxRateTable {taxRates} />
 		{/if}

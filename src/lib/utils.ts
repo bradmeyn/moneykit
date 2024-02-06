@@ -4,7 +4,7 @@ import type { PersonalTaxScenario } from './types';
 export function formatAsPercentage(value: number) {
 	return new Intl.NumberFormat('en-US', {
 		style: 'percent',
-		minimumFractionDigits: 1,
+		minimumFractionDigits: 0,
 		maximumFractionDigits: 3
 	}).format(value);
 }
@@ -41,6 +41,7 @@ export function getTaxRates(financialYear: number) {
 
 export function calculatePersonalTax(inputs: PersonalTaxScenario) {
 	let incomeTax = 0;
+	let lowIncomeOffset = 0;
 	let medicareLevy = 0;
 	let medicareLevySurcharge = 0;
 	let totalTax = 0;
@@ -56,6 +57,21 @@ export function calculatePersonalTax(inputs: PersonalTaxScenario) {
 			incomeTax += (taxableIncome - bracket.min) * bracket.rate;
 			break; // Exiting the loop as the taxable income falls within this bracket
 		}
+	}
+
+	// Calculate low income offset
+	for (const threshold of taxRates.incomeTax.offsets.lowIncome.brackets) {
+		// taxable income is below the threshold
+		if (threshold.min < taxableIncome && taxableIncome < threshold.max) {
+			lowIncomeOffset = threshold.amount - (taxableIncome - threshold.min) * threshold.reduction;
+			break;
+		}
+	}
+
+	// Apply low income offset cap
+	incomeTax -= lowIncomeOffset;
+	if (incomeTax < 0) {
+		incomeTax = 0;
 	}
 
 	// Calculate medicare levy (assuming a flat rate for simplicity)
@@ -76,7 +92,8 @@ export function calculatePersonalTax(inputs: PersonalTaxScenario) {
 	return {
 		income,
 		deductions,
-		taxableIncome, // Added to return for clarity
+		taxableIncome,
+		lowIncomeOffset,
 		incomeTax,
 		medicareLevy,
 		medicareLevySurcharge,

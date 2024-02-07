@@ -34,11 +34,11 @@
 	}
 </script>
 
-<div class="md:flex gap-10">
+<div class="flex flex-col md:flex-row gap-8">
 	<aside class="max-w-[1000px] min-w-[300px]">
 		<Inputs bind:income bind:deductions bind:hasInsurance bind:financialYear />
 	</aside>
-	<section class="w-full flex flex-col">
+	<section class="w-full">
 		{#if income > 0 && taxRates}
 			<Results {results} {taxRates} />
 		{:else if taxRates}

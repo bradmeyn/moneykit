@@ -12,7 +12,7 @@
 	export let years: number;
 </script>
 
-<h2 class="text-2xl bold mb-2">Details</h2>
+<h2>Details</h2>
 <CurrencyInput label="Starting Amount" bind:value={principal} inputClass={'mb-3'} />
 
 <div class="flex items-center mb-3">

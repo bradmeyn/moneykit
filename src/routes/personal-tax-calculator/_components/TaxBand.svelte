@@ -18,14 +18,16 @@
 	};
 
 	// Define colors for each tax rate bracket
-	const colors = ['rgb(30 41 59', '#10B981', '#A7F3D0', '#065F46', '#065F46'];
+	// const colors = ['rgb(30 41 59', '#10B981', '#A7F3D0', '#065F46', '#065F46'];
 </script>
 
 <div class="tax-band-container w-full bg-slate-800">
 	{#each taxRates.incomeTax.brackets as band, i}
-		<div class="tax-band p-4" style="background: {colors[i]}; width: {getBandWidth(band)}%">
+		<div
+			class="tax-band text-lg p-4 border-emerald-600 border-r rounded"
+			style=" width: {getBandWidth(band)}%"
+		>
 			<div>{formatAsCurrency(band.max, false, true)}</div>
-
 			<div>{formatAsPercentage(band.rate)}</div>
 		</div>
 	{/each}
@@ -34,8 +36,6 @@
 <style>
 	.tax-band-container {
 		display: flex;
-
-		overflow: hidden;
 	}
 
 	.tax-band {

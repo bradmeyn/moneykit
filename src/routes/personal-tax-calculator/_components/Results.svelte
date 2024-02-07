@@ -29,46 +29,48 @@
 	$: taxableIncome = results.income - results.deductions;
 </script>
 
-<h2 class="text-2xl bold mb-2">Outcome</h2>
+<section>
+	<h2>Outcome</h2>
 
-<div class="grid grid-cols-1 gap-3">
-	<div class=" p-3 bg-slate-800 mb-3">
-		<h2 class="text-sm">Taxable Income</h2>
-		<p class="font-semibold text-lg md:text-xl">
-			{formatAsCurrency(results.income - results.deductions, false, true)}
-		</p>
-	</div>
-</div>
-<div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-	<div class=" p-3 bg-slate-800">
-		<h2 class="text-sm">Income Tax</h2>
-		<p class="font-semibold text-lg md:text-xl">
-			{formatAsCurrency(results.incomeTax, false, true)}
-		</p>
-	</div>
-	<div class=" p-3 bg-slate-800">
-		<h2 class="text-sm">Medicare Levy</h2>
-		<p class="font-semibold text-lg md:text-xl">
-			{formatAsCurrency(results.medicareLevy, false, true)}
-		</p>
-	</div>
-	<div class=" p-3 bg-slate-800">
-		<h2 class="text-sm">Medicare Levy Surcharge</h2>
-		<p class="font-semibold text-lg md:text-xl">
-			{formatAsCurrency(results.medicareLevySurcharge, false, true)}
-		</p>
-	</div>
-</div>
-<ViewToggle {viewOptions} bind:selectedView />
-
-{#if selectedView === 'chart'}
-	<div>
-		<PieChart labels={['Taxable Income', 'Tax']} dataValues={[taxableIncome, results.totalTax]} />
-
-		<div>
-			<TaxBand {taxRates} {taxableIncome} />
+	<div class="grid grid-cols-1 gap-3">
+		<div class=" p-3 bg-slate-800 mb-3">
+			<h2 class="text-sm">Taxable Income</h2>
+			<p class="font-semibold text-lg md:text-xl">
+				{formatAsCurrency(results.income - results.deductions, false, true)}
+			</p>
 		</div>
 	</div>
-{:else}
-	<ResultsTable {results} />
-{/if}
+	<div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+		<div class=" p-3 bg-slate-800">
+			<p class="text-sm">Income Tax</p>
+			<p class="font-semibold text-lg md:text-xl">
+				{formatAsCurrency(results.incomeTax, false, true)}
+			</p>
+		</div>
+		<div class=" p-3 bg-slate-800">
+			<p class="text-sm">Medicare Levy</p>
+			<p class="font-semibold text-lg md:text-xl">
+				{formatAsCurrency(results.medicareLevy, false, true)}
+			</p>
+		</div>
+		<div class=" p-3 bg-slate-800">
+			<p class="text-sm">Medicare Levy Surcharge</p>
+			<p class="font-semibold text-lg md:text-xl">
+				{formatAsCurrency(results.medicareLevySurcharge, false, true)}
+			</p>
+		</div>
+	</div>
+	<ViewToggle {viewOptions} bind:selectedView />
+
+	{#if selectedView === 'chart'}
+		<div>
+			<PieChart labels={['Taxable Income', 'Tax']} dataValues={[taxableIncome, results.totalTax]} />
+
+			<div>
+				<TaxBand {taxRates} {taxableIncome} />
+			</div>
+		</div>
+	{:else}
+		<ResultsTable {results} />
+	{/if}
+</section>

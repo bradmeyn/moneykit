@@ -10,7 +10,7 @@
 	export let financialYear: number = 2024;
 </script>
 
-<h2 class="text-2xl bold mb-2">Inputs</h2>
+<h2>Inputs</h2>
 
 <Label defaultClass="mb-4 space-y-1 block">
 	<div class="text-sm text-slate-200">Financial Year</div>

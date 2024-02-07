@@ -16,7 +16,7 @@
 </script>
 
 <div class="flex-1 lg:min-w-[600px] mt-5">
-	<h2 class="text-2xl font-bold mb-2">Asset Allocation</h2>
+	<h2>Asset Allocation</h2>
 	<Table>
 		<TableHead>
 			<TableHeadCell>Asset Class</TableHeadCell>

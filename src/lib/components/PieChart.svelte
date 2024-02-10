@@ -75,6 +75,6 @@
 	}
 </script>
 
-<div class="p-3 w-full relative h-full min-h-[300px]">
-	<canvas class="w-full absolute h-full" bind:this={chartId} />
+<div class="w-full bg-slate-800 rounded relative min-h-[300px] max-h-[500px] p-4">
+	<canvas class="w-full absolute" bind:this={chartId} />
 </div>

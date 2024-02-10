@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Inputs from './Inputs.svelte';
 	import TaxRateTable from './TaxRateTable.svelte';
-	import { getTaxRates, calculateCompoundInterest, calculatePersonalTax } from '$lib/utils';
+	import { getTaxRates, calculatePersonalTax } from '$lib/utils';
 	import Results from './Results.svelte';
 
 	// Inputs
@@ -34,14 +34,15 @@
 	}
 </script>
 
-<div class="flex flex-col md:flex-row gap-8">
-	<aside class="max-w-[1000px] min-w-[300px]">
+<div class="flex flex-col lg:flex-row gap-8 lg:gap-10">
+	<aside class="max-w-[600px] min-w-[300px]">
 		<Inputs bind:income bind:deductions bind:hasInsurance bind:financialYear />
 	</aside>
 	<section class="w-full">
 		{#if income > 0 && taxRates}
 			<Results {results} {taxRates} />
 		{:else if taxRates}
+			<h2>Tax Rates for {taxRates.name}</h2>
 			<TaxRateTable {taxRates} />
 		{/if}
 	</section>

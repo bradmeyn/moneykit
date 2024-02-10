@@ -13,7 +13,7 @@
 		{#each viewOptions as option}
 			<button
 				class={`text-sm font-semibold px-2 py-2 rounded flex-grow ${
-					selectedView === option.value ? 'text-white bg-emerald-600' : 'text-emerald-600'
+					selectedView === option.value ? 'text-white bg-emerald-600' : 'hover:text-emerald-600'
 				}`}
 				on:click={() => selectOption(option.value)}
 			>

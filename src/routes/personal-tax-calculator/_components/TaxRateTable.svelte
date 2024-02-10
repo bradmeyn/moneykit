@@ -17,9 +17,9 @@
 	}
 </script>
 
-<section class="w-full grid gap-4">
+<section class="w-full grid grid-cols-1 max-w-[600px] gap-10">
 	<div>
-		<h2>Tax Rates for {taxRates.name}</h2>
+		<h3>Income Tax</h3>
 		<Table>
 			<TableHead>
 				<TableHeadCell>Taxable Income</TableHeadCell>
@@ -38,8 +38,7 @@
 		</Table>
 	</div>
 	<div>
-		<h2>Medicare Levy</h2>
-
+		<h3>Medicare Levy</h3>
 		<Table>
 			<TableHead>
 				<TableHeadCell>Condition</TableHeadCell>
@@ -55,7 +54,7 @@
 		</Table>
 	</div>
 	<div>
-		<h2>Medicare Levy Surcharge</h2>
+		<h3>Medicare Levy Surcharge</h3>
 		<Table>
 			<TableHead>
 				<TableHeadCell>Taxable Income</TableHeadCell>

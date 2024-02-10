@@ -63,10 +63,16 @@
 	<ViewToggle {viewOptions} bind:selectedView />
 
 	{#if selectedView === 'chart'}
-		<div>
-			<PieChart labels={['Taxable Income', 'Tax']} dataValues={[taxableIncome, results.totalTax]} />
-
-			<div>
+		<div class="flex justify-start gap-10 flex-wrap md:flex-row flex-col">
+			<div class="min-w-[300px] flex-1">
+				<h3>Breakdown</h3>
+				<PieChart
+					labels={['Taxable Income', 'Tax']}
+					dataValues={[taxableIncome, results.totalTax]}
+				/>
+			</div>
+			<div class="min-w-[300px] flex-1">
+				<h3>Marginal Rate</h3>
 				<TaxBand {taxRates} {taxableIncome} />
 			</div>
 		</div>

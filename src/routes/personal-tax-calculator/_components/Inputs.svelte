@@ -12,7 +12,7 @@
 
 <h2>Inputs</h2>
 
-<Label defaultClass="mb-4 space-y-1 block">
+<Label defaultClass="mb-4 space-y-1 block ">
 	<div class="text-sm text-slate-200">Financial Year</div>
 	<Select class="h-full  rounded" items={TAX_YEARS} bind:value={financialYear} />
 </Label>

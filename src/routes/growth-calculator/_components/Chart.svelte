@@ -59,7 +59,7 @@
 							text: 'Year',
 							font: {
 								size: 16,
-								family: 'Inter'
+								family: 'sans-serif'
 							},
 							color: '#E2E8F0'
 						},
@@ -76,7 +76,7 @@
 							},
 							font: {
 								size: 12,
-								family: 'Inter'
+								family: 'sans-serif'
 							},
 							color: '#CBD5E1'
 						}

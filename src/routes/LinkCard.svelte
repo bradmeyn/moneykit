@@ -11,7 +11,7 @@
 	$: {
 		if (name === 'Portfolio Builder') {
 			src = pieChart;
-		} else if (name === 'Growth Calculator') {
+		} else if (name === 'Growth Calculator' || name === 'Budget') {
 			src = barChart;
 		} else if (name === 'Personal Tax Calculator') {
 			src = taxCalculator;

@@ -9,6 +9,7 @@
 		Legend,
 		Tooltip
 	} from 'chart.js';
+	import { formatAsCurrency } from '$lib/utils';
 
 	// props
 	export let chartYears: number[];
@@ -71,9 +72,7 @@
 						stacked: true,
 						beginAtZero: true,
 						ticks: {
-							callback: function (value) {
-								return '$ ' + value;
-							},
+							callback: (value) => formatAsCurrency(+value, false, true),
 							font: {
 								size: 12,
 								family: 'sans-serif'
@@ -88,13 +87,14 @@
 						position: 'nearest',
 						mode: 'index',
 						intersect: false,
-						titleAlign: 'center',
+						backgroundColor: '#4B5563',
 						bodyAlign: 'right',
 						titleFont: {
 							size: 15
 						},
 						bodyFont: {
-							size: 12
+							size: 12,
+							family: 'Inter'
 						},
 						padding: {
 							top: 10,
@@ -108,9 +108,9 @@
 							title: (tooltip) => `After ${tooltip[0].label} Years`,
 							label: (context) => {
 								const label = context.dataset.label || '';
-								const value = context.parsed.y !== null ? context.parsed.y : context.raw;
+								const value = context.parsed.y || 0;
 
-								return `${label}: ${value}`;
+								return `${label}: ${formatAsCurrency(value, false, true)}`;
 							}
 						}
 					},

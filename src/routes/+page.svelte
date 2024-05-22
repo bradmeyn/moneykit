@@ -1,5 +1,5 @@
 <script lang="ts">
-	import LinkCard from './LinkCard.svelte';
+	import LinkCard from './_components/LinkCard.svelte';
 	import Icon from '@iconify/svelte';
 
 	const links = [
@@ -34,8 +34,7 @@
 		<div>
 			Tools to manage <span
 				class="text-transparent bg-clip-text bg-gradient-to-b from-emerald-300 to-emerald-500"
-			>
-				money</span
+				>money</span
 			>
 		</div>
 		<div>

@@ -15,31 +15,31 @@
 	export let principal: number;
 </script>
 
-<div class="w-full">
-	<Table>
-		<TableHead>
-			<TableHeadCell>Year</TableHeadCell>
-			<TableHeadCell>Start</TableHeadCell>
-			<TableHeadCell>Interest</TableHeadCell>
-			<TableHeadCell>Contribution</TableHeadCell>
-			<TableHeadCell>End</TableHeadCell>
+<div class="w-full p-2 rounded bg-slate-800">
+	<Table noborder>
+		<TableHead theadClass="bg-emerald-700 text-white">
+			<TableHeadCell padding="p-3">Year</TableHeadCell>
+			<TableHeadCell padding="p-3">Start</TableHeadCell>
+			<TableHeadCell padding="p-3">Interest</TableHeadCell>
+			<TableHeadCell padding="p-3">Contribution</TableHeadCell>
+			<TableHeadCell padding="p-3">End</TableHeadCell>
 		</TableHead>
 		<TableBody>
 			{#each chartYears as year, i}
 				<TableBodyRow>
-					<TableBodyCell>{year}</TableBodyCell>
+					<TableBodyCell tdClass="p-3">{year}</TableBodyCell>
 					{#if i === 0}
-						<TableBodyCell>{formatAsCurrency(principal)}</TableBodyCell>
+						<TableBodyCell tdClass="p-3">{formatAsCurrency(principal)}</TableBodyCell>
 					{:else}
-						<TableBodyCell
+						<TableBodyCell tdClass="p-3"
 							>{formatAsCurrency(
 								principal + interestByYear[i - 1] + contributionsByYear[i - 1]
 							)}</TableBodyCell
 						>
 					{/if}
-					<TableBodyCell>{formatAsCurrency(interestByYear[i])}</TableBodyCell>
-					<TableBodyCell>{formatAsCurrency(contributionsByYear[i])}</TableBodyCell>
-					<TableBodyCell
+					<TableBodyCell tdClass="p-3">{formatAsCurrency(interestByYear[i])}</TableBodyCell>
+					<TableBodyCell tdClass="p-3">{formatAsCurrency(contributionsByYear[i])}</TableBodyCell>
+					<TableBodyCell tdClass="p-3"
 						>{formatAsCurrency(
 							principal + interestByYear[i] + contributionsByYear[i]
 						)}</TableBodyCell

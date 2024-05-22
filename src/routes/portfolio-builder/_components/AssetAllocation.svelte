@@ -9,7 +9,7 @@
 	} from 'flowbite-svelte';
 	import { portfolioDetails, portfolio } from '$lib/stores/portfolioStore'; // Adjust path as necessary
 	import { formatAsCurrency, formatAsPercentage } from '$lib/utils';
-	import DoughnutChart from '$lib/components/DoughnutChart.svelte';
+	import DoughnutChart from '$lib/components/charts/DoughnutChart.svelte';
 	import { CHART_COLOURS } from '$lib/constants';
 
 	export let portfolioValue: number = 0;
@@ -19,9 +19,9 @@
 	<h2>Asset Allocation</h2>
 	<Table>
 		<TableHead>
-			<TableHeadCell>Asset Class</TableHeadCell>
-			<TableHeadCell>Allocation ($)</TableHeadCell>
-			<TableHeadCell>Allocation (%)</TableHeadCell>
+			<TableHeadCell padding="px-1 py-2">Asset Class</TableHeadCell>
+			<TableHeadCell padding="px-1 py-2">Allocation ($)</TableHeadCell>
+			<TableHeadCell padding="px-1 py-2">Allocation (%)</TableHeadCell>
 		</TableHead>
 		<TableBody>
 			{#each $portfolioDetails.assetAllocation as assetClass}

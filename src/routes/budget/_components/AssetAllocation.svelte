@@ -9,7 +9,7 @@
 	} from 'flowbite-svelte';
 	import { portfolioDetails, portfolio } from '$lib/stores/portfolioStore'; // Adjust path as necessary
 	import { formatAsCurrency, formatAsPercentage } from '$lib/utils';
-	import DoughnutChart from '$lib/components/DoughnutChart.svelte';
+	import DoughnutChart from '$lib/components/charts/DoughnutChart.svelte';
 	import { CHART_COLOURS } from '$lib/constants';
 
 	export let portfolioValue: number = 0;

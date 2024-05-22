@@ -25,6 +25,7 @@
 	onMount(() => {
 		const config: ChartConfiguration = {
 			type: 'doughnut',
+
 			data: {
 				labels: labels,
 				datasets: [
@@ -38,6 +39,7 @@
 			},
 			options: {
 				responsive: true,
+
 				maintainAspectRatio: false,
 				plugins: {
 					tooltip: {
@@ -53,6 +55,7 @@
 
 						labels: {
 							font: {
+								family: 'sans-serif',
 								size: 16
 							},
 							color: '#fff',

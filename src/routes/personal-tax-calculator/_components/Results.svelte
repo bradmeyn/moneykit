@@ -17,7 +17,7 @@
 	import { formatAsCurrency } from '$lib/utils';
 	import ResultsTable from './ResultsTable.svelte';
 	import ViewToggle from '$lib/components/ViewToggle.svelte';
-	import PieChart from '$lib/components/PieChart.svelte';
+	import PieChart from '$lib/components/charts/PieChart.svelte';
 	import TaxBand from './TaxBand.svelte';
 
 	let viewOptions = [

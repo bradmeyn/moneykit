@@ -3,7 +3,7 @@
 	import { Modal, Button, Input } from 'flowbite-svelte';
 	import Icon from '@iconify/svelte';
 	import type { Holding, Investment } from '$lib/types';
-	import PercentageInput from '../../../lib/components/PercentageInput.svelte';
+	import PercentageInput from '$lib/components/inputs/PercentageInput.svelte';
 
 	// Props
 	export let addHolding: (holding: Holding) => void;
@@ -29,7 +29,7 @@
 	$: selectedInvestments = newHoldings.map((holding) => holding.investment);
 
 	function selectInvestment(investment: Investment) {
-		newHoldings = [...newHoldings, { investment, allocation: 0, value: 0 }];
+		newHoldings = [...newHoldings, { investment, allocation: 0, value: 0, cost: 0 }];
 	}
 
 	function unselectInvestment(investment: Investment) {

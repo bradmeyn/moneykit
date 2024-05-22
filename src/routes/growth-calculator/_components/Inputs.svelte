@@ -1,10 +1,10 @@
 <script lang="ts">
-	import CurrencyInput from '$lib/components/CurrencyInput.svelte';
+	import CurrencyInput from '$lib/components/inputs/CurrencyInput.svelte';
 	import { Label, Input, Select, NumberInput } from 'flowbite-svelte';
 	import Icon from '@iconify/svelte';
 	import { FREQUENCY_OPTIONS } from '$lib/constants';
 
-	// props
+	// propsxw
 	export let principal: number;
 	export let contributionAmount: number;
 	export let interestRate: number;

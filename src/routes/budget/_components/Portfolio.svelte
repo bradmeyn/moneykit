@@ -9,10 +9,10 @@
 	} from 'flowbite-svelte';
 	import { portfolio, addHolding, portfolioDetails } from '$lib/stores/portfolioStore';
 	import AddHolding from './AddHolding.svelte';
-	import CurrencyInput from '$lib/components/CurrencyInput.svelte';
+	import CurrencyInput from '$lib/components/inputs/CurrencyInput.svelte';
 	import { formatAsCurrency, formatAsPercentage } from '$lib/utils';
 	import PortfolioItem from './PortfolioItem.svelte';
-	import DoughnutChart from '$lib/components/DoughnutChart.svelte';
+	import DoughnutChart from '$lib/components/charts/DoughnutChart.svelte';
 	import AssetAllocation from './AssetAllocation.svelte';
 </script>
 

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import CurrencyInput from '$lib/components/CurrencyInput.svelte';
+	import CurrencyInput from '$lib/components/inputs/CurrencyInput.svelte';
 	import { Checkbox, Select, Label } from 'flowbite-svelte';
 	import { TAX_YEARS } from '$lib/constants';
 

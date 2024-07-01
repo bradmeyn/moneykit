@@ -8,6 +8,7 @@
 		TableHeadCell
 	} from 'flowbite-svelte';
 	import { formatAsCurrency } from '$lib/utils';
+	import Card from '$lib/components/Card.svelte';
 
 	export let chartYears: number[];
 	export let interestByYear: number[];
@@ -15,9 +16,9 @@
 	export let principal: number;
 </script>
 
-<div class="w-full p-2 rounded bg-slate-800">
+<div class="w-full">
 	<Table noborder>
-		<TableHead theadClass="bg-emerald-700 text-white">
+		<TableHead theadClass="text-white">
 			<TableHeadCell padding="p-3">Year</TableHeadCell>
 			<TableHeadCell padding="p-3">Start</TableHeadCell>
 			<TableHeadCell padding="p-3">Interest</TableHeadCell>
@@ -49,5 +50,3 @@
 		</TableBody>
 	</Table>
 </div>
-
-<div />

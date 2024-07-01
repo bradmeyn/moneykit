@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { formatAsCurrency } from '$lib/utils';
+	import Card from '$lib/components/Card.svelte';
 
 	// props
 	export let principal: number;
@@ -10,24 +11,24 @@
 
 <h2>Outcome</h2>
 <div class="grid grid-cols-3 gap-3">
-	<div class="p-3 bg-slate-800">
-		<p class="text-sm font-semibold">Start Value</p>
+	<Card>
+		<p class="text-sm font- text-brand-light">Start Value</p>
 		<p class="font-semibold text-lg md:text-xl">{formatAsCurrency(principal, false, true)}</p>
-	</div>
-	<div class="p-3 bg-slate-800">
-		<p class="text-sm font-semibold">Contributions</p>
+	</Card>
+	<Card>
+		<p class="text-sm font-semibold text-brand-light">Contributions</p>
 		<p class="font-semibold text-lg md:text-xl">
 			{formatAsCurrency(totalContributions, false, true)}
 		</p>
-	</div>
+	</Card>
 
-	<div class="p-3 bg-slate-800">
-		<p class="text-sm font-semibold">Interest</p>
+	<Card>
+		<p class="text-sm font-semibold text-brand-light">Interest</p>
 		<p class="font-semibold text-lg md:text-xl">{formatAsCurrency(totalInterest, false, true)}</p>
-	</div>
+	</Card>
 
-	<div class="p-3 bg-slate-800 col-span-3">
-		<p class="text-sm font-semibold">Total Value</p>
+	<Card classes={'col-span-3'}>
+		<p class="text-sm font-semibold text-brand-light">Total Value</p>
 		<p class="font-semibold text-2xl md:text-2xl">{formatAsCurrency(totalValue, false, true)}</p>
-	</div>
+	</Card>
 </div>

@@ -6,12 +6,12 @@ export type FrequencyOption = {
 };
 
 export const FREQUENCY_OPTIONS = [
-	{ name: 'Weekly', value: 52 },
-	{ name: 'Fortnightly', value: 26 },
-	{ name: 'Monthly', value: 12 },
-	{ name: 'Quarterly', value: 4 },
-	{ name: 'Half Yearly', value: 2 },
-	{ name: 'Yearly', value: 1 }
+	{ label: 'Weekly', value: 52 },
+	{ label: 'Fortnightly', value: 26 },
+	{ label: 'Monthly', value: 12 },
+	{ label: 'Quarterly', value: 4 },
+	{ label: 'Half Yearly', value: 2 },
+	{ label: 'Yearly', value: 1 }
 ];
 
 export const INCOME_TAX_RATES = [

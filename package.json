@@ -22,7 +22,6 @@
 		"eslint": "^8.28.0",
 		"eslint-config-prettier": "^8.5.0",
 		"eslint-plugin-svelte": "^2.30.0",
-		"flowbite-svelte": "^0.44.15",
 		"postcss": "^8.4.29",
 		"prettier": "^2.8.0",
 		"prettier-plugin-svelte": "^2.10.1",
@@ -37,6 +36,7 @@
 	"dependencies": {
 		"chart.js": "^4.4.0",
 		"chartist": "^1.3.0",
+		"flowbite-svelte": "^0.46.13",
 		"flowbite-svelte-icons": "^0.4.4",
 		"nanoid": "^5.0.2"
 	}

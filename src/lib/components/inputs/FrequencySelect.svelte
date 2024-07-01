@@ -1,0 +1,16 @@
+<script lang="ts">
+	import { FREQUENCY_OPTIONS } from '$lib/constants';
+	export let value: number;
+	export let name: string;
+	export let showLabel: boolean = true;
+</script>
+
+<div>
+	<label class={`mb-1 ${showLabel ? 'block' : 'hidden'}`} for={name}>{name}</label>
+
+	<select id={name} {name} bind:value style="box-shadow: none;">
+		{#each FREQUENCY_OPTIONS as option}
+			<option value={option.value}>{option.label}</option>
+		{/each}
+	</select>
+</div>

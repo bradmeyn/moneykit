@@ -22,24 +22,20 @@
 </script>
 
 <main class="flex flex-col flex-1 container mx-auto">
-	<div
-		class="p-3 text-sky-700 bg-sky-200 border border-sky-700 flex text-xl font-semibold items-center justify-center rounded mx-auto"
-	>
-		<Icon icon="material-symbols-light:construction" class="mr-3" /> <span>Work in Progress</span>
-	</div>
-
 	<h1
 		class="text-4xl md:text-6xl lg:text-6xl text-center font-light p-3 my-12 md:my-16 lg:my-20 text-white"
 	>
 		<div>
 			Tools to manage <span
-				class="text-transparent bg-clip-text bg-gradient-to-b from-emerald-300 to-emerald-500"
+				class="text-transparent bg-clip-text bg-gradient-to-b from-brand-light to-brand-default"
 				>money</span
 			>
 		</div>
 		<div>
 			& grow
-			<span class="text-transparent bg-clip-text bg-gradient-to-b from-emerald-300 to-emerald-500">
+			<span
+				class="text-transparent bg-clip-text bg-gradient-to-b from-brand-light to-brand-default"
+			>
 				wealth</span
 			>
 		</div>

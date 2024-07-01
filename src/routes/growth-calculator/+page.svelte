@@ -1,10 +1,11 @@
 <script lang="ts">
 	import Inputs from './_components/Inputs.svelte';
-	import Results from './_components/Results.svelte';
 	import Chart from './_components/Chart.svelte';
 	import { calculateCompoundInterest } from '$lib/utils';
 	import ViewToggle from '$lib/components/ViewToggle.svelte';
 	import Table from './_components/Table.svelte';
+	import Card from '$lib/components/Card.svelte';
+	import { formatAsCurrency } from '$lib/utils';
 
 	// Inputs
 	let principal: number = 100000;
@@ -24,7 +25,7 @@
 	let interestByYear: number[] = [];
 	let startingByYear: number[] = [];
 
-	let viewOptions = [
+	let options = [
 		{ label: 'Chart', value: 'chart' },
 		{ label: 'Table', value: 'table' }
 	];
@@ -52,7 +53,7 @@
 <main class="flex flex-col flex-1 container mx-auto text-white">
 	<h1>Growth Calculator</h1>
 
-	<section class="md:flex gap-5">
+	<section class="flex flex-col lg:flex-row gap-8">
 		<aside class="max-w-[1000px] min-w-[300px]">
 			<Inputs
 				bind:principal
@@ -63,17 +64,23 @@
 			/>
 		</aside>
 
-		<div class="w-full p-3">
-			<Results bind:principal bind:totalContributions bind:totalInterest bind:totalValue />
-			<ViewToggle {viewOptions} bind:selectedView />
-
-			<div class="flex justify-end">
+		<div class="w-full">
+			<Card classes="p-3 mb-2 w-full relative ">
+				<div class="flex justify-between mb-3">
+					<div>
+						<p class="text-sm font-semibold text-brand-light">Total Value</p>
+						<p class="font-semibold text-2xl md:text-2xl">
+							{formatAsCurrency(totalValue, false, true)}
+						</p>
+					</div>
+					<ViewToggle {options} bind:selectedView />
+				</div>
 				{#if selectedView === 'chart'}
 					<Chart bind:chartYears bind:contributionsByYear bind:interestByYear bind:startingByYear />
 				{:else if selectedView === 'table'}
 					<Table bind:chartYears bind:contributionsByYear bind:interestByYear bind:principal />
 				{/if}
-			</div>
+			</Card>
 		</div>
 	</section>
 </main>

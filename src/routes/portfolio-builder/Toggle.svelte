@@ -13,7 +13,7 @@
 		{#each options as option}
 			<button
 				class={`text-sm font-semibold px-2 py-2 rounded flex-grow ${
-					selectedValue === option.value ? 'text-white bg-emerald-600' : 'text-emerald-600'
+					selectedValue === option.value ? 'text-white bg-brand-default' : 'text-brand-default'
 				}`}
 				on:click={() => selectOption(option.value)}
 			>

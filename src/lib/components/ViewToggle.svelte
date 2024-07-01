@@ -1,6 +1,6 @@
 <script lang="ts">
-	export let viewOptions: { label: string; value: string }[] = [];
-	export let selectedView: string = viewOptions.length > 0 ? viewOptions[0].value : '';
+	export let options: { label: string; value: string }[] = [];
+	export let selectedView: string = options.length > 0 ? options[0].value : '';
 
 	// Function to handle option selection
 	function selectOption(value: string) {
@@ -8,17 +8,15 @@
 	}
 </script>
 
-<div class="flex justify-center my-6">
-	<div class="bg-slate-800 rounded p-2 w-64 flex gap-3 justify-between">
-		{#each viewOptions as option}
-			<button
-				class={`text-sm font-semibold px-2 py-2 rounded flex-grow ${
-					selectedView === option.value ? 'text-white bg-emerald-600' : 'hover:text-emerald-600'
-				}`}
-				on:click={() => selectOption(option.value)}
-			>
-				{option.label}
-			</button>
-		{/each}
-	</div>
+<div class={`bg-slate-700 p-1 rounded grid gap-2 justify-between h-10 grid-cols-${options.length}`}>
+	{#each options as option}
+		<button
+			class={`text-sm font-semibold block px-2 py-1 rounded col-span-1 min-w-20  ${
+				selectedView === option.value ? 'text-white bg-slate-800' : 'hover:text-brand-default '
+			}`}
+			on:click={() => selectOption(option.value)}
+		>
+			{option.label}
+		</button>
+	{/each}
 </div>

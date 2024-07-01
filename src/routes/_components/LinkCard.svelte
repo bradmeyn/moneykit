@@ -20,7 +20,7 @@
 </script>
 
 <a
-	class="bg-slate-800 dark:hover:border-emerald-500 hover:border-emerald-500 dark:border-slate-600 p-6 border min-w-80 text-center rounded"
+	class="bg-slate-800 hover:border-brand-default dark:border-slate-600 p-6 border min-w-80 text-center rounded"
 	{href}
 >
 	<h2 class="text-2xl font-light text-white mb-3">{name}</h2>

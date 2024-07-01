@@ -35,7 +35,7 @@
 					on:blur={handleBlur}
 					autofocus
 				>
-					<Icon icon="carbon:percentage" slot="right" class="w-5 h-5 text-emerald-300" />
+					<Icon icon="carbon:percentage" slot="right" class="w-5 h-5 text-brand-default" />
 				</Input>
 			</Label>
 		</TableBodyCell>
@@ -55,7 +55,7 @@
 				on:click={() => {
 					editActive = !editActive;
 				}}
-				class="p-3 text-slate-400 hover:bg-slate-700 rounded hover:text-emerald-600"
+				class="p-3 text-slate-400 hover:bg-slate-700 rounded hover:text-brand-default"
 			>
 				{#if editActive}
 					<Icon icon="bi:x-lg" class="w-5 h-5" />

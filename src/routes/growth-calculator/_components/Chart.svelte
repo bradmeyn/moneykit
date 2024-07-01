@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Card from '$lib/components/Card.svelte';
 	import { onMount } from 'svelte';
 	import {
 		Chart,
@@ -32,17 +33,21 @@
 					{
 						label: 'Principal',
 						data: startingByYear,
-						backgroundColor: '#065F46'
+						backgroundColor: '#065F46',
+
+						borderRadius: 5
 					},
 					{
 						label: 'Contributions',
 						data: contributionsByYear,
-						backgroundColor: '#10B981'
+						backgroundColor: '#10B981',
+						borderRadius: 5
 					},
 					{
 						label: 'Interest',
 						data: interestByYear,
-						backgroundColor: '#A7F3D0'
+						backgroundColor: '#A7F3D0',
+						borderRadius: 5
 					}
 				]
 			},
@@ -87,21 +92,22 @@
 						position: 'nearest',
 						mode: 'index',
 						intersect: false,
-						backgroundColor: '#4B5563',
+
 						bodyAlign: 'right',
 						titleFont: {
-							size: 15
+							size: 18
 						},
 						bodyFont: {
 							size: 12,
 							family: 'Inter'
 						},
 						padding: {
-							top: 10,
-							bottom: 10,
-							left: 10,
-							right: 10
+							top: 16,
+							bottom: 16,
+							left: 16,
+							right: 16
 						},
+
 						bodyColor: 'white',
 
 						callbacks: {
@@ -139,6 +145,6 @@
 	}
 </script>
 
-<div class="p-3 w-full relative min-h-[400px] md:min-h-[500px]">
-	<canvas class="w-full absolute h-full" bind:this={chartId} />
+<div class="min-h-[400px] lg:min-h-[500px] relative">
+	<canvas class="w-full absolute min-h-full p-1" bind:this={chartId} />
 </div>

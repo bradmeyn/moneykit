@@ -64,7 +64,7 @@
 			size="lg"
 			bind:value={searchTerm}
 		>
-			<Icon icon="carbon:search" slot="left" class="w-5 h-5 rounded text-emerald-300" />
+			<Icon icon="carbon:search" slot="left" class="w-5 h-5 rounded text-brand-default" />
 		</Input>
 	</div>
 	<div class="max-h-40 overflow-y-auto">
@@ -77,7 +77,7 @@
 				class={'text-sm p-2 flex items-center justify-start w-full border-t border-1 border-slate-700 cursor-pointer ' +
 					(selectedInvestments.includes(investment)
 						? 'bg-slate-600 text-white'
-						: 'bg-transparent text-slate-200 hover:bg-emerald-600 hover:text-white')}
+						: 'bg-transparent text-slate-200 hover:bg-brand-default hover:text-white')}
 			>
 				<span class="w-14 inline-block text-start">{investment.code}</span><span
 					>{investment.name}</span

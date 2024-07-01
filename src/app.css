@@ -4,14 +4,23 @@
 
 @layer base {
 	h1 {
-		@apply text-3xl md:text-4xl font-semibold mb-4;
+		@apply text-xl md:text-2xl font-semibold mb-4;
 	}
 
 	h2 {
-		@apply text-2xl md:text-3xl font-semibold mb-3;
+		@apply text-lg md:text-xl font-semibold mb-3 text-white;
 	}
 
 	h3 {
-		@apply text-lg md:text-xl font-semibold mb-2;
+		@apply text-base md:text-lg font-semibold mb-2 text-slate-200;
+	}
+
+	label {
+		@apply text-sm text-slate-300;
+	}
+
+	select,
+	input {
+		@apply bg-slate-700 focus:outline-2 focus:outline-offset-1  focus:outline-brand-default text-sm block w-full border-none rounded-lg  sm:text-sm text-white placeholder-slate-400;
 	}
 }

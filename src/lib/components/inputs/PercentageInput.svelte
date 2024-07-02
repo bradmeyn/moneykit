@@ -7,9 +7,9 @@
 </script>
 
 <div>
-	<label class="mb-2 block" for={name}>{label}</label>
+	<label class="mb-1 block" for={name}>{label}</label>
 	<div
-		class="relative rounded-md sm:text-sm flex bg-slate-700 shadow-sm focus-within:ring-2 focus-within:ring-brand-default w-full"
+		class="relative rounded sm:text-sm flex bg-slate-700 shadow-sm focus-within:ring-2 focus-within:ring-brand-default w-full"
 	>
 		<input
 			{name}

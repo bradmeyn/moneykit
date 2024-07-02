@@ -24,7 +24,7 @@
 <div class="w-full">
 	<label class={`mb-1 ${label ? 'block' : 'hidden'}`} for={name}>{label}</label>
 	<div
-		class="relative px-2 rounded-md sm:text-sm flex bg-slate-700 shadow-sm focus-within:ring-2 focus-within:ring-brand-default w-full"
+		class="relative px-2 rounded sm:text-sm flex bg-slate-700 shadow-sm focus-within:ring-2 focus-within:ring-brand-default w-full"
 	>
 		<div class="flex items-center pointer-events-none text-brand-default">$</div>
 		<input

@@ -3,7 +3,7 @@
 	import Icon from '@iconify/svelte';
 	import { FREQUENCY_OPTIONS } from '$lib/constants';
 	import PercentageInput from '$lib/components/inputs/PercentageInput.svelte';
-	import FrequencyInput from '$lib/components/inputs/FrequencySelect.svelte';
+	import FrequencySelect from '$lib/components/inputs/FrequencySelect.svelte';
 
 	// props
 	export let principal: number;
@@ -16,9 +16,13 @@
 <div class="space-y-3">
 	<CurrencyInput label="Starting Amount" bind:value={principal} inputClass={'mb-3'} />
 
-	<div class="flex gap-2 items-center">
-		<CurrencyInput label="Contributions" bind:value={contributionAmount} inputClass={'w-full'} />
-		<FrequencyInput bind:value={contributionFrequency} name={'frequency'} />
+	<div class="grid grid-cols-2 gap-2">
+		<div class="col-span-2 lg:col-span-1">
+			<CurrencyInput label="Contributions" bind:value={contributionAmount} inputClass={'w-full'} />
+		</div>
+		<div class="col-span-2 md:col-span-1">
+			<FrequencySelect bind:value={contributionFrequency} name={'Frequency'} />
+		</div>
 	</div>
 
 	<PercentageInput label="Interest Rate" bind:value={interestRate} />

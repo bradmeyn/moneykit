@@ -1,12 +1,4 @@
 <script lang="ts">
-	import {
-		Table,
-		TableBody,
-		TableBodyCell,
-		TableBodyRow,
-		TableHead,
-		TableHeadCell
-	} from 'flowbite-svelte';
 	import { formatAsCurrency } from '$lib/utils';
 	import Card from '$lib/components/Card.svelte';
 
@@ -17,36 +9,34 @@
 </script>
 
 <div class="w-full">
-	<Table noborder>
-		<TableHead theadClass="text-white">
-			<TableHeadCell padding="p-3">Year</TableHeadCell>
-			<TableHeadCell padding="p-3">Start</TableHeadCell>
-			<TableHeadCell padding="p-3">Interest</TableHeadCell>
-			<TableHeadCell padding="p-3">Contribution</TableHeadCell>
-			<TableHeadCell padding="p-3">End</TableHeadCell>
-		</TableHead>
-		<TableBody>
+	<table>
+		<thead class="text-white">
+			<tr>
+				<th>Year</th>
+				<th>Start</th>
+				<th>Interest</th>
+				<th>Contribution</th>
+				<th>End</th>
+			</tr>
+		</thead>
+		<tbody>
 			{#each chartYears as year, i}
-				<TableBodyRow>
-					<TableBodyCell tdClass="p-3">{year}</TableBodyCell>
-					{#if i === 0}
-						<TableBodyCell tdClass="p-3">{formatAsCurrency(principal)}</TableBodyCell>
-					{:else}
-						<TableBodyCell tdClass="p-3"
-							>{formatAsCurrency(
-								principal + interestByYear[i - 1] + contributionsByYear[i - 1]
-							)}</TableBodyCell
-						>
-					{/if}
-					<TableBodyCell tdClass="p-3">{formatAsCurrency(interestByYear[i])}</TableBodyCell>
-					<TableBodyCell tdClass="p-3">{formatAsCurrency(contributionsByYear[i])}</TableBodyCell>
-					<TableBodyCell tdClass="p-3"
-						>{formatAsCurrency(
-							principal + interestByYear[i] + contributionsByYear[i]
-						)}</TableBodyCell
-					>
-				</TableBodyRow>
+				<tr>
+					<td>{year}</td>
+					<td>
+						{#if i === 0}
+							{formatAsCurrency(principal)}
+						{:else}
+							{formatAsCurrency(principal + interestByYear[i - 1] + contributionsByYear[i - 1])}
+						{/if}
+					</td>
+					<td>{formatAsCurrency(interestByYear[i])}</td>
+					<td>{formatAsCurrency(contributionsByYear[i])}</td>
+					<td>
+						{formatAsCurrency(principal + interestByYear[i] + contributionsByYear[i])}
+					</td>
+				</tr>
 			{/each}
-		</TableBody>
-	</Table>
+		</tbody>
+	</table>
 </div>

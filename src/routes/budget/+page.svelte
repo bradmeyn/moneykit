@@ -1,9 +1,7 @@
 <script lang="ts">
 	import Card from '$lib/components/Card.svelte';
 	import DoughnutChart from '$lib/components/charts/DoughnutChart.svelte';
-	import BudgetItem from './_components/BudgetItem.svelte';
 	import type { BudgetItem as Item } from './types';
-	import ViewToggle from '$lib/components/ViewToggle.svelte';
 	import BudgetTable from './_components/BudgetTable.svelte';
 
 	let income: Item[] = [

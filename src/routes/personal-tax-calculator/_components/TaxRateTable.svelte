@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { TaxRateConfiguration } from '$lib/types';
-	import { formatAsPercentage, formatAsCurrency } from '$lib/utils';
+	import { formatAsPercentage, formatAsCurrency } from '$lib/utils/formatters';
 	import {
 		Table,
 		TableBody,

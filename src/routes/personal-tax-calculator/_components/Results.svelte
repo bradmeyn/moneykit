@@ -14,9 +14,9 @@
 	export let taxRates: TaxRateConfiguration;
 	export let results: Results;
 
-	import { formatAsCurrency } from '$lib/utils';
+	import { formatAsCurrency } from '$lib/utils/formatters';
 	import ResultsTable from './ResultsTable.svelte';
-	import ViewToggle from '$lib/components/ViewToggle.svelte';
+	import ViewToggle from '$lib/components/ui/ViewToggle.svelte';
 	import PieChart from '$lib/components/charts/PieChart.svelte';
 	import TaxBand from './TaxBand.svelte';
 

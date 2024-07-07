@@ -1,11 +1,11 @@
 <script lang="ts">
 	import Inputs from './_components/Inputs.svelte';
 	import Chart from './_components/Chart.svelte';
-	import { calculateCompoundInterest } from '$lib/utils';
-	import ViewToggle from '$lib/components/ViewToggle.svelte';
+	import { calculateCompoundInterest } from '$lib/utils/formatters';
+	import ViewToggle from '$lib/components/ui/ViewToggle.svelte';
 	import Table from './_components/Table.svelte';
-	import Card from '$lib/components/Card.svelte';
-	import { formatAsCurrency } from '$lib/utils';
+	import Card from '$lib/components/ui/Card.svelte';
+	import { formatAsCurrency } from '$lib/utils/formatters';
 
 	// Inputs
 	let principal: number = 100000;
@@ -70,7 +70,7 @@
 					<div>
 						<p class="text-sm font-semibold text-brand-light">Total Value</p>
 						<p class="font-semibold text-2xl md:text-2xl">
-							{formatAsCurrency(totalValue, false, true)}
+							{formatAsCurrency(totalValue, false)}
 						</p>
 					</div>
 					<ViewToggle {options} bind:selectedView />

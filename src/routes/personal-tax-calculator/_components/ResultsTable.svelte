@@ -19,7 +19,7 @@
 	} from 'flowbite-svelte';
 	// props
 	export let results: Props;
-	import { formatAsCurrency } from '$lib/utils';
+	import { formatAsCurrency } from '$lib/utils/formatters';
 </script>
 
 <div class="grid grid-cols-1 md:grid-cols-2 gap-10 w-full">

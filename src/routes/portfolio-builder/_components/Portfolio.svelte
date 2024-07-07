@@ -1,84 +1,58 @@
 <script lang="ts">
-	import {
-		Table,
-		TableBody,
-		TableBodyCell,
-		TableBodyRow,
-		TableHead,
-		TableHeadCell
-	} from 'flowbite-svelte';
+	import Card from '$lib/components/ui/Card.svelte';
 	import { portfolio, addHolding, portfolioDetails } from '$lib/stores/portfolioStore';
 	import AddHolding from './AddHolding.svelte';
 	import CurrencyInput from '$lib/components/inputs/CurrencyInput.svelte';
-	import { formatAsCurrency, formatAsPercentage } from '$lib/utils';
-	import PortfolioItem from './PortfolioItem.svelte';
-	import DoughnutChart from '$lib/components/charts/DoughnutChart.svelte';
 	import AssetAllocation from './AssetAllocation.svelte';
+	import ViewToggle from '$lib/components/ui/ViewToggle.svelte';
+	import Investments from './Investments.svelte';
+	import DoughnutChart from '$lib/components/charts/DoughnutChart.svelte';
+	import { CHART_COLOURS } from '$lib/constants';
+
+	let selectedView = 'Investment';
 </script>
 
-<div class="mb-3 max-w-48">
-	<CurrencyInput size="lg" label="Portfolio value" bind:value={$portfolio.value} />
+<div class="mb-3 flex w-full md:w-40">
+	<CurrencyInput label="Portfolio value" bind:value={$portfolio.value} />
 </div>
 
-<div>
-	{#if $portfolioDetails.holdings.length > 0}
-		<div class="flex flex-col lg:flex-row w-full gap-5">
-			<div class="flex-1 lg:min-w-[600px]">
-				<Table>
-					<TableHead>
-						<TableHeadCell>Code</TableHeadCell>
-						<TableHeadCell>Investment</TableHeadCell>
-						<TableHeadCell>Value ($)</TableHeadCell>
-						<TableHeadCell>Allocation (%)</TableHeadCell>
-						<TableHeadCell>Cost (%)</TableHeadCell>
-						<TableHeadCell>Cost ($)</TableHeadCell>
-						<TableHeadCell />
-					</TableHead>
-					<TableBody>
-						{#each $portfolioDetails.holdings as holding}
-							<PortfolioItem {holding} />
-						{/each}
-						<TableBodyRow>
-							<TableBodyCell colspan="2" class="font-bold text-lg">Total</TableBodyCell>
-							<TableBodyCell class="font-bold text-lg"
-								>{formatAsCurrency($portfolio.value, false, true)}</TableBodyCell
-							>
-							<TableBodyCell>
-								<span
-									class="font-bold text-lg {$portfolioDetails.totalPercentage != 1
-										? 'text-red-400'
-										: ''} "
-								>
-									{formatAsPercentage($portfolioDetails.totalPercentage)}
-								</span></TableBodyCell
-							>
-							<TableBodyCell
-								>{formatAsPercentage($portfolioDetails.totalCostPercentage)} pa</TableBodyCell
-							>
-							<TableBodyCell
-								>{formatAsCurrency($portfolioDetails.totalCost, true, true)} pa</TableBodyCell
-							>
-							<TableBodyCell />
-						</TableBodyRow>
-					</TableBody>
-				</Table>
-				<AddHolding {addHolding} />
+{#if $portfolioDetails.holdings.length > 0}
+	<div class="flex flex-col lg:flex-row w-full gap-5">
+		<Card class="flex-1 lg:min-w-[600px]">
+			<div class="flex items-center justify-between">
+				<h2>{selectedView}</h2>
+				<ViewToggle
+					options={[
+						{ label: 'Investments', value: 'Investment' },
+						{ label: 'Allocation', value: 'Allocation' }
+					]}
+					bind:selectedView
+				/>
 			</div>
-
-			<div class="w-full lg:max-w-[300px] mx-auto">
+			{#if selectedView === 'Investment'}
+				<Investments />
+			{:else if selectedView === 'Allocation'}
+				<AssetAllocation />
+			{/if}
+		</Card>
+		<Card class="w-full lg:max-w-[300px] mx-auto">
+			{#if selectedView === 'Investment'}
 				<DoughnutChart
 					labels={$portfolioDetails.holdings.map((holding) => holding.investment.code)}
 					dataValues={$portfolioDetails.holdings.map((holding) => holding.allocation)}
 				/>
-			</div>
-		</div>
-
-		<div class="w-full flex-1 flex-shrink-0">
-			<div class="flex flex-col lg:flex-row w-full gap-5">
-				<AssetAllocation portfolioValue={$portfolio.value} />
-			</div>
-		</div>
-	{:else}
-		<AddHolding {addHolding} />
-	{/if}
-</div>
+			{:else}
+				<DoughnutChart
+					backgroundColors={CHART_COLOURS}
+					legendPosition={'left'}
+					labels={$portfolioDetails.assetAllocation.map((assetClass) => assetClass.name)}
+					dataValues={$portfolioDetails.assetAllocation.map(
+						(assetClass) => assetClass.value / $portfolio.value
+					)}
+				/>
+			{/if}
+		</Card>
+	</div>
+{:else}
+	<AddHolding {addHolding} />
+{/if}

@@ -25,7 +25,7 @@
 	}
 
 	table {
-		@apply w-full table-auto border-collapse border-t border-slate-700;
+		@apply w-full table-auto border-collapse  border-slate-700;
 	}
 
 	th,

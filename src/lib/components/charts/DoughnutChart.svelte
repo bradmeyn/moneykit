@@ -8,7 +8,7 @@
 		Legend,
 		type ChartConfiguration
 	} from 'chart.js';
-	import { formatAsPercentage } from '$lib/utils';
+	import { formatAsPercentage } from '$lib/utils/formatters';
 
 	// Props
 	export let labels: string[];
@@ -52,13 +52,15 @@
 					},
 					legend: {
 						position: legendPosition,
+						display: false,
 
 						labels: {
 							font: {
 								family: 'sans-serif',
-								size: 16
+								size: 12
 							},
 							color: '#fff',
+
 							boxWidth: 18
 						}
 					}
@@ -78,6 +80,6 @@
 	}
 </script>
 
-<div class="p-3 w-full relative min-h-[300px] md:min-h-[400px] min-w-[300px]">
+<div class=" w-full relative min-h-[200px] md:min-h-[200px] min-w-[200px]">
 	<canvas class="w-full absolute h-full" bind:this={chartId} />
 </div>

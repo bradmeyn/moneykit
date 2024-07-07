@@ -8,7 +8,7 @@
 		Legend,
 		type ChartConfiguration
 	} from 'chart.js';
-	import { formatAsCurrency } from '$lib/utils';
+	import { formatAsCurrency } from '$lib/utils/formatters';
 
 	// Props
 	export let labels: string[];

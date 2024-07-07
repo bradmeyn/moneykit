@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Card from '$lib/components/Card.svelte';
+	import Card from '$lib/components/ui/Card.svelte';
 	import { onMount } from 'svelte';
 	import {
 		Chart,
@@ -10,7 +10,7 @@
 		Legend,
 		Tooltip
 	} from 'chart.js';
-	import { formatAsCurrency } from '$lib/utils';
+	import { formatAsCurrency } from '$lib/utils/formatters';
 
 	// props
 	export let chartYears: number[];

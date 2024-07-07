@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { TableBodyCell, TableBodyRow, Input, Label } from 'flowbite-svelte';
-	import { formatAsCurrency, formatAsPercentage } from '$lib/utils';
+	import { formatAsCurrency, formatAsPercentage } from '$lib/utils/formatters';
 	import Icon from '@iconify/svelte';
 	import type { Holding } from '$lib/types';
 	import { removeHolding, updateHolding } from '$lib/stores/portfolioStore';
+	import PercentageInput from '$lib/components/inputs/PercentageInput.svelte';
 
 	// Props
 	export let holding: Holding;
@@ -19,37 +19,32 @@
 	}
 </script>
 
-<TableBodyRow>
-	<TableBodyCell>{holding.investment.code}</TableBodyCell>
-	<TableBodyCell>{holding.investment.name}</TableBodyCell>
-	<TableBodyCell>{formatAsCurrency(holding.value, false, true)}</TableBodyCell>
+<tr>
+	<td>{holding.investment.code}</td>
+	<td>{holding.investment.name}</td>
+	<td>{formatAsCurrency(holding.value, false)}</td>
 
 	{#if editActive}
-		<TableBodyCell>
-			<Label class="space-y-1 w-28 mb-3">
-				<Input
-					let:props
-					class="rounded"
-					bind:value={editedAllocationValue}
-					step="1"
-					on:blur={handleBlur}
-					autofocus
-				>
-					<Icon icon="carbon:percentage" slot="right" class="w-5 h-5 text-brand-default" />
-				</Input>
-			</Label>
-		</TableBodyCell>
+		<td>
+			<!-- <PercentageInput
+				value={editedAllocationValue}
+				on:input={(e) => {
+					editedAllocationValue = e.target.value;
+				}}
+				on:blur={handleBlur}
+			/> -->
+		</td>
 	{:else}
-		<TableBodyCell>{formatAsPercentage(holding.allocation)}</TableBodyCell>
+		<td>{formatAsPercentage(holding.allocation)}</td>
 	{/if}
 	{#if holding.investment.code !== 'CASH'}
-		<TableBodyCell>{formatAsPercentage(holding.investment.cost)}</TableBodyCell>
-		<TableBodyCell>{formatAsCurrency(holding.cost, true, true)}</TableBodyCell>
+		<td>{formatAsPercentage(holding.investment.cost)}</td>
+		<td>{formatAsCurrency(holding.cost, true)}</td>
 	{:else}
-		<TableBodyCell />
-		<TableBodyCell />
+		<td />
+		<td />
 	{/if}
-	<TableBodyCell>
+	<td>
 		{#if holding.investment.code !== 'CASH'}
 			<button
 				on:click={() => {
@@ -70,5 +65,5 @@
 				<Icon icon="bi:trash" class="w-5 h-5" />
 			</button>
 		{/if}
-	</TableBodyCell>
-</TableBodyRow>
+	</td>
+</tr>

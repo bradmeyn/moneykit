@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Inputs from './Inputs.svelte';
 	import TaxRateTable from './TaxRateTable.svelte';
-	import { getTaxRates, calculatePersonalTax } from '$lib/utils';
+	import { getTaxRates, calculatePersonalTax } from '$lib/utils/formatters';
 	import Results from './Results.svelte';
 
 	// Inputs

@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { formatAsCurrency } from '$lib/utils';
-	import Card from '$lib/components/Card.svelte';
+	import { formatAsCurrency } from '$lib/utils/formatters';
+	import Card from '$lib/components/ui/Card.svelte';
 
 	export let chartYears: number[];
 	export let interestByYear: number[];

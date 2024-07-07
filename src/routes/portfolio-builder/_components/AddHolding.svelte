@@ -45,9 +45,9 @@
 	}
 </script>
 
-<Button size="lg" class="mt-5 rounded mr-auto block" on:click={() => (isModalOpen = true)}>
+<button class="mt-5 rounded mr-auto block" on:click={() => (isModalOpen = true)}>
 	Add holdings
-</Button>
+</button>
 
 <Modal
 	title="Add Portfolio Holdings"
@@ -101,7 +101,7 @@
 							<span class="w-14 inline-block text-start">{h.investment.code}</span>
 							<span>{h.investment.name}</span>
 						</div>
-						<PercentageInput bind:value={h.allocation} size="sm" />
+						<PercentageInput bind:value={h.allocation} />
 					</li>
 				{/each}
 			</ul>

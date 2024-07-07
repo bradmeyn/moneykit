@@ -1,22 +1,23 @@
 <script lang="ts">
 	import LinkCard from './_components/LinkCard.svelte';
-	import Icon from '@iconify/svelte';
 
 	const links = [
 		{
 			name: 'Growth Calculator',
-			href: 'growth-calculator',
-			svgName: 'bar-chart.svg'
+			href: 'growth-calculator'
 		},
 		{
+			name: 'Budget',
+			href: 'budget'
+		},
+
+		{
 			name: 'Portfolio Builder',
-			href: 'portfolio-builder',
-			svgName: 'pie-chart.svg'
+			href: 'portfolio-builder'
 		},
 		{
 			name: 'Personal Tax Calculator',
-			href: 'personal-tax-calculator',
-			svgName: 'calculator.svg'
+			href: 'personal-tax-calculator'
 		}
 	];
 </script>
@@ -41,7 +42,7 @@
 		</div>
 	</h1>
 
-	<div class="flex flex-col md:flex-row justify-center items-center flex-wrap gap-5">
+	<div class="flex flex-col justify-center items-center flex-wrap gap-5">
 		{#each links as link}
 			<LinkCard {...link} />
 		{/each}

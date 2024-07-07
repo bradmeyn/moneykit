@@ -1,17 +1,14 @@
 <script lang="ts">
-	import { Input, Label, type FormSizeType } from 'flowbite-svelte';
-	import Icon from '@iconify/svelte';
-	import { formatAsCurrency, parseCurrency } from '$lib/utils';
+	import { formatAsNumber } from '$lib/utils/formatters';
 
 	// Props
 	export let label: string = '';
 	export let name: string = '';
-	export let size: FormSizeType = 'md';
 	export let value: number;
 	export let inputClass: string = '';
 
 	// Reactive statement to format value whenever it changes
-	$: formattedValue = formatAsCurrency(value);
+	$: formattedValue = formatAsNumber(value);
 
 	// Handle input event
 	function handleInput(event: Event) {

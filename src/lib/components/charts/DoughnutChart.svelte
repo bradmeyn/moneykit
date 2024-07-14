@@ -11,10 +11,12 @@
 	import { formatAsPercentage } from '$lib/utils/formatters';
 
 	// Props
-	export let labels: string[];
-	export let dataValues: number[];
-	export let backgroundColors: string[] = ['#065F46', '#10B981', '#A7F3D0'];
-	export let legendPosition: 'top' | 'bottom' | 'left' | 'right' = 'top';
+	export let data: { label: string; value: number }[];
+
+	$: labels = data.map((item) => item.label);
+	$: values = data.map((item) => item.value);
+
+	export let chartColors: string[] = ['#065F46', '#10B981', '#A7F3D0'];
 
 	let chartId: HTMLCanvasElement;
 	let doughnutChart: Chart;
@@ -27,19 +29,17 @@
 			type: 'doughnut',
 
 			data: {
-				labels: labels,
+				labels,
 				datasets: [
 					{
-						data: dataValues,
-						backgroundColor: backgroundColors,
-						borderWidth: 0,
-						borderColor: '#fff'
+						data: data.map((item) => item.value),
+						backgroundColor: chartColors,
+						borderWidth: 0
 					}
 				]
 			},
 			options: {
 				responsive: true,
-
 				maintainAspectRatio: false,
 				plugins: {
 					tooltip: {
@@ -51,17 +51,13 @@
 						boxPadding: 5
 					},
 					legend: {
-						position: legendPosition,
 						display: false,
 
 						labels: {
 							font: {
 								family: 'sans-serif',
 								size: 12
-							},
-							color: '#fff',
-
-							boxWidth: 18
+							}
 						}
 					}
 				}
@@ -74,12 +70,12 @@
 	// Update chart when props change
 	$: if (doughnutChart) {
 		doughnutChart.data.labels = labels;
-		doughnutChart.data.datasets[0].data = dataValues;
-		doughnutChart.data.datasets[0].backgroundColor = backgroundColors;
+		doughnutChart.data.datasets[0].data = values;
+		doughnutChart.data.datasets[0].backgroundColor = chartColors;
 		doughnutChart.update();
 	}
 </script>
 
-<div class=" w-full relative min-h-[200px] md:min-h-[200px] min-w-[200px]">
+<div class={`w-full relative min-h-[200px] md:min-h-[200px] min-w-[200px]  ${$$restProps.class}`}>
 	<canvas class="w-full absolute h-full" bind:this={chartId} />
 </div>

@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { formatAsCurrency, formatAsPercentage } from '$lib/utils/formatters';
 	import Icon from '@iconify/svelte';
-	import type { Holding } from '$lib/types';
-	import { removeHolding, updateHolding } from '$lib/stores/portfolioStore';
+	import type { Holding } from '../types';
+	import { removeHolding, updateHolding } from '../store';
 	import PercentageInput from '$lib/components/inputs/PercentageInput.svelte';
 
 	// Props

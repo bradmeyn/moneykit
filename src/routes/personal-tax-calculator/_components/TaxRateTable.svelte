@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { TaxRateConfiguration } from '$lib/types';
+	import type { TaxRateConfiguration } from '../../portfolio-builder/types';
 	import { formatAsPercentage, formatAsCurrency } from '$lib/utils/formatters';
 	import {
 		Table,

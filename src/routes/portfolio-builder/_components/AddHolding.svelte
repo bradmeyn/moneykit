@@ -1,13 +1,11 @@
 <script lang="ts">
-	import { INVESTMENTS } from '$lib/constants';
-	import { Modal, Button, Input } from 'flowbite-svelte';
-	import Icon from '@iconify/svelte';
-	import type { Holding, Investment } from '$lib/types';
+	import Dialog from '$lib/components/ui/Dialog.svelte';
+	import type { Holding, Investment } from '../types';
+	import { addHolding } from '../store';
+	import { INVESTMENTS } from '../constants';
 	import PercentageInput from '$lib/components/inputs/PercentageInput.svelte';
-
-	// Props
-	export let addHolding: (holding: Holding) => void;
-
+	import { Search } from 'flowbite-svelte';
+	import SearchInput from '$lib/components/inputs/SearchInput.svelte';
 	let isModalOpen = false;
 	let searchTerm = '';
 	let newHoldings: Holding[] = [];
@@ -45,45 +43,33 @@
 	}
 </script>
 
-<button class="mt-5 rounded mr-auto block" on:click={() => (isModalOpen = true)}>
-	Add holdings
-</button>
-
-<Modal
+<Dialog
 	title="Add Portfolio Holdings"
-	bind:open={isModalOpen}
-	placement={'top-center'}
-	class="mt-20"
-	outsideclose
+	description="Add holdings to your portfolio"
+	onAction={addHoldings}
+	actionText="Add Holdings"
+	triggerText="Add Holding"
+	disabled={!newHoldings.length}
 >
-	<div class="mb-6">
-		<Input
-			id="newHolding"
-			type="text"
-			placeholder="Search investment name or code"
-			size="lg"
-			bind:value={searchTerm}
-		>
-			<Icon icon="carbon:search" slot="left" class="w-5 h-5 rounded text-brand-default" />
-		</Input>
-	</div>
-	<div class="max-h-40 overflow-y-auto">
+	<SearchInput bind:value={searchTerm} placeholder="Search investments" class="mb-2" />
+
+	<div class="max-h-60 overflow-y-auto my-4">
 		{#each filteredInvestments as investment, i}
 			<button
 				on:click={() =>
 					selectedInvestments.includes(investment)
 						? unselectInvestment(investment)
 						: selectInvestment(investment)}
-				class={'text-sm p-2 flex items-center justify-start w-full border-t border-1 border-slate-700 cursor-pointer ' +
+				class={'text-sm p-2 flex items-center  rounded justify-start w-full border-t border-1 border-slate-700 cursor-pointer ' +
 					(selectedInvestments.includes(investment)
-						? 'bg-slate-600 text-white'
-						: 'bg-transparent text-slate-200 hover:bg-brand-default hover:text-white')}
+						? 'bg-slate-700 text-white border-brand-default'
+						: 'bg-transparent text-slate-200 hover:bg-slate-700 hover:text-white')}
 			>
 				<span class="w-14 inline-block text-start">{investment.code}</span><span
 					>{investment.name}</span
 				>
 				{#if selectedInvestments.includes(investment)}
-					<Icon icon="carbon:checkmark" class="w-5 h-5 ml-auto" />
+					<!-- <Icon icon="carbon:checkmark" class="w-5 h-5 ml-auto" /> -->
 				{/if}
 			</button>
 		{/each}
@@ -95,24 +81,16 @@
 			<ul class="mt-2">
 				{#each newHoldings as h}
 					<li
-						class="text-sm border-t flex items-center justify-between gap-2 border-1 border-slate-700 text-white"
+						class="text-sm border-t flex p-1 items-center justify-between gap-2 border-1 border-slate-700 text-white"
 					>
 						<div class="flex items-center justify-between gap-2">
 							<span class="w-14 inline-block text-start">{h.investment.code}</span>
 							<span>{h.investment.name}</span>
 						</div>
-						<PercentageInput bind:value={h.allocation} />
+						<PercentageInput bind:value={h.allocation} class="w-20" />
 					</li>
 				{/each}
 			</ul>
 		</div>
 	{/if}
-
-	<Button
-		class="mt-5 rounded ml-auto block"
-		disabled={selectedInvestments.length === 0}
-		on:click={addHoldings}
-	>
-		Add holdings
-	</Button>
-</Modal>
+</Dialog>

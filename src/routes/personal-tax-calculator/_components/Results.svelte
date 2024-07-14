@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { TaxRateConfiguration } from '$lib/types';
+	import type { TaxRateConfiguration } from '../../portfolio-builder/types';
 
 	type Results = {
 		income: number;
@@ -16,7 +16,7 @@
 
 	import { formatAsCurrency } from '$lib/utils/formatters';
 	import ResultsTable from './ResultsTable.svelte';
-	import ViewToggle from '$lib/components/ui/ViewToggle.svelte';
+	import ViewToggle from '$lib/components/ui/Tabs.svelte';
 	import PieChart from '$lib/components/charts/PieChart.svelte';
 	import TaxBand from './TaxBand.svelte';
 

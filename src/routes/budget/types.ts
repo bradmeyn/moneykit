@@ -4,4 +4,5 @@ export type BudgetItem = {
 	amount: number;
 	category: string;
 	frequency: number;
+	type: 'Income' | 'Expense' | 'Savings'
 };

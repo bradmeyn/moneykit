@@ -1,5 +1,5 @@
 import { INCOME_TAX_RATES } from '../constants';
-import type { PersonalTaxScenario } from '../types';
+import type { PersonalTaxScenario } from '../../routes/portfolio-builder/types';
 
 export function formatAsPercentage(value: number) {
 	return new Intl.NumberFormat('en-US', {

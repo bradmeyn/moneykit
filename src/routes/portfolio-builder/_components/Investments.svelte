@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { portfolio, addHolding, portfolioDetails } from '$lib/stores/portfolioStore';
+	import { portfolio, addHolding, portfolioDetails } from '../store';
 	import AddHolding from './AddHolding.svelte';
 	import { formatAsCurrency, formatAsPercentage } from '$lib/utils/formatters';
 	import PortfolioItem from './PortfolioItem.svelte';
@@ -35,4 +35,6 @@
 		</tr>
 	</tbody>
 </table>
-<AddHolding {addHolding} />
+<div class="p-2 w-full flex justify-end">
+	<AddHolding />
+</div>

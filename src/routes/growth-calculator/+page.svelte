@@ -2,7 +2,7 @@
 	import Inputs from './_components/Inputs.svelte';
 	import Chart from './_components/Chart.svelte';
 	import { calculateCompoundInterest } from '$lib/utils/formatters';
-	import ViewToggle from '$lib/components/ui/ViewToggle.svelte';
+	import ViewToggle from '$lib/components/ui/Tabs.svelte';
 	import Table from './_components/Table.svelte';
 	import Card from '$lib/components/ui/Card.svelte';
 	import { formatAsCurrency } from '$lib/utils/formatters';
@@ -51,7 +51,7 @@
 </script>
 
 <main class="flex flex-col flex-1 container mx-auto text-white">
-	<h1>Growth Calculator</h1>
+	<h1 class="mb-4">Growth Calculator</h1>
 
 	<section class="flex flex-col lg:flex-row gap-8">
 		<aside class="max-w-[1000px] min-w-[300px]">

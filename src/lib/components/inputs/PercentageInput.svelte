@@ -2,11 +2,10 @@
 	// Props
 	export let label: string = '';
 	export let name: string = '';
-	export let labelClass: string = '';
 	export let value: number;
 </script>
 
-<div>
+<div class={`${$$restProps.class}`}>
 	<label class="mb-1 block" for={name}>{label}</label>
 	<div
 		class="relative rounded sm:text-sm flex bg-slate-700 shadow-sm focus-within:ring-2 focus-within:ring-brand-default w-full"

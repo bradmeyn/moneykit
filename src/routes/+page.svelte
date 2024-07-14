@@ -33,11 +33,11 @@
 			>
 		</div>
 		<div>
-			& grow
+			& gain
 			<span
 				class="text-transparent bg-clip-text bg-gradient-to-b from-brand-light to-brand-default"
 			>
-				wealth</span
+				independence</span
 			>
 		</div>
 	</h1>

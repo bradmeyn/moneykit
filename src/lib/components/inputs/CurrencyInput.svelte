@@ -5,7 +5,6 @@
 	export let label: string = '';
 	export let name: string = '';
 	export let value: number;
-	export let inputClass: string = '';
 
 	// Reactive statement to format value whenever it changes
 	$: formattedValue = formatAsNumber(value);
@@ -18,7 +17,7 @@
 	}
 </script>
 
-<div class="w-full">
+<div class={`w-full ${$$restProps.class}`}>
 	<label class={`mb-1 ${label ? 'block' : 'hidden'}`} for={name}>{label}</label>
 	<div
 		class="relative px-2 rounded sm:text-sm flex bg-slate-700 shadow-sm focus-within:ring-2 focus-within:ring-brand-default w-full"

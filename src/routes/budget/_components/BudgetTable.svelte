@@ -6,7 +6,7 @@
 	export let items: Item[] = [];
 </script>
 
-<table class="w-full mb-4">
+<table class="w-full">
 	<thead>
 		<tr>
 			<th class="text-left text-sm text-slate-400 p-2 border-t-transparent">Item</th>
@@ -20,7 +20,7 @@
 			<BudgetItem {i} />
 		{/each}
 	</tbody>
-	<tfoot>
+	<!-- <tfoot>
 		<tr>
 			<td class="text-left text-lg font-semibold text-white p-2 border-b-transparent">Total</td>
 			<td class="text-left text-sm text-white p-2 border-b-transparent" />
@@ -29,5 +29,5 @@
 				{formatAsCurrency(items.reduce((acc, i) => acc + i.amount, 0))}
 			</td>
 		</tr>
-	</tfoot>
+	</tfoot> -->
 </table>

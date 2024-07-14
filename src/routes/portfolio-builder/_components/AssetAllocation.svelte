@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { portfolioDetails, portfolio } from '$lib/stores/portfolioStore'; // Adjust path as necessary
+	import { portfolioDetails, portfolio } from '../store'; // Adjust path as necessary
 	import { formatAsCurrency, formatAsPercentage } from '$lib/utils/formatters';
 	export let portfolioValue: number = 0;
 </script>

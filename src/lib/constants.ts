@@ -1,4 +1,4 @@
-import type { Investment } from './types';
+import type { Investment } from '../routes/portfolio-builder/types';
 
 export type FrequencyOption = {
 	name: string;

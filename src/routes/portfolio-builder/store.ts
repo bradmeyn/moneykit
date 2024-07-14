@@ -64,8 +64,6 @@ export const portfolioDetails = derived(portfolio, ($portfolio) => {
 
 	const unallocated = 1 - holdingtotal / $portfolio.value;
 
-	console.log('unallocated', unallocated);
-
 	// Add the unallocated cash
 	if (unallocated < 1) {
 		updatedHoldings = [
@@ -133,9 +131,6 @@ export const portfolioDetails = derived(portfolio, ($portfolio) => {
 	const totalCost = updatedHoldings.reduce((acc, holding) => acc + holding.cost, 0);
 
 	const totalCostPercentage = totalCost / $portfolio.value;
-
-	console.log('totalCost', totalCost);
-	console.log('value', $portfolio.value);
 
 	return {
 		holdings: updatedHoldings,

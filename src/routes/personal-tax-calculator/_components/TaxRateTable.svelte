@@ -1,75 +1,68 @@
 <script lang="ts">
 	import type { TaxRateConfiguration } from '../../portfolio-builder/types';
 	import { formatAsPercentage, formatAsCurrency } from '$lib/utils/formatters';
-	import {
-		Table,
-		TableBody,
-		TableBodyCell,
-		TableBodyRow,
-		TableHead,
-		TableHeadCell
-	} from 'flowbite-svelte';
+	import Card from '$lib/components/ui/Card.svelte';
 
 	export let taxRates: TaxRateConfiguration;
 
 	function formatMax(max: number) {
-		return max === Infinity ? '+' : ` - ${formatAsCurrency(max, false, true)}`;
+		return max === Infinity ? '+' : ` - ${formatAsCurrency(max, false)}`;
 	}
 </script>
 
 <section class="w-full grid grid-cols-1 max-w-[600px] gap-10">
-	<div>
+	<Card>
 		<h3>Income Tax</h3>
-		<Table>
-			<TableHead>
-				<TableHeadCell>Taxable Income</TableHeadCell>
-				<TableHeadCell>Rate</TableHeadCell>
-			</TableHead>
-			<TableBody>
+		<table>
+			<thead>
+				<th>Taxable Income</th>
+				<th>Rate</th>
+			</thead>
+			<tbody>
 				{#each taxRates.incomeTax.brackets as { min, max, rate }}
-					<TableBodyRow>
-						<TableBodyCell>
-							{formatAsCurrency(min, false, true)}{formatMax(max)}
-						</TableBodyCell>
-						<TableBodyCell>{formatAsPercentage(rate)}</TableBodyCell>
-					</TableBodyRow>
+					<tr>
+						<td>
+							{formatAsCurrency(min, false)}{formatMax(max)}
+						</td>
+						<td>{formatAsPercentage(rate)}</td>
+					</tr>
 				{/each}
-			</TableBody>
-		</Table>
-	</div>
-	<div>
+			</tbody>
+		</table>
+	</Card>
+	<Card>
 		<h3>Medicare Levy</h3>
-		<Table>
-			<TableHead>
-				<TableHeadCell>Condition</TableHeadCell>
-				<TableHeadCell>Rate</TableHeadCell>
-			</TableHead>
-			<TableBody>
-				<TableBodyRow>
-					<TableBodyCell>General Rate</TableBodyCell>
-					<TableBodyCell>{formatAsPercentage(taxRates.medicareLevy.rate)}</TableBodyCell>
-				</TableBodyRow>
+		<table>
+			<thead>
+				<th>Condition</th>
+				<th>Rate</th>
+			</thead>
+			<tbody>
+				<tr>
+					<td>General Rate</td>
+					<td>{formatAsPercentage(taxRates.medicareLevy.rate)}</td>
+				</tr>
 				<!-- Iterate over offsets if needed -->
-			</TableBody>
-		</Table>
-	</div>
-	<div>
+			</tbody>
+		</table>
+	</Card>
+	<Card>
 		<h3>Medicare Levy Surcharge</h3>
-		<Table>
-			<TableHead>
-				<TableHeadCell>Taxable Income</TableHeadCell>
-				<TableHeadCell>Rate</TableHeadCell>
-			</TableHead>
-			<TableBody>
+		<table>
+			<thead>
+				<th>Taxable Income</th>
+				<th>Rate</th>
+			</thead>
+			<tbody>
 				{#each taxRates.medicareLevySurcharge as { min, max, rate }}
-					<TableBodyRow>
-						<TableBodyCell>
-							{formatAsCurrency(min, false, true)}{formatMax(max)}
-						</TableBodyCell>
-						<TableBodyCell>{formatAsPercentage(rate)}</TableBodyCell>
-					</TableBodyRow>
+					<tr>
+						<td>
+							{formatAsCurrency(min, false)}{formatMax(max)}
+						</td>
+						<td>{formatAsPercentage(rate)}</td>
+					</tr>
 				{/each}
-			</TableBody>
-		</Table>
-	</div>
+			</tbody>
+		</table>
+	</Card>
 </section>

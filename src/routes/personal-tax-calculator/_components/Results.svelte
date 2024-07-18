@@ -16,9 +16,10 @@
 
 	import { formatAsCurrency } from '$lib/utils/formatters';
 	import ResultsTable from './ResultsTable.svelte';
-	import ViewToggle from '$lib/components/ui/Tabs.svelte';
-	import PieChart from '$lib/components/charts/PieChart.svelte';
+
 	import TaxBand from './TaxBand.svelte';
+	import DoughnutChart from '$lib/components/charts/DoughnutChart.svelte';
+	import Tabs from '$lib/components/ui/Tabs.svelte';
 
 	let viewOptions = [
 		{ label: 'Chart', value: 'chart' },
@@ -36,7 +37,7 @@
 		<div class=" p-3 bg-slate-800 mb-3">
 			<h2 class="text-sm">Taxable Income</h2>
 			<p class="font-semibold text-lg md:text-xl">
-				{formatAsCurrency(results.income - results.deductions, false, true)}
+				{formatAsCurrency(results.income - results.deductions, false)}
 			</p>
 		</div>
 	</div>
@@ -44,31 +45,36 @@
 		<div class=" p-3 bg-slate-800">
 			<p class="text-sm">Income Tax</p>
 			<p class="font-semibold text-lg md:text-xl">
-				{formatAsCurrency(results.incomeTax, false, true)}
+				{formatAsCurrency(results.incomeTax, false)}
 			</p>
 		</div>
 		<div class=" p-3 bg-slate-800">
 			<p class="text-sm">Medicare Levy</p>
 			<p class="font-semibold text-lg md:text-xl">
-				{formatAsCurrency(results.medicareLevy, false, true)}
+				{formatAsCurrency(results.medicareLevy, false)}
 			</p>
 		</div>
 		<div class=" p-3 bg-slate-800">
 			<p class="text-sm">Medicare Levy Surcharge</p>
 			<p class="font-semibold text-lg md:text-xl">
-				{formatAsCurrency(results.medicareLevySurcharge, false, true)}
+				{formatAsCurrency(results.medicareLevySurcharge, false)}
 			</p>
 		</div>
 	</div>
-	<ViewToggle {viewOptions} bind:selectedView />
-
+	<!-- <ViewToggle {viewOptions} bind:selectedView /> -->
+	<Tabs options={viewOptions} bind:selectedView />
 	{#if selectedView === 'chart'}
 		<div class="flex justify-start gap-10 flex-wrap md:flex-row flex-col">
 			<div class="min-w-[300px] flex-1">
 				<h3>Breakdown</h3>
-				<PieChart
-					labels={['Taxable Income', 'Tax']}
-					dataValues={[taxableIncome, results.totalTax]}
+
+				<DoughnutChart
+					formatter={formatAsCurrency}
+					data={[
+						{ label: 'Income Tax', value: results.incomeTax },
+						{ label: 'Medicare Levy', value: results.medicareLevy },
+						{ label: 'Medicare Levy Surcharge', value: results.medicareLevySurcharge }
+					]}
 				/>
 			</div>
 			<div class="min-w-[300px] flex-1">

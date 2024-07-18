@@ -4,8 +4,8 @@
 	import { addHolding } from '../store';
 	import { INVESTMENTS } from '../constants';
 	import PercentageInput from '$lib/components/inputs/PercentageInput.svelte';
-	import { Search } from 'flowbite-svelte';
 	import SearchInput from '$lib/components/inputs/SearchInput.svelte';
+
 	let isModalOpen = false;
 	let searchTerm = '';
 	let newHoldings: Holding[] = [];

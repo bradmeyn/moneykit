@@ -27,7 +27,7 @@
 			type="text"
 			{name}
 			id={name}
-			class="bg-transparent text-sm block w-full border-none focus:ring-0 sm:text-sm text-white placeholder-slate-400"
+			class="bg-transparent text-sm block w-full focus:outline-none border-none focus:ring-0 sm:text-sm text-white placeholder-slate-400"
 			placeholder="0.00"
 			aria-describedby="currency-symbol"
 			aria-labelledby="currency-symbol"

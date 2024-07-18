@@ -4,7 +4,7 @@
 </script>
 
 <button
-	class="block md:hidden text-white p-1 hover:text-brand-default z-40"
+	class="block md:hidden text-white p-1 hover:text-brand-default"
 	on:click={() => {
 		isOpen = !isOpen;
 	}}

@@ -36,10 +36,10 @@
 			style="height: {widthPercent}%; background: linear-gradient(to top, #065F46 0%, #065F46 {fillPercent}%, transparent {fillPercent}%, transparent 100%)"
 		>
 			{#if max === Infinity}
-				<div>Over {formatAsCurrency(min, false, true)}</div>
+				<div>Over {formatAsCurrency(min, false)}</div>
 			{:else}
 				<div>
-					{formatAsCurrency(min, false, true)} - {formatAsCurrency(max, false, true)}
+					{formatAsCurrency(min, false)} - {formatAsCurrency(max, false)}
 				</div>
 			{/if}
 			<div class="text-2xl">{formatAsPercentage(rate)}</div>

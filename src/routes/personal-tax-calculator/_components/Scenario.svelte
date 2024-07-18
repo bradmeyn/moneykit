@@ -3,6 +3,7 @@
 	import TaxRateTable from './TaxRateTable.svelte';
 	import { getTaxRates, calculatePersonalTax } from '$lib/utils/formatters';
 	import Results from './Results.svelte';
+	import Card from '$lib/components/ui/Card.svelte';
 
 	// Inputs
 	let financialYear = 2023;
@@ -38,6 +39,7 @@
 	<aside class="max-w-[600px] min-w-[300px]">
 		<Inputs bind:income bind:deductions bind:hasInsurance bind:financialYear />
 	</aside>
+
 	<section class="w-full">
 		{#if income > 0 && taxRates}
 			<Results {results} {taxRates} />

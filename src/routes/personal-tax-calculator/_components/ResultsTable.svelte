@@ -9,14 +9,6 @@
 		totalTax: number;
 	};
 
-	import {
-		Table,
-		TableBody,
-		TableBodyCell,
-		TableBodyRow,
-		TableHead,
-		TableHeadCell
-	} from 'flowbite-svelte';
 	// props
 	export let results: Props;
 	import { formatAsCurrency } from '$lib/utils/formatters';
@@ -24,64 +16,59 @@
 
 <div class="grid grid-cols-1 md:grid-cols-2 gap-10 w-full">
 	<div>
-		<Table>
-			<TableHead>
-				<TableHeadCell>Detail</TableHeadCell>
-				<TableHeadCell>Value ($)</TableHeadCell>
-			</TableHead>
-			<TableBody>
-				<TableBodyRow>
-					<TableBodyCell>Income</TableBodyCell>
-					<TableBodyCell>{formatAsCurrency(results.income, false, true)}</TableBodyCell>
-				</TableBodyRow>
-				<TableBodyRow>
-					<TableBodyCell>Deductions</TableBodyCell>
-					<TableBodyCell>{formatAsCurrency(results.deductions, false, true)}</TableBodyCell>
-				</TableBodyRow>
-				<TableBodyRow>
-					<TableBodyCell>Taxable Income</TableBodyCell>
-					<TableBodyCell
-						>{formatAsCurrency(results.income - results.deductions, false, true)}</TableBodyCell
-					>
-				</TableBodyRow>
-			</TableBody>
-		</Table>
+		<table>
+			<thead>
+				<th>Detail</th>
+				<th>Value ($)</th>
+			</thead>
+			<tbody>
+				<tr>
+					<td>Income</td>
+					<td>{formatAsCurrency(results.income, false)}</td>
+				</tr>
+				<tr>
+					<td>Deductions</td>
+					<td>{formatAsCurrency(results.deductions, false)}</td>
+				</tr>
+				<tr>
+					<td>Taxable Income</td>
+					<td>{formatAsCurrency(results.income - results.deductions, false)}</td>
+				</tr>
+			</tbody>
+		</table>
 	</div>
 
 	<div>
-		<Table>
-			<TableHead>
-				<TableHeadCell>Detail</TableHeadCell>
-				<TableHeadCell>Value ($)</TableHeadCell>
-			</TableHead>
-			<TableBody>
-				<TableBodyRow>
-					<TableBodyCell>Income Tax</TableBodyCell>
-					<TableBodyCell>{formatAsCurrency(results.incomeTax, false, true)}</TableBodyCell>
-				</TableBodyRow>
+		<table>
+			<thead>
+				<th>Detail</th>
+				<th>Value ($)</th>
+			</thead>
+			<tbody>
+				<tr>
+					<td>Income Tax</td>
+					<td>{formatAsCurrency(results.incomeTax, false)}</td>
+				</tr>
 				{#if results.lowIncomeOffset > 0}
-					<TableBodyRow>
-						<TableBodyCell>Low Income Offset</TableBodyCell>
-						<TableBodyCell>({formatAsCurrency(results.lowIncomeOffset, false, true)})</TableBodyCell
-						>
-					</TableBodyRow>
+					<tr>
+						<td>Low Income Offset</td>
+						<td>({formatAsCurrency(results.lowIncomeOffset, false)})</td>
+					</tr>
 				{/if}
 
-				<TableBodyRow>
-					<TableBodyCell>Medicare Levy</TableBodyCell>
-					<TableBodyCell>{formatAsCurrency(results.medicareLevy, false, true)}</TableBodyCell>
-				</TableBodyRow>
-				<TableBodyRow>
-					<TableBodyCell>Medicare Levy Surcharge</TableBodyCell>
-					<TableBodyCell
-						>{formatAsCurrency(results.medicareLevySurcharge, false, true)}</TableBodyCell
-					>
-				</TableBodyRow>
-				<TableBodyRow>
-					<TableBodyCell>Total Tax Payable</TableBodyCell>
-					<TableBodyCell>{formatAsCurrency(results.totalTax, false, true)}</TableBodyCell>
-				</TableBodyRow>
-			</TableBody>
-		</Table>
+				<tr>
+					<td>Medicare Levy</td>
+					<td>{formatAsCurrency(results.medicareLevy, false)}</td>
+				</tr>
+				<tr>
+					<td>Medicare Levy Surcharge</td>
+					<td>{formatAsCurrency(results.medicareLevySurcharge, false)}</td>
+				</tr>
+				<tr>
+					<td>Total Tax Payable</td>
+					<td>{formatAsCurrency(results.totalTax, false)}</td>
+				</tr>
+			</tbody>
+		</table>
 	</div>
 </div>

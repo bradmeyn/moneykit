@@ -3,7 +3,7 @@
 </script>
 
 <main class="flex flex-col flex-1 container mx-auto text-white">
-	<h1>Personal Tax Calculator</h1>
+	<h1 class="mb-4">Personal Tax Calculator</h1>
 
 	<Scenario />
 </main>

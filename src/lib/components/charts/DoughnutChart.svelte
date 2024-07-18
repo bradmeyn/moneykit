@@ -8,11 +8,10 @@
 		Legend,
 		type ChartConfiguration
 	} from 'chart.js';
-	import { formatAsPercentage } from '$lib/utils/formatters';
 
 	// Props
 	export let data: { label: string; value: number }[];
-
+	export let formatter: (value: number) => string;
 	$: labels = data.map((item) => item.label);
 	$: values = data.map((item) => item.value);
 
@@ -45,14 +44,13 @@
 					tooltip: {
 						callbacks: {
 							label: function (context) {
-								return formatAsPercentage(context.parsed);
+								return formatter(context.parsed);
 							}
 						},
 						boxPadding: 5
 					},
 					legend: {
 						display: false,
-
 						labels: {
 							font: {
 								family: 'sans-serif',

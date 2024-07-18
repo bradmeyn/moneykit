@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Card from '$lib/components/ui/Card.svelte';
+	import * as colors from 'tailwindcss/colors';
 	import { onMount } from 'svelte';
 	import {
 		Chart,
@@ -34,7 +34,6 @@
 						label: 'Principal',
 						data: startingByYear,
 						backgroundColor: '#065F46',
-
 						borderRadius: 5
 					},
 					{
@@ -67,19 +66,23 @@
 								size: 16,
 								family: 'sans-serif'
 							},
-							color: '#E2E8F0'
+							color: colors.slate[100]
 						},
 						ticks: {
-							color: '#CBD5E1'
+							color: colors.slate[100]
 						}
 					},
 					y: {
 						stacked: true,
+						grid: {
+							display: true,
+							color: colors.slate[600]
+						},
 						beginAtZero: true,
 						ticks: {
-							callback: (value) => formatAsCurrency(+value, false, true),
+							callback: (value) => formatAsCurrency(+value, false),
 							font: {
-								size: 12,
+								size: 14,
 								family: 'sans-serif'
 							},
 							color: '#CBD5E1'
@@ -116,12 +119,12 @@
 								const label = context.dataset.label || '';
 								const value = context.parsed.y || 0;
 
-								return `${label}: ${formatAsCurrency(value, false, true)}`;
+								return `${label}: ${formatAsCurrency(value, false)}`;
 							}
 						}
 					},
 					legend: {
-						display: true,
+						display: false,
 						labels: {
 							font: {
 								size: 14,

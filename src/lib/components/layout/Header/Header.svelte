@@ -21,7 +21,7 @@
 </script>
 
 <header class="h-16 relative">
-	<div class="container h-full flex justify-between items-center relative z-20">
+	<div class="container h-full flex justify-between items-center relative">
 		<div class="flex items-center gap-8">
 			<a href="/" class="flex items-center gap-2">
 				<span class="text-white font-semibold text-xl"
@@ -41,7 +41,5 @@
 		</div>
 		<Hamburger bind:isOpen />
 	</div>
-	<NavbarMobile bind:isOpen {links}>
-		<Hamburger bind:isOpen />
-	</NavbarMobile>
+	<NavbarMobile bind:isOpen {links} />
 </header>

@@ -35,7 +35,7 @@
 			/> -->
 		</td>
 	{:else}
-		<td>{formatAsPercentage(holding.allocation)}</td>
+		<td>{formatAsPercentage(holding.allocation)} </td>
 	{/if}
 	{#if holding.investment.code !== 'CASH'}
 		<td>{formatAsPercentage(holding.investment.cost)}</td>

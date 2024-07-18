@@ -1,6 +1,6 @@
 <script lang="ts">
 	import CurrencyInput from '$lib/components/inputs/CurrencyInput.svelte';
-	import { Checkbox, Select, Label } from 'flowbite-svelte';
+	import Checkbox from '$lib/components/inputs/Checkbox.svelte';
 	import { TAX_YEARS } from '$lib/constants';
 
 	// props
@@ -10,13 +10,18 @@
 	export let financialYear: number = 2024;
 </script>
 
-<h2>Inputs</h2>
+<h2 class="mb-2">Inputs</h2>
 
-<Label defaultClass="mb-4 space-y-1 block ">
-	<div class="text-sm text-slate-200">Financial Year</div>
-	<Select class="h-full  rounded" items={TAX_YEARS} bind:value={financialYear} />
-</Label>
-
-<CurrencyInput label="Income" bind:value={income} inputClass={'mb-4'} />
-<CurrencyInput label="Deductions" bind:value={deductions} inputClass={'mb-4'} />
-<Checkbox label="Private insurance" bind:checked={hasInsurance}>Private insurance</Checkbox>
+<div class="space-y-3">
+	<div>
+		<label for="financial-year">Financial Year</label>
+		<select id="financial-year" bind:value={financialYear}>
+			{#each TAX_YEARS as option}
+				<option value={option.value}>{option.name}</option>
+			{/each}
+		</select>
+	</div>
+	<CurrencyInput label="Income" bind:value={income} />
+	<CurrencyInput label="Deductions" bind:value={deductions} />
+	<Checkbox label="Private insurance" bind:checked={hasInsurance} name="private-insurance" />
+</div>

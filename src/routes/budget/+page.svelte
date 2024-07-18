@@ -7,6 +7,7 @@
 	import BudgetCategory from './_components/BudgetCategory.svelte';
 	import { budget } from './store';
 	import BudgetAdd from './_components/BudgetAdd.svelte';
+	import BarChart from '$lib/components/charts/BarChart.svelte';
 
 	$: chartData = $budget.expenseByCategory.map((item) => ({
 		label: item.category,
@@ -17,7 +18,7 @@
 <main class="flex flex-col flex-1 container mx-auto text-white">
 	<h1 class="mb-4">Budget</h1>
 
-	<div class="flex flex-col md:flex-row gap-4 w-full">
+	<div class="flex flex-col lg:flex-row gap-4 w-full">
 		<div class="flex-1 max-w-[800px] flex gap-4 flex-col">
 			<Card>
 				<h2 class="text-sm font-semibold text-brand-light">Income</h2>
@@ -86,9 +87,31 @@
 			</Card>
 		</div>
 
-		<Card classes="h-fit">
-			<DoughnutChart data={chartData} />
-			<LegendList data={chartData} formatter={formatAsCurrency} />
-		</Card>
+		<div class="flex flex-row lg:flex-col gap-4">
+			<Card classes="h-fit">
+				<DoughnutChart data={chartData} formatter={formatAsCurrency} />
+				<LegendList data={chartData} formatter={formatAsCurrency} />
+			</Card>
+			<Card classes="h-fit">
+				<BarChart
+					data={[
+						{
+							label: 'Income',
+							value: $budget.annualIncome
+						},
+						{
+							label: 'Expenses',
+							value: $budget.annualExpenses
+						},
+						{
+							label: 'Savings',
+							value: $budget.annualSavings
+						}
+					]}
+					formatter={formatAsCurrency}
+				/>
+				<LegendList data={chartData} formatter={formatAsCurrency} />
+			</Card>
+		</div>
 	</div>
 </main>

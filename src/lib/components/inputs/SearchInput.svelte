@@ -7,9 +7,7 @@
 
 <div class={`w-full ${$$restProps.class}`}>
 	<label class={`mb-1 ${label ? 'block' : 'hidden'}`} for={name}>{label}</label>
-	<div
-		class="relative px-2 rounded sm:text-sm flex bg-slate-700 shadow-sm focus-within:ring-2 focus-within:ring-brand-default w-full"
-	>
+	<div class="input-base">
 		<div class="flex items-center pointer-events-none text-brand-default">
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
@@ -30,7 +28,6 @@
 			type="text"
 			{name}
 			id={name}
-			class="bg-transparent text-sm block w-full border-none focus:ring-0 sm:text-sm text-white placeholder-slate-400"
 			{placeholder}
 			aria-describedby="currency-symbol"
 			aria-labelledby="currency-symbol"

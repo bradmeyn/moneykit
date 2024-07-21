@@ -23,7 +23,7 @@
 	</div>
 	<PercentageInput label="Interest Rate" bind:value={interestRate} />
 	<div>
-		<label class="mb-1 block" for="years">Years</label>
-		<input id={'years'} bind:value={years} type="number" />
+		<label for="years">Years</label>
+		<input id={'years'} bind:value={years} class="input-base" type="number" />
 	</div>
 </div>

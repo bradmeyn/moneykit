@@ -1,11 +1,8 @@
 <script lang="ts">
 	import { formatAsCurrency } from '$lib/utils/formatters';
-	import Card from '$lib/components/ui/Card.svelte';
+	import type { AnnualData } from '../types';
 
-	export let chartYears: number[];
-	export let interestByYear: number[];
-	export let contributionsByYear: number[];
-	export let principal: number;
+	export let annualData: AnnualData[];
 </script>
 
 <div class="w-full">
@@ -20,21 +17,13 @@
 			</tr>
 		</thead>
 		<tbody>
-			{#each chartYears as year, i}
+			{#each annualData as data}
 				<tr>
-					<td>{year}</td>
-					<td>
-						{#if i === 0}
-							{formatAsCurrency(principal)}
-						{:else}
-							{formatAsCurrency(principal + interestByYear[i - 1] + contributionsByYear[i - 1])}
-						{/if}
-					</td>
-					<td>{formatAsCurrency(interestByYear[i])}</td>
-					<td>{formatAsCurrency(contributionsByYear[i])}</td>
-					<td>
-						{formatAsCurrency(principal + interestByYear[i] + contributionsByYear[i])}
-					</td>
+					<td>{data.year}</td>
+					<td>{formatAsCurrency(data.startingValue)}</td>
+					<td>{formatAsCurrency(data.yearlyInterest)}</td>
+					<td>{formatAsCurrency(data.yearlyContribution)}</td>
+					<td>{formatAsCurrency(data.endingValue)}</td>
 				</tr>
 			{/each}
 		</tbody>

@@ -1,0 +1,41 @@
+import type { CompoundInterestResult } from './types';
+
+export function calculateCompoundInterest(
+	principal: number = 0,
+	interestRate: number = 0,
+	years: number = 0,
+	contributionAmount: number = 0,
+	contributionFrequency: number = 0
+): CompoundInterestResult {
+	let totalValue = principal;
+	let totalInterest = 0;
+	let totalContributions = 0;
+
+	const annualData = [];
+
+	for (let i = 0; i < years; i++) {
+		const startingValue = parseFloat(totalValue.toFixed(2));
+		const yearlyInterest = totalValue * (interestRate / 100);
+		totalInterest += yearlyInterest;
+		const yearlyContribution = contributionAmount * contributionFrequency;
+		totalContributions += yearlyContribution;
+		totalValue += yearlyInterest + yearlyContribution;
+
+		annualData.push({
+			year: i + 1,
+			startingValue,
+			yearlyInterest: parseFloat(yearlyInterest.toFixed(2)),
+			totalInterest: parseFloat(totalInterest.toFixed(2)),
+			yearlyContribution: parseFloat(yearlyContribution.toFixed(2)),
+			totalContributions: parseFloat(totalContributions.toFixed(2)),
+			endingValue: parseFloat(totalValue.toFixed(2))
+		});
+	}
+
+	return {
+		totalValue,
+		totalInterest,
+		totalContributions,
+		annualData
+	};
+}

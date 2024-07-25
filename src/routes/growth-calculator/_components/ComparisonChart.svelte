@@ -1,5 +1,4 @@
 <script lang="ts">
-	import * as colors from 'tailwindcss/colors';
 	import { onMount } from 'svelte';
 	import {
 		Chart,
@@ -10,56 +9,49 @@
 		Legend,
 		Tooltip
 	} from 'chart.js';
-	import { formatAsCurrency } from '$lib/utils/formatters';
-	import type { AnnualData } from '../types';
-	import { MONOCHROME } from '$lib/constants/colours';
+	import { COLOURFUL, MONOCHROME } from '$lib/constants/colours';
+	import colors from 'tailwindcss/colors';
+
+	import type { AnnualData, Result } from '../types';
 
 	// props
-	export let data: AnnualData[] = [];
+	export let formatter: (value: number) => string;
+	export let theme: 'monochrome' | 'colourful' = 'monochrome';
+	export let results: Result[];
 
-	$: years = data.map((item) => item.year);
-
+	const colours = theme === 'monochrome' ? MONOCHROME : COLOURFUL;
 	let chartId: HTMLCanvasElement;
 	let chart: Chart;
 
-	// Register the BarController and BarElement
+	// determine longest data set
+	let longests = results.reduce((acc, result) => {
+		return result.annualData.length > acc ? result.annualData.length : acc;
+	}, 0);
+	$: labels = Array.from({ length: longests }, (_, i) => i + 1);
+	$: datasets = results.map((result) => {
+		return {
+			label: `Scenario ${result.id}`,
+			data: result.annualData.map((item: AnnualData) => item.endingValue),
+			backgroundColor: colours[results.indexOf(result)],
+			borderRadius: 2
+		};
+	});
+
+	// Register the LineController and LineElement
 	Chart.register(BarController, BarElement, CategoryScale, LinearScale, Legend, Tooltip);
 
 	onMount(() => {
 		chart = new Chart(chartId, {
 			type: 'bar',
 			data: {
-				labels: years,
-				datasets: [
-					{
-						label: 'Principal',
-						data: Array.from({ length: years.length }, (_, i) => data[0].startingValue),
-						backgroundColor: MONOCHROME[0],
-						borderRadius: 5
-					},
-					{
-						label: 'Contributions',
-						data: data.map((item) => item.totalContributions),
-						backgroundColor: MONOCHROME[1],
-						borderRadius: 5
-					},
-					{
-						label: 'Interest',
-						data: data.map((item) => item.totalInterest),
-						backgroundColor: MONOCHROME[2],
-						borderRadius: 5
-					}
-				]
+				labels,
+				datasets
 			},
 			options: {
 				maintainAspectRatio: false,
 				responsive: true,
 				scales: {
 					x: {
-						stacked: true,
-						grid: {
-							display: false
-						},
 						title: {
 							display: true,
 							text: 'Year',
@@ -74,14 +66,13 @@
 						}
 					},
 					y: {
-						stacked: true,
 						grid: {
 							display: true,
 							color: colors.slate[600]
 						},
 						beginAtZero: true,
 						ticks: {
-							callback: (value) => formatAsCurrency(+value, false),
+							callback: (value) => formatter(+value),
 							font: {
 								size: 14,
 								family: 'sans-serif'
@@ -120,20 +111,12 @@
 								const label = context.dataset.label || '';
 								const value = context.parsed.y || 0;
 
-								return `${label}: ${formatAsCurrency(value, false)}`;
+								return `${label}: ${formatter(value)}`;
 							}
 						}
 					},
 					legend: {
-						display: false,
-						labels: {
-							font: {
-								size: 14,
-								family: 'Inter'
-							},
-							color: 'white',
-							boxWidth: 15
-						}
+						display: false
 					}
 				}
 			}
@@ -141,13 +124,8 @@
 	});
 
 	$: if (chart) {
-		chart.data.labels = years;
-		(chart.data.datasets[0].data = Array.from(
-			{ length: years.length },
-			(_, i) => data[0].startingValue
-		)),
-			(chart.data.datasets[1].data = data.map((item) => item.totalContributions));
-		chart.data.datasets[2].data = data.map((item) => item.totalInterest);
+		chart.data.labels = labels;
+		chart.data.datasets = datasets;
 		chart.update();
 	}
 </script>

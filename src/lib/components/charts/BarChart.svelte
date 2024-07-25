@@ -9,11 +9,14 @@
 		Legend,
 		Tooltip
 	} from 'chart.js';
+	import { COLOURFUL, MONOCHROME } from '$lib/constants/colours';
 
 	// props
 	export let data: { label: string; value: number }[];
-	export let chartColors: string[] = ['#065F46', '#10B981', '#A7F3D0'];
 	export let formatter: (value: number) => string;
+	export let theme: 'monochrome' | 'colourful' = 'monochrome';
+
+	const colours = theme === 'monochrome' ? MONOCHROME : COLOURFUL;
 	$: labels = data.map((item) => item.label);
 	$: values = data.map((item) => item.value);
 
@@ -31,7 +34,7 @@
 				datasets: [
 					{
 						data: data.map((item) => item.value),
-						backgroundColor: chartColors,
+						backgroundColor: colours,
 						borderWidth: 0,
 						borderRadius: 5
 					}
@@ -96,7 +99,7 @@
 	$: if (chart) {
 		chart.data.labels = labels;
 		chart.data.datasets[0].data = values;
-		chart.data.datasets[0].backgroundColor = chartColors;
+		chart.data.datasets[0].backgroundColor = colours;
 
 		chart.update();
 	}

@@ -1,6 +1,6 @@
 import { INVESTMENTS, UNALLOCATED_INVESTMENT } from '$lib/constants';
 import { writable, derived } from 'svelte/store';
-import type { Holding } from '$lib/types';
+import type { Holding } from './types';
 
 // // Define the base structure for your portfolio
 export const portfolio = writable({

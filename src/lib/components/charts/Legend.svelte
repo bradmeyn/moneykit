@@ -3,7 +3,6 @@
 
 	export let labels: string[] = [];
 	export let theme: 'monochrome' | 'colourful' = 'monochrome';
-
 	const colours = theme === 'monochrome' ? MONOCHROME : COLOURFUL;
 </script>
 

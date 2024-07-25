@@ -7,7 +7,7 @@
 	import { formatAsCurrency } from '$lib/utils/formatters';
 	import Legend from '$lib/components/charts/Legend.svelte';
 	import type { Result, Scenario } from './types';
-
+	import LegendList from '$lib/components/charts/LegendList.svelte';
 
 	export let scenario: Scenario;
 	export let result: Result;
@@ -29,7 +29,7 @@
 			bind:years={scenario.years}
 		/>
 	</aside>
-	<Card classes="p-3 mb-4 w-full relative">
+	<Card class="w-full">
 		<div class="w-full">
 			<div class="flex justify-between mb-3">
 				<div>
@@ -41,8 +41,18 @@
 				<ViewToggle {options} bind:selectedView />
 			</div>
 			{#if selectedView === 'chart'}
-				<Legend class="flex justify-center" labels={['Principle', 'Contributions', 'Interest']} />
-				<!-- <Chart {chartYears} {contributionsByYear} {interestByYear} {startingByYear} /> -->
+				<Chart data={result.annualData} />
+				<div class="md:max-w-xs">
+					<p class="text-sm font-semibold text-brand-light">Breakdown</p>
+					<LegendList
+						formatter={formatAsCurrency}
+						data={[
+							{ label: 'Principle', value: result.annualData[0].startingValue },
+							{ label: 'Contributions', value: result.annualData[0].totalContributions },
+							{ label: 'Interest', value: result.annualData[0].totalInterest }
+						]}
+					/>
+				</div>
 			{:else if selectedView === 'table'}
 				<Table annualData={result.annualData} />
 			{/if}

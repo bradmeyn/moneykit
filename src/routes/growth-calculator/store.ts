@@ -36,11 +36,11 @@ export function addScenario() {
 		...currentScenarios,
 		{
 			id: currentScenarios.length + 1,
-			principal: 0,
-			contributionAmount: 0,
-			interestRate: 0,
-			contributionFrequency: 12,
-			years: 1
+			principal: currentScenarios[currentScenarios.length - 1].principal,
+			contributionAmount: currentScenarios[currentScenarios.length - 1].contributionAmount,
+			interestRate: currentScenarios[currentScenarios.length - 1].interestRate,
+			contributionFrequency: currentScenarios[currentScenarios.length - 1].contributionFrequency,
+			years: currentScenarios[currentScenarios.length - 1].years
 		}
 	]);
 }

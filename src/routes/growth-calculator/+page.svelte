@@ -3,11 +3,13 @@
 	import Scenario from './Scenario.svelte';
 	import { CirclePlus } from 'lucide-svelte';
 	import ScenarioTabs from '$lib/components/ui/ScenarioTabs.svelte';
+	import Comparison from './_components/Comparison.svelte';
 
 	let activeScenarioId: number = $scenarios[0]?.id;
 
 	function handleAddScenario() {
 		addScenario();
+		activeScenarioId = $scenarios[$scenarios.length - 1].id;
 	}
 </script>
 
@@ -27,4 +29,9 @@
 			<Scenario {result} bind:scenario={$scenarios[i]} />
 		{/if}
 	{/each}
+
+	<!-- Comparison -->
+	{#if activeScenarioId === 0}
+		<Comparison />
+	{/if}
 </main>

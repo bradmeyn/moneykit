@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { CirclePlus } from 'lucide-svelte';
+	import { CirclePlus, Plus } from 'lucide-svelte';
 	export let scenarioIds: number[];
 	export let activeScenarioId = 1;
 	export let onAdd;
@@ -32,10 +32,10 @@
 	</div>
 	{#if scenarioIds.length < 3}
 		<button
-			class="flex gap-1 p-2 items-center rounded-lg text-sm justify-center text-white"
+			class="flex gap-1 p-1 items-center text-sm justify-center text-slate-400 hover:text-brand-default hover:bg-slate-700 rounded-full"
 			on:click={onAdd}
 		>
-			<CirclePlus class="size-5 text-brand-default" />
+			<Plus class="size-4" />
 		</button>
 	{/if}
 </div>

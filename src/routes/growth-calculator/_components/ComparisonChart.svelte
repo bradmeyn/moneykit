@@ -2,8 +2,9 @@
 	import { onMount } from 'svelte';
 	import {
 		Chart,
-		BarController,
-		BarElement,
+		LineElement,
+		PointElement,
+		LineController,
 		CategoryScale,
 		LinearScale,
 		Legend,
@@ -32,17 +33,27 @@
 		return {
 			label: `Scenario ${result.id}`,
 			data: result.annualData.map((item: AnnualData) => item.endingValue),
-			backgroundColor: colours[results.indexOf(result)],
-			borderRadius: 2
+			borderColor: colours[results.indexOf(result)],
+			backgroundColor: colours[results.indexOf(result)] + '40', // Add some transparency
+			fill: false,
+			tension: 0.1 // Adds a slight curve to the line
 		};
 	});
 
-	// Register the LineController and LineElement
-	Chart.register(BarController, BarElement, CategoryScale, LinearScale, Legend, Tooltip);
+	// Register the necessary components for a line chart
+	Chart.register(
+		LineController,
+		LineElement,
+		PointElement,
+		CategoryScale,
+		LinearScale,
+		Legend,
+		Tooltip
+	);
 
 	onMount(() => {
 		chart = new Chart(chartId, {
-			type: 'bar',
+			type: 'line',
 			data: {
 				labels,
 				datasets
@@ -87,7 +98,6 @@
 						position: 'nearest',
 						mode: 'index',
 						intersect: false,
-
 						bodyAlign: 'right',
 						titleFont: {
 							size: 18
@@ -102,15 +112,12 @@
 							left: 16,
 							right: 16
 						},
-
 						bodyColor: 'white',
-
 						callbacks: {
 							title: (tooltip) => `After ${tooltip[0].label} Years`,
 							label: (context) => {
 								const label = context.dataset.label || '';
 								const value = context.parsed.y || 0;
-
 								return `${label}: ${formatter(value)}`;
 							}
 						}

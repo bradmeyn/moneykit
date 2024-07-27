@@ -11,9 +11,15 @@
 
 	// Handle input event
 	function handleInput(event: Event) {
-		const target = event.target as HTMLInputElement;
-		const newValue = target.value.replace(/[^0-9.]+/g, '');
-		value = +newValue;
+		const input = event.target as HTMLInputElement;
+		// change value to a number
+		const number = parseInt(input.value);
+		if (!isNaN(number) && number >= 0) {
+			const newValue = input.value.replace(/[^0-9.]+/g, '');
+			value = +newValue;
+		} else {
+			input.value = '';
+		}
 	}
 </script>
 

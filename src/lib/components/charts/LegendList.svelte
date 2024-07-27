@@ -3,9 +3,9 @@
 
 	export let data: { label: string; value: number }[];
 	export let formatter: (value: number) => string;
-	export let colourTheme: 'monochrome' | 'colourful' = 'monochrome';
+	export let theme: 'monochrome' | 'colourful' = 'monochrome';
 
-	const colours = colourTheme === 'monochrome' ? MONOCHROME : COLOURFUL;
+	const colours = theme === 'monochrome' ? MONOCHROME : COLOURFUL;
 </script>
 
 <div class={$$restProps.class}>

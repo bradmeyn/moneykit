@@ -89,8 +89,8 @@
 
 		<div class="flex flex-row lg:flex-col gap-4">
 			<Card classes="h-fit">
-				<DoughnutChart data={chartData} formatter={formatAsCurrency} />
-				<LegendList data={chartData} formatter={formatAsCurrency} />
+				<DoughnutChart data={chartData} formatter={formatAsCurrency} theme={'colourful'} />
+				<LegendList data={chartData} formatter={formatAsCurrency} theme={'colourful'} />
 			</Card>
 			<Card classes="h-fit">
 				<BarChart

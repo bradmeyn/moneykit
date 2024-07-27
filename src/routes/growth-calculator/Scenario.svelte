@@ -5,7 +5,6 @@
 	import Table from './_components/Table.svelte';
 	import Card from '$lib/components/ui/Card.svelte';
 	import { formatAsCurrency } from '$lib/utils/formatters';
-	import Legend from '$lib/components/charts/Legend.svelte';
 	import type { Result, Scenario } from './types';
 	import LegendList from '$lib/components/charts/LegendList.svelte';
 
@@ -31,7 +30,7 @@
 	</aside>
 	<Card class="w-full">
 		<div class="w-full">
-			<div class="flex justify-between mb-3">
+			<div class="flex flex-col md:flex-row gap-4 justify-between mb-3">
 				<div>
 					<p class="text-sm font-semibold text-brand-light">Total Value</p>
 					<p class="font-semibold text-2xl md:text-2xl">
@@ -43,13 +42,13 @@
 			{#if selectedView === 'chart'}
 				<Chart data={result.annualData} />
 				<div class="md:max-w-xs">
-					<p class="text-sm font-semibold text-brand-light">Breakdown</p>
+					<p class="text-sm font-semibold text-brand-light">After {scenario.years} years</p>
 					<LegendList
 						formatter={formatAsCurrency}
 						data={[
 							{ label: 'Principle', value: result.annualData[0].startingValue },
-							{ label: 'Contributions', value: result.annualData[0].totalContributions },
-							{ label: 'Interest', value: result.annualData[0].totalInterest }
+							{ label: 'Contributions', value: result.totalContributions },
+							{ label: 'Interest', value: result.totalInterest }
 						]}
 					/>
 				</div>

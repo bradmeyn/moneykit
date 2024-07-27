@@ -9,6 +9,16 @@
 	export let interestRate: number;
 	export let contributionFrequency: number;
 	export let years: number;
+
+	function handleInput(event: Event) {
+		const input = event.target as HTMLInputElement;
+		const value = parseInt(input.value);
+		if (!isNaN(value) && value >= 0) {
+			years = value;
+		} else {
+			input.value = '';
+		}
+	}
 </script>
 
 <div class="space-y-3">
@@ -24,6 +34,13 @@
 	<PercentageInput label="Interest Rate" bind:value={interestRate} />
 	<div>
 		<label for="years">Years</label>
-		<input id={'years'} bind:value={years} class="input-base" type="number" />
+		<input
+			id={'years'}
+			on:input={handleInput}
+			value={years}
+			class="input-base"
+			type="number"
+			min="0"
+		/>
 	</div>
 </div>

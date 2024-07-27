@@ -7,6 +7,20 @@ export function calculateCompoundInterest(
 	contributionAmount: number = 0,
 	contributionFrequency: number = 0
 ): CompoundInterestResult {
+	if (
+		principal <= 0 ||
+		interestRate <= 0 ||
+		years <= 0 ||
+		contributionAmount < 0 ||
+		contributionFrequency < 0
+	) {
+		return {
+			totalValue: 0,
+			totalInterest: 0,
+			totalContributions: 0,
+			annualData: []
+		};
+	}
 	let totalValue = principal;
 	let totalInterest = 0;
 	let totalContributions = 0;

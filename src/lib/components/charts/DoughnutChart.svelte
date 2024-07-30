@@ -8,6 +8,7 @@
 		Legend,
 		type ChartConfiguration
 	} from 'chart.js';
+	import { COLOURFUL, MONOCHROME } from '$lib/constants/colours';
 
 	// Props
 	export let data: { label: string; value: number }[];
@@ -15,7 +16,8 @@
 	$: labels = data.map((item) => item.label);
 	$: values = data.map((item) => item.value);
 
-	export let chartColors: string[] = ['#065F46', '#10B981', '#A7F3D0'];
+	export let theme: 'monochrome' | 'colourful' = 'monochrome';
+	const chartColors = theme === 'monochrome' ? MONOCHROME : COLOURFUL;
 
 	let chartId: HTMLCanvasElement;
 	let doughnutChart: Chart;

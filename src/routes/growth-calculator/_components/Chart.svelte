@@ -11,12 +11,13 @@
 		Tooltip
 	} from 'chart.js';
 	import { formatAsCurrency } from '$lib/utils/formatters';
+	import type { AnnualData } from '../types';
+	import { MONOCHROME } from '$lib/constants/colours';
 
 	// props
-	export let chartYears: number[];
-	export let interestByYear: number[];
-	export let contributionsByYear: number[];
-	export let startingByYear: number[];
+	export let data: AnnualData[] = [];
+
+	$: years = data.map((item) => item.year);
 
 	let chartId: HTMLCanvasElement;
 	let chart: Chart;
@@ -28,24 +29,24 @@
 		chart = new Chart(chartId, {
 			type: 'bar',
 			data: {
-				labels: chartYears,
+				labels: years,
 				datasets: [
 					{
 						label: 'Principal',
-						data: startingByYear,
-						backgroundColor: '#065F46',
+						data: Array.from({ length: years.length }, (_, i) => data[0].startingValue),
+						backgroundColor: MONOCHROME[0],
 						borderRadius: 5
 					},
 					{
 						label: 'Contributions',
-						data: contributionsByYear,
-						backgroundColor: '#10B981',
+						data: data.map((item) => item.totalContributions),
+						backgroundColor: MONOCHROME[1],
 						borderRadius: 5
 					},
 					{
 						label: 'Interest',
-						data: interestByYear,
-						backgroundColor: '#A7F3D0',
+						data: data.map((item) => item.totalInterest),
+						backgroundColor: MONOCHROME[2],
 						borderRadius: 5
 					}
 				]
@@ -140,10 +141,13 @@
 	});
 
 	$: if (chart) {
-		chart.data.labels = chartYears;
-		chart.data.datasets[0].data = startingByYear;
-		chart.data.datasets[1].data = contributionsByYear;
-		chart.data.datasets[2].data = interestByYear;
+		chart.data.labels = years;
+		(chart.data.datasets[0].data = Array.from(
+			{ length: years.length },
+			(_, i) => data[0].startingValue
+		)),
+			(chart.data.datasets[1].data = data.map((item) => item.totalContributions));
+		chart.data.datasets[2].data = data.map((item) => item.totalInterest);
 		chart.update();
 	}
 </script>

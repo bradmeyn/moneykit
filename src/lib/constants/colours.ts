@@ -1,19 +1,23 @@
+import colors from 'tailwindcss/colors';
+
+export const BRAND = [colors.emerald[500], colors.emerald[700], colors.emerald[300]];
+
 export const COLOURFUL = [
-	'rgb(2 132 199)', // tw sky-600
-	'rgb(219 39 119)', // tw pink-600
-	'rgb(202 138 4)', // tw yellow-600
-	'rgb(22 163 74)', // tw green-600
-	'rgb(79 70 229)', // tw indigo-600
-	'rgb(190 18 60)', // tw rose-600
-	'rgb(13 148 136)' // tw teal-600
+	colors.sky[500],
+	colors.pink[500],
+	colors.yellow[500],
+	colors.green[500],
+	colors.indigo[500],
+	colors.rose[500],
+	colors.teal[500]
 ];
 
 export const MONOCHROME = [
-	'#064E3B',
-	'#065F46',
-	'#10B981',
-	'#34D399',
-	'#6EE7B7',
-	'#A7F3D0',
-	'#D1FAE5'
+	colors.emerald[700],
+	colors.emerald[400],
+	colors.emerald[200],
+	colors.emerald[800],
+	colors.emerald[100],
+	colors.emerald[600],
+	colors.emerald[500]
 ];

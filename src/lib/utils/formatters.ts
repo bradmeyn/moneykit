@@ -102,52 +102,7 @@ export function calculatePersonalTax(inputs: PersonalTaxScenario) {
 	};
 }
 
-export function calculateCompoundInterest(
-	principal: number = 0,
-	interestRate: number = 0,
-	years: number = 0,
-	contributionAmount: number = 0,
-	contributionFrequency: number = 0
-) {
-	let totalValue = principal;
-	let totalInterest = 0;
-	let totalContributions = 0;
 
-	const interestByYear: number[] = [];
-	const contributionsByYear: number[] = [];
-	const chartYears: number[] = [];
-	const startingByYear: number[] = [];
-
-	for (let i = 0; i < years; i++) {
-		// Storing the starting value for the year
-		startingByYear.push(parseFloat(principal.toFixed(2)));
-
-		// Calculating yearly interest
-		const yearlyInterest = totalValue * (interestRate / 100);
-		totalInterest += yearlyInterest;
-		interestByYear.push(parseFloat(totalInterest.toFixed(2)));
-
-		// Calculating yearly contributions
-		const yearlyContribution = contributionAmount * contributionFrequency;
-		totalContributions += yearlyContribution;
-		contributionsByYear.push(parseFloat(totalContributions.toFixed(2)));
-
-		// Update the total value with yearly interest and contribution
-		totalValue += yearlyInterest + yearlyContribution;
-
-		chartYears.push(i + 1);
-	}
-
-	return {
-		totalValue,
-		totalInterest,
-		totalContributions,
-		chartYears,
-		interestByYear,
-		contributionsByYear,
-		startingByYear
-	};
-}
 
 const assetAllocationLabels = {
 	ausEquities: 'Aus Equities',

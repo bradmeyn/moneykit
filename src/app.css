@@ -19,10 +19,10 @@
 		@apply text-sm text-slate-300 mb-1;
 	}
 
-	select,
+	/* select,
 	input {
-		@apply bg-slate-700 focus:outline-none   rounded focus:outline-offset-1  focus:outline-brand-default text-sm block w-full border-none p-2 sm:text-sm text-white placeholder-slate-400;
-	}
+		@apply bg-slate-700 focus:outline-none rounded focus:outline-offset-1 focus:outline-brand-default text-sm block w-full border-none p-2 sm:text-sm text-white placeholder-slate-400;
+	} */
 
 	table {
 		@apply w-full table-auto border-collapse  border-slate-700;
@@ -37,26 +37,40 @@
 	}
 }
 
-/* For Webkit (Chrome, Safari, Edge) */
-.overflow-y-auto::-webkit-scrollbar {
-	width: 8px; /* Adjust scrollbar width */
+.input-base {
+	@apply bg-slate-700 outline-none flex items-center border border-transparent focus:border-brand-default focus-within:border-brand-default rounded text-sm  w-full  p-2 px-3 sm:text-sm text-white placeholder-slate-400;
 }
 
-.overflow-y-auto::-webkit-scrollbar-track {
+.input-base input {
+	@apply bg-transparent text-sm block w-full focus:outline-none border-none focus:ring-0;
+}
+
+/* For Webkit (Chrome, Safari, Edge) */
+.overflow-y-auto::-webkit-scrollbar,
+.overflow-x-auto::-webkit-scrollbar {
+	width: 8px; /* Adjust scrollbar width */
+	height: 8px; /* Adjust scrollbar height for horizontal scroll */
+}
+
+.overflow-y-auto::-webkit-scrollbar-track,
+.overflow-x-auto::-webkit-scrollbar-track {
 	background: #2d3748; /* Track color */
 }
 
-.overflow-y-auto::-webkit-scrollbar-thumb {
+.overflow-y-auto::-webkit-scrollbar-thumb,
+.overflow-x-auto::-webkit-scrollbar-thumb {
 	background: #2d3748; /* Handle color */
 	border-radius: 4px; /* Handle border radius */
 }
 
-.overflow-y-auto::-webkit-scrollbar-thumb:hover {
+.overflow-y-auto::-webkit-scrollbar-thumb:hover,
+.overflow-x-auto::-webkit-scrollbar-thumb:hover {
 	background: #718096; /* Handle color on hover */
 }
 
 /* For Firefox */
-.overflow-y-auto {
+.overflow-y-auto,
+.overflow-x-auto {
 	scrollbar-width: thin; /* "auto" or "thin" */
 	scrollbar-color: #4a5568 #2d3748; /* Handle color Track color */
 }

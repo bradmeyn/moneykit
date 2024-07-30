@@ -8,9 +8,10 @@
 <li>
 	<a
 		href={link.href}
-		class="py-4 block text-lg md:text-sm {activeUrl === link.href
+		class="py-4 md:py-2 block text-lg md:text-sm text-left hover:bg-slate-700 px-4 rounded-xl border border-transparent hover:border-slate-600 {activeUrl ===
+		link.href
 			? 'text-white'
-			: 'text-slate-300  hover:text-brand-default'}"
+			: 'text-slate-300  hover:text-white'}"
 		>{link.name}
 	</a>
 </li>

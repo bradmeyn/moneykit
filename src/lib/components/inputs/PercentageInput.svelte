@@ -6,17 +6,9 @@
 </script>
 
 <div class={`${$$restProps.class}`}>
-	<label class="mb-1 block" for={name}>{label}</label>
-	<div
-		class="relative rounded sm:text-sm flex bg-slate-700 shadow-sm focus-within:ring-2 focus-within:ring-brand-default w-full"
-	>
-		<input
-			{name}
-			type="number"
-			id={name}
-			class="bg-transparent text-sm border-box block w-full border-none focus:outline-none focus:ring-0 sm:text-sm text-white placeholder-slate-400"
-			bind:value
-		/>
-		<div class="flex items-center pointer-events-none text-brand-default pr-2">%</div>
+	<label for={name}>{label}</label>
+	<div class="input-base">
+		<input {name} type="number" id={name} bind:value />
+		<div class="flex items-center pointer-events-none text-brand-default">%</div>
 	</div>
 </div>

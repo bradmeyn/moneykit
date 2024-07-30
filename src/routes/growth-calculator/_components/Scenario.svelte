@@ -1,11 +1,11 @@
 <script lang="ts">
-	import Inputs from './_components/Inputs.svelte';
-	import Chart from './_components/Chart.svelte';
+	import Inputs from './Inputs.svelte';
+	import Chart from './Chart.svelte';
 	import ViewToggle from '$lib/components/ui/Tabs.svelte';
-	import Table from './_components/Table.svelte';
+	import Table from './Table.svelte';
 	import Card from '$lib/components/ui/Card.svelte';
 	import { formatAsCurrency } from '$lib/utils/formatters';
-	import type { Result, Scenario } from './types';
+	import type { Result, Scenario } from '../types';
 	import LegendList from '$lib/components/charts/LegendList.svelte';
 
 	export let scenario: Scenario;

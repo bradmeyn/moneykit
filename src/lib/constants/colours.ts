@@ -3,13 +3,13 @@ import colors from 'tailwindcss/colors';
 export const BRAND = [colors.emerald[500], colors.emerald[700], colors.emerald[300]];
 
 export const COLOURFUL = [
-	colors.sky[600],
-	colors.pink[600],
-	colors.yellow[600],
-	colors.green[600],
-	colors.indigo[600],
-	colors.rose[600],
-	colors.teal[600]
+	colors.sky[500],
+	colors.pink[500],
+	colors.yellow[500],
+	colors.green[500],
+	colors.indigo[500],
+	colors.rose[500],
+	colors.teal[500]
 ];
 
 export const MONOCHROME = [

@@ -21,32 +21,6 @@ export const portfolio = writable({
 	]
 });
 
-export function addHolding(holding: Holding) {
-	portfolio.update(($portfolio) => {
-		$portfolio.holdings.push(holding);
-		return $portfolio;
-	});
-}
-
-export function updateHolding(updatedHolding: Holding) {
-	portfolio.update(($portfolio) => {
-		const index = $portfolio.holdings.findIndex(
-			(h) => h.investment.code === updatedHolding.investment.code
-		);
-		if (index !== -1) {
-			$portfolio.holdings[index] = updatedHolding;
-		}
-		return $portfolio;
-	});
-}
-
-export function removeHolding(investmentCode: string) {
-	portfolio.update(($portfolio) => {
-		$portfolio.holdings = $portfolio.holdings.filter((h) => h.investment.code !== investmentCode);
-		return $portfolio;
-	});
-}
-
 export const portfolioDetails = derived(portfolio, ($portfolio) => {
 	// Update the value of each holding
 	let holdingtotal = 0;
@@ -140,3 +114,31 @@ export const portfolioDetails = derived(portfolio, ($portfolio) => {
 		totalCostPercentage
 	};
 });
+
+
+export function addHolding(holding: Holding) {
+	portfolio.update(($portfolio) => {
+		$portfolio.holdings.push(holding);
+		return $portfolio;
+	});
+}
+
+export function updateHolding(updatedHolding: Holding) {
+	portfolio.update(($portfolio) => {
+		const index = $portfolio.holdings.findIndex(
+			(h) => h.investment.code === updatedHolding.investment.code
+		);
+		if (index !== -1) {
+			$portfolio.holdings[index] = updatedHolding;
+		}
+		return $portfolio;
+	});
+}
+
+export function removeHolding(investmentCode: string) {
+	portfolio.update(($portfolio) => {
+		$portfolio.holdings = $portfolio.holdings.filter((h) => h.investment.code !== investmentCode);
+		return $portfolio;
+	});
+}
+

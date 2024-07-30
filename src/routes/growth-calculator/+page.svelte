@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { scenarios, results, addScenario } from './store';
-	import Scenario from './Scenario.svelte';
+	import Scenario from './_components/Scenario.svelte';
 	import { CirclePlus } from 'lucide-svelte';
 	import ScenarioTabs from '$lib/components/ui/ScenarioTabs.svelte';
 	import Comparison from './_components/Comparison.svelte';

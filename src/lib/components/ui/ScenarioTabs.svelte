@@ -1,7 +1,8 @@
 <script lang="ts">
-	import { CirclePlus, Plus } from 'lucide-svelte';
+	import { Plus } from 'lucide-svelte';
 	export let scenarioIds: number[];
 	export let activeScenarioId = 1;
+	export let maxScenarios = 2;
 	export let onAdd;
 
 	// Assuming $scenarios is a reactive store, you might need to use it directly or ensure it's passed correctly from the parent component
@@ -30,7 +31,7 @@
 			</button>
 		{/if}
 	</div>
-	{#if scenarioIds.length < 3}
+	{#if scenarioIds.length < maxScenarios}
 		<button
 			class="flex gap-1 p-1 items-center text-sm justify-center text-slate-400 hover:text-brand-default hover:bg-slate-700 rounded-full"
 			on:click={onAdd}

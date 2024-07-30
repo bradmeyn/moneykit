@@ -46,25 +46,31 @@
 }
 
 /* For Webkit (Chrome, Safari, Edge) */
-.overflow-y-auto::-webkit-scrollbar {
+.overflow-y-auto::-webkit-scrollbar,
+.overflow-x-auto::-webkit-scrollbar {
 	width: 8px; /* Adjust scrollbar width */
+	height: 8px; /* Adjust scrollbar height for horizontal scroll */
 }
 
-.overflow-y-auto::-webkit-scrollbar-track {
+.overflow-y-auto::-webkit-scrollbar-track,
+.overflow-x-auto::-webkit-scrollbar-track {
 	background: #2d3748; /* Track color */
 }
 
-.overflow-y-auto::-webkit-scrollbar-thumb {
+.overflow-y-auto::-webkit-scrollbar-thumb,
+.overflow-x-auto::-webkit-scrollbar-thumb {
 	background: #2d3748; /* Handle color */
 	border-radius: 4px; /* Handle border radius */
 }
 
-.overflow-y-auto::-webkit-scrollbar-thumb:hover {
+.overflow-y-auto::-webkit-scrollbar-thumb:hover,
+.overflow-x-auto::-webkit-scrollbar-thumb:hover {
 	background: #718096; /* Handle color on hover */
 }
 
 /* For Firefox */
-.overflow-y-auto {
+.overflow-y-auto,
+.overflow-x-auto {
 	scrollbar-width: thin; /* "auto" or "thin" */
 	scrollbar-color: #4a5568 #2d3748; /* Handle color Track color */
 }

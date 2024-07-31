@@ -1,12 +1,14 @@
 <script lang="ts">
 	import Card from '$lib/components/ui/Card.svelte';
-	import { portfolio, portfolioDetails } from '../store';
 	import AddHolding from './AddHolding.svelte';
 	import CurrencyInput from '$lib/components/inputs/CurrencyInput.svelte';
 	import AssetAllocation from './AssetAllocation.svelte';
 	import Tabs from '$lib/components/ui/Tabs.svelte';
 	import Investments from './Investments.svelte';
 	import DoughnutChart from '$lib/components/charts/DoughnutChart.svelte';
+
+	export let portfolio;
+	export let portfolioDetails;
 
 	let selectedView = 'Investment';
 </script>

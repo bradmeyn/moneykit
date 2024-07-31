@@ -9,7 +9,6 @@ export type AssetAllocation = {
 	cash: number;
 };
 
-// Now, Investment uses the AssetAllocation type
 export type Investment = {
 	name: string;
 	code: string;
@@ -19,67 +18,23 @@ export type Investment = {
 
 export type Holding = {
 	investment: Investment;
-	allocation: number;
+	weighting: number;
 	value: number;
 	cost: number;
 };
 
-export interface TaxBracket {
-	min: number;
-	max: number;
-	rate: number;
-}
+export type Portfolio = {
+	id: number;
+	value: number;
+	holdings: {
+		investment: Investment;
+		weighting: number;
+	}[];
+};
 
-export interface OffsetBracket {
-	min: number;
-	max: number;
-	reduction: number;
-	amount: number;
-}
-
-export interface IncomeTax {
-	brackets: TaxBracket[];
-	offsets: {
-		lowIncome: {
-			brackets: OffsetBracket[];
-		};
-	};
-}
-
-export interface MedicareLevy {
-	rate: number;
-	offsets: {
-		seniors: Offset;
-		lowIncome: Offset;
-	};
-}
-
-export interface TaxRateConfiguration {
-	financialYear: number;
-	name: string;
-	incomeTax: IncomeTax;
-	medicareLevy: MedicareLevy;
-	medicareLevySurcharge: TaxBracket[];
-}
-
-// Adjusting the Offset type to reflect the structure used in medicareLevy
-export interface Offset {
-	min: number;
-	max: number;
-	offset: number;
-}
-
-export interface TaxRateConfiguration {
-	financialYear: number;
-	name: string;
-	incomeTax: IncomeTax;
-	medicareLevy: MedicareLevy;
-	medicareLevySurcharge: TaxBracket[];
-}
-
-export type PersonalTaxScenario = {
-	income: number;
-	deductions: number;
-	hasInsurance: boolean;
-	taxRates: TaxRateConfiguration;
+export type PortfolioDetails = {
+	id: number;
+	value: number;
+	holdings: Holding[];
+	assetAllocation: AssetAllocation;
 };

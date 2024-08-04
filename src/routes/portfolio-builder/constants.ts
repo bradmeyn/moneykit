@@ -130,3 +130,4 @@ export const UNALLOCATED_INVESTMENT: Investment = {
 		cash: 1
 	}
 };
+

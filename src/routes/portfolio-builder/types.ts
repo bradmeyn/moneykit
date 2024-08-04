@@ -23,7 +23,7 @@ export type Holding = {
 	cost: number;
 };
 
-export type Portfolio = {
+export type Scenario = {
 	id: number;
 	value: number;
 	holdings: {
@@ -32,9 +32,15 @@ export type Portfolio = {
 	}[];
 };
 
-export type PortfolioDetails = {
+export type Result = {
 	id: number;
-	value: number;
 	holdings: Holding[];
-	assetAllocation: AssetAllocation;
+	assetAllocation: {
+		name: string;
+		key: string;
+		value: number;
+	}[];
+	totalWeighting: number;
+	totalCost: number;
+	totalCostPercentage: number;
 };

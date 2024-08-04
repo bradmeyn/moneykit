@@ -57,7 +57,11 @@
 							color: '#E2E8F0'
 						},
 						ticks: {
-							color: '#CBD5E1'
+							font: {
+								size: 16,
+								family: 'sans-serif'
+							},
+							color: '#ffffff'
 						}
 					},
 					y: {
@@ -66,7 +70,7 @@
 						ticks: {
 							callback: (value) => formatter(+value),
 							font: {
-								size: 12,
+								size: 14,
 								family: 'sans-serif'
 							},
 							color: '#CBD5E1'
@@ -76,20 +80,14 @@
 				plugins: {
 					tooltip: {
 						callbacks: {
-							// label: function (context) {
-							// 	return formatter(context.parsed);
-							// }
+							label: function (context) {
+								return formatter(context.parsed.y);
+							}
 						},
 						boxPadding: 5
 					},
 					legend: {
 						display: false
-						// labels: {
-						// 	font: {
-						// 		family: 'sans-serif',
-						// 		size: 12
-						// 	}
-						// }
 					}
 				}
 			}

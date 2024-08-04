@@ -29,7 +29,7 @@ export function calculateCompoundInterest(
 
 	for (let i = 0; i < years; i++) {
 		const startingValue = parseFloat(totalValue.toFixed(2));
-		const yearlyInterest = totalValue * (interestRate / 100);
+		const yearlyInterest = totalValue * interestRate;
 		totalInterest += yearlyInterest;
 		const yearlyContribution = contributionAmount * contributionFrequency;
 		totalContributions += yearlyContribution;

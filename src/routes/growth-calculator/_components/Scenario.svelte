@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Inputs from './Inputs.svelte';
 	import Chart from './Chart.svelte';
-	import ViewToggle from '$lib/components/ui/Tabs.svelte';
+	import Tabs from '$lib/components/ui/Tabs.svelte';
 	import Table from './Table.svelte';
 	import Card from '$lib/components/ui/Card.svelte';
 	import { formatAsCurrency } from '$lib/utils/formatters';
@@ -37,7 +37,7 @@
 						{formatAsCurrency(result.totalValue, false)}
 					</p>
 				</div>
-				<ViewToggle {options} bind:selectedView />
+				<Tabs {options} bind:selectedView />
 			</div>
 			{#if selectedView === 'chart'}
 				<Chart data={result.annualData} />

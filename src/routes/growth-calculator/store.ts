@@ -8,7 +8,7 @@ export const scenarios = writable<Scenario[]>([
 		id: 1,
 		principal: 100000,
 		contributionAmount: 1000,
-		interestRate: 6,
+		interestRate: 0.06,
 		contributionFrequency: 52,
 		years: 10
 	}

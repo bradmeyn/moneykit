@@ -4,10 +4,6 @@
 	import ComparisonChart from './ComparisonChart.svelte';
 	import { formatAsCurrency, formatAsPercentage } from '$lib/utils/formatters';
 	import { COLOURFUL } from '$lib/constants/colours';
-
-	$: labels = $results.map((r) => 'Scenario ' + r.id);
-
-	// for each result get the total value for each year
 </script>
 
 <section class="flex flex-col-reverse lg:flex-row gap-8">

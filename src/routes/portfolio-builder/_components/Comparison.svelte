@@ -6,6 +6,7 @@
 	import BarChart from '$lib/components/charts/BarChart.svelte';
 	import { formatAsCurrency, formatAsPercentage } from '$lib/utils/formatters';
 	import { COLOURFUL } from '$lib/constants/colours';
+	import AllocationChart from './AllocationChart.svelte';
 
 	let selectedView = 'Cost';
 
@@ -16,13 +17,9 @@
 		};
 	});
 
-	$: assetAllocationData = $results.map((result: Result) => {
-		return result.assetAllocation.map((assetClass) => {
-			return {
-				label: assetClass.name,
-				value: assetClass.value / $scenarios[0].value
-			};
-		});
+	$: allocationLabels = $results[0].assetAllocation.map((assetClass) => assetClass.name);
+	$: allocationData = $results.map((result, i) => {
+		return result.assetAllocation.map((assetClass) => assetClass.value / $scenarios[i].value);
 	});
 </script>
 
@@ -109,7 +106,12 @@
 			{#if selectedView === 'Cost'}
 				<BarChart data={costData} formatter={formatAsCurrency} theme="colourful" />
 			{:else}
-				<BarChart data={assetAllocationData} formatter={formatAsCurrency} theme="colourful" />
+				<AllocationChart
+					theme="colourful"
+					labels={allocationLabels}
+					datasets={allocationData}
+					formatter={formatAsPercentage}
+				/>
 			{/if}
 		</Card>
 	</div>

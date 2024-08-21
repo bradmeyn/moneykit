@@ -7,14 +7,6 @@
 		@apply text-xl md:text-2xl font-semibold;
 	}
 
-	h2 {
-		@apply text-lg md:text-xl font-semibold  text-white;
-	}
-
-	h3 {
-		@apply text-base md:text-lg font-semibold  text-slate-200;
-	}
-
 	label {
 		@apply text-sm text-slate-300 mb-1;
 	}
@@ -37,8 +29,9 @@
 	}
 }
 
+select,
 .input-base {
-	@apply bg-slate-700 outline-none flex items-center border border-transparent focus:border-brand-default focus-within:border-brand-default rounded text-sm  w-full  p-2 px-3 sm:text-sm text-white placeholder-slate-400;
+	@apply bg-slate-700 h-9 outline-none flex items-center border border-transparent focus:border-brand-default focus-within:border-brand-default rounded text-sm  w-full p-2 sm:text-sm text-white placeholder-slate-400;
 }
 
 .input-base input {

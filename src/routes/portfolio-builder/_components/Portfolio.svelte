@@ -71,5 +71,5 @@
 		</Card>
 	</div>
 {:else}
-	<AddHolding />
+	<AddHolding portfolioId={result.id} />
 {/if}

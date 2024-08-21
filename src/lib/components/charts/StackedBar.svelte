@@ -1,5 +1,4 @@
 <script lang="ts">
-	import * as colors from 'tailwindcss/colors';
 	import { onMount } from 'svelte';
 	import {
 		Chart,
@@ -11,24 +10,17 @@
 		Tooltip
 	} from 'chart.js';
 	import { COLOURFUL, MONOCHROME } from '$lib/constants/colours';
+	import colors from 'tailwindcss/colors';
 
 	// props
 	export let labels: string[];
-	export let datasets: number[][];
+	export let data: { label: string; value: number }[];
 	export let formatter: (value: number) => string;
 	export let theme: 'monochrome' | 'colourful' = 'monochrome';
 
 	const colours = theme === 'monochrome' ? MONOCHROME : COLOURFUL;
-
 	let chartId: HTMLCanvasElement;
 	let chart: Chart;
-
-	$: formattedDatasets = datasets.map((dataset, i) => ({
-		data: dataset,
-		backgroundColor: colours[i],
-		borderWidth: 0,
-		borderRadius: 5
-	}));
 
 	// Register the BarController and BarElement
 	Chart.register(BarController, BarElement, CategoryScale, LinearScale, Legend, Tooltip);
@@ -37,15 +29,21 @@
 		chart = new Chart(chartId, {
 			type: 'bar',
 			data: {
-				labels,
-				datasets: formattedDatasets
+				labels: ['Total Tax'],
+				datasets: data.map((item, i) => ({
+					label: item.label,
+					data: [item.value],
+					backgroundColor: colours[i],
+					borderWidth: 0,
+					borderRadius: 5
+				}))
 			},
 			options: {
 				maintainAspectRatio: false,
 				responsive: true,
 				scales: {
 					x: {
-						stacked: false,
+						stacked: true,
 						grid: {
 							display: false
 						},
@@ -61,7 +59,7 @@
 								size: 16,
 								family: 'sans-serif'
 							},
-							color: colors.slate[100]
+							color: '#ffffff'
 						}
 					},
 					y: {
@@ -69,15 +67,15 @@
 							display: true,
 							color: colors.slate[600]
 						},
-						stacked: false,
+						stacked: true,
 						beginAtZero: true,
 						ticks: {
 							callback: (value) => formatter(+value),
 							font: {
-								size: 14,
+								size: 16,
 								family: 'sans-serif'
 							},
-							color: '#CBD5E1'
+							color: colors.slate[100]
 						}
 					}
 				},
@@ -99,13 +97,18 @@
 	});
 
 	$: if (chart) {
-		chart.data.labels = labels;
-		chart.data.datasets = formattedDatasets;
-
+		chart.data.datasets = data.map((item, i) => ({
+			label: item.label,
+			data: [item.value],
+			backgroundColor: colours[i],
+			borderWidth: 0,
+			borderRadius: 5,
+			barThickness: 80
+		}));
 		chart.update();
 	}
 </script>
 
-<div class="min-h-[400px] lg:min-h-[500px] relative">
+<div class="min-h-[400px] relative">
 	<canvas class="w-full absolute min-h-full p-1" bind:this={chartId} />
 </div>

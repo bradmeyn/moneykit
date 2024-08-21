@@ -1,27 +1,25 @@
 <script lang="ts">
-	import type { TaxRateConfiguration } from '../../portfolio-builder/types';
 	import { formatAsPercentage, formatAsCurrency } from '$lib/utils/formatters';
 	import Card from '$lib/components/ui/Card.svelte';
-
-	export let taxRates: TaxRateConfiguration;
+	import { INCOME_TAX_BRACKETS, MEDICARE_LEVY, MEDICARE_LEVY_SURCHARGE } from '../taxRates';
 
 	function formatMax(max: number) {
 		return max === Infinity ? '+' : ` - ${formatAsCurrency(max, false)}`;
 	}
 </script>
 
-<section class="w-full grid grid-cols-1 max-w-[600px] gap-10">
-	<Card>
-		<h3>Income Tax</h3>
+<div class="space-y-4">
+	<div>
+		<h3 class="font-semibold px-2">Income Tax</h3>
 		<table>
 			<thead>
 				<th>Taxable Income</th>
 				<th>Rate</th>
 			</thead>
 			<tbody>
-				{#each taxRates.incomeTax.brackets as { min, max, rate }}
+				{#each INCOME_TAX_BRACKETS as { min, max, rate }}
 					<tr>
-						<td>
+						<td class="w-60">
 							{formatAsCurrency(min, false)}{formatMax(max)}
 						</td>
 						<td>{formatAsPercentage(rate)}</td>
@@ -29,34 +27,43 @@
 				{/each}
 			</tbody>
 		</table>
-	</Card>
-	<Card>
-		<h3>Medicare Levy</h3>
-		<table>
-			<thead>
-				<th>Condition</th>
-				<th>Rate</th>
-			</thead>
-			<tbody>
-				<tr>
-					<td>General Rate</td>
-					<td>{formatAsPercentage(taxRates.medicareLevy.rate)}</td>
-				</tr>
-				<!-- Iterate over offsets if needed -->
-			</tbody>
-		</table>
-	</Card>
-	<Card>
-		<h3>Medicare Levy Surcharge</h3>
+	</div>
+
+	<div>
+		<h3 class="font-semibold px-2">Medicare Levy</h3>
 		<table>
 			<thead>
 				<th>Taxable Income</th>
 				<th>Rate</th>
 			</thead>
 			<tbody>
-				{#each taxRates.medicareLevySurcharge as { min, max, rate }}
+				{#each MEDICARE_LEVY as { min, max, rate }}
 					<tr>
-						<td>
+						<td class="w-60">
+							{formatAsCurrency(min, false)}{formatMax(max)}
+						</td>
+						{#if rate === 0.1}
+							<td>{formatAsPercentage(rate)} of income between thresholds</td>
+						{:else}
+							<td>{formatAsPercentage(rate)}</td>
+						{/if}
+					</tr>
+				{/each}
+			</tbody>
+		</table>
+	</div>
+
+	<div>
+		<h3 class="font-semibold px-2">Medicare Levy Surcharge</h3>
+		<table>
+			<thead>
+				<th>Taxable Income</th>
+				<th>Rate</th>
+			</thead>
+			<tbody>
+				{#each MEDICARE_LEVY_SURCHARGE as { min, max, rate }}
+					<tr>
+						<td class="w-60">
 							{formatAsCurrency(min, false)}{formatMax(max)}
 						</td>
 						<td>{formatAsPercentage(rate)}</td>
@@ -64,5 +71,5 @@
 				{/each}
 			</tbody>
 		</table>
-	</Card>
-</section>
+	</div>
+</div>

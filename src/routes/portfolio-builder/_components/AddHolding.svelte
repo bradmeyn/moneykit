@@ -5,6 +5,9 @@
 	import { INVESTMENTS } from '../constants';
 	import PercentageInput from '$lib/components/inputs/PercentageInput.svelte';
 	import SearchInput from '$lib/components/inputs/SearchInput.svelte';
+	import { Check } from 'lucide-svelte';
+
+	export let portfolioId: number;
 
 	let isModalOpen = false;
 	let searchTerm = '';
@@ -27,7 +30,7 @@
 	$: selectedInvestments = newHoldings.map((holding) => holding.investment);
 
 	function selectInvestment(investment: Investment) {
-		newHoldings = [...newHoldings, { investment, allocation: 0, value: 0, cost: 0 }];
+		newHoldings = [...newHoldings, { investment, weighting: 0, value: 0, cost: 0 }];
 	}
 
 	function unselectInvestment(investment: Investment) {
@@ -36,7 +39,7 @@
 
 	function addHoldings() {
 		newHoldings.forEach((holding) => {
-			addHolding({ ...holding, allocation: holding.allocation / 100 });
+			addHolding(portfolioId, holding);
 		});
 		newHoldings = [];
 		isModalOpen = false;
@@ -53,14 +56,14 @@
 >
 	<SearchInput bind:value={searchTerm} placeholder="Search investments" class="mb-2" />
 
-	<div class="max-h-60 overflow-y-auto my-4">
+	<div class="max-h-40 overflow-y-auto my-4">
 		{#each filteredInvestments as investment, i}
 			<button
 				on:click={() =>
 					selectedInvestments.includes(investment)
 						? unselectInvestment(investment)
 						: selectInvestment(investment)}
-				class={'text-sm p-2 flex items-center  rounded justify-start w-full border-t border-1 border-slate-700 cursor-pointer ' +
+				class={'text-sm p-2 flex items-center rounded justify-start w-full border-t border-1 border-slate-700 cursor-pointer ' +
 					(selectedInvestments.includes(investment)
 						? 'bg-slate-700 text-white border-brand-default'
 						: 'bg-transparent text-slate-200 hover:bg-slate-700 hover:text-white')}
@@ -69,7 +72,7 @@
 					>{investment.name}</span
 				>
 				{#if selectedInvestments.includes(investment)}
-					<!-- <Icon icon="carbon:checkmark" class="w-5 h-5 ml-auto" /> -->
+					<Check class="size-4 text-brand-default ml-auto" />
 				{/if}
 			</button>
 		{/each}
@@ -87,7 +90,7 @@
 							<span class="w-14 inline-block text-start">{h.investment.code}</span>
 							<span>{h.investment.name}</span>
 						</div>
-						<PercentageInput bind:value={h.allocation} class="w-20" />
+						<PercentageInput bind:value={h.weighting} />
 					</li>
 				{/each}
 			</ul>

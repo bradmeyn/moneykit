@@ -5,11 +5,11 @@
 	import { removeHolding, updateHolding } from '../store';
 	import PercentageInput from '$lib/components/inputs/PercentageInput.svelte';
 
+	import { Trash } from 'lucide-svelte';
 	export let holding: Holding;
 	export let portfolioId: number;
 
 	function handleWeightingChange(event: CustomEvent<number>) {
-		console.log(event.detail);
 		const weighting = event.detail;
 		updateHolding(portfolioId, { ...holding, weighting });
 	}
@@ -35,7 +35,7 @@
 				class="p-3 text-slate-400 hover:bg-slate-700 rounded hover:text-red-600"
 				on:click={() => removeHolding(portfolioId, holding.investment.code)}
 			>
-				<Icon icon="bi:trash" class="w-5 h-5" />
+				<Trash class="size-4" />
 			</button>
 		{/if}
 	</td>

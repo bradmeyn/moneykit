@@ -116,7 +116,7 @@ export const INVESTMENTS: Investment[] = [
 	}
 ];
 
-export const UNALLOCATED_INVESTMENT: Investment = {
+export const UNALLOCATED_CASH: Investment = {
 	name: 'Unallocated Cash',
 	code: 'CASH',
 	cost: 0.0,
@@ -130,4 +130,3 @@ export const UNALLOCATED_INVESTMENT: Investment = {
 		cash: 1
 	}
 };
-

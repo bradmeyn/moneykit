@@ -1,4 +1,4 @@
-import { INVESTMENTS, UNALLOCATED_CASH } from '$lib/constants';
+import { INVESTMENTS, UNALLOCATED_CASH } from './constants';
 import { writable, derived, type Readable } from 'svelte/store';
 import type { Scenario, Holding, Result } from './types';
 

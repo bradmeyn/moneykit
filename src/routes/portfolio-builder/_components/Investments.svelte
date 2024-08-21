@@ -37,5 +37,5 @@
 	</tbody>
 </table>
 <div class="p-2 w-full flex justify-end">
-	<AddHolding />
+	<AddHolding portfolioId={result.id} />
 </div>

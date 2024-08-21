@@ -10,6 +10,7 @@
 		Tooltip
 	} from 'chart.js';
 	import { COLOURFUL, MONOCHROME } from '$lib/constants/colours';
+	import colors from 'tailwindcss/colors';
 
 	// props
 	export let data: { label: string; value: number }[];
@@ -54,17 +55,21 @@
 								size: 16,
 								family: 'sans-serif'
 							},
-							color: '#E2E8F0'
+							color: colors.slate[100]
 						},
 						ticks: {
 							font: {
-								size: 16,
+								size: 11,
 								family: 'sans-serif'
 							},
 							color: '#ffffff'
 						}
 					},
 					y: {
+						grid: {
+							display: true,
+							color: colors.slate[600]
+						},
 						stacked: true,
 						beginAtZero: true,
 						ticks: {

@@ -10,10 +10,11 @@
 	<div class="">
 		<Card>
 			<div class="overflow-x-auto">
+				<p class="text-sm font-semibold text-brand-light">Comparison</p>
 				<table class="w-full border-collapse">
 					<thead>
 						<tr>
-							<th class="p-2 text-left" />
+							<th class="p-2 text-slate-300 text-sm">Scenario</th>
 							{#each $results as result, i}
 								<th class="p-2 text-left">
 									<div class="flex items-center gap-2">
@@ -26,7 +27,7 @@
 					</thead>
 					<tbody>
 						<tr>
-							<td class="p-2 text-slate-400 text-sm">Principle</td>
+							<td class="p-2 text-slate-300 text-sm">Principle</td>
 							{#each $results as result, i}
 								<td class="p-2 text-nowrap"
 									>{formatAsCurrency(result.annualData[0].startingValue)}</td
@@ -34,7 +35,7 @@
 							{/each}
 						</tr>
 						<tr>
-							<td class="p-2 text-slate-400 text-sm">Contributions (p.a.)</td>
+							<td class="p-2 text-slate-300 text-sm">Contributions (p.a.)</td>
 							{#each $results as result, i}
 								<td class="p-2 text-nowrap"
 									>{formatAsCurrency(result.annualData[0].yearlyContribution)} p.a.</td
@@ -42,19 +43,19 @@
 							{/each}
 						</tr>
 						<tr>
-							<td class="p-2 text-slate-400 text-sm">Interest (p.a.)</td>
+							<td class="p-2 text-slate-300 text-sm">Interest (p.a.)</td>
 							{#each $results as result, i}
-								<td class="p-2">{formatAsPercentage($scenarios[i].interestRate / 100)}</td>
+								<td class="p-2">{formatAsPercentage($scenarios[i].interestRate)}</td>
 							{/each}
 						</tr>
 						<tr>
-							<td class="p-2 text-slate-400 text-sm">Years</td>
+							<td class="p-2 text-slate-300 text-sm">Years</td>
 							{#each $results as result, i}
 								<td class="p-2">{result.annualData.length} years</td>
 							{/each}
 						</tr>
 						<tr>
-							<td class="p-2 text-slate-400 text-sm">End Value</td>
+							<td class="p-2 text-slate-300 text-sm">End Value</td>
 							{#each $results as result, i}
 								<td class="p-2 text-lg font-semibold">{formatAsCurrency(result.totalValue)}</td>
 							{/each}

@@ -120,7 +120,6 @@
 			</Card>
 
 			<Card class="flex-1">
-				<h2 class="text-sm font-semibold text-brand-light mb-2">Rates</h2>
 				<TaxRateTable />
 			</Card>
 		</div>

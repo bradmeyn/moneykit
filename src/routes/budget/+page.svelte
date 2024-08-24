@@ -87,12 +87,14 @@
 			</Card>
 		</div>
 
-		<div class="flex flex-row lg:flex-col gap-4">
-			<Card classes="h-fit">
+		<div class="flex flex-row lg:flex-col flex-wrap gap-4">
+			<Card class=" flex-1">
+				<h2 class="text-sm font-semibold text-brand-light mb-2">Expense Categories</h2>
 				<DoughnutChart data={chartData} formatter={formatAsCurrency} theme={'colourful'} />
 				<LegendList data={chartData} formatter={formatAsCurrency} theme={'colourful'} />
 			</Card>
-			<Card classes="h-fit">
+			<Card class="flex-1">
+				<h2 class="text-sm font-semibold text-brand-light mb-2">Overview</h2>
 				<BarChart
 					data={[
 						{

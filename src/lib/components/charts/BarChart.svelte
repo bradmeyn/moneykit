@@ -108,6 +108,6 @@
 	}
 </script>
 
-<div class="min-h-[400px] lg:min-h-[500px] relative">
+<div class="min-h-[400px] md:min-h-[500px] min-w-[200px] relative">
 	<canvas class="w-full absolute min-h-full p-1" bind:this={chartId} />
 </div>

@@ -2,7 +2,7 @@
 	import Inputs from './Inputs.svelte';
 	import TaxRateTable from './TaxRateTable.svelte';
 	import type { Scenario, Result } from '../types';
-	import { formatAsCurrency } from '$lib/utils/formatters';
+	import { formatAsCurrency, formatAsPercentage } from '$lib/utils/formatters';
 	import TaxBand from './TaxBand.svelte';
 
 	import Tabs from '$lib/components/ui/Tabs.svelte';
@@ -35,7 +35,7 @@
 			><div class="mb-2">
 				<p class="text-sm font-semibold text-brand-light">Taxable Income</p>
 				<p class="font-semibold text-2xl md:text-2xl">
-					{formatAsCurrency(scenario.income - scenario.deductions, false)}
+					{formatAsCurrency(result.taxableIncome, false)}
 				</p>
 			</div>
 			<TaxBand taxableIncome={scenario.income - scenario.deductions} />
@@ -45,8 +45,11 @@
 				<div class="flex flex-col md:flex-row gap-4 justify-between mb-3">
 					<div>
 						<p class="text-sm font-semibold text-brand-light">Total Tax</p>
-						<p class="font-semibold text-2xl md:text-2xl">
+						<p class="font-semibold text-2xl">
 							{formatAsCurrency(result.totalTax, false)}
+						</p>
+						<p class=" text-slate-400">
+							({formatAsPercentage(result.totalTax / result.taxableIncome)})
 						</p>
 					</div>
 					<Tabs {options} bind:selectedView />

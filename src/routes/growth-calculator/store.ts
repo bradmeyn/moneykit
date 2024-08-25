@@ -8,8 +8,8 @@ export const scenarios = writable<Scenario[]>([
 		id: 1,
 		principal: 100000,
 		contributionAmount: 1000,
-		interestRate: 6,
-		contributionFrequency: 52,
+		interestRate: 0.06,
+		contributionFrequency: 12,
 		years: 10
 	}
 ]);
@@ -44,17 +44,3 @@ export function addScenario() {
 		}
 	]);
 }
-
-// // Function to update a scenario
-// export function updateScenario(id, updates) {
-// 	scenarios.update((currentScenarios) =>
-// 		currentScenarios.map((scenario) =>
-// 			scenario.id === id ? { ...scenario, ...updates } : scenario
-// 		)
-// 	);
-// }
-
-// // Function to remove a scenario
-// export function removeScenario(id) {
-// 	scenarios.update((currentScenarios) => currentScenarios.filter((scenario) => scenario.id !== id));
-// }

@@ -1,7 +1,9 @@
 <script lang="ts">
-	import { portfolioDetails, portfolio } from '../store'; // Adjust path as necessary
 	import { formatAsCurrency, formatAsPercentage } from '$lib/utils/formatters';
-	export let portfolioValue: number = 0;
+	import type { Result } from '../types';
+
+	export let result: Result;
+	export let total: number;
 </script>
 
 <table>
@@ -11,23 +13,21 @@
 		<th>Allocation (%)</th>
 	</thead>
 	<tbody>
-		{#each $portfolioDetails.assetAllocation as assetClass}
+		{#each result.assetAllocation as assetClass}
 			<tr>
 				<td>{assetClass.name}</td>
 				<td>{formatAsCurrency(assetClass.value, false)}</td>
 				<td>
-					{portfolioValue > 0 ? formatAsPercentage(assetClass.value / portfolioValue) : '0%'}
+					{formatAsPercentage(assetClass.value / total)}
 				</td>
 			</tr>
 		{/each}
 		<tr>
 			<td class="font-bold text-lg">Total</td>
-			<td class="font-bold text-lg">{formatAsCurrency($portfolio.value, false)}</td>
+			<td class="font-bold text-lg">{formatAsCurrency(total, false)}</td>
 			<td>
-				<span
-					class="font-bold text-lg {$portfolioDetails.totalPercentage != 1 ? 'text-red-400' : ''} "
-				>
-					{formatAsPercentage($portfolioDetails.totalPercentage)}
+				<span class="font-bold text-lg {result.totalWeighting != 1 ? 'text-red-400' : ''} ">
+					{formatAsPercentage(result.totalWeighting)}
 				</span></td
 			>
 		</tr>

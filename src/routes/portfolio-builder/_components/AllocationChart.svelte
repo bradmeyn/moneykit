@@ -1,4 +1,5 @@
 <script lang="ts">
+	import * as colors from 'tailwindcss/colors';
 	import { onMount } from 'svelte';
 	import {
 		Chart,
@@ -10,19 +11,24 @@
 		Tooltip
 	} from 'chart.js';
 	import { COLOURFUL, MONOCHROME } from '$lib/constants/colours';
-	import colors from 'tailwindcss/colors';
 
 	// props
-	export let data: { label: string; value: number }[];
+	export let labels: string[];
+	export let datasets: number[][];
 	export let formatter: (value: number) => string;
 	export let theme: 'monochrome' | 'colourful' = 'monochrome';
 
 	const colours = theme === 'monochrome' ? MONOCHROME : COLOURFUL;
-	$: labels = data.map((item) => item.label);
-	$: values = data.map((item) => item.value);
 
 	let chartId: HTMLCanvasElement;
 	let chart: Chart;
+
+	$: formattedDatasets = datasets.map((dataset, i) => ({
+		data: dataset,
+		backgroundColor: colours[i],
+		borderWidth: 0,
+		borderRadius: 5
+	}));
 
 	// Register the BarController and BarElement
 	Chart.register(BarController, BarElement, CategoryScale, LinearScale, Legend, Tooltip);
@@ -32,14 +38,7 @@
 			type: 'bar',
 			data: {
 				labels,
-				datasets: [
-					{
-						data: data.map((item) => item.value),
-						backgroundColor: colours,
-						borderWidth: 0,
-						borderRadius: 5
-					}
-				]
+				datasets: formattedDatasets
 			},
 			options: {
 				maintainAspectRatio: false,
@@ -59,10 +58,10 @@
 						},
 						ticks: {
 							font: {
-								size: 11,
+								size: 16,
 								family: 'sans-serif'
 							},
-							color: '#ffffff'
+							color: colors.slate[100]
 						}
 					},
 					y: {
@@ -70,7 +69,7 @@
 							display: true,
 							color: colors.slate[600]
 						},
-						stacked: true,
+						stacked: false,
 						beginAtZero: true,
 						ticks: {
 							callback: (value) => formatter(+value),
@@ -101,13 +100,12 @@
 
 	$: if (chart) {
 		chart.data.labels = labels;
-		chart.data.datasets[0].data = values;
-		chart.data.datasets[0].backgroundColor = colours;
+		chart.data.datasets = formattedDatasets;
 
 		chart.update();
 	}
 </script>
 
-<div class="min-h-[400px] md:min-h-[500px] min-w-[200px] relative">
+<div class="min-h-[400px] lg:min-h-[500px] relative">
 	<canvas class="w-full absolute min-h-full p-1" bind:this={chartId} />
 </div>

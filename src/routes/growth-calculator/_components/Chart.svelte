@@ -67,10 +67,14 @@
 								size: 16,
 								family: 'sans-serif'
 							},
-							color: colors.slate[100]
+							color: colors.slate[200]
 						},
 						ticks: {
-							color: colors.slate[100]
+							font: {
+								size: 14,
+								family: 'sans-serif'
+							},
+							color: colors.slate[200]
 						}
 					},
 					y: {

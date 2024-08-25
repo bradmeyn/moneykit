@@ -63,6 +63,9 @@
 				responsive: true,
 				scales: {
 					x: {
+						grid: {
+							display: false
+						},
 						title: {
 							display: true,
 							text: 'Year',
@@ -88,7 +91,7 @@
 								size: 14,
 								family: 'sans-serif'
 							},
-							color: '#CBD5E1'
+							color: colors.slate[100]
 						}
 					}
 				},

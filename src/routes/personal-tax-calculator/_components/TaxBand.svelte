@@ -1,48 +1,75 @@
 <script lang="ts">
-	import type { TaxRateConfiguration } from '../../portfolio-builder/types';
 	import { formatAsCurrency, formatAsPercentage } from '$lib/utils/formatters';
+	import { INCOME_TAX_BRACKETS } from '../taxRates';
 
-	export let taxRates: TaxRateConfiguration;
 	export let taxableIncome: number;
 
 	// Calculate the maximum defined range for bands not considering Infinity
 	$: maxDefinedRange = Math.max(
-		...taxRates.incomeTax.brackets.map((b) => (b.max !== Infinity ? b.max : 0))
+		...INCOME_TAX_BRACKETS.map((b) => (b.max !== Infinity ? b.max : 0))
 	);
 
+	// Dynamic calculation of income ranges
+	$: incomeRanges = INCOME_TAX_BRACKETS.map((band, index, arr) => {
+		const min = index === 0 ? 0 : arr[index - 1].max;
+		const max = band.max === Infinity ? maxDefinedRange * 1.2 : band.max;
+		return max - min;
+	});
+
+	// Calculate total range for percentage calculations
+	$: totalRange = incomeRanges.reduce((sum, range) => sum + range, 0);
+
+	$: {
+		if (incomeRanges.length > 1) {
+			const lastIndex = incomeRanges.length - 1;
+			incomeRanges[lastIndex] = incomeRanges[lastIndex - 1] * 0.4; // Make last bracket 50% of previous
+		}
+	}
+
 	// Reactive calculation for band widths and income fills
-	$: bands = taxRates.incomeTax.brackets.map((band) => {
-		const max = band.max === Infinity ? maxDefinedRange * 1.2 : band.max; // Extend the last band if it's Infinity
-		const range = max - band.min;
-		const totalRange = maxDefinedRange - taxRates.incomeTax.brackets[0].min;
+	$: bands = INCOME_TAX_BRACKETS.map((band, index) => {
+		const max = band.max === Infinity ? maxDefinedRange * 1.2 : band.max;
+		const range = incomeRanges[index];
 		const widthPercent = (range / totalRange) * 100;
 
 		// Calculate fill percentage within the band
 		let fillPercent = 0;
 		if (taxableIncome > band.min) {
-			fillPercent = taxableIncome <= max ? ((taxableIncome - band.min) / range) * 100 : 100;
+			if (index === INCOME_TAX_BRACKETS.length - 1 || taxableIncome >= max) {
+				fillPercent = 100; // Fill completely if it's the highest bracket or taxable income exceeds max
+			} else {
+				fillPercent = Math.min(((taxableIncome - band.min) / range) * 100, 100);
+			}
 		}
 
 		return { ...band, widthPercent, fillPercent };
 	});
 </script>
 
-<div
-	class="h-54 flex border-slate-500 flex-col-reverse mx-auto bg-slate-800 rounded-lg overflow-hidden shadow-lg"
->
-	{#each bands as { min, max, rate, widthPercent, fillPercent }, i}
-		<div
-			class="tax-band border-t border-slate-400 last:border-t-transparent text-md text-left font-semibold p-4 relative"
-			style="height: {widthPercent}%; background: linear-gradient(to top, #065F46 0%, #065F46 {fillPercent}%, transparent {fillPercent}%, transparent 100%)"
-		>
-			{#if max === Infinity}
-				<div>Over {formatAsCurrency(min, false)}</div>
-			{:else}
-				<div>
-					{formatAsCurrency(min, false)} - {formatAsCurrency(max, false)}
-				</div>
-			{/if}
-			<div class="text-2xl">{formatAsPercentage(rate)}</div>
-		</div>
-	{/each}
+<div class="space-y-2">
+	<div class="h-full rounded flex items-end">
+		{#each bands as { min, max, rate, widthPercent }, i}
+			<div
+				class="border-r border-slate-600 last:border-r-0 text-baseline text-left p-2 relative"
+				style="width: {widthPercent}%;"
+			>
+				{#if max === Infinity}
+					<div class="text-slate-300 text-sm">Over</div>
+					<div class="text-slate-300 text-sm">{formatAsCurrency(min - 1, false)}</div>
+				{:else}
+					<div class="text-sm text-slate-300">{formatAsCurrency(min, false)} -</div>
+					<div class="text-sm text-slate-300">{formatAsCurrency(max, false)}</div>
+				{/if}
+				<div class="text-lg font-semibold">{formatAsPercentage(rate)}</div>
+			</div>
+		{/each}
+	</div>
+
+	<div class="border border-slate-600 h-6 rounded flex overflow-hidden">
+		{#each bands as { fillPercent, widthPercent }, i}
+			<div class="relative h-full" style="width: {widthPercent}%;">
+				<div class="absolute inset-0 bg-brand-default" style="width: {fillPercent}%;" />
+			</div>
+		{/each}
+	</div>
 </div>

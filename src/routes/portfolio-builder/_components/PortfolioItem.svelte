@@ -5,17 +5,13 @@
 	import { removeHolding, updateHolding } from '../store';
 	import PercentageInput from '$lib/components/inputs/PercentageInput.svelte';
 
-	// Props
+	import { Trash } from 'lucide-svelte';
 	export let holding: Holding;
+	export let portfolioId: number;
 
-	let editActive = false;
-	let editedAllocationValue = (holding.allocation * 100).toFixed(2);
-
-	function handleBlur() {
-		const valueAsNumber = Number(editedAllocationValue);
-		const allocation = Number((valueAsNumber / 100).toFixed(2)); // Round to two decimal places
-		updateHolding({ ...holding, allocation: allocation });
-		editActive = false;
+	function handleWeightingChange(event: CustomEvent<number>) {
+		const weighting = event.detail;
+		updateHolding(portfolioId, { ...holding, weighting });
 	}
 </script>
 
@@ -24,19 +20,8 @@
 	<td>{holding.investment.name}</td>
 	<td>{formatAsCurrency(holding.value, false)}</td>
 
-	{#if editActive}
-		<td>
-			<!-- <PercentageInput
-				value={editedAllocationValue}
-				on:input={(e) => {
-					editedAllocationValue = e.target.value;
-				}}
-				on:blur={handleBlur}
-			/> -->
-		</td>
-	{:else}
-		<td>{formatAsPercentage(holding.allocation)} </td>
-	{/if}
+	<td><PercentageInput value={holding.weighting} on:input={handleWeightingChange} /></td>
+
 	{#if holding.investment.code !== 'CASH'}
 		<td>{formatAsPercentage(holding.investment.cost)}</td>
 		<td>{formatAsCurrency(holding.cost, true)}</td>
@@ -47,22 +32,10 @@
 	<td>
 		{#if holding.investment.code !== 'CASH'}
 			<button
-				on:click={() => {
-					editActive = !editActive;
-				}}
-				class="p-3 text-slate-400 hover:bg-slate-700 rounded hover:text-brand-default"
-			>
-				{#if editActive}
-					<Icon icon="bi:x-lg" class="w-5 h-5" />
-				{:else}
-					<Icon icon="bi:pencil" class="w-5 h-5" />
-				{/if}
-			</button>
-			<button
 				class="p-3 text-slate-400 hover:bg-slate-700 rounded hover:text-red-600"
-				on:click={() => removeHolding(holding.investment.code)}
+				on:click={() => removeHolding(portfolioId, holding.investment.code)}
 			>
-				<Icon icon="bi:trash" class="w-5 h-5" />
+				<Trash class="size-4" />
 			</button>
 		{/if}
 	</td>

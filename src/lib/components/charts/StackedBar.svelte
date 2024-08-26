@@ -13,7 +13,7 @@
 	import colors from 'tailwindcss/colors';
 
 	// props
-	export let labels: string[];
+
 	export let data: { label: string; value: number }[];
 	export let formatter: (value: number) => string;
 	export let theme: 'monochrome' | 'colourful' = 'monochrome';

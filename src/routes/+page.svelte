@@ -18,6 +18,10 @@
 		{
 			name: 'Personal Tax Calculator',
 			href: 'personal-tax-calculator'
+		},
+		{
+			name: 'Drawdown Calculator',
+			href: 'drawdown-calculator'
 		}
 	];
 </script>

@@ -35,7 +35,8 @@
 			data: result.annualData.map((item: AnnualData) => item.endingValue),
 			borderColor: colours[results.indexOf(result)],
 			backgroundColor: colours[results.indexOf(result)] + '40', // Add some transparency
-			fill: true
+			fill: false,
+			tension: 0.1 // Adds a slight curve to the line
 		};
 	});
 

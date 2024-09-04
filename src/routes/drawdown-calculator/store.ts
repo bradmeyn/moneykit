@@ -6,8 +6,8 @@ import { type Scenario, type Result } from './types';
 export const scenarios = writable<Scenario[]>([
 	{
 		id: 1,
-		startingAmount: 100000,
-		drawdown: 1000,
+		startingAmount: 500000,
+		drawdown: 45000,
 		interestRate: 0.06
 	}
 ]);

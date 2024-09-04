@@ -30,34 +30,28 @@
 							<td class="p-2 text-slate-300 text-sm">Principle</td>
 							{#each $results as result, i}
 								<td class="p-2 text-nowrap"
-									>{formatAsCurrency(result.annualData[0].startingValue)}</td
+									>{formatAsCurrency(result.annualData[0].startingBalance)}</td
 								>
 							{/each}
 						</tr>
 						<tr>
-							<td class="p-2 text-slate-300 text-sm">Contributions (p.a.)</td>
-							{#each $results as result, i}
+							<td class="p-2 text-slate-300 text-sm">Drawdown (p.a.)</td>
+							{#each $results as result}
 								<td class="p-2 text-nowrap"
-									>{formatAsCurrency(result.annualData[0].yearlyContribution)} p.a.</td
+									>{formatAsCurrency(result.annualData[0].withdrawal)} p.a.</td
 								>
 							{/each}
 						</tr>
 						<tr>
 							<td class="p-2 text-slate-300 text-sm">Interest (p.a.)</td>
-							{#each $results as result, i}
+							{#each $results as _, i}
 								<td class="p-2">{formatAsPercentage($scenarios[i].interestRate)}</td>
 							{/each}
 						</tr>
 						<tr>
-							<td class="p-2 text-slate-300 text-sm">Years</td>
-							{#each $results as result, i}
+							<td class="p-2 text-slate-300 text-sm">Duration</td>
+							{#each $results as result}
 								<td class="p-2">{result.annualData.length} years</td>
-							{/each}
-						</tr>
-						<tr>
-							<td class="p-2 text-slate-300 text-sm">End Value</td>
-							{#each $results as result, i}
-								<td class="p-2 text-lg font-semibold">{formatAsCurrency(result.totalValue)}</td>
 							{/each}
 						</tr>
 					</tbody>
@@ -67,14 +61,14 @@
 	</div>
 
 	<Card class="w-full">
-		<p class="text-sm font-semibold text-brand-light">Total Value</p>
+		<p class="text-sm font-semibold text-brand-light">Duration</p>
 		<div class="flex items-center gap-6">
 			{#each $results as result, i}
 				<div class="flex justify-between mb-3">
 					<div class="flex items-center gap-2">
 						<div class="size-3 md:size-4 rounded-full" style="background-color: {COLOURFUL[i]}" />
 						<p class="font-semibold text-xl md:text-2xl">
-							{formatAsCurrency(result.totalValue, false)}
+							{result.yearsLasted} years
 						</p>
 					</div>
 				</div>

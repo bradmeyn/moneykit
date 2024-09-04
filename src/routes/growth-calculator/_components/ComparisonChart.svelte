@@ -34,7 +34,7 @@
 			label: `Scenario ${result.id}`,
 			data: result.annualData.map((item: AnnualData) => item.endingValue),
 			borderColor: colours[results.indexOf(result)],
-			backgroundColor: colours[results.indexOf(result)] + '40', // Add some transparency
+			backgroundColor: colours[results.indexOf(result)] + '40',
 			fill: true
 		};
 	});

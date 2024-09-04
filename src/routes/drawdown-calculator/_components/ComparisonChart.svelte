@@ -32,11 +32,10 @@
 	$: datasets = results.map((result) => {
 		return {
 			label: `Scenario ${result.id}`,
-			data: result.annualData.map((item: AnnualData) => item.endingValue),
+			data: result.annualData.map((item: AnnualData) => item.endingBalance),
 			borderColor: colours[results.indexOf(result)],
-			backgroundColor: colours[results.indexOf(result)] + '40', // Add some transparency
-			fill: false,
-			tension: 0.1 // Adds a slight curve to the line
+			backgroundColor: colours[results.indexOf(result)] + '40',
+			fill: true
 		};
 	});
 

@@ -1,5 +1,4 @@
 <script lang="ts">
-	import Card from '$lib/components/ui/Card.svelte';
 	import AddHolding from './AddHolding.svelte';
 	import CurrencyInput from '$lib/components/inputs/CurrencyInput.svelte';
 	import AssetAllocation from './AssetAllocation.svelte';
@@ -37,7 +36,7 @@
 
 {#if result.holdings.length > 0}
 	<div class="flex flex-col lg:flex-row w-full gap-5 items-stretch">
-		<Card class=" lg:min-w-[600px] flex-grow">
+		<div class=" lg:min-w-[600px] flex-grow card">
 			<div class="flex items-center justify-between mb-3">
 				<h2>Portfolio {scenario.id}</h2>
 				<Tabs
@@ -53,8 +52,8 @@
 			{:else if selectedView === 'Allocation'}
 				<AssetAllocation {result} total={scenario.value} />
 			{/if}
-		</Card>
-		<Card class="w-full lg:max-w-[300px] mx-auto ">
+		</div>
+		<div class="w-full lg:max-w-[300px] mx-auto card">
 			{#if selectedView === 'Investment'}
 				<DoughnutChart data={investmentData} formatter={formatAsPercentage} theme="colourful" />
 				<Legend data={investmentData} formatter={formatAsPercentage} theme="colourful" />
@@ -68,7 +67,7 @@
 
 				<LegendList data={assetAllocationData} formatter={formatAsPercentage} theme="colourful" />
 			{/if}
-		</Card>
+		</div>
 	</div>
 {:else}
 	<AddHolding portfolioId={result.id} />

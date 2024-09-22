@@ -12,7 +12,7 @@
 	} from 'chart.js';
 	import { formatAsCurrency } from '$lib/utils/formatters';
 	import type { AnnualData } from '../types';
-	import { MONOCHROME } from '$lib/constants/colours';
+	import { BRAND_DARK, BRAND_DEFAULT, BRAND_LIGHT } from '$lib/constants/colours';
 
 	// props
 	export let data: AnnualData[] = [];
@@ -34,19 +34,19 @@
 					{
 						label: 'Principal',
 						data: Array.from({ length: years.length }, (_, i) => data[0].startingValue),
-						backgroundColor: MONOCHROME[0],
+						backgroundColor: BRAND_DARK,
 						borderRadius: 5
 					},
 					{
 						label: 'Contributions',
 						data: data.map((item) => item.totalContributions),
-						backgroundColor: MONOCHROME[1],
+						backgroundColor: BRAND_DEFAULT,
 						borderRadius: 5
 					},
 					{
 						label: 'Interest',
 						data: data.map((item) => item.totalInterest),
-						backgroundColor: MONOCHROME[2],
+						backgroundColor: BRAND_LIGHT,
 						borderRadius: 5
 					}
 				]
@@ -87,10 +87,10 @@
 						ticks: {
 							callback: (value) => formatAsCurrency(+value, false),
 							font: {
-								size: 14,
+								size: 16,
 								family: 'sans-serif'
 							},
-							color: '#CBD5E1'
+							color: colors.slate[200]
 						}
 					}
 				},
@@ -100,21 +100,15 @@
 						position: 'nearest',
 						mode: 'index',
 						intersect: false,
-
 						bodyAlign: 'right',
 						titleFont: {
-							size: 18
+							size: 16
 						},
 						bodyFont: {
 							size: 12,
 							family: 'Inter'
 						},
-						padding: {
-							top: 16,
-							bottom: 16,
-							left: 16,
-							right: 16
-						},
+						padding: 16,
 
 						bodyColor: 'white',
 

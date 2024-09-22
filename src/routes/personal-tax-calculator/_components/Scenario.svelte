@@ -6,7 +6,7 @@
 	import TaxBand from './TaxBand.svelte';
 
 	import Tabs from '$lib/components/ui/Tabs.svelte';
-	import Card from '$lib/components/ui/Card.svelte';
+
 	import StackedBar from '$lib/components/charts/StackedBar.svelte';
 	import LegendList from '$lib/components/charts/LegendList.svelte';
 
@@ -31,17 +31,17 @@
 	</aside>
 
 	<section class="space-y-4 w-full">
-		<Card
-			><div class="mb-2">
+		<div class="card">
+			<div class="mb-2">
 				<p class="text-sm font-semibold text-brand-light">Taxable Income</p>
 				<p class="font-semibold text-2xl md:text-2xl">
 					{formatAsCurrency(result.taxableIncome, false)}
 				</p>
 			</div>
 			<TaxBand taxableIncome={scenario.income - scenario.deductions} />
-		</Card>
+		</div>
 		<div class="flex gap-4 flex-col md:flex-row">
-			<Card class="flex-1">
+			<div class="flex-1 card">
 				<div class="flex flex-col md:flex-row gap-4 justify-between mb-3">
 					<div>
 						<p class="text-sm font-semibold text-brand-light">Total Tax</p>
@@ -120,11 +120,11 @@
 						</table>
 					</div>
 				{/if}
-			</Card>
+			</div>
 
-			<Card class="flex-1">
+			<div class="flex-1 card">
 				<TaxRateTable />
-			</Card>
+			</div>
 		</div>
 	</section>
 </div>

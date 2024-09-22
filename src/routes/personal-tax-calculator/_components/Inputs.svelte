@@ -9,8 +9,6 @@
 	export let hasHelpDebt: boolean = false;
 </script>
 
-<h2 class="mb-2">Inputs</h2>
-
 <div class="space-y-3">
 	<CurrencyInput label="Income" bind:value={income} />
 	<CurrencyInput label="Deductions" bind:value={deductions} />

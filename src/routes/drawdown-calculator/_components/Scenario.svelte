@@ -3,8 +3,6 @@
 	import Chart from './Chart.svelte';
 	import Tabs from '$lib/components/ui/Tabs.svelte';
 	import Table from './Table.svelte';
-	import Card from '$lib/components/ui/Card.svelte';
-	import { formatAsCurrency } from '$lib/utils/formatters';
 	import type { Result, Scenario } from '../types';
 
 	export let scenario: Scenario;
@@ -25,7 +23,7 @@
 			bind:interestRate={scenario.interestRate}
 		/>
 	</aside>
-	<Card class="w-full">
+	<div class="w-full card">
 		<div class="w-full">
 			<div class="flex flex-col md:flex-row gap-4 justify-between mb-3">
 				<div>
@@ -55,5 +53,5 @@
 				<Table annualData={result.annualData} />
 			{/if}
 		</div>
-	</Card>
+	</div>
 </section>

@@ -31,17 +31,9 @@
 		class="text-4xl md:text-6xl lg:text-6xl text-center font-light p-3 my-12 md:my-16 lg:my-20 text-white"
 	>
 		<div>
-			Tools to manage <span
+			Tools for managing <span
 				class="text-transparent bg-clip-text bg-gradient-to-b from-brand-light to-brand-default"
 				>money</span
-			>
-		</div>
-		<div>
-			& gain
-			<span
-				class="text-transparent bg-clip-text bg-gradient-to-b from-brand-light to-brand-default"
-			>
-				independence</span
 			>
 		</div>
 	</h1>

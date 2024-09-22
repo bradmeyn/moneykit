@@ -1,8 +1,6 @@
 <script lang="ts">
-	import { Dialog, Separator, Label } from 'bits-ui';
+	import { Dialog } from 'bits-ui';
 	import { fade } from 'svelte/transition';
-	import Card from '$lib/components/ui/Card.svelte';
-	import Icon from '@iconify/svelte';
 </script>
 
 <Dialog.Root>
@@ -20,7 +18,7 @@
 		<Dialog.Content
 			class="fixed left-[50%] top-[50%] z-50 w-full max-w-[94%] translate-x-[-50%] translate-y-[-50%] shadow-popover outline-none sm:max-w-[490px] md:w-full"
 		>
-			<Card>
+			<div class="card">
 				<Dialog.Title class="text-lg font-semibold tracking-tight text-left"
 					>Create API key</Dialog.Title
 				>
@@ -58,7 +56,7 @@
 						<span class="sr-only">Close</span>
 					</div>
 				</Dialog.Close>
-			</Card>
+			</div>
 		</Dialog.Content>
 	</Dialog.Portal>
 </Dialog.Root>

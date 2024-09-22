@@ -1,8 +1,16 @@
 <script lang="ts">
-	import { FREQUENCY_OPTIONS } from '$lib/constants';
 	export let value: number;
 	export let name: string;
 	export let showLabel: boolean = true;
+
+	const FREQUENCY_OPTIONS = [
+		{ label: 'Weekly', value: 52 },
+		{ label: 'Fortnightly', value: 26 },
+		{ label: 'Monthly', value: 12 },
+		{ label: 'Quarterly', value: 4 },
+		{ label: 'Half Yearly', value: 2 },
+		{ label: 'Yearly', value: 1 }
+	];
 </script>
 
 <div>

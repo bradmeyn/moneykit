@@ -1,12 +1,11 @@
 <script lang="ts">
-	import Card from '$lib/components/ui/Card.svelte';
 	import DoughnutChart from '$lib/components/charts/DoughnutChart.svelte';
 	import LegendList from '$lib/components/charts/LegendList.svelte';
 	import { formatAsCurrency } from '$lib/utils/formatters';
 	import BudgetTable from './_components/BudgetTable.svelte';
 	import BudgetCategory from './_components/BudgetCategory.svelte';
 	import { budget } from './store';
-	import BudgetAdd from './_components/BudgetAdd.svelte';
+
 	import BarChart from '$lib/components/charts/BarChart.svelte';
 
 	$: chartData = $budget.expenseByCategory.map((item) => ({
@@ -20,8 +19,8 @@
 
 	<div class="flex flex-col lg:flex-row gap-4 w-full">
 		<div class="flex-1 flex gap-4 flex-col">
-			<Card>
-				<h2 class="text-sm font-semibold text-brand-light">Income</h2>
+			<div class="card">
+				<h2>Income</h2>
 				<p class="text-2xl font-semibold mb-2">
 					{formatAsCurrency($budget.annualIncome)}
 				</p>
@@ -41,9 +40,9 @@
 						</BudgetCategory>
 					{/each}
 				</div>
-			</Card>
-			<Card>
-				<h2 class="text-sm font-semibold text-brand-light">Expenses</h2>
+			</div>
+			<div class="card">
+				<h2>Expenses</h2>
 				<p class="text-2xl font-semibold mb-2">
 					{formatAsCurrency($budget.annualExpenses)}
 				</p>
@@ -63,9 +62,9 @@
 						</BudgetCategory>
 					{/each}
 				</div>
-			</Card>
-			<Card>
-				<h2 class="text-sm font-semibold text-brand-light">Savings</h2>
+			</div>
+			<div class="card">
+				<h2>Savings</h2>
 				<p class="text-2xl font-semibold mb-2">
 					{formatAsCurrency($budget.annualSavings)}
 				</p>
@@ -84,17 +83,17 @@
 						</BudgetCategory>
 					{/each}
 				</div>
-			</Card>
+			</div>
 		</div>
 
 		<div class="flex flex-row lg:flex-col flex-wrap gap-4">
-			<Card class=" flex-1">
-				<h2 class="text-sm font-semibold text-brand-light mb-2">Expense Categories</h2>
+			<div class=" flex-1 card">
+				<h2>Expense Categories</h2>
 				<DoughnutChart data={chartData} formatter={formatAsCurrency} theme={'colourful'} />
 				<LegendList data={chartData} formatter={formatAsCurrency} theme={'colourful'} />
-			</Card>
-			<Card class="flex-1">
-				<h2 class="text-sm font-semibold text-brand-light mb-2">Overview</h2>
+			</div>
+			<div class="flex-1 card">
+				<h2>Overview</h2>
 				<BarChart
 					data={[
 						{
@@ -112,7 +111,7 @@
 					]}
 					formatter={formatAsCurrency}
 				/>
-			</Card>
+			</div>
 		</div>
 	</div>
 </main>

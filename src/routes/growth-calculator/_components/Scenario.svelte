@@ -3,7 +3,7 @@
 	import Chart from './Chart.svelte';
 	import Tabs from '$lib/components/ui/Tabs.svelte';
 	import Table from './Table.svelte';
-	import Card from '$lib/components/ui/Card.svelte';
+
 	import { formatAsCurrency } from '$lib/utils/formatters';
 	import type { Result, Scenario } from '../types';
 	import LegendList from '$lib/components/charts/LegendList.svelte';
@@ -28,11 +28,11 @@
 			bind:years={scenario.years}
 		/>
 	</aside>
-	<Card class="w-full">
+	<div class="w-full card">
 		<div class="w-full">
 			<div class="flex flex-col md:flex-row gap-4 justify-between mb-3">
 				<div>
-					<p class="text-sm font-semibold text-brand-light">Total Value</p>
+					<h2>Total Value</h2>
 					<p class="font-semibold text-2xl md:text-2xl">
 						{formatAsCurrency(result.totalValue, false)}
 					</p>
@@ -42,7 +42,7 @@
 			{#if selectedView === 'chart'}
 				<Chart data={result.annualData} />
 				<div class="md:max-w-xs">
-					<p class="text-sm font-semibold text-brand-light">After {scenario.years} years</p>
+					<p class="font-semibold text-slate-200">After {scenario.years} years</p>
 					<LegendList
 						formatter={formatAsCurrency}
 						data={[
@@ -56,5 +56,5 @@
 				<Table annualData={result.annualData} />
 			{/if}
 		</div>
-	</Card>
+	</div>
 </section>

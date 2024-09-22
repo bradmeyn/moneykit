@@ -1,5 +1,4 @@
 <script lang="ts">
-	import Card from '$lib/components/ui/Card.svelte';
 	import { results } from '../store';
 	import { formatAsCurrency, formatAsPercentage } from '$lib/utils/formatters';
 	import { COLOURFUL } from '$lib/constants/colours';
@@ -7,7 +6,7 @@
 </script>
 
 <section class="flex flex-col-reverse lg:flex-row gap-8">
-	<Card class="w-full">
+	<div class="w-full card">
 		<div class="overflow-x-auto">
 			<p class="text-sm font-semibold text-brand-light">Comparison</p>
 			<table class="w-full border-collapse">
@@ -80,9 +79,9 @@
 				</tbody>
 			</table>
 		</div>
-	</Card>
+	</div>
 
-	<Card class="w-full">
+	<div class="w-full card">
 		<p class="text-sm font-semibold text-brand-light">Total Tax</p>
 		<div class="flex items-center gap-6">
 			{#each $results as result, i}
@@ -100,5 +99,5 @@
 			<!-- <Legend class="flex justify-center" {labels} theme={'colourful'} /> -->
 			<ComparisonChart formatter={formatAsCurrency} theme={'colourful'} results={$results} />
 		</div>
-	</Card>
+	</div>
 </section>

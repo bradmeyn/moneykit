@@ -3,51 +3,67 @@
 	import { onMount } from 'svelte';
 	import {
 		Chart,
-		BarController,
-		BarElement,
+		LineController,
+		LineElement,
+		PointElement,
 		CategoryScale,
 		LinearScale,
 		Legend,
-		Tooltip
+		Tooltip,
+		Filler
 	} from 'chart.js';
 	import { formatAsCurrency } from '$lib/utils/formatters';
 	import type { AnnualData } from '../types';
-	import { BRAND_DARK, BRAND_DEFAULT, BRAND_LIGHT } from '$lib/constants/colours';
+	import { COLOURFUL, MONOCHROME } from '$lib/constants/colours';
 
 	// props
 	export let data: AnnualData[] = [];
 
 	$: years = data.map((item) => item.year);
+	$: annualDrawdown = data.map((item) => item.withdrawal);
 
 	let chartId: HTMLCanvasElement;
 	let chart: Chart;
 
-	// Register the BarController and BarElement
-	Chart.register(BarController, BarElement, CategoryScale, LinearScale, Legend, Tooltip);
+	// Register the required components
+	Chart.register(
+		LineController,
+		LineElement,
+		PointElement,
+		CategoryScale,
+		LinearScale,
+		Legend,
+		Tooltip,
+		Filler
+	);
 
 	onMount(() => {
 		chart = new Chart(chartId, {
-			type: 'bar',
+			type: 'line',
 			data: {
 				labels: years,
 				datasets: [
 					{
-						label: 'Principal',
-						data: Array.from({ length: years.length }, (_, i) => data[0].startingValue),
-						backgroundColor: BRAND_DARK,
-						borderRadius: 5
+						label: 'Balance',
+						data: data.map((i) => i.endingBalance),
+						borderColor: COLOURFUL[0],
+						backgroundColor: COLOURFUL[0] + '40',
+						fill: true,
+						borderWidth: 2,
+						pointRadius: 0,
+						pointHoverRadius: 4,
+						pointBackgroundColor: COLOURFUL[0]
 					},
 					{
-						label: 'Contributions',
-						data: data.map((item) => item.totalContributions),
-						backgroundColor: BRAND_DEFAULT,
-						borderRadius: 5
-					},
-					{
-						label: 'Interest',
-						data: data.map((item) => item.totalInterest),
-						backgroundColor: BRAND_LIGHT,
-						borderRadius: 5
+						label: 'Drawdown',
+						data: data.map((i) => i.withdrawal),
+						borderColor: MONOCHROME[1],
+						backgroundColor: MONOCHROME[1] + '40',
+						fill: true,
+						borderWidth: 2,
+						pointRadius: 0,
+						pointHoverRadius: 4,
+						pointBackgroundColor: MONOCHROME[1]
 					}
 				]
 			},
@@ -56,7 +72,6 @@
 				responsive: true,
 				scales: {
 					x: {
-						stacked: true,
 						grid: {
 							display: false
 						},
@@ -78,7 +93,9 @@
 						}
 					},
 					y: {
-						stacked: true,
+						type: 'linear',
+						display: true,
+						position: 'left',
 						grid: {
 							display: true,
 							color: colors.slate[600]
@@ -86,6 +103,15 @@
 						beginAtZero: true,
 						ticks: {
 							callback: (value) => formatAsCurrency(+value, false),
+							font: {
+								size: 14,
+								family: 'sans-serif'
+							},
+							color: colors.slate[200]
+						},
+						title: {
+							display: true,
+							text: 'Balance',
 							font: {
 								size: 16,
 								family: 'sans-serif'
@@ -97,41 +123,19 @@
 				plugins: {
 					tooltip: {
 						enabled: true,
-						position: 'nearest',
 						mode: 'index',
 						intersect: false,
-						bodyAlign: 'right',
-						titleFont: {
-							size: 16
-						},
-						bodyFont: {
-							size: 12,
-							family: 'Inter'
-						},
-						padding: 16,
-
-						bodyColor: 'white',
-
 						callbacks: {
-							title: (tooltip) => `After ${tooltip[0].label} Years`,
+							title: (tooltip) => `Year ${tooltip[0].label}`,
 							label: (context) => {
 								const label = context.dataset.label || '';
 								const value = context.parsed.y || 0;
-
 								return `${label}: ${formatAsCurrency(value, false)}`;
 							}
 						}
 					},
 					legend: {
-						display: false,
-						labels: {
-							font: {
-								size: 14,
-								family: 'Inter'
-							},
-							color: 'white',
-							boxWidth: 15
-						}
+						display: false
 					}
 				}
 			}
@@ -140,12 +144,9 @@
 
 	$: if (chart) {
 		chart.data.labels = years;
-		(chart.data.datasets[0].data = Array.from(
-			{ length: years.length },
-			(_, i) => data[0].startingValue
-		)),
-			(chart.data.datasets[1].data = data.map((item) => item.totalContributions));
-		chart.data.datasets[2].data = data.map((item) => item.totalInterest);
+		chart.data.datasets[0].data = data.map((item) => item.endingBalance);
+		chart.data.datasets[1].data = data.map((i) => i.withdrawal);
+
 		chart.update();
 	}
 </script>

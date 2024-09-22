@@ -32,7 +32,7 @@
 	$: datasets = results.map((result) => {
 		return {
 			label: `Scenario ${result.id}`,
-			data: result.annualData.map((item: AnnualData) => item.endingValue),
+			data: result.annualData.map((item: AnnualData) => item.endingBalance),
 			borderColor: colours[results.indexOf(result)],
 			backgroundColor: colours[results.indexOf(result)] + '40',
 			fill: true

@@ -3,10 +3,8 @@
 	export let category = '';
 	export let categoryTotal = 0;
 	import { formatAsCurrency } from '$lib/utils/formatters';
-
-	function toggle() {
-		isOpen = !isOpen;
-	}
+	import { ChevronDown, ChevronUp } from 'lucide-svelte';
+	const toggle = () => (isOpen = !isOpen);
 </script>
 
 <div>
@@ -17,37 +15,16 @@
 		on:click={toggle}
 	>
 		<div class="text-left">
-			<h2 class="text-sm text-slate-400">{category}</h2>
+			<h3 class="text-sm text-slate-400">{category}</h3>
 			<p class="text-lg">{formatAsCurrency(categoryTotal, false)}</p>
 		</div>
 
 		<div class="flex gap-1 items-center">
-			<!-- <span>
-				{formatAsCurrency(categoryTotal, false)}
-			</span> -->
 			<span>
 				{#if isOpen}
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						fill="none"
-						viewBox="0 0 24 24"
-						stroke-width="1.5"
-						stroke="currentColor"
-						class="size-6"
-					>
-						<path stroke-linecap="round" stroke-linejoin="round" d="m4.5 15.75 7.5-7.5 7.5 7.5" />
-					</svg>
+					<ChevronUp size="24" class="size-6 group-hover:text-brand-default" />
 				{:else}
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						fill="none"
-						viewBox="0 0 24 24"
-						stroke-width="1.5"
-						stroke="currentColor"
-						class="size-6 group-hover:text-brand-default"
-					>
-						<path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-					</svg>
+					<ChevronDown size="24" class="size-6 group-hover:text-brand-default" />
 				{/if}
 			</span>
 		</div>

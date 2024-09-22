@@ -20,7 +20,7 @@
 </script>
 
 <div class="flex justify-between items-center">
-	<h2 class="text-sm font-semibold text-brand-light mb-2">Rates</h2>
+	<h2>Rates</h2>
 	<Tabs {options} bind:selectedView />
 </div>
 {#if selectedView === 'income'}

@@ -1,6 +1,10 @@
 import colors from 'tailwindcss/colors';
 
-export const BRAND = [colors.emerald[500], colors.emerald[700], colors.emerald[300]];
+export const BRAND_DEFAULT = colors.emerald[500];
+export const BRAND_LIGHT = colors.emerald[300];
+export const BRAND_DARK = colors.emerald[700];
+
+export const BRAND = [BRAND_DEFAULT, BRAND_LIGHT, BRAND_DARK];
 
 export const COLOURFUL = [
 	colors.sky[500],

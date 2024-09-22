@@ -2,6 +2,7 @@
 	import barChart from '$lib/assets/bar-chart.svg';
 	import pieChart from '$lib/assets/pie-chart.svg';
 	import lineChart from '$lib/assets/line-chart.svg';
+	import drawdownCalculator from '$lib/assets/drawdown-calculator.svg';
 	import taxCalculator from '$lib/assets/tax-calculator.svg';
 
 	export let name: string;
@@ -10,7 +11,8 @@
 		'Growth Calculator': lineChart,
 		Budget: pieChart,
 		'Portfolio Builder': barChart,
-		'Personal Tax Calculator': taxCalculator
+		'Personal Tax Calculator': taxCalculator,
+		'Drawdown Calculator': drawdownCalculator
 	} as const;
 
 	type IconName = keyof typeof iconMap;

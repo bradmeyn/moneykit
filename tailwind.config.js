@@ -1,5 +1,4 @@
-import type { Config } from 'tailwindcss';
-const colors = require('tailwindcss/colors');
+import colors from 'tailwindcss/colors';
 
 export default {
 	content: ['./src/**/*.{html,js,svelte,ts}'],
@@ -16,9 +15,9 @@ export default {
 
 			colors: {
 				brand: {
+					light: colors.emerald[300],
 					default: colors.emerald[500],
-					dark: colors.emerald[700],
-					light: colors.emerald[300]
+					dark: colors.emerald[700]
 				}
 			}
 		}

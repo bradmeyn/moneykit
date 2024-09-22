@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { onMount, onDestroy } from 'svelte';
-	import Card from '$lib/components/ui/Card.svelte';
 	import { browser } from '$app/environment';
 	export let isOpen = false;
 	import type { Link } from './Header.svelte';
@@ -30,7 +29,7 @@
 
 {#if isOpen}
 	<button class="fixed lg:hidden inset-0 bg-black/40 z-10" on:click={() => (isOpen = false)}>
-		<Card class="z-50 absolute left-0 top-0 w-full">
+		<div class="z-50 absolute left-0 top-0 w-full card">
 			<div class="flex justify-between items-center z-10">
 				<span class="text-white font-semibold text-xl"
 					>Wealth<span
@@ -58,6 +57,6 @@
 					{/each}
 				</ul>
 			</nav>
-		</Card>
+		</div>
 	</button>
 {/if}

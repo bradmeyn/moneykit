@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { scenarios, results } from '../store';
-	import Card from '$lib/components/ui/Card.svelte';
+
 	import Tabs from '$lib/components/ui/Tabs.svelte';
 	import type { Result } from '../types';
 	import BarChart from '$lib/components/charts/BarChart.svelte';
@@ -25,7 +25,7 @@
 
 <section class="flex flex-col-reverse lg:flex-row gap-8">
 	<div class="flex flex-col lg:flex-row w-full gap-5 items-stretch">
-		<Card class=" lg:min-w-[600px] flex-grow">
+		<div class=" lg:min-w-[600px] flex-grow card">
 			<div class="overflow-x-auto mb-4">
 				<p class="text-sm font-semibold text-brand-light">Cost</p>
 				<table class="w-full border-collapse">
@@ -91,8 +91,8 @@
 					{/each}
 				</tbody>
 			</table>
-		</Card>
-		<Card class=" mx-auto w-full lg:w-1/2">
+		</div>
+		<div class=" mx-auto w-full lg:w-1/2 card">
 			<div class="flex items-center justify-between mb-3">
 				<p class="text-sm font-semibold text-brand-light">{selectedView}</p>
 				<Tabs
@@ -113,6 +113,6 @@
 					formatter={formatAsPercentage}
 				/>
 			{/if}
-		</Card>
+		</div>
 	</div>
 </section>

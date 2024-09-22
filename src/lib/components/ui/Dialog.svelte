@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { Dialog } from 'bits-ui';
 	import { fade } from 'svelte/transition';
-	import Card from '$lib/components/ui/Card.svelte';
 
 	export let title: string;
 	export let description: string;
@@ -26,7 +25,7 @@
 		<Dialog.Content
 			class="fixed left-[50%] top-[50%] z-50 w-full max-w-[94%] translate-x-[-50%] translate-y-[-50%] shadow-popover outline-none sm:max-w-[520px] md:w-full"
 		>
-			<Card>
+			<div class="card">
 				<Dialog.Title class="text-lg font-semibold tracking-tight text-left">
 					{title}
 				</Dialog.Title>
@@ -60,7 +59,7 @@
 						{actionText}
 					</button>
 				</div>
-			</Card>
+			</div>
 		</Dialog.Content>
 	</Dialog.Portal>
 </Dialog.Root>

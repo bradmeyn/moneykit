@@ -20,6 +20,6 @@
 	$: src = iconMap[name as IconName] || '';
 </script>
 
-<div class="p-2 text-xl size-10 bg-slate-900 rounded border border-slate-600">
+<div class="p-2 text-xl size-10 bg-ui-900 rounded border border-ui-600">
 	<img class="w-10" {src} alt={`${name} logo`} />
 </div>

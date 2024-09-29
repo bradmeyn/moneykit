@@ -44,13 +44,13 @@
 					</thead>
 					<tbody>
 						<tr>
-							<td class="p-2 text-slate-400 text-sm">Portfolio Balance</td>
+							<td class="p-2 text-ui-400 text-sm">Portfolio Balance</td>
 							{#each $scenarios as scenario, i}
 								<td class="p-2 text-nowrap">{formatAsCurrency(scenario.value)}</td>
 							{/each}
 						</tr>
 						<tr>
-							<td class="p-2 text-slate-400 text-sm">Total Cost</td>
+							<td class="p-2 text-ui-400 text-sm">Total Cost</td>
 							{#each $results as result, i}
 								<td class="p-2 text-nowrap"
 									><div>
@@ -80,7 +80,7 @@
 				<tbody>
 					{#each $results[0].assetAllocation as assetClass, j}
 						<tr>
-							<td class="text-sm text-slate-400">{assetClass.name}</td>
+							<td class="text-sm text-ui-400">{assetClass.name}</td>
 							{#each $results as result, i}
 								<td
 									>{formatAsCurrency(result.assetAllocation[j].value, false)}

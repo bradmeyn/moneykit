@@ -2,9 +2,8 @@
 	import { onMount } from 'svelte';
 	import {
 		Chart,
-		LineElement,
-		PointElement,
-		LineController,
+		BarElement,
+		BarController,
 		CategoryScale,
 		LinearScale,
 		Legend,
@@ -33,26 +32,18 @@
 		return {
 			label: `Scenario ${result.id}`,
 			data: result.annualData.map((item: AnnualData) => item.endingValue),
+			backgroundColor: colours[results.indexOf(result)],
 			borderColor: colours[results.indexOf(result)],
-			backgroundColor: colours[results.indexOf(result)] + '40',
-			fill: true
+			borderRadius: 5
 		};
 	});
 
-	// Register the necessary components for a line chart
-	Chart.register(
-		LineController,
-		LineElement,
-		PointElement,
-		CategoryScale,
-		LinearScale,
-		Legend,
-		Tooltip
-	);
+	// Register the necessary components for a bar chart
+	Chart.register(BarController, BarElement, CategoryScale, LinearScale, Legend, Tooltip);
 
 	onMount(() => {
 		chart = new Chart(chartId, {
-			type: 'line',
+			type: 'bar',
 			data: {
 				labels,
 				datasets
@@ -125,7 +116,16 @@
 						}
 					},
 					legend: {
-						display: false
+						display: false,
+						position: 'top',
+						labels: {
+							color: colors.slate[100],
+
+							font: {
+								size: 16,
+								family: 'sans-serif'
+							}
+						}
 					}
 				}
 			}

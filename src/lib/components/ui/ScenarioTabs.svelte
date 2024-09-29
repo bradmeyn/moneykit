@@ -9,12 +9,10 @@
 </script>
 
 <div class="flex items-center mb-4">
-	<div class="flex gap-3 p-2 text-sm border-slate-400">
+	<div class="flex gap-3 p-2 text-sm border-ui-400">
 		{#each scenarioIds as id}
 			<button
-				class={` ${
-					activeScenarioId === id ? 'border-b-2 border-b-brand-default ' : 'text-slate-400'
-				}`}
+				class={` ${activeScenarioId === id ? 'border-b-2 border-b-brand-default ' : 'text-ui-400'}`}
 				on:click={() => (activeScenarioId = id)}
 			>
 				Scenario {id}
@@ -22,9 +20,7 @@
 		{/each}
 		{#if scenarioIds.length > 1}
 			<button
-				class={` ${
-					activeScenarioId === 0 ? 'border-b-2 border-b-brand-default ' : 'text-slate-400'
-				}`}
+				class={` ${activeScenarioId === 0 ? 'border-b-2 border-b-brand-default ' : 'text-ui-400'}`}
 				on:click={() => (activeScenarioId = 0)}
 			>
 				Compare
@@ -33,7 +29,7 @@
 	</div>
 	{#if scenarioIds.length < maxScenarios}
 		<button
-			class="flex gap-1 p-1 items-center text-sm justify-center text-slate-400 hover:text-brand-default hover:bg-slate-700 rounded-full"
+			class="flex gap-1 p-1 items-center text-sm justify-center text-ui-400 hover:text-brand-default hover:bg-ui-700 rounded-full"
 			on:click={onAdd}
 		>
 			<Plus class="size-4" />

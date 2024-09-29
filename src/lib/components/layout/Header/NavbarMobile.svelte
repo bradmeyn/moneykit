@@ -3,7 +3,6 @@
 	import { browser } from '$app/environment';
 	export let isOpen = false;
 	import type { Link } from './Header.svelte';
-	import NavLink from './NavLink.svelte';
 
 	export let links: Link[];
 
@@ -12,9 +11,7 @@
 		if (browser) {
 			// Check if the code is running in the browser
 			resizeHandler = () => {
-				if (window.innerWidth > 1024) {
-					isOpen = false;
-				}
+				if (window.innerWidth > 1024) isOpen = false;
 			};
 			window.addEventListener('resize', resizeHandler);
 		}
@@ -53,7 +50,7 @@
 			<nav>
 				<ul class="py-4">
 					{#each links as link}
-						<NavLink {link} />
+						<!-- <NavLink {link} /> -->
 					{/each}
 				</ul>
 			</nav>

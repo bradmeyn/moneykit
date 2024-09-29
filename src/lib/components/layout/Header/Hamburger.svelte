@@ -1,6 +1,6 @@
 <script>
 	export let isOpen = false;
-	import Icon from '@iconify/svelte';
+	import { X, Menu } from 'lucide-svelte';
 </script>
 
 <button
@@ -10,8 +10,8 @@
 	}}
 >
 	{#if isOpen}
-		<Icon icon="lucide:x" class="text-white size-6 hover:text-brand-default" />
+		<X class="size-6" />
 	{:else}
-		<Icon icon="lucide:menu" class="text-white size-6 hover:text-brand-default" />
+		<Menu class="size-6" />
 	{/if}
 </button>

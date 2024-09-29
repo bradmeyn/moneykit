@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { formatAsCurrency, formatAsPercentage } from '$lib/utils/formatters';
-	import Icon from '@iconify/svelte';
 	import type { Holding } from '../types';
 	import { removeHolding, updateHolding } from '../store';
 	import PercentageInput from '$lib/components/inputs/PercentageInput.svelte';
@@ -32,7 +31,7 @@
 	<td>
 		{#if holding.investment.code !== 'CASH'}
 			<button
-				class="p-3 text-slate-400 hover:bg-slate-700 rounded hover:text-red-600"
+				class="p-3 text-ui-400 hover:bg-ui-700 rounded hover:text-red-600"
 				on:click={() => removeHolding(portfolioId, holding.investment.code)}
 			>
 				<Trash class="size-4" />

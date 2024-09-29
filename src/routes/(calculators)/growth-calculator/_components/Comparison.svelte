@@ -6,17 +6,17 @@
 </script>
 
 <section class="flex flex-col-reverse lg:flex-row gap-8">
-	<div class="card">
+	<div class="card h-fit">
 		<div class="overflow-x-auto">
-			<p class="text-sm font-semibold text-brand-light">Comparison</p>
+			<h2>Comparison</h2>
 			<table class="w-full border-collapse">
 				<thead>
 					<tr>
-						<th class="p-2 text-slate-300 text-sm">Scenario</th>
+						<th class="p-2 text-ui-300 text-sm">Scenario</th>
 						{#each $results as result, i}
 							<th class="p-2 text-left">
 								<div class="flex items-center gap-2">
-									<div class="w-3 h-3 rounded-full" style="background-color: {COLOURFUL[i]}" />
+									<div class="size-3 rounded-full" style="background-color: {COLOURFUL[i]}" />
 									<div class="text-white text-nowrap text-base">Scenario {result.id}</div>
 								</div>
 							</th>
@@ -25,14 +25,14 @@
 				</thead>
 				<tbody>
 					<tr>
-						<td class="p-2 text-slate-300 text-sm">Principle</td>
+						<td class="p-2 text-ui-300 text-sm">Principle</td>
 						{#each $results as result, i}
 							<td class="p-2 text-nowrap">{formatAsCurrency(result.annualData[0].startingValue)}</td
 							>
 						{/each}
 					</tr>
 					<tr>
-						<td class="p-2 text-slate-300 text-sm">Contributions (p.a.)</td>
+						<td class="p-2 text-ui-300 text-sm">Contributions (p.a.)</td>
 						{#each $results as result, i}
 							<td class="p-2 text-nowrap"
 								>{formatAsCurrency(result.annualData[0].yearlyContribution)} p.a.</td
@@ -40,21 +40,21 @@
 						{/each}
 					</tr>
 					<tr>
-						<td class="p-2 text-slate-300 text-sm">Interest (p.a.)</td>
+						<td class="p-2 text-ui-300 text-sm">Interest (p.a.)</td>
 						{#each $results as result, i}
 							<td class="p-2">{formatAsPercentage($scenarios[i].interestRate)}</td>
 						{/each}
 					</tr>
 					<tr>
-						<td class="p-2 text-slate-300 text-sm">Years</td>
+						<td class="p-2 text-ui-300 text-sm">Years</td>
 						{#each $results as result, i}
 							<td class="p-2">{result.annualData.length} years</td>
 						{/each}
 					</tr>
 					<tr>
-						<td class="p-2 text-slate-300 text-sm">End Value</td>
+						<td class="p-2 text-ui-300 text-sm">End Value</td>
 						{#each $results as result, i}
-							<td class="p-2 text-lg font-semibold">{formatAsCurrency(result.totalValue)}</td>
+							<td class="p-2 font-semibold text-white">{formatAsCurrency(result.totalValue)}</td>
 						{/each}
 					</tr>
 				</tbody>
@@ -63,7 +63,7 @@
 	</div>
 
 	<div class="w-full card">
-		<p class="text-sm font-semibold text-brand-light">Total Value</p>
+		<h2>Total value</h2>
 		<div class="flex items-center gap-6">
 			{#each $results as result, i}
 				<div class="flex justify-between mb-3">

@@ -7,7 +7,7 @@
 
 <div class="w-full overflow-x-auto">
 	<table class="min-w-full">
-		<thead class="text-white bg-slate-700">
+		<thead>
 			<tr>
 				<th class="px-4 py-2">Year</th>
 				<th class="px-4 py-2">Starting Balance</th>
@@ -18,7 +18,7 @@
 		</thead>
 		<tbody>
 			{#each annualData as data}
-				<tr class="border-b border-slate-600 hover:bg-slate-800">
+				<tr>
 					<td class="px-4 py-2">{data.year}</td>
 					<td class="px-4 py-2">{formatAsCurrency(data.startingBalance)}</td>
 					<td class="px-4 py-2">{formatAsCurrency(data.interestEarned)}</td>

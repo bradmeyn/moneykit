@@ -25,6 +25,15 @@
 	// Register the BarController and BarElement
 	Chart.register(BarController, BarElement, CategoryScale, LinearScale, Legend, Tooltip);
 
+	const handleDownload = () => {
+		if (chart) {
+			const link = document.createElement('a');
+			link.download = 'growth_chart.png';
+			link.href = chart.toBase64Image();
+			link.click();
+		}
+	};
+
 	onMount(() => {
 		chart = new Chart(chartId, {
 			type: 'bar',

@@ -63,10 +63,10 @@
 					selectedInvestments.includes(investment)
 						? unselectInvestment(investment)
 						: selectInvestment(investment)}
-				class={'text-sm p-2 flex items-center rounded justify-start w-full border-t border-1 border-slate-700 cursor-pointer ' +
+				class={'text-sm p-2 flex items-center rounded justify-start w-full border-t border-1 border-ui-700 cursor-pointer ' +
 					(selectedInvestments.includes(investment)
-						? 'bg-slate-700 text-white border-brand-default'
-						: 'bg-transparent text-slate-200 hover:bg-slate-700 hover:text-white')}
+						? 'bg-ui-700 text-white border-brand-default'
+						: 'bg-transparent text-ui-200 hover:bg-ui-700 hover:text-white')}
 			>
 				<span class="w-14 inline-block text-start">{investment.code}</span><span
 					>{investment.name}</span
@@ -84,7 +84,7 @@
 			<ul class="mt-2">
 				{#each newHoldings as h}
 					<li
-						class="text-sm border-t flex p-1 items-center justify-between gap-2 border-1 border-slate-700 text-white"
+						class="text-sm border-t flex p-1 items-center justify-between gap-2 border-1 border-ui-700 text-white"
 					>
 						<div class="flex items-center justify-between gap-2">
 							<span class="w-14 inline-block text-start">{h.investment.code}</span>

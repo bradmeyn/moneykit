@@ -13,7 +13,7 @@
 				<table class="w-full border-collapse">
 					<thead>
 						<tr>
-							<th class="p-2 text-slate-300 text-sm">Scenario</th>
+							<th class="p-2 text-ui-300 text-sm">Scenario</th>
 							{#each $results as result, i}
 								<th class="p-2 text-left">
 									<div class="flex items-center gap-2">
@@ -26,7 +26,7 @@
 					</thead>
 					<tbody>
 						<tr>
-							<td class="p-2 text-slate-300 text-sm">Principle</td>
+							<td class="p-2 text-ui-300 text-sm">Principle</td>
 							{#each $results as result, i}
 								<td class="p-2 text-nowrap"
 									>{formatAsCurrency(result.annualData[0].startingBalance)}</td
@@ -34,7 +34,7 @@
 							{/each}
 						</tr>
 						<tr>
-							<td class="p-2 text-slate-300 text-sm">Drawdown (p.a.)</td>
+							<td class="p-2 text-ui-300 text-sm">Drawdown (p.a.)</td>
 							{#each $results as result}
 								<td class="p-2 text-nowrap"
 									>{formatAsCurrency(result.annualData[0].withdrawal)} p.a.</td
@@ -42,13 +42,13 @@
 							{/each}
 						</tr>
 						<tr>
-							<td class="p-2 text-slate-300 text-sm">Interest (p.a.)</td>
+							<td class="p-2 text-ui-300 text-sm">Interest (p.a.)</td>
 							{#each $results as _, i}
 								<td class="p-2">{formatAsPercentage($scenarios[i].interestRate)}</td>
 							{/each}
 						</tr>
 						<tr>
-							<td class="p-2 text-slate-300 text-sm">Duration</td>
+							<td class="p-2 text-ui-300 text-sm">Duration</td>
 							{#each $results as result}
 								<td class="p-2">{result.annualData.length} years</td>
 							{/each}

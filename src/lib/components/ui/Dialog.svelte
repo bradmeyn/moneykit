@@ -23,14 +23,14 @@
 			class="fixed inset-0 z-50 bg-black/60"
 		/>
 		<Dialog.Content
-			class="fixed left-[50%] top-[50%] z-50 w-full max-w-[94%] translate-x-[-50%] translate-y-[-50%] shadow-popover outline-none sm:max-w-[520px] md:w-full"
+			class="fixed left-[50%] top-[50%] z-50 w-full max-w-[94%] tranui-x-[-50%] tranui-y-[-50%] shadow-popover outline-none sm:max-w-[520px] md:w-full"
 		>
 			<div class="card">
 				<Dialog.Title class="text-lg font-semibold tracking-tight text-left">
 					{title}
 				</Dialog.Title>
 				<Dialog.Close
-					class="absolute text-white hover:text-brand-default hover:bg-slate-700 right-5 top-5 p-2 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground focus-visible:ring-offset-2 focus-visible:ring-offset-background active:scale-98"
+					class="absolute text-white hover:text-brand-default hover:bg-ui-700 right-5 top-5 p-2 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground focus-visible:ring-offset-2 focus-visible:ring-offset-background active:scale-98"
 				>
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
@@ -44,7 +44,7 @@
 					</svg>
 				</Dialog.Close>
 
-				<Dialog.Description class="text-sm text-slate-300 py-2 text-foreground-alt">
+				<Dialog.Description class="text-sm text-ui-300 py-2 text-foreground-alt">
 					{description}
 				</Dialog.Description>
 

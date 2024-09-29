@@ -1,5 +1,5 @@
 <script>
-	import '../app.css';
+	import '../../app.css';
 	import Header from '$lib/components/layout/Header/Header.svelte';
 	import Footer from '$lib/components/layout/Footer.svelte';
 </script>
@@ -11,4 +11,8 @@
 	<meta name="twitter:creator" content="@jrib_" />
 </svelte:head>
 
-<slot />
+<div class="bg-ui-950 min-h-screen flex flex-col">
+	<Header />
+	<slot />
+	<Footer />
+</div>

@@ -1,21 +1,6 @@
-<script lang="ts" context="module">
-	export type Link = {
-		name: string;
-		href: string;
-	};
-</script>
-
 <script lang="ts">
 	import Hamburger from './Hamburger.svelte';
-	import NavLink from './NavLink.svelte';
-	import NavbarMobile from './NavbarMobile.svelte';
-
-	const links: Link[] = [
-		{ name: 'Growth Calculator', href: '/growth-calculator' },
-		{ name: 'Budget', href: '/budget' },
-		{ name: 'Portfolio Builder', href: '/portfolio-builder' },
-		{ name: 'Tax Calculator', href: '/personal-tax-calculator' }
-	];
+	import CalculatorsDropdown from './CalculatorsDropdown.svelte';
 
 	let isOpen = false;
 </script>
@@ -33,13 +18,11 @@
 			</a>
 			<nav class="hidden md:block">
 				<ul class="flex gap-6 items-center">
-					{#each links as link}
-						<NavLink {link} />
-					{/each}
+					<CalculatorsDropdown />
 				</ul>
 			</nav>
 		</div>
 		<Hamburger bind:isOpen />
 	</div>
-	<NavbarMobile bind:isOpen {links} />
+	<!-- <NavbarMobile bind:isOpen {links} /> -->
 </header>

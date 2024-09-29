@@ -12,7 +12,7 @@
 			<table class="w-full border-collapse">
 				<thead>
 					<tr>
-						<th class="p-2 text-slate-300 text-sm">Scenario</th>
+						<th class="p-2 text-ui-300 text-sm">Scenario</th>
 						{#each $results as result, i}
 							<th class="p-2 text-left">
 								<div class="flex items-center gap-2">
@@ -25,19 +25,19 @@
 				</thead>
 				<tbody>
 					<tr>
-						<td class=" text-slate-300 text-sm">Taxable Income </td>
+						<td class=" text-ui-300 text-sm">Taxable Income </td>
 						{#each $results as result, i}
 							<td class="p-2 text-nowrap">{formatAsCurrency(result.taxableIncome)}</td>
 						{/each}
 					</tr>
 					<tr>
-						<td class=" text-slate-300 text-sm">Income Tax</td>
+						<td class=" text-ui-300 text-sm">Income Tax</td>
 						{#each $results as result, i}
 							<td class="p-2 text-nowrap">{formatAsCurrency(result.incomeTax)}</td>
 						{/each}
 					</tr>
 					<tr>
-						<td class=" text-slate-300 text-sm">Low Income Offset</td>
+						<td class=" text-ui-300 text-sm">Low Income Offset</td>
 						{#each $results as result, i}
 							{#if result.lowIncomeOffset > 0}
 								<td class="p-2">({formatAsCurrency(result.lowIncomeOffset, false)})</td>
@@ -47,31 +47,31 @@
 						{/each}
 					</tr>
 					<tr>
-						<td class="text-slate-300 text-sm">Medicare Levy</td>
+						<td class="text-ui-300 text-sm">Medicare Levy</td>
 						{#each $results as result}
 							<td>{formatAsCurrency(result.medicareLevy, false)}</td>
 						{/each}
 					</tr>
 					<tr>
-						<td class="text-slate-300 text-sm">Medicare Levy Surcharge</td>
+						<td class="text-ui-300 text-sm">Medicare Levy Surcharge</td>
 						{#each $results as result}
 							<td>{formatAsCurrency(result.medicareLevySurcharge, false)}</td>
 						{/each}
 					</tr>
 					<tr>
-						<td class="text-slate-300 text-sm">HELP Repayment</td>
+						<td class="text-ui-300 text-sm">HELP Repayment</td>
 						{#each $results as result}
 							<td>{formatAsCurrency(result.helpRepayment, false)}</td>
 						{/each}
 					</tr>
 					<tr class="text-lg">
-						<td class="text-slate-300 text-sm">Total Tax</td>
+						<td class="text-ui-300 text-sm">Total Tax</td>
 						{#each $results as result}
 							<td>{formatAsCurrency(result.totalTax, false)}</td>
 						{/each}
 					</tr>
 					<tr>
-						<td class="text-slate-300 text-sm">Effective Rate</td>
+						<td class="text-ui-300 text-sm">Effective Rate</td>
 						{#each $results as result}
 							<td>{formatAsPercentage(result.totalTax / result.taxableIncome)}</td>
 						{/each}

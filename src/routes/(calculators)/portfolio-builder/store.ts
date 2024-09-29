@@ -32,7 +32,6 @@ export const scenarios = writable<Scenario[]>([
 ]);
 
 export const results: Readable<Result[]> = derived(scenarios, ($scenarios) => {
-	console.log($scenarios);
 	return $scenarios.map((scenario) => {
 		let holdingTotal = 0;
 
@@ -149,7 +148,6 @@ export function updateHolding(portfolioId: number, updatedHolding: Holding) {
 }
 
 export function removeHolding(portfolioId: number, investmentCode: string) {
-	console.log('removing', portfolioId, investmentCode);
 	scenarios.update(($scenarios) => {
 		return $scenarios.map((portfolio) => {
 			if (portfolio.id === portfolioId) {

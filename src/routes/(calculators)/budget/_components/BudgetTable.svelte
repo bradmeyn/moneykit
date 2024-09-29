@@ -9,10 +9,10 @@
 <table class="w-full">
 	<thead>
 		<tr>
-			<th class="text-left text-sm text-slate-400 p-2 border-t-transparent">Item</th>
-			<th class="text-left text-sm text-slate-400 p-2 border-t-transparent">Amount</th>
-			<th class="text-left text-sm text-slate-400 p-2 border-t-transparent">Frequency</th>
-			<th class="text-right text-sm text-slate-400 p-2 border-t-transparent">Total</th>
+			<th class="text-left text-sm text-ui-400 p-2 border-t-transparent">Item</th>
+			<th class="text-left text-sm text-ui-400 p-2 border-t-transparent">Amount</th>
+			<th class="text-left text-sm text-ui-400 p-2 border-t-transparent">Frequency</th>
+			<th class="text-right text-sm text-ui-400 p-2 border-t-transparent">Total</th>
 		</tr>
 	</thead>
 	<tbody>

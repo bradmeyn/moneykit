@@ -11,11 +11,11 @@
 	<button
 		aria-expanded={isOpen}
 		data-open={isOpen}
-		class="flex justify-between px-4 py-2 data-[open=true]:bg-slate-700 items-center border-b border-b-slate-700 w-full rounded hover:bg-slate-700"
+		class="flex justify-between px-4 py-2 data-[open=true]:bg-ui-700 items-center border-b border-b-ui-700 w-full rounded hover:bg-ui-700"
 		on:click={toggle}
 	>
 		<div class="text-left">
-			<h3 class="text-sm text-slate-400">{category}</h3>
+			<h3 class="text-sm text-ui-400">{category}</h3>
 			<p class="text-lg">{formatAsCurrency(categoryTotal, false)}</p>
 		</div>
 
@@ -30,7 +30,7 @@
 		</div>
 	</button>
 
-	<div class={isOpen ? 'px-2 border border-slate-700' : 'hidden px-2'}>
+	<div class={isOpen ? 'px-2 border border-ui-700' : 'hidden px-2'}>
 		<slot name="table" />
 	</div>
 </div>

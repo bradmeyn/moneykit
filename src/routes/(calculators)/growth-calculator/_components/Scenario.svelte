@@ -40,6 +40,42 @@
 			if (downloadButton) downloadButton.classList.remove('hidden');
 		}
 	}
+
+	function downloadCSV() {
+		const headers = ['Year', 'Starting Value', 'Contributions', 'Interest', 'Ending Value'];
+		const csvContent = [
+			headers.join(','),
+			...result.annualData.map((row) =>
+				[
+					row.year,
+					row.startingValue,
+					row.yearlyContribution,
+					row.yearlyInterest,
+					row.endingValue
+				].join(',')
+			)
+		].join('\n');
+
+		const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+		const link = document.createElement('a');
+		if (link.download !== undefined) {
+			const url = URL.createObjectURL(blob);
+			link.setAttribute('href', url);
+			link.setAttribute('download', 'table_data.csv');
+			link.style.visibility = 'hidden';
+			document.body.appendChild(link);
+			link.click();
+			document.body.removeChild(link);
+		}
+	}
+
+	function handleDownload() {
+		if (selectedView === 'chart') {
+			downloadChart();
+		} else {
+			downloadCSV();
+		}
+	}
 </script>
 
 <section class="flex flex-col lg:flex-row gap-8">
@@ -65,7 +101,7 @@
 					<Tabs {options} bind:selectedView />
 				</div>
 				<button
-					on:click={downloadChart}
+					on:click={handleDownload}
 					class="p-2 bg-ui-800 hover:bg-ui-700 rounded transition-colors duration-200 download-button"
 					title={'Download' + (selectedView === 'chart' ? ' chart' : ' csv')}
 				>

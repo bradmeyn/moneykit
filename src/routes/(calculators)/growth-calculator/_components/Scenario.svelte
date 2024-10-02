@@ -105,7 +105,7 @@
 					class="p-2 bg-ui-800 hover:bg-ui-700 rounded transition-colors duration-200 download-button"
 					title={'Download' + (selectedView === 'chart' ? ' chart' : ' csv')}
 				>
-					<Download class="size-5" />
+					<Download class="size-4" />
 				</button>
 			</div>
 		</div>

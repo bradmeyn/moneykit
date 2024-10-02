@@ -33,36 +33,15 @@ export const scenarios = writable<Scenario[]>([
 
 export const results: Readable<Result[]> = derived(scenarios, ($scenarios) => {
 	return $scenarios.map((scenario) => {
-		let holdingTotal = 0;
-
 		// Filter out 'CASH' investments and calculate the value and cost for each holding
-		let holdings = scenario.holdings
-			.filter((h) => h.investment.code !== 'CASH')
-			.map((holding) => {
-				holdingTotal += scenario.value * holding.weighting;
-				const updatedHolding = {
-					...holding,
-					value: scenario.value * holding.weighting,
-					cost: holding.investment.cost * (scenario.value * holding.weighting)
-				};
-				return updatedHolding;
-			});
-
-		// Calculate the unallocated portion of the portfolio
-		const unallocated = 1 - holdingTotal / scenario.value;
-
-		// If there is any unallocated portion, add it as a new holding
-		if (unallocated > 0) {
-			holdings = [
-				...holdings,
-				{
-					investment: UNALLOCATED_CASH,
-					weighting: unallocated,
-					value: scenario.value * unallocated,
-					cost: 0
-				}
-			];
-		}
+		const holdings = scenario.holdings.map((holding) => {
+			const updatedHolding = {
+				...holding,
+				value: scenario.value * holding.weighting,
+				cost: holding.investment.cost * (scenario.value * holding.weighting)
+			};
+			return updatedHolding;
+		});
 
 		// Initialize asset allocation categories
 		const assetAllocation = [
@@ -85,9 +64,8 @@ export const results: Readable<Result[]> = derived(scenarios, ($scenarios) => {
 		});
 
 		// Calculate the total percentage of the portfolio that is allocated
-		const totalWeighting = Math.round(
-			holdings.reduce((acc, holding) => acc + holding.weighting, 0)
-		);
+		const totalWeighting =
+			Math.round(holdings.reduce((acc, holding) => acc + holding.weighting, 0) * 100) / 100;
 
 		// Calculate the total cost of the portfolio
 		const totalCost = holdings.reduce((acc, holding) => acc + holding.cost, 0);

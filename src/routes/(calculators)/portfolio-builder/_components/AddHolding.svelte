@@ -87,10 +87,11 @@
 						class="text-sm border-t flex p-1 items-center justify-between gap-2 border-1 border-ui-700 text-white"
 					>
 						<div class="flex items-center justify-between gap-2">
-							<span class="w-14 inline-block text-start">{h.investment.code}</span>
 							<span>{h.investment.name}</span>
 						</div>
-						<PercentageInput bind:value={h.weighting} />
+						<div class="w-20">
+							<PercentageInput bind:value={h.weighting} />
+						</div>
 					</li>
 				{/each}
 			</ul>

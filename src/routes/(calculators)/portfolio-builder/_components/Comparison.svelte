@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { scenarios, results } from '../store';
-
 	import Tabs from '$lib/components/ui/Tabs.svelte';
 	import type { Result } from '../types';
 	import BarChart from '$lib/components/charts/BarChart.svelte';

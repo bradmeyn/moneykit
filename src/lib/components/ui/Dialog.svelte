@@ -23,7 +23,7 @@
 			class="fixed inset-0 z-50 bg-black/60"
 		/>
 		<Dialog.Content
-			class="fixed left-[50%] top-[50%] z-50 w-full max-w-[94%] tranui-x-[-50%] tranui-y-[-50%] shadow-popover outline-none sm:max-w-[520px] md:w-full"
+			class="fixed left-[50%] top-[50%] z-50 w-full max-w-[94%] translate-x-[-50%] translate-y-[-50%] shadow-popover outline-none sm:max-w-[520px] md:w-full"
 		>
 			<div class="card">
 				<Dialog.Title class="text-lg font-semibold tracking-tight text-left">

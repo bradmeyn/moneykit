@@ -19,12 +19,12 @@
 		{#each categories as category}
 			<div class="p-4">
 				<h3 class="font-semibold text-white text-xs mb-3">{category.toUpperCase()}</h3>
-				<ul class="grid grid-cols-2 gap-1">
+				<ul class="grid grid-cols-2 gap-2">
 					{#each calculatorsByCategory[category] as calculator}
 						<li>
 							<a
 								href={calculator.href}
-								class="block text-left border-b-2 w-fit {activeUrl === calculator.href
+								class="block text-left border-b-2 w-fit text-sm {activeUrl === calculator.href
 									? 'text-white border-b-2 border-b-brand-default'
 									: 'text-ui-400  hover:text-white border-b-transparent'}"
 							>

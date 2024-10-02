@@ -14,7 +14,7 @@
 	}));
 </script>
 
-<main class="flex flex-col flex-1 container text-white">
+<main class="flex flex-col flex-1 container text-white max-w-[1200px]">
 	<h1 class="mb-4">Budget</h1>
 
 	<div class="flex flex-col lg:flex-row gap-4 w-full">

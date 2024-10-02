@@ -5,7 +5,7 @@
 	import type { Result } from '../types';
 
 	export let result: Result;
-	export let total: number
+	export let total: number;
 </script>
 
 <table>

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import '../app.css';
 	import LinkCard from './_components/LinkCard.svelte';
 	import Header from '$lib/components/layout/Header/Header.svelte';
 	import Footer from '$lib/components/layout/Footer.svelte';
@@ -26,6 +27,13 @@
 	];
 </script>
 
+<svelte:head>
+	<title>Wealthkit | Portfolio Builder</title>
+	<!-- <meta name="description" content={meta_description} />
+	<meta name="og:description" content={meta_description} /> -->
+	<meta name="twitter:creator" content="@jrib_" />
+</svelte:head>
+
 <div class="bg-gradient-to-b from-ui-800 to-ui-950 min-h-screen flex flex-col">
 	<Header />
 	<main class="flex flex-col flex-1 container mx-auto">
@@ -33,7 +41,7 @@
 			class="text-4xl md:text-6xl lg:text-6xl text-center font-light p-3 my-12 md:my-16 lg:my-20 text-white"
 		>
 			<div>
-				Tools for managing <span
+				All the tools for managing your <span
 					class="text-transparent bg-clip-text bg-gradient-to-b from-brand-light to-brand-default"
 					>money</span
 				>

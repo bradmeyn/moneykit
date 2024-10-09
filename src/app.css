@@ -12,7 +12,7 @@
 	}
 
 	label {
-		@apply text-sm text-ui-200 mb-1;
+		@apply text-sm text-ui-200 mb-1 block;
 	}
 
 	table {

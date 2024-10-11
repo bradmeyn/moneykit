@@ -1,8 +1,5 @@
 <script lang="ts">
-	import Hamburger from './Hamburger.svelte';
 	import CalculatorsDropdown from './CalculatorsDropdown.svelte';
-
-	let isOpen = false;
 </script>
 
 <header class="h-16 relative">
@@ -31,7 +28,5 @@
 				</ul>
 			</nav>
 		</div>
-		<Hamburger bind:isOpen />
 	</div>
-	<!-- <NavbarMobile bind:isOpen {links} /> -->
 </header>

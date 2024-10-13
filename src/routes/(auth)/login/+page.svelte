@@ -1,4 +1,9 @@
 <script>
+	import type { ActionData, PageData } from './$types';
+	import { enhance } from '$app/forms';
+	import { registerSchema } from '$lib/schemas';
+	import { z } from 'zod';
+	import type { SubmitFunction } from '@sveltejs/kit';
 	import { CircleCheckBig } from 'lucide-svelte';
 	let email = '';
 	let fullName = '';

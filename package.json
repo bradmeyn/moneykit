@@ -15,6 +15,7 @@
 		"@sveltejs/adapter-auto": "^3.0.0",
 		"@sveltejs/kit": "^2.0.0",
 		"@sveltejs/vite-plugin-svelte": "^3.0.0",
+		"@types/pg": "^8.11.10",
 		"@typescript-eslint/eslint-plugin": "^6.0.0",
 		"@typescript-eslint/parser": "^6.0.0",
 		"autoprefixer": "^10.4.15",
@@ -36,10 +37,12 @@
 	"dependencies": {
 		"bits-ui": "^0.21.11",
 		"chart.js": "^4.4.0",
+		"dotenv": "^16.4.5",
 		"drizzle-orm": "^0.34.1",
 		"html2canvas": "^1.4.1",
 		"lucide-svelte": "^0.412.0",
 		"nanoid": "^5.0.2",
+		"pg": "^8.13.0",
 		"zod": "^3.23.8"
 	}
 }

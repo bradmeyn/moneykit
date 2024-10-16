@@ -35,6 +35,8 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@types/bcrypt": "^5.0.2",
+		"bcrypt": "^5.1.1",
 		"bits-ui": "^0.21.11",
 		"chart.js": "^4.4.0",
 		"dotenv": "^16.4.5",

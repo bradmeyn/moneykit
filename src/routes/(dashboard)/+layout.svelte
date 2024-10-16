@@ -1,8 +1,8 @@
-<script>
+<script lang="ts">
 	import '../../app.css';
-	import Header from '$lib/components/layout/Header/Header.svelte';
 	import Footer from '$lib/components/layout/Footer.svelte';
 	import { House, PiggyBank, Repeat2, Scale, HeartPulse } from 'lucide-svelte';
+	import type { LayoutData } from './$types';
 
 	import { page } from '$app/stores';
 

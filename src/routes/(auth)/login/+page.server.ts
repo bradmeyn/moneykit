@@ -1,31 +1,27 @@
 import { fail, redirect } from '@sveltejs/kit';
 import bcrypt from 'bcrypt';
-import db from '$lib/prisma';
+
 import type { Actions } from '@sveltejs/kit';
-import { loginSchema } from '$lib/schemas';
+import { loginSchema } from '$lib/schemas/auth';
+import { getUserByEmail } from '$lib/server/services/user';
 
 export const actions: Actions = {
 	default: async ({ request, cookies }) => {
 		const formData = await request.formData();
-		const email = formData.get('email');
-		const password = formData.get('password');
 
 		// Validate the form data using Zod
-		const result = loginSchema.safeParse({ email, password });
-
+		const result = loginSchema.safeParse(Object.fromEntries(formData));
 		if (!result.success) {
 			// If validation fails, return the errors
 			return fail(400, {
-				errors: result.error.flatten().fieldErrors,
-				data: { email, password }
+				errors: result.error.flatten().fieldErrors
 			});
 		}
 
-		const validatedData = result.data;
+		const { email, password } = result.data;
 
 		try {
-			// Find the user by email
-			const user = await db.user.findUnique({ where: { email: validatedData.email } });
+			const user = await getUserByEmail(email);
 
 			// If the user does not exist, return an error
 			if (!user) {
@@ -34,8 +30,7 @@ export const actions: Actions = {
 				});
 			}
 
-			// Compare the password
-			const passwordMatch = await bcrypt.compare(validatedData.password, user.password);
+			const passwordMatch = await bcrypt.compare(password, user.password);
 
 			// If the password does not match, return an error
 			if (!passwordMatch) {
@@ -55,7 +50,6 @@ export const actions: Actions = {
 
 			// Redirect to a protected route or dashboard
 		} catch (error) {
-			console.error('Login error:', error);
 			return fail(500, { error: 'An error occurred during login' });
 		}
 

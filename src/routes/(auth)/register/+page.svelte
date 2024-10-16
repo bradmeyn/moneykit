@@ -1,20 +1,57 @@
-<script>
+<script lang="ts">
 	import type { ActionData, PageData } from './$types';
 	import { enhance } from '$app/forms';
-	import { registerSchema } from '$lib/schemas';
+	import { registerSchema } from '$lib/schemas/auth';
 	import { z } from 'zod';
 	import type { SubmitFunction } from '@sveltejs/kit';
 	import { CircleCheckBig } from 'lucide-svelte';
-	let email = '';
-	let fullName = '';
-	let country = 'Australia';
-	let password = '';
-	let subscribeToEmails = true;
 
-	function handleSubmit() {
-		// Handle form submission
-		console.log('Form submitted', { email, fullName, country, password, subscribeToEmails });
+	// export let page: PageData;
+	// export let form: ActionData;
+
+	let isLoading = false;
+	let serverError = '';
+
+	let fieldErrors = {
+		email: '',
+		firstName: '',
+		lastName: '',
+		password: '',
+		confirmPassword: ''
+	};
+
+	function mapZodErrorsToFieldErrors(errors: z.ZodError) {
+		const { fieldErrors: mapped } = errors.flatten();
+		fieldErrors = { ...fieldErrors, ...mapped };
 	}
+
+	const submit: SubmitFunction = async ({ formData, cancel }) => {
+		const validation = registerSchema.safeParse(Object.fromEntries(formData));
+
+		if (!validation.success) {
+			mapZodErrorsToFieldErrors(validation.error);
+			cancel();
+			return;
+		}
+
+		return async ({ result, update }) => {
+			isLoading = true;
+
+			switch (result.type) {
+				case 'success':
+					isLoading = false;
+					break;
+
+				case 'failure':
+					isLoading = false;
+					serverError = result?.data?.error || 'An error occurred';
+					
+				default:
+					break;
+			}
+			await update();
+		};
+	};
 </script>
 
 <header class=" max-w-md w-full pt-24 pb-4 container" />
@@ -56,21 +93,37 @@
 
 		<div class=" max-w-md w-full card">
 			<h1 class="text-ui-300">Sign up for an account</h1>
-			<form class="mt-8 space-y-6" on:submit|preventDefault={handleSubmit}>
-				<div class="rounded-md shadow-sm space-y-3">
-					<div>
-						<label for="full-name" class="label">Full name</label>
+			<form class="mt-8 space-y-6" method="POST" use:enhance={submit}>
+				<div class="grid grid-cols-2 gap-4">
+					<div class="col-span-1">
+						<label for="first-name" class="label">First name</label>
 						<input
 							class="input-base"
-							id="full-name"
-							name="full-name"
+							id="first-name"
+							name="firstName"
 							type="text"
 							required
-							placeholder="Full name"
-							bind:value={fullName}
+							placeholder="First name"
 						/>
+						{#if fieldErrors.firstName}
+							<p class="text-red-500 text-sm mt-1">{fieldErrors.firstName}</p>
+						{/if}
 					</div>
-					<div>
+					<div class="col-span-1">
+						<label for="last-name" class="label">Last name</label>
+						<input
+							class="input-base"
+							id="last-name"
+							name="lastName"
+							type="text"
+							required
+							placeholder="Last name"
+						/>
+						{#if fieldErrors.lastName}
+							<p class="text-red-500 text-sm mt-1">{fieldErrors.lastName}</p>
+						{/if}
+					</div>
+					<div class="col-span-2">
 						<label for="email" class="label">Email</label>
 						<input
 							autocomplete="off"
@@ -80,11 +133,13 @@
 							type="email"
 							required
 							placeholder="Email"
-							bind:value={email}
 						/>
+						{#if fieldErrors.email}
+							<p class="text-red-500 text-sm mt-1">{fieldErrors.email}</p>
+						{/if}
 					</div>
 
-					<div>
+					<div class="col-span-2">
 						<label for="password" class="label">Password</label>
 						<input
 							class="input-base"
@@ -93,34 +148,46 @@
 							type="password"
 							required
 							placeholder="Password"
-							bind:value={password}
 						/>
+						{#if fieldErrors.password}
+							<p class="text-red-500 text-sm mt-1">{fieldErrors.password}</p>
+						{/if}
 					</div>
-					<div>
+					<div class="col-span-2">
 						<label for="confirm-password" class="label">Confirm Password</label>
 						<input
 							class="input-base"
 							id="confirm-password"
-							name="confirm-password"
+							name="confirmPassword"
 							type="password"
 							required
 							placeholder="Confirm Password"
 						/>
+						{#if fieldErrors.confirmPassword}
+							<p class="text-red-500 text-sm mt-1">{fieldErrors.confirmPassword}</p>
+						{/if}
 					</div>
 				</div>
+
+				{#if serverError}
+					<p class="text-red-500 text-sm">{serverError}</p>
+				{/if}
 
 				<div>
 					<button
 						type="submit"
-						class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+						class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-brand-default hover:bg-brand-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-light"
+						disabled={isLoading}
 					>
-						Create account
+						{isLoading ? 'Loading...' : 'Sign up'}
 					</button>
 				</div>
 			</form>
 			<p class="mt-2 text-center text-sm text-gray-600">
 				Already have an account?
-				<a href="/login" class="font-medium text-indigo-600 hover:text-indigo-500"> Sign in </a>
+				<a href="/login" class="font-medium text-brand-default hover:text-brand-default">
+					Sign in
+				</a>
 			</p>
 		</div>
 	</div>

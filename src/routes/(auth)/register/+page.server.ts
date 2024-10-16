@@ -1,11 +1,7 @@
 import type { Actions, Action } from '@sveltejs/kit';
 import { fail, redirect } from '@sveltejs/kit';
-import bcrypt from 'bcrypt';
-import { db } from '$db/connection';
-
-import { users, User } from '$db/schema';
-import { registerSchema } from '$lib/schemas';
-import { eq } from 'drizzle-orm';
+import { registerSchema } from '$lib/schemas/auth';
+import { createUser, getUserByEmail } from '$lib/server/services/user';
 
 export const actions: Actions = {
 	default: (async ({ request, cookies }) => {
@@ -19,11 +15,10 @@ export const actions: Actions = {
 			});
 		}
 
-		const { name, email, password } = result.data;
+		const { firstName, lastName, email, password } = result.data;
 
 		try {
-			// Check if user already exists
-			const existingUser = await db.select(1).from(users).where(eq(users.email, email)).limit(1);
+			const existingUser = await getUserByEmail(email);
 
 			if (existingUser) {
 				return fail(400, {
@@ -31,12 +26,13 @@ export const actions: Actions = {
 				});
 			}
 
-			// Hash the password
-			const saltRounds = 10;
-			const hashedPassword = await bcrypt.hash(password, saltRounds);
-
 			// Create the user
-			const newUser = await db.insert;
+			const newUser = await createUser({
+				firstName,
+				lastName,
+				email,
+				password
+			});
 
 			// Set session data
 			cookies.set('session', JSON.stringify({ userId: newUser.id }), {
@@ -54,6 +50,6 @@ export const actions: Actions = {
 		}
 
 		// Redirect to a protected route or dashboard
-		return redirect(303, '/dashboard');
+		return redirect(303, '/');
 	}) satisfies Action
 };

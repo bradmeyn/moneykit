@@ -1,20 +1,53 @@
-<script>
+<script lang="ts">
 	import type { ActionData, PageData } from './$types';
 	import { enhance } from '$app/forms';
-	import { registerSchema } from '$lib/schemas';
+	import { loginSchema } from '$lib/schemas/auth';
 	import { z } from 'zod';
 	import type { SubmitFunction } from '@sveltejs/kit';
-	import { CircleCheckBig } from 'lucide-svelte';
-	let email = '';
-	let fullName = '';
-	let country = 'Australia';
-	let password = '';
-	let subscribeToEmails = true;
 
-	function handleSubmit() {
-		// Handle form submission
-		console.log('Form submitted', { email, fullName, country, password, subscribeToEmails });
+	// export let page: PageData;
+	// export let form: ActionData;
+
+	let isLoading = false;
+	let serverError = '';
+
+	let fieldErrors = {
+		email: '',
+		password: ''
+	};
+
+	function mapZodErrorsToFieldErrors(errors: z.ZodError) {
+		const { fieldErrors: mapped } = errors.flatten();
+		fieldErrors = { ...fieldErrors, ...mapped };
 	}
+
+	const submit: SubmitFunction = async ({ formData, cancel }) => {
+		const validation = loginSchema.safeParse(Object.fromEntries(formData));
+
+		if (!validation.success) {
+			mapZodErrorsToFieldErrors(validation.error);
+			cancel();
+			return;
+		}
+
+		return async ({ result, update }) => {
+			isLoading = true;
+
+			switch (result.type) {
+				case 'success':
+					isLoading = false;
+					break;
+
+				case 'failure':
+					isLoading = false;
+					serverError = result?.data?.error || 'An error occurred';
+
+				default:
+					break;
+			}
+			await update();
+		};
+	};
 </script>
 
 <header class=" max-w-md w-full pt-24 pb-4 container" />
@@ -28,9 +61,9 @@
 				></span
 			>
 		</a>
-		<div class="  w-full card">
+		<div class="w-full card">
 			<h1 class="text-ui-300">Sign in to your account</h1>
-			<form class="mt-8 space-y-6" on:submit|preventDefault={handleSubmit}>
+			<form class="mt-8 space-y-6" method="POST" use:enhance={submit}>
 				<div class="rounded-md shadow-sm space-y-3">
 					<div>
 						<label for="email" class="label">Email</label>
@@ -42,7 +75,6 @@
 							type="email"
 							required
 							placeholder="Email"
-							bind:value={email}
 						/>
 					</div>
 
@@ -55,7 +87,6 @@
 							type="password"
 							required
 							placeholder="Password"
-							bind:value={password}
 						/>
 					</div>
 				</div>

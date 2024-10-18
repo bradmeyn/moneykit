@@ -3,6 +3,10 @@
 	import LinkCard from './_components/LinkCard.svelte';
 	import Header from '$lib/components/layout/Header/Header.svelte';
 	import Footer from '$lib/components/layout/Footer.svelte';
+	import type { PageData } from './$types';
+
+	export let data: PageData;
+
 	const links = [
 		{
 			name: 'Growth Calculator',
@@ -28,14 +32,14 @@
 </script>
 
 <svelte:head>
-	<title>Wealthkit | Portfolio Builder</title>
+	<title>Wealthkit</title>
 	<!-- <meta name="description" content={meta_description} />
 	<meta name="og:description" content={meta_description} /> -->
 	<meta name="twitter:creator" content="@jrib_" />
 </svelte:head>
 
 <div class="bg-gradient-to-b from-ui-800 to-ui-950 min-h-screen flex flex-col">
-	<Header />
+	<Header isLoggedIn={data.isLoggedIn} />
 	<main class="flex flex-col flex-1 container mx-auto">
 		<h1
 			class="text-4xl md:text-6xl lg:text-6xl text-center font-light p-3 my-12 md:my-16 lg:my-20 text-white"

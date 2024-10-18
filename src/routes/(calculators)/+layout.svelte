@@ -2,13 +2,15 @@
 	import Header from '$lib/components/layout/Header/Header.svelte';
 	import Footer from '$lib/components/layout/Footer.svelte';
 	import { onMount } from 'svelte';
-	export let data: LayoutData;
+	import type { PageData } from '../$types';
+	export let data: PageData;
 
 	onMount(() => {
 		console.log('LAYOUT DATA', data);
 	});
 
 	const { isLoggedIn } = data;
+</script>
 
 <svelte:head>
 	<title>Wealthkit</title>

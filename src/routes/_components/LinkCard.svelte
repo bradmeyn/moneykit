@@ -10,5 +10,5 @@
 	{href}
 >
 	<CardIcon {name} />
-	<p class="text-xl mb-0 text-white font-semibold">{name}</p>
+	<p class="text-xl mb-0 text-white">{name}</p>
 </a>

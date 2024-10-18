@@ -22,7 +22,7 @@
 	<meta name="twitter:creator" content="@jrib_" />
 </svelte:head>
 
-<div class="flex flex-col h-screen bg-gradient-to-b from-ui-800 to-ui-900">
+<div class="flex flex-col h-screen bg-ui-800">
 	<header class="h-16 relative bg-ui-900">
 		<div class=" mx-8 h-full flex justify-between items-center relative">
 			<div class="flex items-center gap-8 w-full">
@@ -68,5 +68,4 @@
 			<slot />
 		</main>
 	</div>
-	<Footer />
 </div>

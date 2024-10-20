@@ -29,7 +29,7 @@
 		<p class="text-2xl font-semibold mb-2 text-white">
 			{formatAsCurrency(netWorth)}
 		</p>
-		<div class="w-full h-4 rounded-xl overflow-hidden flex">
+		<div class="w-full h-4 rounded-full overflow-hidden flex">
 			<div class="h-full bg-green-500" style="width: {assetPercentage}%" />
 			<div class="h-full bg-red-500" style="width: {liabilityPercentage}%" />
 		</div>

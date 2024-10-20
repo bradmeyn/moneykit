@@ -1,5 +1,8 @@
 <script lang="ts">
 	import { formatAsCurrency, getFrequencyLabel } from '$lib/utils/formatters';
+	import DoughnutChart from '$lib/components/charts/DoughnutChart.svelte';
+	import BarChart from '$lib/components/charts/BarChart.svelte';
+	import LegendList from '$lib/components/charts/LegendList.svelte';
 
 	const income = [
 		{ name: 'Salary', value: 2100, frequency: 26, category: 'Salary/wages' },
@@ -21,104 +24,146 @@
 	const incomeTotal = income.reduce((acc, i) => acc + i.value * i.frequency, 0);
 
 	let globalfrequency = 12;
+
+	const chartData = [
+		{ label: 'Housing', value: 1000 },
+		{ label: 'Food', value: 200 },
+		{ label: 'Transportation', value: 300 }
+	];
+
+	const annualExpenses = expenses.reduce((acc, i) => acc + i.value * i.frequency, 0);
+	const annualSavings = savings.reduce((acc, i) => acc + i.value * i.frequency, 0);
+	const annualIncome = income.reduce((acc, i) => acc + i.value * i.frequency, 0);
 </script>
 
-<div class="space-y-6 max-w-4xl mx-auto">
+<div class="space-y-6 w-full mx-auto max-w-5xl">
 	<h1 class="mb-4 text-white">Budget</h1>
 
-	<section class="card">
-		<h2>Income</h2>
-		<p class="text-2xl font-semibold mb-2 text-white">
-			{formatAsCurrency(incomeTotal)}
-		</p>
+	<div class="flex flex-col lg:flex-row gap-4 w-full">
+		<div class="gap-4 flex flex-col flex-1">
+			<section class="card">
+				<h2>Income</h2>
+				<p class="text-2xl font-semibold mb-2 text-white">
+					{formatAsCurrency(incomeTotal)}
+				</p>
 
-		<table class="w-full">
-			<thead>
-				<tr>
-					<th class="text-left text-sm text-ui-400 p-2 border-t-transparent">Investments</th>
-					<th class="text-left text-sm text-ui-400 p-2 border-t-transparent">Value</th>
-					<th class="text-left text-sm text-ui-400 p-2 border-t-transparent">Frequency</th>
-					<th class="text-right text-sm text-ui-400 p-2 border-t-transparent">Total</th>
-				</tr>
-			</thead>
-			<tbody>
-				{#each income as i (i.name)}
-					<tr class="text-white">
-						<td class="p-2">{i.name}</td>
-						<td class="p-2">{formatAsCurrency(i.value)}</td>
-						<td class="p-2">{getFrequencyLabel(i.frequency)}</td>
-						<td class="p-2 text-right">{formatAsCurrency(i.value * i.frequency)}</td>
-					</tr>
-				{/each}
-			</tbody>
-		</table>
-	</section>
+				<table class="w-full">
+					<thead>
+						<tr>
+							<th class="text-left text-sm text-ui-400 p-2 border-t-transparent">Investments</th>
+							<th class="text-left text-sm text-ui-400 p-2 border-t-transparent">Value</th>
+							<th class="text-left text-sm text-ui-400 p-2 border-t-transparent">Frequency</th>
+							<th class="text-right text-sm text-ui-400 p-2 border-t-transparent">Total</th>
+						</tr>
+					</thead>
+					<tbody>
+						{#each income as i (i.name)}
+							<tr class="text-white">
+								<td class="p-2">{i.name}</td>
+								<td class="p-2">{formatAsCurrency(i.value)}</td>
+								<td class="p-2">{getFrequencyLabel(i.frequency)}</td>
+								<td class="p-2 text-right">{formatAsCurrency(i.value * i.frequency)}</td>
+							</tr>
+						{/each}
+					</tbody>
+				</table>
+			</section>
 
-	<section class="card">
-		<h2>Expenses</h2>
-		<p class="text-2xl font-semibold mb-2 text-white">
-			{formatAsCurrency(incomeTotal)}
-		</p>
+			<section class="card">
+				<h2>Expenses</h2>
+				<p class="text-2xl font-semibold mb-2 text-white">
+					{formatAsCurrency(incomeTotal)}
+				</p>
 
-		<table class="w-full">
-			<thead>
-				<tr>
-					<th class="text-left text-sm text-ui-400 p-2 border-t-transparent">Investments</th>
-					<th class="text-left text-sm text-ui-400 p-2 border-t-transparent">Value</th>
-					<th class="text-left text-sm text-ui-400 p-2 border-t-transparent">Frequency</th>
-					<th
-						class="text-right
-                    text-sm text-ui-400 p-2 border-t-transparent">Total</th
-					>
-				</tr>
-			</thead>
-			<tbody>
-				{#each expenses as i (i.name)}
-					<tr
-						class="text-white
-                    "
-					>
-						<td class="p-2">{i.name}</td>
-						<td class="p-2">{formatAsCurrency(i.value)}</td>
-						<td class="p-2">{getFrequencyLabel(i.frequency)}</td>
-						<td class="p-2 text-right">{formatAsCurrency(i.value * i.frequency)}</td>
-					</tr>
-				{/each}
-			</tbody>
-		</table>
-	</section>
+				<table class="w-full">
+					<thead>
+						<tr>
+							<th class="text-left text-sm text-ui-400 p-2 border-t-transparent">Investments</th>
+							<th class="text-left text-sm text-ui-400 p-2 border-t-transparent">Value</th>
+							<th class="text-left text-sm text-ui-400 p-2 border-t-transparent">Frequency</th>
+							<th
+								class="text-right
+                            text-sm text-ui-400 p-2 border-t-transparent">Total</th
+							>
+						</tr>
+					</thead>
+					<tbody>
+						{#each expenses as i (i.name)}
+							<tr
+								class="text-white
+                            "
+							>
+								<td class="p-2">{i.name}</td>
+								<td class="p-2">{formatAsCurrency(i.value)}</td>
+								<td class="p-2">{getFrequencyLabel(i.frequency)}</td>
+								<td class="p-2 text-right">{formatAsCurrency(i.value * i.frequency)}</td>
+							</tr>
+						{/each}
+					</tbody>
+				</table>
+			</section>
 
-	<section class="card">
-		<h2>Savings</h2>
-		<p class="text-2xl font-semibold mb-2 text-white">
-			{formatAsCurrency(incomeTotal)}
-		</p>
+			<section class="card">
+				<h2>Savings</h2>
+				<p class="text-2xl font-semibold mb-2 text-white">
+					{formatAsCurrency(incomeTotal)}
+				</p>
 
-		<table class="w-full">
-			<thead>
-				<tr>
-					<th class="text-left text-sm text-ui-400 p-2 border-t-transparent">Investments</th>
-					<th class="text-left text-sm text-ui-400 p-2 border-t-transparent">Value</th>
-					<th class="text-left text-sm text-ui-400 p-2 border-t-transparent">Frequency</th>
-					<th
-						class="text-right
-                    text-sm text-ui-400 p-2 border-t-transparent">Total</th
-					>
-				</tr>
-			</thead>
-			<tbody>
-				{#each savings as i (i.name)}
-					<tr
-						class="text-white
-                    "
-					>
-						<td class="p-2">{i.name}</td>
-						<td class="p-2">{formatAsCurrency(i.value)}</td>
-						<td class="p-2">{getFrequencyLabel(i.frequency)}</td>
-						<td class="p-2 text-right">{formatAsCurrency(i.value * i.frequency)}</td>
-					</tr>
-				{/each}
-			</tbody>
-		</table>
-	</section>
+				<table class="w-full">
+					<thead>
+						<tr>
+							<th class="text-left text-sm text-ui-400 p-2 border-t-transparent">Investments</th>
+							<th class="text-left text-sm text-ui-400 p-2 border-t-transparent">Value</th>
+							<th class="text-left text-sm text-ui-400 p-2 border-t-transparent">Frequency</th>
+							<th
+								class="text-right
+                            text-sm text-ui-400 p-2 border-t-transparent">Total</th
+							>
+						</tr>
+					</thead>
+					<tbody>
+						{#each savings as i (i.name)}
+							<tr
+								class="text-white
+                            "
+							>
+								<td class="p-2">{i.name}</td>
+								<td class="p-2">{formatAsCurrency(i.value)}</td>
+								<td class="p-2">{getFrequencyLabel(i.frequency)}</td>
+								<td class="p-2 text-right">{formatAsCurrency(i.value * i.frequency)}</td>
+							</tr>
+						{/each}
+					</tbody>
+				</table>
+			</section>
+		</div>
+
+		<div class="flex flex-row lg:flex-col flex-wrap gap-4">
+			<div class=" flex-1 card">
+				<h2>Expense Categories</h2>
+				<DoughnutChart data={chartData} formatter={formatAsCurrency} theme={'colourful'} />
+				<LegendList data={chartData} formatter={formatAsCurrency} theme={'colourful'} />
+			</div>
+			<div class="flex-1 card">
+				<h2>Overview</h2>
+				<BarChart
+					data={[
+						{
+							label: 'Income',
+							value: annualIncome
+						},
+						{
+							label: 'Expenses',
+							value: annualExpenses
+						},
+						{
+							label: 'Savings',
+							value: annualSavings
+						}
+					]}
+					formatter={formatAsCurrency}
+				/>
+			</div>
+		</div>
+	</div>
 </div>

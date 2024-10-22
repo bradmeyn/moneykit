@@ -10,6 +10,7 @@
 		category: string;
 	}>;
 	export let total: number;
+	export let type: 'income' | 'expense' | 'savings';
 
 	function calculateAnnualValue(value: number, frequency: number): number {
 		return value * frequency;
@@ -17,13 +18,15 @@
 </script>
 
 <section class="card">
-	<div>
-		<h2>{title}</h2>
-		<p class="text-2xl font-semibold mb-2 text-white">
-			{formatAsCurrency(total)}
-		</p>
+	<div class="flex justify-between items-center">
+		<div>
+			<h2>{title}</h2>
+			<p class="text-2xl font-semibold mb-2 text-white">
+				{formatAsCurrency(total)}
+			</p>
+		</div>
 
-		<AddItem />
+		<AddItem {type} />
 	</div>
 
 	<table class="w-full">

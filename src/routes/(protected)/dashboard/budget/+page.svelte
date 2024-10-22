@@ -49,9 +49,9 @@
 
 	<div class="flex flex-col lg:flex-row gap-4 w-full">
 		<div class="gap-4 flex flex-col flex-1">
-			<BudgetTable title="Income" items={income} total={incomeTotal} />
-			<BudgetTable title="Expenses" items={expenses} total={expensesTotal} />
-			<BudgetTable title="Savings" items={savings} total={savingsTotal} />
+			<BudgetTable title="Income" items={income} total={incomeTotal} type='income'/>
+			<BudgetTable title="Expenses" items={expenses} total={expensesTotal} type='expense' />
+			<BudgetTable title="Savings" items={savings} total={savingsTotal} type='savings' />
 		</div>
 
 		<div class="flex flex-row lg:flex-col flex-wrap gap-4">

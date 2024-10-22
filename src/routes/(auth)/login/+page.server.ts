@@ -2,7 +2,7 @@ import { fail, redirect } from '@sveltejs/kit';
 import bcrypt from 'bcrypt';
 
 import type { Actions } from '@sveltejs/kit';
-import { loginSchema } from '$lib/schemas/auth';
+import { loginSchema } from '../../../lib/schemas/auth';
 import { getUserByEmail } from '$lib/server/services/user';
 
 export const actions: Actions = {

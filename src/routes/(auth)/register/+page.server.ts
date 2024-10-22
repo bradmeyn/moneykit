@@ -1,6 +1,6 @@
 import type { Actions, Action } from '@sveltejs/kit';
 import { fail, redirect } from '@sveltejs/kit';
-import { registerSchema } from '$lib/schemas/auth';
+import { registerSchema } from '../../../lib/schemas/auth';
 import { createUser, getUserByEmail } from '$lib/server/services/user';
 
 export const actions: Actions = {

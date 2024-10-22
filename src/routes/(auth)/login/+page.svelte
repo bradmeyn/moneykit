@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { ActionData, PageData } from './$types';
 	import { enhance } from '$app/forms';
-	import { loginSchema } from '$lib/schemas/auth';
+	import { loginSchema } from '../../../lib/schemas/auth';
 	import { z } from 'zod';
 	import type { SubmitFunction } from '@sveltejs/kit';
 

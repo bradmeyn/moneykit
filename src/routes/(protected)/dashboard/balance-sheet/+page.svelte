@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { formatAsCurrency } from '$lib/utils/formatters';
+	import AddLiability from './_components/AddLiability.svelte';
 
 	const assets = [
 		{ name: '205 Kings Road', value: 500000, category: 'Real Estate' },
@@ -64,10 +65,16 @@
 	</section>
 
 	<section class="card">
-		<h2>Liabilities</h2>
-		<p class="text-2xl font-semibold mb-2 text-white">
-			{formatAsCurrency(liabilityTotal)}
-		</p>
+		<div class="flex justify-between items-center">
+			<div>
+				<h2>Liabilities</h2>
+				<p class="text-2xl font-semibold mb-2 text-white">
+					{formatAsCurrency(liabilityTotal)}
+				</p>
+			</div>
+
+			<AddLiability />
+		</div>
 
 		<table class="w-full">
 			<thead>

@@ -1,4 +1,5 @@
 import type { Actions, Action } from '@sveltejs/kit';
+import type { PageServerLoad } from './$types';
 import { fail } from '@sveltejs/kit';
 import { budgetItemSchema } from '$lib/schemas/dashboard';
 import { db } from '$db/index';
@@ -77,4 +78,37 @@ export const actions: Actions = {
 			});
 		}
 	}) satisfies Action
+};
+
+export const load: PageServerLoad = async ({ locals }) => {
+	const { userId } = locals;
+	if (!userId) {
+		return {
+			incomeItems: [],
+			expenseItems: [],
+			savingsItems: []
+		};
+	}
+
+	try {
+		const [incomeItems, expenseItems, savingsItems] = await Promise.all([
+			db.select().from(incomes).where(eq(incomes.userId, userId)),
+			db.select().from(expenses).where(eq(expenses.userId, userId)),
+			db.select().from(savings).where(eq(savings.userId, userId))
+		]);
+
+		return {
+			incomeItems,
+			expenseItems,
+			savingsItems
+		};
+	} catch (error) {
+		console.error('Error loading budget items:', error);
+		return {
+			incomeItems: [],
+			expenseItems: [],
+			savingsItems: [],
+			error: 'Failed to load budget items'
+		};
+	}
 };

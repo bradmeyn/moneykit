@@ -1,4 +1,4 @@
-import { integer, pgTable, pgEnum, timestamp, varchar, uuid } from 'drizzle-orm/pg-core';
+import { integer, pgTable, pgEnum, timestamp, varchar, uuid, decimal } from 'drizzle-orm/pg-core';
 
 export const frequencyEnum = pgEnum('frequency', [
 	'daily',
@@ -47,8 +47,8 @@ export type NewAsset = typeof assets.$inferInsert;
 export const liabilities = pgTable('liabilities', {
 	name: varchar({ length: 255 }).notNull(),
 	amount: integer().notNull(),
-	interestRate: integer('interest_rate').notNull(),
-	repaymentAmount: integer('repayment_amount').notNull(),
+	interestRate: decimal('interest_rate').notNull(),
+	repaymentAmount: decimal('repayment_amount').notNull(),
 	repaymentFrequency: frequencyEnum('repayment_frequency').notNull(),
 	remainingTerm: integer('remaining_term').notNull(),
 	...timestamps,

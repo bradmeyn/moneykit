@@ -6,8 +6,7 @@ import {
 	varchar,
 	uuid,
 	numeric,
-	text,
-	boolean
+	text
 } from 'drizzle-orm/pg-core';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -45,11 +44,20 @@ export type User = typeof users.$inferSelect;
 export type NewUser = typeof users.$inferInsert;
 
 // Balance Sheet
+export const assetTypeEnum = pgEnum('asset_type', [
+	'cash/savings',
+	'shares/ETFs',
+	'cryptocurrency',
+	'superannuation',
+	'car',
+	'property',
+	'other'
+]);
+
 export const assets = pgTable('assets', {
 	name: varchar({ length: 255 }).notNull(),
-	value: integer().notNull(),
-	purchaseDate: timestamp('purchase_date').notNull(),
-	purchasePrice: integer('purchase_price').notNull(),
+	value: numeric({ precision: 10, scale: 2 }).notNull(),
+	type: assetTypeEnum().notNull(),
 	...timestamps,
 	...ids
 });
@@ -70,8 +78,8 @@ export const liabilityTypeEnum = pgEnum('liability_type', [
 
 export const liabilities = pgTable('liabilities', {
 	name: text().notNull(),
-	balance: numeric('balance', { precision: 10, scale: 2 }).notNull(),
-	type: liabilityTypeEnum('type').notNull(),
+	balance: numeric({ precision: 10, scale: 2 }).notNull(),
+	type: liabilityTypeEnum().notNull(),
 	interestRate: numeric('interest_rate', { precision: 6, scale: 4 }).notNull(),
 	repaymentAmount: numeric('repayment_amount', { precision: 10, scale: 2 }).notNull(),
 	repaymentFrequency: frequencyEnum('repayment_frequency').notNull(),

@@ -5,20 +5,30 @@
 	import { X } from 'lucide-svelte';
 	import CurrencyInput from '$lib/components/inputs/CurrencyInput.svelte';
 	import { assetSchema } from '$lib/schemas/dashboard';
+	import Spinner from '$lib/components/ui/Spinner.svelte';
 	import { ASSET_TYPES } from '../constants';
-
-	import type { SubmitFunction } from '@sveltejs/kit';
 
 	let isOpen = $state(false);
 	let isLoading = $state(false);
-	let serverError = '';
+	let value = $state(0);
 
-	let assetValue = $state(0);
+	import type { SubmitFunction } from '@sveltejs/kit';
 
 	const submit: SubmitFunction = async ({ formData, cancel }) => {
-		const validation = assetSchema.safeParse(Object.fromEntries(formData));
+		const data = Object.fromEntries(formData);
+
+		const parsedData = {
+			...data,
+			value: +value
+		};
+
+		console.log(parsedData);
+
+		const validation = assetSchema.safeParse(parsedData);
 
 		if (!validation.success) {
+			alert('Invalid data');
+			console.error(validation.error);
 			cancel();
 			return;
 		}
@@ -34,7 +44,6 @@
 
 				case 'failure':
 					isLoading = false;
-					serverError = result?.data?.error || 'An error occurred while adding the liability';
 					break;
 
 				default:
@@ -82,7 +91,7 @@
 
 					<div class="col-span-2">
 						<label for="type" class="label">Type</label>
-						<select id="type" name="type" required class="input-base">
+						<select name="type" id="type" required class="input-base">
 							{#each ASSET_TYPES as type}
 								<option value={type.value}>{type.label}</option>
 							{/each}
@@ -91,16 +100,20 @@
 
 					<div class="col-span-2">
 						<label for="value" class="label">Value</label>
-						<CurrencyInput bind:value={assetValue} />
-						<input type="hidden" name="value" value={assetValue} />
+						<CurrencyInput bind:value />
+						<input type="hidden" name="value" {value} />
 					</div>
 
 					<button
 						type="submit"
 						disabled={isLoading}
-						class="px-4 py-2 col-span-2 text-sm block w-full font-medium text-white bg-brand-default rounded-md hover:bg-brand-dark-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-bg-brand-500 disabled:opacity-50"
+						class="px-4 py-2 col-span-2 text-sm w-full flex justify-center items-center font-medium text-white bg-brand-default rounded-md hover:bg-brand-dark-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-bg-brand-500 disabled:opacity-50"
 					>
-						{isLoading ? 'Adding...' : 'Add Asset'}
+						{#if isLoading}
+							<Spinner /> <span>Adding...</span>
+						{:else}
+							<div>Add Asset</div>
+						{/if}
 					</button>
 				</form>
 			</div>

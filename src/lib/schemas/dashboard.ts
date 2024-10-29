@@ -47,12 +47,17 @@ export const liabilitySchema = z.object({
 
 export const assetSchema = z.object({
 	name: z.string().min(1, 'Name is required').max(255, 'Name must be less than 255 characters'),
-	amount: z.number().int('Amount must be a whole number').positive('Amount must be positive'),
-	purchaseDate: z.date(),
-	purchasePrice: z
+	value: z
 		.number()
-		.int('Purchase price must be a whole number')
-		.positive('Purchase price must be positive'),
-
-	type: z.enum(['cash', 'property', 'shares', 'superannuation', 'other'])
+		.positive('Amount must be positive')
+		.multipleOf(0.01, 'Amount can have up to 2 decimal places, e.g. 1234.56'),
+	type: z.enum([
+		'cash/savings',
+		'shares/ETFs',
+		'cryptocurrency',
+		'superannuation',
+		'car',
+		'property',
+		'other'
+	])
 });

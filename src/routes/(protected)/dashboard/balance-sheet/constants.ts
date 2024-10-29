@@ -11,24 +11,11 @@ export const LIABILITY_TYPES = [
 ];
 
 export const ASSET_TYPES = [
-	{
-		value: 'cash',
-		label: 'Cash'
-	},
-	{
-		value: 'property',
-		label: 'Property'
-	},
-	{
-		value: 'shares',
-		label: 'Shares'
-	},
-	{
-		value: 'superannuation',
-		label: 'Superannuation'
-	},
-	{
-		value: 'other',
-		label: 'Other'
-	}
+	{ value: 'cash/savings', label: 'Cash/Savings' },
+	{ value: 'shares/ETFs', label: 'Shares/ETFs' },
+	{ value: 'cryptocurrency', label: 'Cryptocurrency' },
+	{ value: 'superannuation', label: 'Superannuation' },
+	{ value: 'car', label: 'Car' },
+	{ value: 'property', label: 'Property' },
+	{ value: 'other', label: 'Other' }
 ];

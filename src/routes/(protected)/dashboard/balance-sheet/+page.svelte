@@ -4,24 +4,28 @@
 	import AddLiability from './_components/AddLiability.svelte';
 	import type { PageData } from './$types';
 
-
 	interface Props {
 		data: PageData;
 	}
 
-	let { data }: Props =  $props();
+	let { data }: Props = $props();
 
-	const assetTotal = 0;
+	// Convert asset values to numbers for calculations
+	let assetTotal = $derived(
+		data.assets ? data.assets.reduce((acc, asset) => acc + parseFloat(asset.value), 0) : 0
+	);
 
 	// Convert liability balances to numbers for calculations
-	let liabilityTotal = $derived(data.liabilities
-		? data.liabilities.reduce((acc, liability) => acc + parseFloat(liability.balance), 0)
-		: 0);
+	let liabilityTotal = $derived(
+		data.liabilities
+			? data.liabilities.reduce((acc, liability) => acc + parseFloat(liability.balance), 0)
+			: 0
+	);
 
 	let netWorth = $derived(assetTotal - liabilityTotal);
 	let totalValue = $derived(assetTotal + liabilityTotal);
-	let assetPercentage = $derived((assetTotal / totalValue) * 100);
-	let liabilityPercentage = $derived((liabilityTotal / totalValue) * 100);
+	let assetPercentage = $derived(totalValue > 0 ? (assetTotal / totalValue) * 100 : 50);
+	let liabilityPercentage = $derived(totalValue > 0 ? (liabilityTotal / totalValue) * 100 : 50);
 </script>
 
 <div class="space-y-6 max-w-4xl mx-auto">
@@ -57,10 +61,25 @@
 			<thead>
 				<tr>
 					<th class="text-left text-sm text-ui-400 p-2 border-t-transparent">Asset</th>
+					<th class="text-left text-sm text-ui-400 p-2 border-t-transparent">Type</th>
 					<th class="text-left text-sm text-ui-400 p-2 border-t-transparent">Value</th>
 				</tr>
 			</thead>
-			<tbody></tbody>
+			<tbody>
+				{#if data.assets?.length === 0}
+					<tr>
+						<td class="text-white p-2" colspan="3">No assets added yet</td>
+					</tr>
+				{:else}
+					{#each data.assets as asset (asset.id)}
+						<tr>
+							<td class="text-white p-2 w-56">{asset.name}</td>
+							<td class="text-white p-2 w-40">{asset.type}</td>
+							<td class="text-white p-2 w-40">{formatAsCurrency(parseFloat(asset.value))}</td>
+						</tr>
+					{/each}
+				{/if}
+			</tbody>
 		</table>
 	</section>
 

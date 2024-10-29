@@ -5,14 +5,18 @@
 	import Table from './Table.svelte';
 	import type { Result, Scenario } from '../types';
 
-	export let scenario: Scenario;
-	export let result: Result;
+	interface Props {
+		scenario: Scenario;
+		result: Result;
+	}
+
+	let { scenario = $bindable(), result }: Props = $props();
 
 	let options = [
 		{ label: 'Chart', value: 'chart' },
 		{ label: 'Table', value: 'table' }
 	];
-	let selectedView = 'chart';
+	let selectedView = $state('chart');
 </script>
 
 <section class="flex flex-col lg:flex-row gap-8">

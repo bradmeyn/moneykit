@@ -2,15 +2,24 @@
 	import { formatAsCurrency, getFrequencyLabel } from '$lib/utils/formatters';
 	import AddItem from './AddItem.svelte';
 
-	export let title: string;
-	export let items: Array<{
+	interface Props {
+		title: string;
+		items: Array<{
 		name: string;
 		value: number;
 		frequency: number;
 		category: string;
 	}>;
-	export let total: number;
-	export let type: 'income' | 'expense' | 'savings';
+		total: number;
+		type: 'income' | 'expense' | 'savings';
+	}
+
+	let {
+		title,
+		items,
+		total,
+		type
+	}: Props = $props();
 
 	function calculateAnnualValue(value: number, frequency: number): number {
 		return value * frequency;

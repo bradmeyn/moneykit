@@ -1,13 +1,22 @@
 <script lang="ts">
+	import { run } from 'svelte/legacy';
+
 	import { createEventDispatcher } from 'svelte';
-	export let label: string = '';
-	export let name: string = '';
-	export let value: number;
+	interface Props {
+		label?: string;
+		name?: string;
+		value: number;
+	}
+
+	let { label = '', name = '', value = $bindable() }: Props = $props();
 
 	const dispatch = createEventDispatcher();
 
 	// Reactive statement to format the value for display
-	$: formattedValue = (value * 100).toFixed(2);
+	let formattedValue;
+	run(() => {
+		formattedValue = (value * 100).toFixed(2);
+	});
 
 	function handleInput(event: Event) {
 		const input = event.target as HTMLInputElement;
@@ -31,7 +40,7 @@
 			id={name}
 			bind:value={formattedValue}
 			inputmode="decimal"
-			on:change={handleInput}
+			onchange={handleInput}
 		/>
 		<div class="flex items-center pointer-events-none text-brand-default">%</div>
 	</div>

@@ -1,11 +1,17 @@
 <script>
-	export let isOpen = false;
 	import { X, Menu } from 'lucide-svelte';
+	/**
+	 * @typedef {Object} Props
+	 * @property {boolean} [isOpen]
+	 */
+
+	/** @type {Props} */
+	let { isOpen = $bindable(false) } = $props();
 </script>
 
 <button
 	class="block md:hidden text-white p-1 hover:text-brand-default"
-	on:click={() => {
+	onclick={() => {
 		isOpen = !isOpen;
 	}}
 >

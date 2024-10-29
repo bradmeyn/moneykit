@@ -1,6 +1,13 @@
 import { z } from 'zod';
 
-const frequencyEnum = z.enum(['daily', 'weekly', 'biweekly', 'monthly', 'quarterly', 'annually']);
+const frequencyEnum = z.enum([
+	'daily',
+	'weekly',
+	'fortnightly',
+	'monthly',
+	'quarterly',
+	'annually'
+]);
 
 export const budgetItemSchema = z.object({
 	name: z.string().min(2),
@@ -12,24 +19,40 @@ export const budgetItemSchema = z.object({
 
 export const liabilitySchema = z.object({
 	name: z.string().min(1, 'Name is required').max(255, 'Name must be less than 255 characters'),
-	amount: z.number().int('Amount must be a whole number').positive('Amount must be positive'),
+	balance: z
+		.number()
+		.positive('Amount must be positive')
+		.multipleOf(0.01, 'Amount can have up to 2 decimal places'),
 	interestRate: z
 		.number()
 		.min(0, 'Interest rate cannot be negative')
-		.max(100, 'Interest rate cannot exceed 100%')
-		.multipleOf(0.01, 'Interest rate can have up to 2 decimal places'),
+		.max(1, 'Interest rate cannot exceed 100%'),
 	repaymentAmount: z
 		.number()
 		.positive('Repayment amount must be positive')
 		.multipleOf(0.01, 'Repayment amount can have up to 2 decimal places'),
 	repaymentFrequency: frequencyEnum,
-	remainingTerm: z
-		.number()
-		.int('Remaining term must be a whole number')
-		.min(0, 'Remaining term cannot be negative')
+	type: z.enum([
+		'credit_card',
+		'home_loan',
+		'car_loan',
+		'personal_loan',
+		'student_loan',
+		'line_of_credit',
+		'business_loan',
+		'investment_loan',
+		'other'
+	])
 });
 
 export const assetSchema = z.object({
 	name: z.string().min(1, 'Name is required').max(255, 'Name must be less than 255 characters'),
-	amount: z.number().int('Amount must be a whole number').positive('Amount must be positive')
+	amount: z.number().int('Amount must be a whole number').positive('Amount must be positive'),
+	purchaseDate: z.date(),
+	purchasePrice: z
+		.number()
+		.int('Purchase price must be a whole number')
+		.positive('Purchase price must be positive'),
+
+	type: z.enum(['cash', 'property', 'shares', 'superannuation', 'other'])
 });

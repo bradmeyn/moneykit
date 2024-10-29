@@ -9,16 +9,16 @@
 	// export let page: PageData;
 	// export let form: ActionData;
 
-	let isLoading = false;
-	let serverError = '';
+	let isLoading = $state(false);
+	let serverError = $state('');
 
-	let fieldErrors = {
+	let fieldErrors = $state({
 		email: '',
 		firstName: '',
 		lastName: '',
 		password: '',
 		confirmPassword: ''
-	};
+	});
 
 	function mapZodErrorsToFieldErrors(errors: z.ZodError) {
 		const { fieldErrors: mapped } = errors.flatten();
@@ -54,7 +54,7 @@
 	};
 </script>
 
-<header class=" max-w-md w-full pt-24 pb-4 container" />
+<header class=" max-w-md w-full pt-24 pb-4 container"></header>
 <main class="flex-1">
 	<div class="flex justify-center gap-4">
 		<div class="w-full max-w-md">

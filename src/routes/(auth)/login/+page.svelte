@@ -50,7 +50,7 @@
 	};
 </script>
 
-<header class=" max-w-md w-full pt-24 pb-4 container" />
+<header class=" max-w-md w-full pt-24 pb-4 container"></header>
 <main class="flex-1">
 	<div class="mx-auto max-w-md">
 		<a href="/" class=" items-center gap-2 mb-6 block">

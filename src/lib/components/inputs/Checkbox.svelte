@@ -1,9 +1,13 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 
-	export let label: string = '';
-	export let checked: boolean = false;
-	export let name: string = '';
+	interface Props {
+		label?: string;
+		checked?: boolean;
+		name?: string;
+	}
+
+	let { label = '', checked = $bindable(false), name = '' }: Props = $props();
 
 	const dispatch = createEventDispatcher();
 
@@ -22,8 +26,8 @@
 		tabindex="0"
 		class="inline-flex items-center justify-center w-5 h-5 rounded border transition-colors duration-150 ease-in-out cursor-pointer
 			 {checked ? 'bg-brand-default border-transparent' : 'bg-transparent border-ui-500'}"
-		on:click={toggleCheckbox}
-		on:keypress={(e) => e.key === ' ' && toggleCheckbox()}
+		onclick={toggleCheckbox}
+		onkeypress={(e) => e.key === ' ' && toggleCheckbox()}
 	>
 		{#if checked}
 			<svg

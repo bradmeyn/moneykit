@@ -1,8 +1,12 @@
 <script lang="ts">
-	export let name = '';
-	export let href = '';
 
 	import CardIcon from './CardIcon.svelte';
+	interface Props {
+		name?: string;
+		href?: string;
+	}
+
+	let { name = '', href = '' }: Props = $props();
 </script>
 
 <a

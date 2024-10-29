@@ -5,7 +5,11 @@
 	import Footer from '$lib/components/layout/Footer.svelte';
 	import type { PageData } from './$types';
 
-	export let data: PageData;
+	interface Props {
+		data: PageData;
+	}
+
+	let { data }: Props = $props();
 
 	const links = [
 		{

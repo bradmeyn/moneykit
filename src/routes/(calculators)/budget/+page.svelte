@@ -8,10 +8,10 @@
 
 	import BarChart from '$lib/components/charts/BarChart.svelte';
 
-	$: chartData = $budget.expenseByCategory.map((item) => ({
+	let chartData = $derived($budget.expenseByCategory.map((item) => ({
 		label: item.category,
 		value: item.total
-	}));
+	})));
 </script>
 
 <main class="flex flex-col flex-1 container text-white max-w-[1200px]">
@@ -33,10 +33,12 @@
 								.filter((item) => item.category === category)
 								.reduce((acc, i) => acc + i.amount * i.frequency, 0)}
 						>
-							<BudgetTable
-								slot="table"
-								items={$budget.income.filter((item) => item.category === category)}
-							/>
+							{#snippet table()}
+														<BudgetTable
+									
+									items={$budget.income.filter((item) => item.category === category)}
+								/>
+													{/snippet}
 						</BudgetCategory>
 					{/each}
 				</div>
@@ -55,10 +57,12 @@
 								.filter((item) => item.category === category)
 								.reduce((acc, i) => acc + i.amount * i.frequency, 0)}
 						>
-							<BudgetTable
-								slot="table"
-								items={$budget.expenses.filter((item) => item.category === category)}
-							/>
+							{#snippet table()}
+														<BudgetTable
+									
+									items={$budget.expenses.filter((item) => item.category === category)}
+								/>
+													{/snippet}
 						</BudgetCategory>
 					{/each}
 				</div>
@@ -76,10 +80,12 @@
 								.filter((item) => item.category === category)
 								.reduce((acc, i) => acc + i.amount * i.frequency, 0)}
 						>
-							<BudgetTable
-								slot="table"
-								items={$budget.savings.filter((item) => item.category === category)}
-							/>
+							{#snippet table()}
+														<BudgetTable
+									
+									items={$budget.savings.filter((item) => item.category === category)}
+								/>
+													{/snippet}
 						</BudgetCategory>
 					{/each}
 				</div>

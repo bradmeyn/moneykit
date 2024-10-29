@@ -5,8 +5,13 @@
 	import type { LayoutData } from './$types';
 
 	import { page } from '$app/stores';
+	interface Props {
+		children?: import('svelte').Snippet;
+	}
 
-	$: activeUrl = $page.url.pathname;
+	let { children }: Props = $props();
+
+	let activeUrl = $derived($page.url.pathname);
 
 	const navItems = [
 		{ href: '/dashboard', icon: House, tooltip: 'Dashboard' },
@@ -65,7 +70,7 @@
 			</nav>
 		</aside>
 		<main class="flex-1 overflow-auto px-20 py-16">
-			<slot />
+			{@render children?.()}
 		</main>
 	</div>
 </div>

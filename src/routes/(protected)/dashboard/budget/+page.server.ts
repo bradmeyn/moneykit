@@ -2,8 +2,8 @@ import type { Actions, Action } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import { fail } from '@sveltejs/kit';
 import { budgetItemSchema } from '$lib/schemas/dashboard';
-import { db } from '$db/index';
-import { incomes, expenses, savings } from '$db/schema';
+import { db } from '$lib/server/db/index';
+import { incomes, expenses, savings } from '$lib/server/db/schema';
 import { and, eq } from 'drizzle-orm';
 
 export const actions: Actions = {

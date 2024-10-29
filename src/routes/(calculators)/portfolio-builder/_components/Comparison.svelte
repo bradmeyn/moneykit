@@ -1,3 +1,5 @@
+<!-- @migration-task Error while migrating Svelte code: `<tr>` is invalid inside `<table>` -->
+<!-- @migration-task Error while migrating Svelte code: `<tr>` is invalid inside `<table>` -->
 <script lang="ts">
 	import { scenarios, results } from '../store';
 	import Tabs from '$lib/components/ui/Tabs.svelte';

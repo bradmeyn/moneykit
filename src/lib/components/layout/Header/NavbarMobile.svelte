@@ -1,3 +1,5 @@
+<!-- @migration-task Error while migrating Svelte code: `<button>` is invalid inside `<button>` -->
+<!-- @migration-task Error while migrating Svelte code: `<button>` is invalid inside `<button>` -->
 <script lang="ts">
 	import { onMount, onDestroy } from 'svelte';
 	import { browser } from '$app/environment';

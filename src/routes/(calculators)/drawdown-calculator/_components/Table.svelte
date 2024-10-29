@@ -2,7 +2,11 @@
 	import { formatAsCurrency } from '$lib/utils/formatters';
 	import type { AnnualData } from '../types';
 
-	export let annualData: AnnualData[];
+	interface Props {
+		annualData: AnnualData[];
+	}
+
+	let { annualData }: Props = $props();
 </script>
 
 <div class="w-full overflow-x-auto">

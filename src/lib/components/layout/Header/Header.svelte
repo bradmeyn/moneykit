@@ -1,6 +1,10 @@
 <script lang="ts">
 	import CalculatorsDropdown from './CalculatorsDropdown.svelte';
-	export let isLoggedIn: boolean;
+	interface Props {
+		isLoggedIn: boolean;
+	}
+
+	let { isLoggedIn }: Props = $props();
 </script>
 
 <header class="h-16 relative">

@@ -1,6 +1,13 @@
 <script>
 	import '../../app.css';
 	import Footer from '$lib/components/layout/Footer.svelte';
+	/**
+	 * @typedef {Object} Props
+	 * @property {import('svelte').Snippet} [children]
+	 */
+
+	/** @type {Props} */
+	let { children } = $props();
 </script>
 
 <svelte:head>
@@ -11,6 +18,6 @@
 </svelte:head>
 
 <div class="bg-gradient-to-b from-ui-800 to-ui-950 min-h-screen flex flex-col">
-	<slot />
+	{@render children?.()}
 	<Footer />
 </div>

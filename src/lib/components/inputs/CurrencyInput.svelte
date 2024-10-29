@@ -1,12 +1,17 @@
 <script lang="ts">
 	import { formatAsNumber } from '$lib/utils/formatters';
 
-	// Props
-	export let name: string = '';
-	export let value: number;
+	
+	interface Props {
+		// Props
+		name?: string;
+		value: number;
+	}
+
+	let { name = '', value = $bindable() }: Props = $props();
 
 	// Reactive statement to format value whenever it changes
-	$: formattedValue = formatAsNumber(value);
+	let formattedValue = $derived(formatAsNumber(value));
 
 	function handleInput(event: Event) {
 		const input = event.target as HTMLInputElement;
@@ -31,6 +36,6 @@
 		aria-describedby="currency-symbol"
 		aria-labelledby="currency-symbol"
 		value={formattedValue}
-		on:input={handleInput}
+		oninput={handleInput}
 	/>
 </div>

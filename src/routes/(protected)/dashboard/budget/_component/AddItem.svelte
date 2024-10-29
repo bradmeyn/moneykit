@@ -9,7 +9,11 @@
 	import { budgetItemSchema } from '$lib/schemas/dashboard';
 	import { z } from 'zod';
 	import type { SubmitFunction } from '@sveltejs/kit';
-	export let type: 'income' | 'expense' | 'savings';
+	interface Props {
+		type: 'income' | 'expense' | 'savings';
+	}
+
+	let { type }: Props = $props();
 
 	const categories = ['Salary', 'Investments', 'Other'];
 
@@ -64,7 +68,7 @@
 		};
 	};
 
-	let amountValue = 0;
+	let amountValue = $state(0);
 </script>
 
 <Dialog.Root open={isOpen}>

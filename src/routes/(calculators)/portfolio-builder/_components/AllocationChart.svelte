@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { run } from 'svelte/legacy';
+
 	import * as colors from 'tailwindcss/colors';
 	import { onMount } from 'svelte';
 	import {
@@ -12,23 +14,33 @@
 	} from 'chart.js';
 	import { COLOURFUL, MONOCHROME } from '$lib/constants/colours';
 
-	// props
-	export let labels: string[];
-	export let datasets: number[][];
-	export let formatter: (value: number) => string;
-	export let theme: 'monochrome' | 'colourful' = 'monochrome';
+	
+	interface Props {
+		// props
+		labels: string[];
+		datasets: number[][];
+		formatter: (value: number) => string;
+		theme?: 'monochrome' | 'colourful';
+	}
+
+	let {
+		labels,
+		datasets,
+		formatter,
+		theme = 'monochrome'
+	}: Props = $props();
 
 	const colours = theme === 'monochrome' ? MONOCHROME : COLOURFUL;
 
-	let chartId: HTMLCanvasElement;
-	let chart: Chart;
+	let chartId: HTMLCanvasElement = $state();
+	let chart: Chart = $state();
 
-	$: formattedDatasets = datasets.map((dataset, i) => ({
+	let formattedDatasets = $derived(datasets.map((dataset, i) => ({
 		data: dataset,
 		backgroundColor: colours[i],
 		borderWidth: 0,
 		borderRadius: 5
-	}));
+	})));
 
 	// Register the BarController and BarElement
 	Chart.register(BarController, BarElement, CategoryScale, LinearScale, Legend, Tooltip);
@@ -98,14 +110,16 @@
 		});
 	});
 
-	$: if (chart) {
-		chart.data.labels = labels;
-		chart.data.datasets = formattedDatasets;
+	run(() => {
+		if (chart) {
+			chart.data.labels = labels;
+			chart.data.datasets = formattedDatasets;
 
-		chart.update();
-	}
+			chart.update();
+		}
+	});
 </script>
 
 <div class="min-h-[400px] lg:min-h-[500px] relative">
-	<canvas class="w-full absolute min-h-full p-1" bind:this={chartId} />
+	<canvas class="w-full absolute min-h-full p-1" bind:this={chartId}></canvas>
 </div>

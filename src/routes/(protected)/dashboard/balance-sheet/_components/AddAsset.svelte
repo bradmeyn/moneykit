@@ -4,38 +4,21 @@
 	import { fade } from 'svelte/transition';
 	import { X } from 'lucide-svelte';
 	import CurrencyInput from '$lib/components/inputs/CurrencyInput.svelte';
-	import FrequencySelect from '$lib/components/inputs/FrequencySelect.svelte';
-	import { liabilitySchema } from '$lib/schemas/dashboard';
-	import { LIABILITY_TYPES } from '../constants';
+	import { assetSchema } from '$lib/schemas/dashboard';
+	import { ASSET_TYPES } from '../constants';
 
 	import type { SubmitFunction } from '@sveltejs/kit';
-	import PercentageInput from '$lib/components/inputs/PercentageInput.svelte';
-
-	import Spinner from '$lib/components/ui/Spinner.svelte';
 
 	let isOpen = $state(false);
 	let isLoading = $state(false);
-	let balance = $state(0);
-	let repaymentAmountValue = $state(0);
-	let interestRateValue = $state(0);
+	let serverError = '';
+
+	let assetValue = $state(0);
 
 	const submit: SubmitFunction = async ({ formData, cancel }) => {
-		const data = Object.fromEntries(formData);
-
-		const parsedData = {
-			...data,
-			balance: +balance,
-			repaymentAmount: +repaymentAmountValue,
-			interestRate: +interestRateValue
-		};
-
-		console.log(parsedData);
-
-		const validation = liabilitySchema.safeParse(parsedData);
+		const validation = assetSchema.safeParse(Object.fromEntries(formData));
 
 		if (!validation.success) {
-			alert('Invalid data');
-			console.error(validation.error);
 			cancel();
 			return;
 		}
@@ -51,6 +34,7 @@
 
 				case 'failure':
 					isLoading = false;
+					serverError = result?.data?.error || 'An error occurred while adding the liability';
 					break;
 
 				default:
@@ -78,7 +62,7 @@
 		>
 			<div class="card">
 				<Dialog.Title class="text-lg font-semibold tracking-tight text-left">
-					Add Liability
+					Add Asset
 				</Dialog.Title>
 				<Dialog.Close
 					class="absolute text-white hover:text-brand-default hover:bg-ui-700 right-5 top-5 p-2 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground focus-visible:ring-offset-2 focus-visible:ring-offset-background active:scale-98"
@@ -87,15 +71,10 @@
 				</Dialog.Close>
 
 				<Dialog.Description class="text-sm text-ui-300 py-2 text-foreground-alt">
-					Add a new liability to track.
+					Add a new asset to track.
 				</Dialog.Description>
 
-				<form
-					method="POST"
-					action="?/addLiability"
-					use:enhance={submit}
-					class="grid grid-cols-2 gap-4"
-				>
+				<form method="POST" action="?/addAsset" use:enhance={submit} class="grid grid-cols-2 gap-4">
 					<div class="col-span-2">
 						<label for="name" class="label">Name</label>
 						<input type="text" id="name" name="name" required class="input-base" />
@@ -103,45 +82,25 @@
 
 					<div class="col-span-2">
 						<label for="type" class="label">Type</label>
-						<select name="type" id="type" required class="input-base">
-							{#each LIABILITY_TYPES as type}
+						<select id="type" name="type" required class="input-base">
+							{#each ASSET_TYPES as type}
 								<option value={type.value}>{type.label}</option>
 							{/each}
 						</select>
 					</div>
 
 					<div class="col-span-2">
-						<label for="balance" class="label">Balance</label>
-						<CurrencyInput bind:value={balance} />
-						<input type="hidden" name="balance" value={balance} />
-					</div>
-
-					<div class="col-span-2">
-						<label for="interestRate" class="label">Interest Rate</label>
-						<PercentageInput name="interestRate" bind:value={interestRateValue} />
-					</div>
-
-					<div class="col-span-1">
-						<label for="repaymentAmount" class="label">Repayment Amount</label>
-						<CurrencyInput bind:value={repaymentAmountValue} />
-						<input type="hidden" name="repaymentAmount" value={repaymentAmountValue} />
-					</div>
-
-					<div class="col-span-1 mb-4">
-						<label for="repaymentFrequency" class="label">Repayment Frequency</label>
-						<FrequencySelect name="repaymentFrequency" value={'monthly'} />
+						<label for="value" class="label">Value</label>
+						<CurrencyInput bind:value={assetValue} />
+						<input type="hidden" name="value" value={assetValue} />
 					</div>
 
 					<button
 						type="submit"
 						disabled={isLoading}
-						class="px-4 py-2 col-span-2 text-sm w-full flex justify-center items-center font-medium text-white bg-brand-default rounded-md hover:bg-brand-dark-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-bg-brand-500 disabled:opacity-50"
+						class="px-4 py-2 col-span-2 text-sm block w-full font-medium text-white bg-brand-default rounded-md hover:bg-brand-dark-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-bg-brand-500 disabled:opacity-50"
 					>
-						{#if isLoading}
-							<Spinner /> <span>Adding...</span>
-						{:else}
-							<div>Add Liability</div>
-						{/if}
+						{isLoading ? 'Adding...' : 'Add Asset'}
 					</button>
 				</form>
 			</div>

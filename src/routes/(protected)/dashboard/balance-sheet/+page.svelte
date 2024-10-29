@@ -1,26 +1,27 @@
 <script lang="ts">
 	import { formatAsCurrency } from '$lib/utils/formatters';
+	import AddAsset from './_components/AddAsset.svelte';
 	import AddLiability from './_components/AddLiability.svelte';
+	import type { PageData } from './$types';
 
-	const assets = [
-		{ name: '205 Kings Road', value: 500000, category: 'Real Estate' },
-		{ name: 'Toyota Corolla', value: 20000, category: 'Cars' },
-		{ name: 'Vanguard ETF', value: 100000, category: 'Investments' }
-	];
 
-	const assetTotal = assets.reduce((acc, asset) => acc + asset.value, 0);
+	interface Props {
+		data: PageData;
+	}
 
-	const liabilities = [
-		{ name: 'Mortgage', value: 300000, category: 'Real Estate' },
-		{ name: 'Toyota Corolla', value: 10000, category: 'Cars' }
-	];
+	let { data }: Props =  $props();
 
-	const liabilityTotal = liabilities.reduce((acc, liability) => acc + liability.value, 0);
+	const assetTotal = 0;
 
-	const netWorth = assetTotal - liabilityTotal;
-	const totalValue = assetTotal + liabilityTotal;
-	const assetPercentage = (assetTotal / totalValue) * 100;
-	const liabilityPercentage = (liabilityTotal / totalValue) * 100;
+	// Convert liability balances to numbers for calculations
+	let liabilityTotal = $derived(data.liabilities
+		? data.liabilities.reduce((acc, liability) => acc + parseFloat(liability.balance), 0)
+		: 0);
+
+	let netWorth = $derived(assetTotal - liabilityTotal);
+	let totalValue = $derived(assetTotal + liabilityTotal);
+	let assetPercentage = $derived((assetTotal / totalValue) * 100);
+	let liabilityPercentage = $derived((liabilityTotal / totalValue) * 100);
 </script>
 
 <div class="space-y-6 max-w-4xl mx-auto">
@@ -31,8 +32,8 @@
 			{formatAsCurrency(netWorth)}
 		</p>
 		<div class="w-full h-4 rounded-full overflow-hidden flex">
-			<div class="h-full bg-green-500" style="width: {assetPercentage}%" />
-			<div class="h-full bg-red-500" style="width: {liabilityPercentage}%" />
+			<div class="h-full bg-green-500" style="width: {assetPercentage}%"></div>
+			<div class="h-full bg-red-500" style="width: {liabilityPercentage}%"></div>
 		</div>
 		<div class="flex justify-between mt-2 text-sm text-ui-200">
 			<span>Assets: {formatAsCurrency(assetTotal)}</span>
@@ -41,10 +42,16 @@
 	</section>
 
 	<section class="card">
-		<h2>Assets</h2>
-		<p class="text-2xl font-semibold mb-2 text-white">
-			{formatAsCurrency(assetTotal)}
-		</p>
+		<div class="flex justify-between items-center">
+			<div>
+				<h2>Assets</h2>
+				<p class="text-2xl font-semibold mb-2 text-white">
+					{formatAsCurrency(assetTotal)}
+				</p>
+			</div>
+
+			<AddAsset />
+		</div>
 
 		<table class="w-full">
 			<thead>
@@ -53,14 +60,7 @@
 					<th class="text-left text-sm text-ui-400 p-2 border-t-transparent">Value</th>
 				</tr>
 			</thead>
-			<tbody>
-				{#each assets as asset (asset.name)}
-					<tr>
-						<td class="text-white p-2 w-56">{asset.name}</td>
-						<td class="text-white p-2 w-40">{formatAsCurrency(asset.value)}</td>
-					</tr>
-				{/each}
-			</tbody>
+			<tbody></tbody>
 		</table>
 	</section>
 
@@ -80,16 +80,30 @@
 			<thead>
 				<tr>
 					<th class="text-left text-sm text-ui-400 p-2 border-t-transparent">Liability</th>
-					<th class="text-left text-sm text-ui-400 p-2 border-t-transparent">Value</th>
+					<th class="text-left text-sm text-ui-400 p-2 border-t-transparent">Balance</th>
+					<th class="text-left text-sm text-ui-400 p-2 border-t-transparent">Interest Rate</th>
+					<th class="text-left text-sm text-ui-400 p-2 border-t-transparent">Repayment</th>
 				</tr>
 			</thead>
 			<tbody>
-				{#each liabilities as liability (liability.name)}
+				{#if data.liabilities?.length === 0}
 					<tr>
-						<td class="text-white p-2 w-56">{liability.name}</td>
-						<td class="text-white p-2 w-40">{formatAsCurrency(liability.value)}</td>
+						<td class="text-white p-2" colspan="4">No liabilities added yet</td>
 					</tr>
-				{/each}
+				{:else}
+					{#each data.liabilities as liability (liability.id)}
+						<tr>
+							<td class="text-white p-2 w-56">{liability.name}</td>
+							<td class="text-white p-2 w-40">{formatAsCurrency(parseFloat(liability.balance))}</td>
+							<td class="text-white p-2 w-32"
+								>{(parseFloat(liability.interestRate) * 100).toFixed(2)}%</td
+							>
+							<td class="text-white p-2 w-32"
+								>{formatAsCurrency(parseFloat(liability.repaymentAmount))}</td
+							>
+						</tr>
+					{/each}
+				{/if}
 			</tbody>
 		</table>
 	</section>

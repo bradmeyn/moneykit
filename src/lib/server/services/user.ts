@@ -1,6 +1,6 @@
 import { eq } from 'drizzle-orm';
-import { users, type User, type NewUser } from '$db/schema';
-import { db } from '$db/index';
+import { users, type User, type NewUser } from '$lib/server/db/schema';
+import { db } from '$lib/server/db/index';
 import bcrypt from 'bcrypt';
 
 export async function createUser(userData: Omit<NewUser, 'id' | 'createdAt'>): Promise<User> {
@@ -15,7 +15,7 @@ export async function createUser(userData: Omit<NewUser, 'id' | 'createdAt'>): P
 	return newUser[0];
 }
 
-export async function getUserById(id: number): Promise<User | undefined> {
+export async function getUserById(id: string): Promise<User | undefined> {
 	const result = await db.select().from(users).where(eq(users.id, id));
 	return result[0];
 }
@@ -26,7 +26,7 @@ export async function getUserByEmail(email: string): Promise<User | undefined> {
 }
 
 export async function updateUser(
-	id: number,
+	id: string,
 	userData: Partial<Omit<NewUser, 'id' | 'createdAt'>>
 ): Promise<User | undefined> {
 	if (userData.password) {

@@ -3,7 +3,12 @@
 	import Footer from '$lib/components/layout/Footer.svelte';
 	import { onMount } from 'svelte';
 	import type { PageData } from '../$types';
-	export let data: PageData;
+	interface Props {
+		data: PageData;
+		children?: import('svelte').Snippet;
+	}
+
+	let { data, children }: Props = $props();
 
 	onMount(() => {
 		console.log('LAYOUT DATA', data);
@@ -21,6 +26,6 @@
 
 <div class="bg-ui-950 min-h-screen flex flex-col">
 	<Header {isLoggedIn} />
-	<slot />
+	{@render children?.()}
 	<Footer />
 </div>

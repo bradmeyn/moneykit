@@ -1,8 +1,30 @@
 import type { Actions } from '@sveltejs/kit';
-import { fail } from '@sveltejs/kit';
+import { fail, redirect } from '@sveltejs/kit';
 import { liabilitySchema } from '$lib/schemas/dashboard';
-import { db } from '$db/index';
-import { liabilities } from '$db/schema';
+import type { PageServerLoad } from './$types';
+import {
+	createLiability,
+	getLiabilitiesByUserId,
+	getLiabilityByName
+} from '$lib/server/services/liability';
+
+export const load = (async ({ locals }) => {
+	if (!locals.userId) {
+		redirect(307, '/login');
+	}
+	const { userId } = locals;
+
+	try {
+		const userLiabilities = await getLiabilitiesByUserId(userId);
+		return {
+			liabilities: userLiabilities
+		};
+	} catch (error) {
+		return {
+			liabilities: []
+		};
+	}
+}) satisfies PageServerLoad;
 
 export const actions: Actions = {
 	addLiability: async ({ request, locals }) => {
@@ -12,55 +34,43 @@ export const actions: Actions = {
 		}
 
 		// Get form data and parse numbers
-		const formData = Object.fromEntries(await request.formData());
+		const data = Object.fromEntries(await request.formData());
+		console.log('Form data:', data);
 		const parsedData = {
-			...formData,
-			amount: Number(formData.amount),
-			interestRate: Number(formData.interestRate),
-			repaymentAmount: Number(formData.repaymentAmount),
-			remainingTerm: Number(formData.remainingTerm)
+			...data,
+			balance: +data.balance,
+			repaymentAmount: +data.repaymentAmount,
+			interestRate: +data.interestRate / 100
 		};
 
-		// Validate the data
-		const result = liabilitySchema.safeParse(parsedData);
+		const validation = liabilitySchema.safeParse(parsedData);
 
-		if (!result.success) {
+		if (!validation.success) {
+			console.log('Validation error:', validation.error);
 			return fail(400, {
 				error: 'Invalid data',
-				issues: result.error.issues
+				issues: validation.error.issues
 			});
 		}
 
-		const { name, amount, interestRate, repaymentAmount, repaymentFrequency, remainingTerm } =
-			result.data;
-
 		try {
 			// Check for existing liability with the same name
-			const existingLiability = await db
-				.select()
-				.from(liabilities)
-				.where(sql`name = ${name} AND user_id = ${userId}`)
-				.limit(1);
+			const existingLiability = await getLiabilityByName(validation.data.name, userId);
 
-			if (existingLiability.length > 0) {
+			if (existingLiability) {
 				return fail(400, {
 					error: 'A liability with this name already exists'
 				});
 			}
 
 			// Create new liability
-			const [newLiability] = await db
-				.insert(liabilities)
-				.values({
-					name,
-					amount,
-					interestRate,
-					repaymentAmount,
-					repaymentFrequency,
-					remainingTerm,
-					userId
-				})
-				.returning();
+			const newLiability = await createLiability({
+				...validation.data,
+				balance: validation.data.balance.toFixed(2),
+				interestRate: validation.data.interestRate.toFixed(4),
+				repaymentAmount: validation.data.repaymentAmount.toFixed(2),
+				userId
+			});
 
 			return {
 				success: true,
@@ -73,32 +83,5 @@ export const actions: Actions = {
 				error: 'An error occurred while adding the liability'
 			});
 		}
-	}
-};
-
-// Load function to get existing liabilities
-export const load = async ({ locals }) => {
-	const { userId } = locals;
-	if (!userId) {
-		return {
-			liabilities: []
-		};
-	}
-
-	try {
-		// const userLiabilities = await db
-		//     .select()
-		//     .from(liabilities)
-		//     .where(sql`user_id = ${userId}`)
-		//     .orderBy(liabilities.createdAt, 'desc');
-		// return {
-		// 	liabilities: userLiabilities
-		// };
-	} catch (error) {
-		console.error('Error loading liabilities:', error);
-		return {
-			liabilities: [],
-			error: 'Failed to load liabilities'
-		};
 	}
 };

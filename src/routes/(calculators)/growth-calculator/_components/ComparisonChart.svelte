@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { run } from 'svelte/legacy';
+
 	import { onMount } from 'svelte';
 	import {
 		Chart,
@@ -14,21 +16,26 @@
 
 	import type { AnnualData, Result } from '../types';
 
-	// props
-	export let formatter: (value: number) => string;
-	export let theme: 'monochrome' | 'colourful' = 'monochrome';
-	export let results: Result[];
+	
+	interface Props {
+		// props
+		formatter: (value: number) => string;
+		theme?: 'monochrome' | 'colourful';
+		results: Result[];
+	}
+
+	let { formatter, theme = 'monochrome', results }: Props = $props();
 
 	const colours = theme === 'monochrome' ? MONOCHROME : COLOURFUL;
-	let chartId: HTMLCanvasElement;
-	let chart: Chart;
+	let chartId: HTMLCanvasElement = $state();
+	let chart: Chart = $state();
 
 	// determine longest data set
 	let longests = results.reduce((acc, result) => {
 		return result.annualData.length > acc ? result.annualData.length : acc;
 	}, 0);
-	$: labels = Array.from({ length: longests }, (_, i) => i + 1);
-	$: datasets = results.map((result) => {
+	let labels = $derived(Array.from({ length: longests }, (_, i) => i + 1));
+	let datasets = $derived(results.map((result) => {
 		return {
 			label: `Scenario ${result.id}`,
 			data: result.annualData.map((item: AnnualData) => item.endingValue),
@@ -36,7 +43,7 @@
 			borderColor: colours[results.indexOf(result)],
 			borderRadius: 5
 		};
-	});
+	}));
 
 	// Register the necessary components for a bar chart
 	Chart.register(BarController, BarElement, CategoryScale, LinearScale, Legend, Tooltip);
@@ -132,13 +139,15 @@
 		});
 	});
 
-	$: if (chart) {
-		chart.data.labels = labels;
-		chart.data.datasets = datasets;
-		chart.update();
-	}
+	run(() => {
+		if (chart) {
+			chart.data.labels = labels;
+			chart.data.datasets = datasets;
+			chart.update();
+		}
+	});
 </script>
 
 <div class="min-h-[400px] lg:min-h-[500px] relative">
-	<canvas class="w-full absolute min-h-full p-1" bind:this={chartId} />
+	<canvas class="w-full absolute min-h-full p-1" bind:this={chartId}></canvas>
 </div>

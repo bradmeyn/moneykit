@@ -3,12 +3,23 @@
 	import PercentageInput from '$lib/components/inputs/PercentageInput.svelte';
 	import FrequencySelect from '$lib/components/inputs/FrequencySelect.svelte';
 
-	// props
-	export let principal: number;
-	export let contributionAmount: number;
-	export let interestRate: number;
-	export let contributionFrequency: number;
-	export let years: number;
+	
+	interface Props {
+		// props
+		principal: number;
+		contributionAmount: number;
+		interestRate: number;
+		contributionFrequency: number;
+		years: number;
+	}
+
+	let {
+		principal = $bindable(),
+		contributionAmount = $bindable(),
+		interestRate = $bindable(),
+		contributionFrequency = $bindable(),
+		years = $bindable()
+	}: Props = $props();
 
 	function handleInput(event: Event) {
 		const input = event.target as HTMLInputElement;
@@ -36,7 +47,7 @@
 		<label for="years">Years</label>
 		<input
 			id={'years'}
-			on:input={handleInput}
+			oninput={handleInput}
 			value={years}
 			class="input-base"
 			type="number"

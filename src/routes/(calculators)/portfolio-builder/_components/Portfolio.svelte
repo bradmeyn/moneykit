@@ -10,24 +10,28 @@
 	import Legend from '$lib/components/charts/Legend.svelte';
 	import LegendList from '$lib/components/charts/LegendList.svelte';
 
-	export let scenario: Scenario;
-	export let result: Result;
+	interface Props {
+		scenario: Scenario;
+		result: Result;
+	}
 
-	$: investmentData = result.holdings.map((holding) => {
+	let { scenario = $bindable(), result }: Props = $props();
+
+	let investmentData = $derived(result.holdings.map((holding) => {
 		return {
 			label: holding.investment.code,
 			value: holding.value / scenario.value
 		};
-	});
+	}));
 
-	$: assetAllocationData = result.assetAllocation.map((assetClass) => {
+	let assetAllocationData = $derived(result.assetAllocation.map((assetClass) => {
 		return {
 			label: assetClass.name,
 			value: assetClass.value / scenario.value
 		};
-	});
+	}));
 
-	let selectedView = 'Investment';
+	let selectedView = $state('Investment');
 </script>
 
 <div class="mb-3 flex w-full md:w-40">

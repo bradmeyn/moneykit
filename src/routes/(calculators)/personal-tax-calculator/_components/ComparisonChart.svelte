@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { run } from 'svelte/legacy';
+
 	import { onMount } from 'svelte';
 	import {
 		Chart,
@@ -23,14 +25,19 @@
 		totalTax: number;
 	};
 
-	// props
-	export let results: Result[];
-	export let formatter: (value: number) => string;
-	export let theme: 'monochrome' | 'colourful' = 'monochrome';
+	
+	interface Props {
+		// props
+		results: Result[];
+		formatter: (value: number) => string;
+		theme?: 'monochrome' | 'colourful';
+	}
+
+	let { results, formatter, theme = 'monochrome' }: Props = $props();
 
 	const colours = theme === 'monochrome' ? MONOCHROME : COLOURFUL;
-	let chartId: HTMLCanvasElement;
-	let chart: Chart;
+	let chartId: HTMLCanvasElement = $state();
+	let chart: Chart = $state();
 
 	Chart.register(BarController, BarElement, CategoryScale, LinearScale, Legend, Tooltip);
 
@@ -104,13 +111,15 @@
 		});
 	});
 
-	$: if (chart) {
-		chart.data.labels = results.map((result) => `Scenario ${result.id}`);
-		chart.data.datasets = prepareChartData(results);
-		chart.update();
-	}
+	run(() => {
+		if (chart) {
+			chart.data.labels = results.map((result) => `Scenario ${result.id}`);
+			chart.data.datasets = prepareChartData(results);
+			chart.update();
+		}
+	});
 </script>
 
 <div class="min-h-[400px] relative">
-	<canvas class="w-full absolute min-h-full p-1" bind:this={chartId} />
+	<canvas class="w-full absolute min-h-full p-1" bind:this={chartId}></canvas>
 </div>

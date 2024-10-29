@@ -9,16 +9,20 @@
 	import LegendList from '$lib/components/charts/LegendList.svelte';
 	import { Download } from 'lucide-svelte';
 
-	export let scenario: Scenario;
-	export let result: Result;
+	interface Props {
+		scenario: Scenario;
+		result: Result;
+	}
+
+	let { scenario = $bindable(), result }: Props = $props();
 
 	let options = [
 		{ label: 'Chart', value: 'chart' },
 		{ label: 'Table', value: 'table' }
 	];
-	let selectedView = 'chart';
+	let selectedView = $state('chart');
 
-	let chartContainer: HTMLElement;
+	let chartContainer: HTMLElement = $state();
 
 	async function downloadChart() {
 		if (chartContainer) {
@@ -101,7 +105,7 @@
 					<Tabs {options} bind:selectedView />
 				</div>
 				<button
-					on:click={handleDownload}
+					onclick={handleDownload}
 					class="p-2 bg-ui-800 hover:bg-ui-700 rounded transition-colors duration-200 download-button"
 					title={'Download' + (selectedView === 'chart' ? ' chart' : ' csv')}
 				>

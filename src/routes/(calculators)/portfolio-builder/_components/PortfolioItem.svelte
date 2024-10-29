@@ -5,8 +5,12 @@
 	import PercentageInput from '$lib/components/inputs/PercentageInput.svelte';
 
 	import { Trash } from 'lucide-svelte';
-	export let holding: Holding;
-	export let portfolioId: number;
+	interface Props {
+		holding: Holding;
+		portfolioId: number;
+	}
+
+	let { holding, portfolioId }: Props = $props();
 
 	function handleWeightingChange(event: CustomEvent<number>) {
 		const weighting = event.detail;
@@ -25,14 +29,14 @@
 		<td>{formatAsPercentage(holding.investment.cost)}</td>
 		<td>{formatAsCurrency(holding.cost, true)}</td>
 	{:else}
-		<td />
-		<td />
+		<td></td>
+		<td></td>
 	{/if}
 	<td>
 		{#if holding.investment.code !== 'CASH'}
 			<button
 				class="p-3 text-ui-400 hover:bg-ui-700 rounded hover:text-red-600"
-				on:click={() => removeHolding(portfolioId, holding.investment.code)}
+				onclick={() => removeHolding(portfolioId, holding.investment.code)}
 			>
 				<Trash class="size-4" />
 			</button>

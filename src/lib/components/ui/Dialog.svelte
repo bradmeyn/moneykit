@@ -2,12 +2,25 @@
 	import { Dialog } from 'bits-ui';
 	import { fade } from 'svelte/transition';
 
-	export let title: string;
-	export let description: string;
-	export let triggerText: string = 'Add';
-	export let actionText: string = 'Save';
-	export let onAction: () => void = () => {};
-	export let disabled: boolean = false;
+	interface Props {
+		title: string;
+		description: string;
+		triggerText?: string;
+		actionText?: string;
+		onAction?: () => void;
+		disabled?: boolean;
+		children?: import('svelte').Snippet;
+	}
+
+	let {
+		title,
+		description,
+		triggerText = 'Add',
+		actionText = 'Save',
+		onAction = () => {},
+		disabled = false,
+		children
+	}: Props = $props();
 </script>
 
 <Dialog.Root>
@@ -48,13 +61,13 @@
 					{description}
 				</Dialog.Description>
 
-				<slot />
+				{@render children?.()}
 
 				<div class="flex w-full justify-end">
 					<button
 						{disabled}
 						class="w-full bg-brand-dark text-white rounded px-4 py-2 text-sm font-semibold shadow-popover hover:bg-brand-dark/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-default focus-visible:ring-offset-2 focus-visible:ring-offset-background active:scale-98 disabled:bg-brand-dark/60 disabled:cursor-not-allowed disabled:hover:bg-brand-dark/60 disabled:active:scale-100 disabled:shadow-popover"
-						on:click={onAction}
+						onclick={onAction}
 					>
 						{actionText}
 					</button>

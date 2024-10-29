@@ -4,7 +4,7 @@
 	import ScenarioTabs from '$lib/components/ui/ScenarioTabs.svelte';
 	import Comparison from './_components/Comparison.svelte';
 
-	let activeScenarioId: number = $scenarios[0]?.id;
+	let activeScenarioId: number = $state($scenarios[0]?.id);
 
 	function handleAddScenario() {
 		addScenario();

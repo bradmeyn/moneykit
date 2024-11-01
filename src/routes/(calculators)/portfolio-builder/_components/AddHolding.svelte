@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { run } from 'svelte/legacy';
+
 	import Dialog from '$lib/components/ui/Dialog.svelte';
 	import type { Holding, Investment } from '../types';
 	import { addHolding } from '../store';
@@ -7,27 +9,33 @@
 	import SearchInput from '$lib/components/inputs/SearchInput.svelte';
 	import { Check } from 'lucide-svelte';
 
-	export let portfolioId: number;
-
-	let isModalOpen = false;
-	let searchTerm = '';
-	let newHoldings: Holding[] = [];
-
-	$: if (!isModalOpen) {
-		searchTerm = '';
-		newHoldings = [];
+	interface Props {
+		portfolioId: number;
 	}
 
+	let { portfolioId }: Props = $props();
+
+	let isModalOpen = $state(false);
+	let searchTerm = $state('');
+	let newHoldings: Holding[] = $state([]);
+
+	run(() => {
+		if (!isModalOpen) {
+			searchTerm = '';
+			newHoldings = [];
+		}
+	});
+
 	// Reactive filtering of investments
-	$: filteredInvestments = searchTerm
+	let filteredInvestments = $derived(searchTerm
 		? INVESTMENTS.filter(
 				(investment) =>
 					investment.code.toLowerCase().includes(searchTerm.toLowerCase()) ||
 					investment.name.toLowerCase().includes(searchTerm.toLowerCase())
 		  )
-		: INVESTMENTS;
+		: INVESTMENTS);
 
-	$: selectedInvestments = newHoldings.map((holding) => holding.investment);
+	let selectedInvestments = $derived(newHoldings.map((holding) => holding.investment));
 
 	function selectInvestment(investment: Investment) {
 		newHoldings = [...newHoldings, { investment, weighting: 0, value: 0, cost: 0 }];
@@ -59,7 +67,7 @@
 	<div class="max-h-40 overflow-y-auto my-4">
 		{#each filteredInvestments as investment, i}
 			<button
-				on:click={() =>
+				onclick={() =>
 					selectedInvestments.includes(investment)
 						? unselectInvestment(investment)
 						: selectInvestment(investment)}

@@ -1,11 +1,21 @@
 <script lang="ts">
 	import { formatAsCurrency } from '$lib/utils/formatters';
 
-	// props
-	export let principal: number;
-	export let totalContributions: number;
-	export let totalInterest: number;
-	export let totalValue: number;
+	
+	interface Props {
+		// props
+		principal: number;
+		totalContributions: number;
+		totalInterest: number;
+		totalValue: number;
+	}
+
+	let {
+		principal,
+		totalContributions,
+		totalInterest,
+		totalValue
+	}: Props = $props();
 </script>
 
 <h2>Outcome</h2>

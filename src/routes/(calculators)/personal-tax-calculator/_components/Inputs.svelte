@@ -2,11 +2,21 @@
 	import CurrencyInput from '$lib/components/inputs/CurrencyInput.svelte';
 	import Checkbox from '$lib/components/inputs/Checkbox.svelte';
 
-	// props
-	export let income: number = 0;
-	export let deductions: number = 0;
-	export let hasInsurance: boolean = false;
-	export let hasHelpDebt: boolean = false;
+	
+	interface Props {
+		// props
+		income?: number;
+		deductions?: number;
+		hasInsurance?: boolean;
+		hasHelpDebt?: boolean;
+	}
+
+	let {
+		income = $bindable(0),
+		deductions = $bindable(0),
+		hasInsurance = $bindable(false),
+		hasHelpDebt = $bindable(false)
+	}: Props = $props();
 </script>
 
 <div class="space-y-3">

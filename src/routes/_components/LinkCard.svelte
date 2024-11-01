@@ -1,8 +1,12 @@
 <script lang="ts">
-	export let name = '';
-	export let href = '';
 
 	import CardIcon from './CardIcon.svelte';
+	interface Props {
+		name?: string;
+		href?: string;
+	}
+
+	let { name = '', href = '' }: Props = $props();
 </script>
 
 <a
@@ -10,5 +14,5 @@
 	{href}
 >
 	<CardIcon {name} />
-	<p class="text-xl mb-0 text-white font-semibold">{name}</p>
+	<p class="text-xl mb-0 text-white">{name}</p>
 </a>

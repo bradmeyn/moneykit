@@ -8,9 +8,11 @@
 
 <table>
 	<thead>
-		<th>Asset Class</th>
-		<th>Allocation ($)</th>
-		<th>Allocation (%)</th>
+		<tr>
+			<th>Asset Class</th>
+			<th>Allocation ($)</th>
+			<th>Allocation (%)</th>
+		</tr>
 	</thead>
 	<tbody>
 		{#each result.assetAllocation as assetClass}

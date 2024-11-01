@@ -12,7 +12,7 @@
 	}
 
 	label {
-		@apply text-sm text-ui-200 mb-1;
+		@apply text-sm text-ui-200 mb-2 block;
 	}
 
 	table {
@@ -33,7 +33,7 @@
 
 @layer components {
 	.card {
-		@apply rounded bg-ui-900 border border-ui-700 p-6;
+		@apply rounded-lg bg-ui-900 border border-ui-700 p-6;
 	}
 }
 

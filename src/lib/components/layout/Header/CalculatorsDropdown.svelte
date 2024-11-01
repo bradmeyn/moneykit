@@ -3,7 +3,7 @@
 	import { ChevronDown } from 'lucide-svelte';
 	import { calculatorsByCategory, categories } from '$lib/constants/calculators';
 
-	$: activeUrl = $page.url.pathname;
+	let activeUrl = $derived($page.url.pathname);
 </script>
 
 <div class="relative group">

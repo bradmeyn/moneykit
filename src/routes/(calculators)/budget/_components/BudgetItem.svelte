@@ -4,7 +4,11 @@
 	import type { BudgetItem } from '../types';
 	import FrequencyInput from '$lib/components/inputs/FrequencySelect.svelte';
 
-	export let i: BudgetItem;
+	interface Props {
+		i: BudgetItem;
+	}
+
+	let { i = $bindable() }: Props = $props();
 </script>
 
 <tr class="border-y border-y-slate-500">

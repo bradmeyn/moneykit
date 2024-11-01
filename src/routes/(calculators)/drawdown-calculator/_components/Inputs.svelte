@@ -2,10 +2,15 @@
 	import CurrencyInput from '$lib/components/inputs/CurrencyInput.svelte';
 	import PercentageInput from '$lib/components/inputs/PercentageInput.svelte';
 
-	// props
-	export let startingAmount: number;
-	export let drawdown: number;
-	export let interestRate: number;
+	
+	interface Props {
+		// props
+		startingAmount: number;
+		drawdown: number;
+		interestRate: number;
+	}
+
+	let { startingAmount = $bindable(), drawdown = $bindable(), interestRate = $bindable() }: Props = $props();
 </script>
 
 <div class="space-y-3">

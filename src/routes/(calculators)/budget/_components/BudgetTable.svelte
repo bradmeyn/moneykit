@@ -3,7 +3,11 @@
 	import type { BudgetItem as Item } from '../types';
 	import { formatAsCurrency } from '$lib/utils/formatters';
 
-	export let items: Item[] = [];
+	interface Props {
+		items?: Item[];
+	}
+
+	let { items = [] }: Props = $props();
 </script>
 
 <table class="w-full">

@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { run } from 'svelte/legacy';
+
 	import * as colors from 'tailwindcss/colors';
 	import { onMount } from 'svelte';
 	import {
@@ -14,13 +16,18 @@
 	import type { AnnualData } from '../types';
 	import { BRAND_DARK, BRAND_DEFAULT, BRAND_LIGHT } from '$lib/constants/colours';
 
-	// props
-	export let data: AnnualData[] = [];
+	
+	interface Props {
+		// props
+		data?: AnnualData[];
+	}
 
-	$: years = data.map((item) => item.year);
+	let { data = [] }: Props = $props();
 
-	let chartId: HTMLCanvasElement;
-	let chart: Chart;
+	let years = $derived(data.map((item) => item.year));
+
+	let chartId: HTMLCanvasElement = $state();
+	let chart: Chart = $state();
 
 	// Register the BarController and BarElement
 	Chart.register(BarController, BarElement, CategoryScale, LinearScale, Legend, Tooltip);
@@ -147,18 +154,20 @@
 		});
 	});
 
-	$: if (chart) {
-		chart.data.labels = years;
-		(chart.data.datasets[0].data = Array.from(
-			{ length: years.length },
-			(_, i) => data[0].startingValue
-		)),
-			(chart.data.datasets[1].data = data.map((item) => item.totalContributions));
-		chart.data.datasets[2].data = data.map((item) => item.totalInterest);
-		chart.update();
-	}
+	run(() => {
+		if (chart) {
+			chart.data.labels = years;
+			(chart.data.datasets[0].data = Array.from(
+				{ length: years.length },
+				(_, i) => data[0].startingValue
+			)),
+				(chart.data.datasets[1].data = data.map((item) => item.totalContributions));
+			chart.data.datasets[2].data = data.map((item) => item.totalInterest);
+			chart.update();
+		}
+	});
 </script>
 
 <div class="min-h-[400px] lg:min-h-[500px] relative">
-	<canvas class="w-full absolute min-h-full p-1" bind:this={chartId} />
+	<canvas class="w-full absolute min-h-full p-1" bind:this={chartId}></canvas>
 </div>

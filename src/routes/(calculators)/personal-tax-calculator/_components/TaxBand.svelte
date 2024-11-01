@@ -1,33 +1,39 @@
 <script lang="ts">
+	import { run } from 'svelte/legacy';
+
 	import { formatAsCurrency, formatAsPercentage } from '$lib/utils/formatters';
 	import { INCOME_TAX_BRACKETS } from '../taxRates';
 
-	export let taxableIncome: number;
+	interface Props {
+		taxableIncome: number;
+	}
+
+	let { taxableIncome }: Props = $props();
 
 	// Calculate the maximum defined range for bands not considering Infinity
-	$: maxDefinedRange = Math.max(
+	let maxDefinedRange = $derived(Math.max(
 		...INCOME_TAX_BRACKETS.map((b) => (b.max !== Infinity ? b.max : 0))
-	);
+	));
 
 	// Dynamic calculation of income ranges
-	$: incomeRanges = INCOME_TAX_BRACKETS.map((band, index, arr) => {
+	let incomeRanges = $derived(INCOME_TAX_BRACKETS.map((band, index, arr) => {
 		const min = index === 0 ? 0 : arr[index - 1].max;
 		const max = band.max === Infinity ? maxDefinedRange * 1.2 : band.max;
 		return max - min;
-	});
+	}));
 
 	// Calculate total range for percentage calculations
-	$: totalRange = incomeRanges.reduce((sum, range) => sum + range, 0);
+	let totalRange = $derived(incomeRanges.reduce((sum, range) => sum + range, 0));
 
-	$: {
+	run(() => {
 		if (incomeRanges.length > 1) {
 			const lastIndex = incomeRanges.length - 1;
 			incomeRanges[lastIndex] = incomeRanges[lastIndex - 1] * 0.4; // Make last bracket 50% of previous
 		}
-	}
+	});
 
 	// Reactive calculation for band widths and income fills
-	$: bands = INCOME_TAX_BRACKETS.map((band, index) => {
+	let bands = $derived(INCOME_TAX_BRACKETS.map((band, index) => {
 		const max = band.max === Infinity ? maxDefinedRange * 1.2 : band.max;
 		const range = incomeRanges[index];
 		const widthPercent = (range / totalRange) * 100;
@@ -43,7 +49,7 @@
 		}
 
 		return { ...band, widthPercent, fillPercent };
-	});
+	}));
 </script>
 
 <div class="space-y-2">
@@ -68,7 +74,7 @@
 	<div class="border border-ui-600 h-6 rounded flex overflow-hidden">
 		{#each bands as { fillPercent, widthPercent }, i}
 			<div class="relative h-full" style="width: {widthPercent}%;">
-				<div class="absolute inset-0 bg-brand-default" style="width: {fillPercent}%;" />
+				<div class="absolute inset-0 bg-brand-default" style="width: {fillPercent}%;"></div>
 			</div>
 		{/each}
 	</div>

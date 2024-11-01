@@ -1,9 +1,18 @@
 <script lang="ts">
 	import { Plus } from 'lucide-svelte';
-	export let scenarioIds: number[];
-	export let activeScenarioId = 1;
-	export let maxScenarios = 2;
-	export let onAdd;
+	interface Props {
+		scenarioIds: number[];
+		activeScenarioId?: number;
+		maxScenarios?: number;
+		onAdd: any;
+	}
+
+	let {
+		scenarioIds,
+		activeScenarioId = $bindable(1),
+		maxScenarios = 2,
+		onAdd
+	}: Props = $props();
 
 	// Assuming $scenarios is a reactive store, you might need to use it directly or ensure it's passed correctly from the parent component
 </script>
@@ -13,7 +22,7 @@
 		{#each scenarioIds as id}
 			<button
 				class={` ${activeScenarioId === id ? 'border-b-2 border-b-brand-default ' : 'text-ui-400'}`}
-				on:click={() => (activeScenarioId = id)}
+				onclick={() => (activeScenarioId = id)}
 			>
 				Scenario {id}
 			</button>
@@ -21,7 +30,7 @@
 		{#if scenarioIds.length > 1}
 			<button
 				class={` ${activeScenarioId === 0 ? 'border-b-2 border-b-brand-default ' : 'text-ui-400'}`}
-				on:click={() => (activeScenarioId = 0)}
+				onclick={() => (activeScenarioId = 0)}
 			>
 				Compare
 			</button>
@@ -30,7 +39,7 @@
 	{#if scenarioIds.length < maxScenarios}
 		<button
 			class="flex gap-1 p-1 items-center text-sm justify-center text-ui-400 hover:text-brand-default hover:bg-ui-700 rounded-full"
-			on:click={onAdd}
+			onclick={onAdd}
 		>
 			<Plus class="size-4" />
 		</button>

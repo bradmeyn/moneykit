@@ -2,13 +2,23 @@
 	import CurrencyInput from '$lib/components/inputs/CurrencyInput.svelte';
 	import PercentageInput from '$lib/components/inputs/PercentageInput.svelte';
 	import FrequencySelect from '$lib/components/inputs/FrequencySelect.svelte';
+	import type { FrequencyType } from '$lib/constants/frequencies';
 
-	// props
-	export let principal: number;
-	export let contributionAmount: number;
-	export let interestRate: number;
-	export let contributionFrequency: number;
-	export let years: number;
+	type Props = {
+		principal: number;
+		contributionAmount: number;
+		interestRate: number;
+		contributionFrequency: FrequencyType;
+		years: number;
+	};
+
+	let {
+		principal = $bindable(),
+		contributionAmount = $bindable(),
+		interestRate = $bindable(),
+		contributionFrequency = $bindable(),
+		years = $bindable()
+	}: Props = $props();
 
 	function handleInput(event: Event) {
 		const input = event.target as HTMLInputElement;
@@ -22,12 +32,14 @@
 </script>
 
 <div class="space-y-3">
-	<CurrencyInput label="Starting Amount" bind:value={principal} inputClass={'mb-3'} />
+	<CurrencyInput bind:value={principal} class={'mb-3'} />
 	<div class="grid grid-cols-2 gap-2">
 		<div class="col-span-2 md:col-span-1">
-			<CurrencyInput label="Contributions" bind:value={contributionAmount} inputClass={'w-full'} />
+			<label class="label" for="contributionAmount">Contributions</label>
+			<CurrencyInput name={'contributionAmount'} bind:value={contributionAmount} class={'w-full'} />
 		</div>
 		<div class="col-span-2 md:col-span-1">
+			<label class="label" for="contributionFrequency">Frequency</label>
 			<FrequencySelect bind:value={contributionFrequency} name={'Frequency'} />
 		</div>
 	</div>
@@ -36,7 +48,7 @@
 		<label for="years">Years</label>
 		<input
 			id={'years'}
-			on:input={handleInput}
+			oninput={handleInput}
 			value={years}
 			class="input-base"
 			type="number"

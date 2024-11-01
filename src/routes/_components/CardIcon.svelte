@@ -5,7 +5,11 @@
 	import drawdownCalculator from '$lib/assets/drawdown-calculator.svg';
 	import taxCalculator from '$lib/assets/tax-calculator.svg';
 
-	export let name: string;
+	interface Props {
+		name: string;
+	}
+
+	let { name }: Props = $props();
 
 	const iconMap = {
 		'Growth Calculator': lineChart,
@@ -17,7 +21,7 @@
 
 	type IconName = keyof typeof iconMap;
 
-	$: src = iconMap[name as IconName] || '';
+	let src = $derived(iconMap[name as IconName] || '');
 </script>
 
 <div class="p-2 text-xl size-10 bg-ui-900 rounded border border-ui-600">

@@ -1,3 +1,5 @@
+<!-- @migration-task Error while migrating Svelte code: `<th>` is invalid inside `<thead>` -->
+<!-- @migration-task Error while migrating Svelte code: `<th>` is invalid inside `<thead>` -->
 <script lang="ts">
 	import Inputs from './Inputs.svelte';
 	import TaxRateTable from './TaxRateTable.svelte';
@@ -81,8 +83,10 @@
 					<div>
 						<table class="max-w-xl">
 							<thead>
-								<th>Detail</th>
-								<th>Value ($)</th>
+								<tr>
+									<th>Detail</th>
+									<th>Value ($)</th>
+								</tr>
 							</thead>
 							<tbody>
 								<tr class="text-lg">

@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { run } from 'svelte/legacy';
+
 	import * as colors from 'tailwindcss/colors';
 	import { onMount } from 'svelte';
 	import {
@@ -16,14 +18,19 @@
 	import type { AnnualData } from '../types';
 	import { COLOURFUL, MONOCHROME } from '$lib/constants/colours';
 
-	// props
-	export let data: AnnualData[] = [];
+	
+	interface Props {
+		// props
+		data?: AnnualData[];
+	}
 
-	$: years = data.map((item) => item.year);
-	$: annualDrawdown = data.map((item) => item.withdrawal);
+	let { data = [] }: Props = $props();
 
-	let chartId: HTMLCanvasElement;
-	let chart: Chart;
+	let years = $derived(data.map((item) => item.year));
+	let annualDrawdown = $derived(data.map((item) => item.withdrawal));
+
+	let chartId: HTMLCanvasElement = $state();
+	let chart: Chart = $state();
 
 	// Register the required components
 	Chart.register(
@@ -142,15 +149,17 @@
 		});
 	});
 
-	$: if (chart) {
-		chart.data.labels = years;
-		chart.data.datasets[0].data = data.map((item) => item.endingBalance);
-		chart.data.datasets[1].data = data.map((i) => i.withdrawal);
+	run(() => {
+		if (chart) {
+			chart.data.labels = years;
+			chart.data.datasets[0].data = data.map((item) => item.endingBalance);
+			chart.data.datasets[1].data = data.map((i) => i.withdrawal);
 
-		chart.update();
-	}
+			chart.update();
+		}
+	});
 </script>
 
 <div class="min-h-[400px] lg:min-h-[500px] relative">
-	<canvas class="w-full absolute min-h-full p-1" bind:this={chartId} />
+	<canvas class="w-full absolute min-h-full p-1" bind:this={chartId}></canvas>
 </div>

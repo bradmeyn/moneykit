@@ -1,25 +1,28 @@
 <script lang="ts">
+	import { run } from 'svelte/legacy';
+
 	import { createEventDispatcher } from 'svelte';
-	export let label: string = '';
-	export let name: string = '';
-	export let value: number;
+	interface Props {
+		label?: string;
+		name?: string;
+		value: number;
+	}
 
-	const dispatch = createEventDispatcher();
-
-	// Reactive statement to format the value for display
-	$: formattedValue = (value * 100).toFixed(2);
+	let { label = '', name = '', value = $bindable() }: Props = $props();
 
 	function handleInput(event: Event) {
 		const input = event.target as HTMLInputElement;
 		// Validate and parse the input value as a float
-		const number = Number(input.value);
+		const number = +input.value;
 		if (!isNaN(number)) {
 			// Update the value with the raw value
 			value = number / 100;
 			// Call the parent component's onChange handler
-			dispatch('input', value);
 		}
 	}
+
+	// Reactive statement to format the value for display
+	let formattedValue = $derived((value * 100).toFixed(2));
 </script>
 
 <div class="input-container">
@@ -29,9 +32,9 @@
 			{name}
 			type="text"
 			id={name}
-			bind:value={formattedValue}
+			value={formattedValue}
 			inputmode="decimal"
-			on:change={handleInput}
+			onchange={handleInput}
 		/>
 		<div class="flex items-center pointer-events-none text-brand-default">%</div>
 	</div>

@@ -50,3 +50,19 @@ export function getReadableLabel(key: string): string {
 	// @ts-expect-error - TS doesn't know that the key will be a valid key of AssetAllocation
 	return assetAllocationLabels[key];
 }
+
+export function getFrequencyLabel(frequency: number) {
+	switch (frequency) {
+		case 1:
+			return 'Yearly';
+		case 2:
+			return 'Half-yearly';
+		case 4:
+			return 'Quarterly';
+		case 12:
+			return 'Monthly';
+		case 26:
+			return 'Fortnightly';
+		default:
+	}
+}

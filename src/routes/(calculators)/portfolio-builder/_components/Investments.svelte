@@ -1,3 +1,5 @@
+<!-- @migration-task Error while migrating Svelte code: `<th>` is invalid inside `<thead>` -->
+<!-- @migration-task Error while migrating Svelte code: `<th>` is invalid inside `<thead>` -->
 <script lang="ts">
 	import AddHolding from './AddHolding.svelte';
 	import { formatAsCurrency, formatAsPercentage } from '$lib/utils/formatters';
@@ -10,13 +12,15 @@
 
 <table>
 	<thead>
-		<th>Code</th>
-		<th>Investment</th>
-		<th>Value ($)</th>
-		<th>Allocation (%)</th>
-		<th>Cost (%)</th>
-		<th>Cost ($)</th>
-		<th />
+		<tr>
+			<th>Code</th>
+			<th>Investment</th>
+			<th>Value ($)</th>
+			<th>Allocation (%)</th>
+			<th>Cost (%)</th>
+			<th>Cost ($)</th>
+			<th> </th>
+		</tr>
 	</thead>
 	<tbody>
 		{#each result.holdings as holding}
@@ -32,7 +36,7 @@
 			>
 			<td>{formatAsPercentage(result.totalCostPercentage)} pa</td>
 			<td>{formatAsCurrency(result.totalCost, true)} pa</td>
-			<td />
+			<td></td>
 		</tr>
 	</tbody>
 </table>

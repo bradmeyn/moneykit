@@ -1,12 +1,23 @@
 <script lang="ts">
 	import { Search } from 'lucide-svelte';
-	export let placeholder = 'Search...';
-	export let value = '';
-	export let name = 'search';
-	export let label = '';
+	interface Props {
+		placeholder?: string;
+		value?: string;
+		name?: string;
+		label?: string;
+		[key: string]: any
+	}
+
+	let {
+		placeholder = 'Search...',
+		value = $bindable(''),
+		name = 'search',
+		label = '',
+		...rest
+	}: Props = $props();
 </script>
 
-<div class={`w-full ${$$restProps.class}`}>
+<div class={`w-full ${rest.class}`}>
 	<label class={`mb-1 ${label ? 'block' : 'hidden'}`} for={name}>{label}</label>
 	<div class="input-base">
 		<Search class="size-4 mr-2 text-brand-default" />

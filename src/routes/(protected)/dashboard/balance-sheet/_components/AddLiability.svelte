@@ -7,10 +7,9 @@
 	import FrequencySelect from '$lib/components/inputs/FrequencySelect.svelte';
 	import { liabilitySchema } from '$lib/schemas/dashboard';
 	import { LIABILITY_TYPES } from '../constants';
-
+	import { validateFormData } from '$lib/utils/validation';
 	import type { SubmitFunction } from '@sveltejs/kit';
 	import PercentageInput from '$lib/components/inputs/PercentageInput.svelte';
-
 	import Spinner from '$lib/components/ui/Spinner.svelte';
 
 	let isOpen = $state(false);
@@ -18,24 +17,32 @@
 	let balance = $state(0);
 	let repaymentAmountValue = $state(0);
 	let interestRateValue = $state(0);
+	let validation: ValidationResult<any> | null = $state(null);
+
+	// Helper function to check if a field has an error
+	const hasError = (fieldName: string) => {
+		return validation?.fieldErrors?.[fieldName]?.length > 0;
+	};
+
+	// Helper function to get error messages for a field
+	const getErrors = (fieldName: string) => {
+		return validation?.fieldErrors?.[fieldName] || [];
+	};
 
 	const submit: SubmitFunction = async ({ formData, cancel }) => {
-		const data = Object.fromEntries(formData);
-
 		const parsedData = {
-			...data,
+			name: formData.get('name'),
+			type: formData.get('type'),
 			balance: +balance,
 			repaymentAmount: +repaymentAmountValue,
-			interestRate: +interestRateValue
+			interestRate: +interestRateValue,
+			repaymentFrequency: formData.get('repaymentFrequency')
 		};
 
-		console.log(parsedData);
-
-		const validation = liabilitySchema.safeParse(parsedData);
+		// Validate the form data
+		validation = validateFormData(parsedData, liabilitySchema);
 
 		if (!validation.success) {
-			alert('Invalid data');
-			console.error(validation.error);
 			cancel();
 			return;
 		}
@@ -47,6 +54,7 @@
 				case 'success':
 					isLoading = false;
 					isOpen = false;
+					validation = null; // Clear validation state on success
 					break;
 
 				case 'failure':
@@ -61,7 +69,7 @@
 	};
 </script>
 
-<Dialog.Root bind:open={isOpen}>
+<Dialog.Root bind:open={isOpen} onOpenChange={() => (validation = null)}>
 	<Dialog.Trigger
 		class="bg-brand-dark text-white rounded px-4 py-2 text-sm font-semibold shadow-popover hover:bg-brand-dark/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-default focus-visible:ring-offset-2 focus-visible:ring-offset-background active:scale-98"
 	>
@@ -90,6 +98,14 @@
 					Add a new liability to track.
 				</Dialog.Description>
 
+				{#if validation?.formErrors?.length}
+					<div class="mb-4 p-3 bg-red-100 border border-red-300 rounded-md">
+						{#each validation.formErrors as error}
+							<p class="text-red-700 text-sm">{error}</p>
+						{/each}
+					</div>
+				{/if}
+
 				<form
 					method="POST"
 					action="?/addLiability"
@@ -98,38 +114,87 @@
 				>
 					<div class="col-span-2">
 						<label for="name" class="label">Name</label>
-						<input type="text" id="name" name="name" required class="input-base" />
+						<input
+							type="text"
+							id="name"
+							name="name"
+							disabled={true}
+							class="input-base {hasError('name') ? 'border-red-500' : ''}"
+						/>
+						{#if hasError('name')}
+							{#each getErrors('name') as error}
+								<p class="text-red-500 text-sm mt-1">{error}</p>
+							{/each}
+						{/if}
 					</div>
 
 					<div class="col-span-2">
 						<label for="type" class="label">Type</label>
-						<select name="type" id="type" required class="input-base">
+						<select
+							name="type"
+							id="type"
+							required
+							class="input-base {hasError('type') ? 'border-red-500' : ''}"
+						>
 							{#each LIABILITY_TYPES as type}
 								<option value={type.value}>{type.label}</option>
 							{/each}
 						</select>
+						{#if hasError('type')}
+							{#each getErrors('type') as error}
+								<p class="text-red-500 text-sm mt-1">{error}</p>
+							{/each}
+						{/if}
 					</div>
 
 					<div class="col-span-2">
 						<label for="balance" class="label">Balance</label>
-						<CurrencyInput bind:value={balance} />
+						<CurrencyInput bind:value={balance} error={hasError('balance')} />
 						<input type="hidden" name="balance" value={balance} />
+						{#if hasError('balance')}
+							{#each getErrors('balance') as error}
+								<p class="text-red-500 text-sm mt-1">{error}</p>
+							{/each}
+						{/if}
 					</div>
 
 					<div class="col-span-2">
 						<label for="interestRate" class="label">Interest Rate</label>
-						<PercentageInput name="interestRate" bind:value={interestRateValue} />
+						<PercentageInput
+							name="interestRate"
+							bind:value={interestRateValue}
+							class={hasError('interestRate') ? 'border-red-500' : ''}
+						/>
+						{#if hasError('interestRate')}
+							{#each getErrors('interestRate') as error}
+								<p class="text-red-500 text-sm mt-1">{error}</p>
+							{/each}
+						{/if}
 					</div>
 
 					<div class="col-span-1">
 						<label for="repaymentAmount" class="label">Repayment Amount</label>
-						<CurrencyInput bind:value={repaymentAmountValue} />
+						<CurrencyInput bind:value={repaymentAmountValue} error={hasError('balance')} />
 						<input type="hidden" name="repaymentAmount" value={repaymentAmountValue} />
+						{#if hasError('repaymentAmount')}
+							{#each getErrors('repaymentAmount') as error}
+								<p class="text-red-500 text-sm mt-1">{error}</p>
+							{/each}
+						{/if}
 					</div>
 
 					<div class="col-span-1 mb-4">
 						<label for="repaymentFrequency" class="label">Repayment Frequency</label>
-						<FrequencySelect name="repaymentFrequency" value={'monthly'} />
+						<FrequencySelect
+							name="repaymentFrequency"
+							value={'monthly'}
+							class={hasError('repaymentFrequency') ? 'border-red-500' : ''}
+						/>
+						{#if hasError('repaymentFrequency')}
+							{#each getErrors('repaymentFrequency') as error}
+								<p class="text-red-500 text-sm mt-1">{error}</p>
+							{/each}
+						{/if}
 					</div>
 
 					<button

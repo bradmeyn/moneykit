@@ -83,8 +83,10 @@
 					<div>
 						<table class="max-w-xl">
 							<thead>
-								<th>Detail</th>
-								<th>Value ($)</th>
+								<tr>
+									<th>Detail</th>
+									<th>Value ($)</th>
+								</tr>
 							</thead>
 							<tbody>
 								<tr class="text-lg">

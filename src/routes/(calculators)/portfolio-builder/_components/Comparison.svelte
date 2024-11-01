@@ -32,11 +32,14 @@
 				<table class="w-full border-collapse">
 					<thead>
 						<tr>
-							<th class="p-2 text-left" />
+							<th class="p-2 text-left"> </th>
 							{#each $results as result, i}
 								<th class="p-2 text-left">
 									<div class="flex items-center gap-2">
-										<div class="w-3 h-3 rounded-full" style="background-color: {COLOURFUL[i]}" />
+										<div
+											class="w-3 h-3 rounded-full"
+											style="background-color: {COLOURFUL[i]}"
+										></div>
 										<div class="text-white text-nowrap text-base">Scenario {result.id}</div>
 									</div>
 								</th>
@@ -67,17 +70,20 @@
 
 			<p class="text-sm font-semibold text-brand-light">Asset Allocation</p>
 			<table>
-				<tr>
-					<th class="p-2 text-left" />
-					{#each $results as result, i}
-						<th class="p-2 text-left">
-							<div class="flex items-center gap-2">
-								<div class="w-3 h-3 rounded-full" style="background-color: {COLOURFUL[i]}" />
-								<div class="text-white text-nowrap text-base">Scenario {result.id}</div>
-							</div>
-						</th>
-					{/each}
-				</tr>
+				<thead>
+					<tr>
+						<th class="p-2 text-left"> </th>
+						{#each $results as result, i}
+							<th class="p-2 text-left">
+								<div class="flex items-center gap-2">
+									<div class="w-3 h-3 rounded-full" style="background-color: {COLOURFUL[i]}">
+										<div class="text-white text-nowrap text-base">Scenario {result.id}</div>
+									</div>
+								</div></th
+							>
+						{/each}
+					</tr>
+				</thead>
 				<tbody>
 					{#each $results[0].assetAllocation as assetClass, j}
 						<tr>

@@ -9,7 +9,7 @@ export const scenarios = writable<Scenario[]>([
 		principal: 100000,
 		contributionAmount: 1000,
 		interestRate: 0.06,
-		contributionFrequency: 12,
+		contributionFrequency: 'monthly',
 		years: 10
 	}
 ]);

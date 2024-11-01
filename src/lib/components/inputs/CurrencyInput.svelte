@@ -1,14 +1,14 @@
 <script lang="ts">
 	import { formatAsNumber } from '$lib/utils/formatters';
 
-	
-	interface Props {
-		// Props
+	type Props = {
 		name?: string;
+		class?: string;
 		value: number;
-	}
+		error?: boolean;
+	};
 
-	let { name = '', value = $bindable() }: Props = $props();
+	let { name = '', value = $bindable(), class: cls = '', error }: Props = $props();
 
 	// Reactive statement to format value whenever it changes
 	let formattedValue = $derived(formatAsNumber(value));
@@ -26,7 +26,7 @@
 	}
 </script>
 
-<div class="input-base">
+<div class={`input-base ${error ? 'input-error' : ''}`}>
 	<div class="flex items-center pointer-events-none text-brand-default mr-2">$</div>
 	<input
 		type="text"

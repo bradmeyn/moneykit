@@ -31,8 +31,10 @@
 			<h3 class="font-semibold px-2">Income Tax</h3>
 			<table>
 				<thead>
-					<th>Taxable Income</th>
-					<th>Rate</th>
+					<tr>
+						<th>Taxable Income</th>
+						<th>Rate</th>
+					</tr>
 				</thead>
 				<tbody>
 					{#each INCOME_TAX_BRACKETS as { min, max, rate }}
@@ -51,8 +53,10 @@
 			<h3 class="font-semibold px-2">Medicare Levy</h3>
 			<table>
 				<thead>
-					<th>Taxable Income</th>
-					<th>Rate</th>
+					<tr>
+						<th>Taxable Income</th>
+						<th>Rate</th>
+					</tr>
 				</thead>
 				<tbody>
 					{#each MEDICARE_LEVY as { min, max, rate }}

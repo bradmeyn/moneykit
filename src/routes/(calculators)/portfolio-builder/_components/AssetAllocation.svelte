@@ -1,5 +1,3 @@
-<!-- @migration-task Error while migrating Svelte code: `<th>` is invalid inside `<thead>` -->
-<!-- @migration-task Error while migrating Svelte code: `<th>` is invalid inside `<thead>` -->
 <script lang="ts">
 	import { formatAsCurrency, formatAsPercentage } from '$lib/utils/formatters';
 	import type { Result } from '../types';
@@ -10,9 +8,11 @@
 
 <table>
 	<thead>
-		<th>Asset Class</th>
-		<th>Allocation ($)</th>
-		<th>Allocation (%)</th>
+		<tr>
+			<th>Asset Class</th>
+			<th>Allocation ($)</th>
+			<th>Allocation (%)</th>
+		</tr>
 	</thead>
 	<tbody>
 		{#each result.assetAllocation as assetClass}

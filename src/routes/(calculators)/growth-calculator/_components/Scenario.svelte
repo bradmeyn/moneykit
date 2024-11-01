@@ -22,7 +22,7 @@
 	];
 	let selectedView = $state('chart');
 
-	let chartContainer: HTMLElement = $state();
+	let chartContainer: HTMLElement;
 
 	async function downloadChart() {
 		if (chartContainer) {

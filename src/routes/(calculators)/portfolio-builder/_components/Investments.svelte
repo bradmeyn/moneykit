@@ -12,13 +12,15 @@
 
 <table>
 	<thead>
-		<th>Code</th>
-		<th>Investment</th>
-		<th>Value ($)</th>
-		<th>Allocation (%)</th>
-		<th>Cost (%)</th>
-		<th>Cost ($)</th>
-		<th />
+		<tr>
+			<th>Code</th>
+			<th>Investment</th>
+			<th>Value ($)</th>
+			<th>Allocation (%)</th>
+			<th>Cost (%)</th>
+			<th>Cost ($)</th>
+			<th> </th>
+		</tr>
 	</thead>
 	<tbody>
 		{#each result.holdings as holding}
@@ -34,7 +36,7 @@
 			>
 			<td>{formatAsPercentage(result.totalCostPercentage)} pa</td>
 			<td>{formatAsCurrency(result.totalCost, true)} pa</td>
-			<td />
+			<td></td>
 		</tr>
 	</tbody>
 </table>

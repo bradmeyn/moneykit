@@ -9,7 +9,7 @@
 </script>
 
 <select id={name} {name} bind:value class="input-base">
-	{#each FREQUENCY_ENUM as f}
-		<option value={f}>{FREQUENCIES[f].label}</option>
+	{#each FREQUENCY_ENUM as frequency}
+		<option value={frequency}>{FREQUENCIES[frequency].label}</option>
 	{/each}
 </select>

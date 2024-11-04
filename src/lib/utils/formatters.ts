@@ -1,22 +1,31 @@
-export function formatAsPercentage(value: number) {
+export const formatAsPercentage = (value: number): string => {
+	return `${value.toLocaleString(undefined, {
+		minimumFractionDigits: 1,
+		maximumFractionDigits: 2
+	})}%`;
+};
+
+export const parsePercentage = (value: string): number => {
+	// Remove % and any commas, then parse
+	const cleanValue = value.replace(/[%,]/g, '');
+	const parsed = parseFloat(cleanValue) / 100;
+	return isNaN(parsed) ? 0 : parsed;
+};
+export const formatAsCurrency = (value: number): string => {
 	return new Intl.NumberFormat('en-US', {
-		style: 'percent',
-		minimumFractionDigits: 0,
-		maximumFractionDigits: 3
+		style: 'currency',
+		currency: 'USD',
+		minimumFractionDigits: 2,
+		maximumFractionDigits: 2
 	}).format(value);
-}
-
-export function formatAsCurrency(value: number, includeCents: boolean = false): string {
-	const options: Intl.NumberFormatOptions = {
-		minimumFractionDigits: includeCents ? 2 : 0,
-		maximumFractionDigits: includeCents ? 2 : 0
-	};
-
-	options.style = 'currency';
-	options.currency = 'USD';
-
-	return new Intl.NumberFormat('en-US', options).format(value);
-}
+};
+// Parse currency string to number
+export const parseCurrency = (value: string): number => {
+	// Remove all non-numeric characters except decimal point
+	const cleanValue = value.replace(/[$,]/g, '');
+	const parsed = parseFloat(cleanValue);
+	return isNaN(parsed) ? 0 : parsed;
+};
 
 export function formatAsNumber(value: number, includeCents: boolean = false): string {
 	const options: Intl.NumberFormatOptions = {
@@ -25,11 +34,6 @@ export function formatAsNumber(value: number, includeCents: boolean = false): st
 	};
 
 	return new Intl.NumberFormat('en-US', options).format(value);
-}
-
-// Function to parse the formatted value back to an integer
-export function parseCurrency(value: string) {
-	return parseInt(value.replace(/[^0-9]+/g, ''));
 }
 
 const assetAllocationLabels = {

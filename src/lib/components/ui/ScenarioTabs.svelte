@@ -7,12 +7,7 @@
 		onAdd: any;
 	}
 
-	let {
-		scenarioIds,
-		activeScenarioId = $bindable(1),
-		maxScenarios = 2,
-		onAdd
-	}: Props = $props();
+	let { scenarioIds, activeScenarioId = $bindable(), maxScenarios = 2, onAdd }: Props = $props();
 
 	// Assuming $scenarios is a reactive store, you might need to use it directly or ensure it's passed correctly from the parent component
 </script>

@@ -1,10 +1,5 @@
 <script lang="ts">
 	import CalculatorsDropdown from './CalculatorsDropdown.svelte';
-	interface Props {
-		isLoggedIn: boolean;
-	}
-
-	let { isLoggedIn }: Props = $props();
 </script>
 
 <header class="h-16 relative">
@@ -22,19 +17,6 @@
 				<ul class="flex gap-6 items-center">
 					<CalculatorsDropdown />
 				</ul>
-
-				{#if !isLoggedIn}
-					<ul class="flex gap-6 items-center text-sm">
-						<li>
-							<a href="/login" class="text-white">Sign in</a>
-						</li>
-						<li>
-							<a href="/register" class="text-white">Register</a>
-						</li>
-					</ul>
-				{:else}
-					<a href="/dashboard" class="text-white">Dashboard</a>
-				{/if}
 			</nav>
 		</div>
 	</div>

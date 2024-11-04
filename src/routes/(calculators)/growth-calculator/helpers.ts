@@ -1,4 +1,19 @@
-import type { CompoundInterestResult } from './types';
+export type CompoundInterestResult = {
+	totalValue: number;
+	totalInterest: number;
+	totalContributions: number;
+	annualData: AnnualData[];
+};
+
+export type AnnualData = {
+	year: number;
+	startingValue: number;
+	yearlyInterest: number;
+	totalInterest: number;
+	yearlyContribution: number;
+	totalContributions: number;
+	endingValue: number;
+};
 
 export function calculateCompoundInterest(
 	principal: number = 0,

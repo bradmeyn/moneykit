@@ -5,13 +5,13 @@
 	import Tabs from '$lib/components/ui/Tabs.svelte';
 	import Table from './Table.svelte';
 	import { formatAsCurrency, formatAsPercentage } from '$lib/utils/formatters';
-	import type { Result, Scenario } from '../types';
 	import LegendList from '$lib/components/charts/LegendList.svelte';
 	import { Download } from 'lucide-svelte';
+	import type { GrowthResult, GrowthScenario } from '../scenarios.svelte';
 
 	interface Props {
-		scenario: Scenario;
-		result: Result;
+		scenario: GrowthScenario;
+		result: GrowthResult;
 	}
 
 	let { scenario = $bindable(), result }: Props = $props();

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { formatAsCurrency } from '$lib/utils/formatters';
-	import type { AnnualData } from '../types';
+	import type { AnnualData } from '../helpers';
 
 	interface Props {
 		annualData: AnnualData[];

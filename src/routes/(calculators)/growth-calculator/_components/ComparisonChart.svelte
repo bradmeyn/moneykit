@@ -13,15 +13,13 @@
 	} from 'chart.js';
 	import { COLOURFUL, MONOCHROME } from '$lib/constants/colours';
 	import colors from 'tailwindcss/colors';
+	import type { GrowthResult } from '../calculator.svelte';
 
-	import type { AnnualData, Result } from '../types';
-
-	
 	interface Props {
 		// props
 		formatter: (value: number) => string;
 		theme?: 'monochrome' | 'colourful';
-		results: Result[];
+		results: GrowthResult[];
 	}
 
 	let { formatter, theme = 'monochrome', results }: Props = $props();
@@ -35,15 +33,17 @@
 		return result.annualData.length > acc ? result.annualData.length : acc;
 	}, 0);
 	let labels = $derived(Array.from({ length: longests }, (_, i) => i + 1));
-	let datasets = $derived(results.map((result) => {
-		return {
-			label: `Scenario ${result.id}`,
-			data: result.annualData.map((item: AnnualData) => item.endingValue),
-			backgroundColor: colours[results.indexOf(result)],
-			borderColor: colours[results.indexOf(result)],
-			borderRadius: 5
-		};
-	}));
+	let datasets = $derived(
+		results.map((result) => {
+			return {
+				label: `Scenario ${result.id}`,
+				data: result.annualData.map((item: AnnualData) => item.endingValue),
+				backgroundColor: colours[results.indexOf(result)],
+				borderColor: colours[results.indexOf(result)],
+				borderRadius: 5
+			};
+		})
+	);
 
 	// Register the necessary components for a bar chart
 	Chart.register(BarController, BarElement, CategoryScale, LinearScale, Legend, Tooltip);

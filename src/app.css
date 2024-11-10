@@ -77,9 +77,9 @@
 		@apply text-2xl font-semibold;
 	}
 
-	h2 {
+	/* h2 {
 		@apply text-lg font-semibold text-brand-light;
-	}
+	} */
 
 	label {
 		@apply text-sm text-ui-200 mb-2 block;
@@ -91,29 +91,20 @@
 
 	th,
 	td {
-		@apply border-b border-ui-700 p-2 text-left;
+		@apply border-b border-ui-700 py-4 px-2 text-left;
 	}
 	th {
-		@apply text-left text-sm text-white p-2 border-t-transparent;
+		@apply text-left text-sm text-ui-300  border-t-transparent;
 	}
 	td {
-		@apply text-ui-300;
+		@apply text-ui-200;
 	}
 }
 
 @layer components {
 	.card {
-		@apply rounded-lg bg-ui-900 border border-ui-700 p-6;
+		@apply rounded-lg bg-ui-950 border border-ui-700 p-6;
 	}
-}
-
-select,
-.input-base {
-	@apply bg-ui-800 border-ui-700 h-9 outline-none flex items-center border  focus:border-brand-default focus-within:border-brand-default rounded text-sm  w-full p-2 sm:text-sm text-white placeholder-ui-400;
-}
-
-.input-base input {
-	@apply bg-transparent text-sm block w-full focus:outline-none border-none focus:ring-0;
 }
 
 /* For Webkit (Chrome, Safari, Edge) */

@@ -1,41 +1,43 @@
 <script lang="ts">
-	import { run } from 'svelte/legacy';
+	import { formatAsPercentage, parsePercentage } from '$lib/utils/formatters';
+	import Label from '$lib/components/ui/label/label.svelte';
+	import Input from '$lib/components/ui/input/input.svelte';
 
-	import { createEventDispatcher } from 'svelte';
-	interface Props {
-		label?: string;
-		name?: string;
+	let {
+		value = $bindable(),
+		label = '',
+		id = ''
+	}: {
 		value: number;
-	}
+		label?: string;
+		id?: string;
+	} = $props();
 
-	let { label = '', name = '', value = $bindable() }: Props = $props();
+	let displayValue = $state(formatAsPercentage(value));
 
 	function handleInput(event: Event) {
 		const input = event.target as HTMLInputElement;
-		// Validate and parse the input value as a float
-		const number = +input.value;
-		if (!isNaN(number)) {
-			// Update the value with the raw value
-			value = number / 100;
-			// Call the parent component's onChange handler
+		const rawValue = input.value.replace(/[^\d.]/g, '');
+		const numericValue = parsePercentage(rawValue);
+		if (!isNaN(numericValue)) {
+			value = numericValue;
 		}
 	}
 
-	// Reactive statement to format the value for display
-	let formattedValue = $derived((value * 100).toFixed(2));
+	function handleBlur() {
+		displayValue = formatAsPercentage(value);
+	}
 </script>
 
-<div class="input-container">
-	<label for={name}>{label}</label>
-	<div class="input-base">
-		<input
-			{name}
-			type="text"
-			id={name}
-			value={formattedValue}
-			inputmode="decimal"
-			onchange={handleInput}
-		/>
-		<div class="flex items-center pointer-events-none text-brand-default">%</div>
-	</div>
+<div>
+	{#if label}
+		<Label for={id}>{label}</Label>
+	{/if}
+	<Input
+		{id}
+		value={displayValue}
+		onchange={handleInput}
+		onblur={handleBlur}
+		onfocus={(e) => e.currentTarget.select()}
+	/>
 </div>

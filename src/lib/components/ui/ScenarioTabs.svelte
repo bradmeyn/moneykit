@@ -4,12 +4,15 @@
 		scenarioIds: number[];
 		activeScenarioId?: number;
 		maxScenarios?: number;
-		onAdd: any;
+		handleAddScenario: () => void;
 	}
 
-	let { scenarioIds, activeScenarioId = $bindable(), maxScenarios = 2, onAdd }: Props = $props();
-
-	// Assuming $scenarios is a reactive store, you might need to use it directly or ensure it's passed correctly from the parent component
+	let {
+		scenarioIds,
+		activeScenarioId = $bindable(),
+		maxScenarios = 2,
+		handleAddScenario
+	}: Props = $props();
 </script>
 
 <div class="flex items-center mb-4">
@@ -34,7 +37,7 @@
 	{#if scenarioIds.length < maxScenarios}
 		<button
 			class="flex gap-1 p-1 items-center text-sm justify-center text-ui-400 hover:text-brand-default hover:bg-ui-700 rounded-full"
-			onclick={onAdd}
+			onclick={handleAddScenario}
 		>
 			<Plus class="size-4" />
 		</button>

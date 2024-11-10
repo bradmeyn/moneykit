@@ -1,4 +1,5 @@
 <script lang="ts">
+	import '../app.css';
 	import Header from '$lib/components/layout/Header/Header.svelte';
 	import Footer from '$lib/components/layout/Footer.svelte';
 
@@ -16,7 +17,7 @@
 	<meta name="twitter:creator" content="@jrib_" />
 </svelte:head>
 
-<div class="bg-ui-950 min-h-screen flex flex-col">
+<div class="bg-gradient-to-b from-ui-800 to-ui-950 min-h-screen flex flex-col">
 	<Header />
 	{@render children?.()}
 	<Footer />

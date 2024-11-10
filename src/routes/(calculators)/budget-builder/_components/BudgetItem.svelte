@@ -4,6 +4,8 @@
 	import type { BudgetItem } from '../types';
 	import FrequencyInput from '$lib/components/inputs/FrequencySelect.svelte';
 
+	import { FREQUENCIES } from '$lib/constants/frequencies';
+
 	interface Props {
 		i: BudgetItem;
 	}
@@ -19,5 +21,7 @@
 	<td class="text-white p-2 w-40">
 		<FrequencyInput bind:value={i.frequency} name={i.name + 'frequency'} showLabel={false} />
 	</td>
-	<td class="text-right min-w-[80px]">{formatAsCurrency(i.amount * i.frequency, false)}</td>
+	<td class="text-right min-w-[80px]"
+		>{formatAsCurrency(i.amount * FREQUENCIES[i.frequency].value, false)}</td
+	>
 </tr>

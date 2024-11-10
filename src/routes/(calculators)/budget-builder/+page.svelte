@@ -4,14 +4,19 @@
 	import { formatAsCurrency } from '$lib/utils/formatters';
 	import BudgetTable from './_components/BudgetTable.svelte';
 	import BudgetCategory from './_components/BudgetCategory.svelte';
-	import { budget } from './store';
+	import { createBudget } from './budgetBuilder.svelte';
 
 	import BarChart from '$lib/components/charts/BarChart.svelte';
+	import { FREQUENCIES } from '$lib/constants/frequencies';
 
-	let chartData = $derived($budget.expenseByCategory.map((item) => ({
-		label: item.category,
-		value: item.total
-	})));
+	const budget = createBudget();
+
+	let chartData = $derived(
+		budget.expenseByCategory.map((item) => ({
+			label: item.category,
+			value: item.total
+		}))
+	);
 </script>
 
 <main class="flex flex-col flex-1 container text-white max-w-[1200px]">
@@ -22,23 +27,20 @@
 			<div class="card">
 				<h2>Income</h2>
 				<p class="text-2xl font-semibold mb-2">
-					{formatAsCurrency($budget.annualIncome)}
+					{formatAsCurrency(budget.annualIncome)}
 				</p>
 
 				<div class="mb-2">
-					{#each $budget.incomeCategories as category}
+					{#each budget.incomeCategories as category}
 						<BudgetCategory
 							{category}
-							categoryTotal={$budget.income
+							categoryTotal={budget.income
 								.filter((item) => item.category === category)
-								.reduce((acc, i) => acc + i.amount * i.frequency, 0)}
+								.reduce((acc, i) => acc + i.amount * FREQUENCIES[i.frequency].value, 0)}
 						>
 							{#snippet table()}
-														<BudgetTable
-									
-									items={$budget.income.filter((item) => item.category === category)}
-								/>
-													{/snippet}
+								<BudgetTable items={budget.income.filter((item) => item.category === category)} />
+							{/snippet}
 						</BudgetCategory>
 					{/each}
 				</div>
@@ -46,23 +48,20 @@
 			<div class="card">
 				<h2>Expenses</h2>
 				<p class="text-2xl font-semibold mb-2">
-					{formatAsCurrency($budget.annualExpenses)}
+					{formatAsCurrency(budget.annualExpenses)}
 				</p>
 
 				<div>
-					{#each $budget.expenseCategories as category}
+					{#each budget.expenseCategories as category}
 						<BudgetCategory
 							{category}
-							categoryTotal={$budget.expenses
+							categoryTotal={budget.expenses
 								.filter((item) => item.category === category)
-								.reduce((acc, i) => acc + i.amount * i.frequency, 0)}
+								.reduce((acc, i) => acc + i.amount * FREQUENCIES[i.frequency].value, 0)}
 						>
 							{#snippet table()}
-														<BudgetTable
-									
-									items={$budget.expenses.filter((item) => item.category === category)}
-								/>
-													{/snippet}
+								<BudgetTable items={budget.expenses.filter((item) => item.category === category)} />
+							{/snippet}
 						</BudgetCategory>
 					{/each}
 				</div>
@@ -70,22 +69,19 @@
 			<div class="card">
 				<h2>Savings</h2>
 				<p class="text-2xl font-semibold mb-2">
-					{formatAsCurrency($budget.annualSavings)}
+					{formatAsCurrency(budget.annualSavings)}
 				</p>
 				<div>
-					{#each $budget.savingsCategories as category}
+					{#each budget.savingsCategories as category}
 						<BudgetCategory
 							{category}
-							categoryTotal={$budget.savings
+							categoryTotal={budget.savings
 								.filter((item) => item.category === category)
-								.reduce((acc, i) => acc + i.amount * i.frequency, 0)}
+								.reduce((acc, i) => acc + i.amount * FREQUENCIES[i.frequency].value, 0)}
 						>
 							{#snippet table()}
-														<BudgetTable
-									
-									items={$budget.savings.filter((item) => item.category === category)}
-								/>
-													{/snippet}
+								<BudgetTable items={budget.savings.filter((item) => item.category === category)} />
+							{/snippet}
 						</BudgetCategory>
 					{/each}
 				</div>
@@ -104,15 +100,15 @@
 					data={[
 						{
 							label: 'Income',
-							value: $budget.annualIncome
+							value: budget.annualIncome
 						},
 						{
 							label: 'Expenses',
-							value: $budget.annualExpenses
+							value: budget.annualExpenses
 						},
 						{
 							label: 'Savings',
-							value: $budget.annualSavings
+							value: budget.annualSavings
 						}
 					]}
 					formatter={formatAsCurrency}

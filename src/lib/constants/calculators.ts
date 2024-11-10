@@ -2,7 +2,7 @@ export const calculatorsByCategory = {
 	Savings: [
 		{ name: 'Growth Calculator', href: '/growth-calculator' },
 		{ name: 'Drawdown Calculator', href: '/drawdown-calculator' },
-		{ name: 'Budget', href: '/budget' },
+		{ name: 'Budget Builder', href: '/budget-builder' },
 		{ name: 'Tax Calculator', href: '/personal-tax-calculator' }
 		// { name: 'Retirement Calculator', href: '/retirement-calculator' },
 		// { name: 'FIRE Calculator', href: '/fire-calculator' }

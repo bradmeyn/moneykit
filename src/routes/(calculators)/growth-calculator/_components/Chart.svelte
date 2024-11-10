@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { run } from 'svelte/legacy';
-
 	import * as colors from 'tailwindcss/colors';
 	import { onMount } from 'svelte';
 	import {
@@ -13,21 +11,15 @@
 		Tooltip
 	} from 'chart.js';
 	import { formatAsCurrency } from '$lib/utils/formatters';
-	import type { AnnualData } from '../types';
 	import { BRAND_DARK, BRAND_DEFAULT, BRAND_LIGHT } from '$lib/constants/colours';
+	import type { AnnualData } from '../helpers';
 
-	
-	interface Props {
-		// props
-		data?: AnnualData[];
-	}
-
-	let { data = [] }: Props = $props();
+	let { data = [] }: { data: AnnualData[] } = $props();
 
 	let years = $derived(data.map((item) => item.year));
 
-	let chartId: HTMLCanvasElement = $state();
-	let chart: Chart = $state();
+	let chartId: HTMLCanvasElement | undefined = $state();
+	let chart: Chart | undefined = $state();
 
 	// Register the BarController and BarElement
 	Chart.register(BarController, BarElement, CategoryScale, LinearScale, Legend, Tooltip);
@@ -113,28 +105,34 @@
 				plugins: {
 					tooltip: {
 						enabled: true,
-						position: 'nearest',
+						position: 'average',
 						mode: 'index',
 						intersect: false,
 						bodyAlign: 'right',
+						bodySpacing: 8,
+						padding: 12,
 						titleFont: {
 							size: 16
 						},
+						borderColor: colors.transparent,
+
+						cornerRadius: 4,
 						bodyFont: {
 							size: 12,
 							family: 'Inter'
 						},
-						padding: 16,
 
 						bodyColor: 'white',
+						boxPadding: 4,
+						caretSize: 0,
+						usePointStyle: true,
+						multiKeyBackground: 'transparent',
 
 						callbacks: {
 							title: (tooltip) => `After ${tooltip[0].label} Years`,
 							label: (context) => {
-								const label = context.dataset.label || '';
 								const value = context.parsed.y || 0;
-
-								return `${label}: ${formatAsCurrency(value, false)}`;
+								return ` ${formatAsCurrency(value)}`;
 							}
 						}
 					},
@@ -145,6 +143,7 @@
 								size: 14,
 								family: 'Inter'
 							},
+
 							color: 'white',
 							boxWidth: 15
 						}
@@ -154,12 +153,12 @@
 		});
 	});
 
-	run(() => {
+	$effect(() => {
 		if (chart) {
 			chart.data.labels = years;
 			(chart.data.datasets[0].data = Array.from(
 				{ length: years.length },
-				(_, i) => data[0].startingValue
+				() => data[0].startingValue
 			)),
 				(chart.data.datasets[1].data = data.map((item) => item.totalContributions));
 			chart.data.datasets[2].data = data.map((item) => item.totalInterest);

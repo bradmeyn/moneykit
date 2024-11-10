@@ -1,11 +1,10 @@
 <script lang="ts">
-	import { createScenarios } from './scenarios.svelte';
+	import { createCalculator } from './calculator.svelte';
 	import Scenario from './_components/Scenario.svelte';
 	import ScenarioTabs from '$lib/components/ui/ScenarioTabs.svelte';
 	import Comparison from './_components/Comparison.svelte';
 
-	let calculator = createScenarios();
-
+	let calculator = createCalculator();
 	let activeScenarioId: number = $state(calculator.scenarios[0]?.id);
 
 	function handleAddScenario() {
@@ -21,7 +20,7 @@
 	<ScenarioTabs
 		scenarioIds={calculator.scenarios.map((s) => s.id)}
 		bind:activeScenarioId
-		onAdd={handleAddScenario}
+		{handleAddScenario}
 	/>
 
 	<!-- Active scenario -->

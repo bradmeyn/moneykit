@@ -1,5 +1,6 @@
 export const formatAsPercentage = (value: number): string => {
-	return `${value.toLocaleString(undefined, {
+	const percentage = value * 100;
+	return `${percentage.toLocaleString(undefined, {
 		minimumFractionDigits: 1,
 		maximumFractionDigits: 2
 	})}%`;
@@ -11,12 +12,13 @@ export const parsePercentage = (value: string): number => {
 	const parsed = parseFloat(cleanValue) / 100;
 	return isNaN(parsed) ? 0 : parsed;
 };
-export const formatAsCurrency = (value: number): string => {
+
+export const formatAsCurrency = (value: number, includeCents: boolean = false): string => {
 	return new Intl.NumberFormat('en-US', {
 		style: 'currency',
 		currency: 'USD',
-		minimumFractionDigits: 2,
-		maximumFractionDigits: 2
+		minimumFractionDigits: includeCents ? 2 : 0,
+		maximumFractionDigits: includeCents ? 2 : 0
 	}).format(value);
 };
 // Parse currency string to number

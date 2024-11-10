@@ -2,12 +2,12 @@
 	import ComparisonChart from './ComparisonChart.svelte';
 	import { formatAsCurrency, formatAsPercentage } from '$lib/utils/formatters';
 	import { COLOURFUL } from '$lib/constants/colours';
-	import type { GrowthScenario, GrowthResult } from '../scenarios.svelte';
+	import type { GrowthScenario, GrowthResult } from '../calculator.svelte';
 
-	interface Props {
+	type Props = {
 		scenarios: GrowthScenario[];
 		results: GrowthResult[];
-	}
+	};
 
 	let { scenarios, results }: Props = $props();
 </script>

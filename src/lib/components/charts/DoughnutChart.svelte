@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { run } from 'svelte/legacy';
-
 	import { onMount } from 'svelte';
 	import {
 		Chart,
@@ -10,61 +8,90 @@
 		Legend,
 		type ChartConfiguration
 	} from 'chart.js';
-	import { COLOURFUL, MONOCHROME } from '$lib/constants/colours';
-
-	
+	import colors from 'tailwindcss/colors';
 
 	interface Props {
-		// Props
 		data: { label: string; value: number }[];
 		formatter: (value: number) => string;
 		theme?: 'monochrome' | 'colourful';
-		[key: string]: any
+
+		[key: string]: any;
 	}
 
-	let { data, formatter, theme = 'monochrome', ...rest }: Props = $props();
-	const chartColors = theme === 'monochrome' ? MONOCHROME : COLOURFUL;
+	let { data, formatter, theme = 'colourful', title = 'Expense Categories' }: Props = $props();
 
-	let chartId: HTMLCanvasElement = $state();
-	let doughnutChart: Chart = $state();
+	// Modern, vibrant color palette
+	const CHART_COLORS = {
+		colourful: [
+			'#3B82F6', // bright blue
+			'#EC4899', // pink
+			'#F59E0B', // yellow
+			'#10B981', // green
+			'#6366F1' // indigo
+		],
+		monochrome: ['#1E293B', '#334155', '#475569', '#64748B', '#94A3B8']
+	};
 
-	// Register the necessary Chart.js components
+	const chartColors = CHART_COLORS[theme];
+
+	//  @ts-expect-error - chartId is not initialized
+	let chartId!: HTMLCanvasElement = $state();
+	//  @ts-expect-error - doughnutChart is not initialized
+	let doughnutChart!: Chart = $state();
+
 	Chart.register(DoughnutController, ArcElement, Tooltip, Legend);
 
 	onMount(() => {
 		const config: ChartConfiguration = {
 			type: 'doughnut',
-
 			data: {
-				labels,
+				labels: data.map((item) => item.label),
 				datasets: [
 					{
 						data: data.map((item) => item.value),
 						backgroundColor: chartColors,
-						borderWidth: 0
+						borderWidth: 0,
+						borderColor: colors.transparent,
+
+						spacing: 3,
+						hoverOffset: 8
 					}
 				]
 			},
 			options: {
 				responsive: true,
 				maintainAspectRatio: false,
+
+				// @ts-expect-error - Weird typings
+				cutout: '70%',
+
 				plugins: {
 					tooltip: {
+						borderColor: colors.gray[600],
+						cornerRadius: 4,
+						backgroundColor: colors.gray[800],
+						boxPadding: 4,
+						caretSize: 0,
+						titleFont: {
+							size: 16,
+
+							family: "'Inter', sans-serif"
+						},
+						bodyFont: {
+							size: 16,
+							family: "'Inter', sans-serif"
+						},
+						padding: 12,
+						usePointStyle: true,
+						multiKeyBackground: 'transparent',
 						callbacks: {
 							label: function (context) {
-								return formatter(context.parsed);
-							}
-						},
-						boxPadding: 5
-					},
-					legend: {
-						display: false,
-						labels: {
-							font: {
-								family: 'sans-serif',
-								size: 12
+								return ` ${formatter(context.parsed)}`;
 							}
 						}
+					},
+					legend: {
+						display: false
 					}
 				}
 			}
@@ -75,17 +102,16 @@
 
 	let labels = $derived(data.map((item) => item.label));
 	let values = $derived(data.map((item) => item.value));
-	// Update chart when props change
-	run(() => {
+
+	$effect(() => {
 		if (doughnutChart) {
 			doughnutChart.data.labels = labels;
 			doughnutChart.data.datasets[0].data = values;
-			doughnutChart.data.datasets[0].backgroundColor = chartColors;
 			doughnutChart.update();
 		}
 	});
 </script>
 
-<div class={`w-full relative min-h-[200px] md:min-h-[200px] min-w-[200px]  ${rest.class}`}>
-	<canvas class="w-full absolute h-full" bind:this={chartId}></canvas>
+<div class="w-full relative min-h-[200px] md:min-h-[200px] min-w-[200px] my-6">
+	<canvas class="w-full absolute inset-0" bind:this={chartId}></canvas>
 </div>

@@ -14,7 +14,6 @@
 	import { COLOURFUL, MONOCHROME } from '$lib/constants/colours';
 	import colors from 'tailwindcss/colors';
 
-	
 	interface Props {
 		// props
 		data: { label: string; value: number }[];
@@ -28,14 +27,14 @@
 	let labels = $derived(data.map((item) => item.label));
 	let values = $derived(data.map((item) => item.value));
 
-	let chartId: HTMLCanvasElement = $state();
-	let chart: Chart = $state();
+	let chartId: HTMLCanvasElement | undefined = $state();
+	let chart: Chart | undefined = $state();
 
 	// Register the BarController and BarElement
 	Chart.register(BarController, BarElement, CategoryScale, LinearScale, Legend, Tooltip);
 
 	onMount(() => {
-		chart = new Chart(chartId, {
+		chart = new Chart(chartId!, {
 			type: 'bar',
 			data: {
 				labels,
@@ -91,12 +90,33 @@
 				},
 				plugins: {
 					tooltip: {
+						enabled: true,
+						position: 'average',
+						mode: 'index',
+						intersect: false,
+						bodyAlign: 'right',
+						bodySpacing: 8,
+						padding: 12,
+						titleFont: {
+							size: 16
+						},
+						bodyFont: {
+							size: 16
+						},
+						bodyColor: 'white',
+						borderWidth: 1,
+						borderColor: colors.gray[600],
+						backgroundColor: colors.gray[800],
+						boxPadding: 4,
+						caretSize: 0,
+						usePointStyle: true,
+						multiKeyBackground: 'transparent',
+
 						callbacks: {
 							label: function (context) {
 								return formatter(context.parsed.y);
 							}
-						},
-						boxPadding: 5
+						}
 					},
 					legend: {
 						display: false

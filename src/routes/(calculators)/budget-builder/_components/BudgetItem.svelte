@@ -1,0 +1,27 @@
+<script lang="ts">
+	import CurrencyInput from '$lib/components/inputs/CurrencyInput.svelte';
+	import { formatAsCurrency } from '$lib/utils/formatters';
+	import type { BudgetItem } from '../types';
+	import FrequencyInput from '$lib/components/inputs/FrequencySelect.svelte';
+
+	import { FREQUENCIES } from '$lib/constants/frequencies';
+
+	interface Props {
+		i: BudgetItem;
+	}
+
+	let { i = $bindable() }: Props = $props();
+</script>
+
+<tr class="border-y border-y-slate-500">
+	<td class="text-white p-2 text-sm w-56">{i.name}</td>
+	<td class="text-white p-2 w-40">
+		<CurrencyInput id="test" label="" bind:value={i.amount} />
+	</td>
+	<td class="text-white p-2 w-40">
+		<FrequencyInput bind:value={i.frequency} id={i.name + 'frequency'} />
+	</td>
+	<td class="text-right min-w-[80px]"
+		>{formatAsCurrency(i.amount * FREQUENCIES[i.frequency].value, false)}</td
+	>
+</tr>

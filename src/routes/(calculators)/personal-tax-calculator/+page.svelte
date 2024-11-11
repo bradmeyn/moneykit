@@ -18,7 +18,7 @@
 	<ScenarioTabs
 		scenarioIds={$scenarios.map((s) => s.id)}
 		bind:activeScenarioId
-		onAdd={handleAddScenario}
+		{handleAddScenario}
 	/>
 
 	<!-- Active scenario -->

@@ -25,7 +25,6 @@
 		totalTax: number;
 	};
 
-	
 	interface Props {
 		// props
 		results: Result[];
@@ -36,8 +35,8 @@
 	let { results, formatter, theme = 'monochrome' }: Props = $props();
 
 	const colours = theme === 'monochrome' ? MONOCHROME : COLOURFUL;
-	let chartId: HTMLCanvasElement = $state();
-	let chart: Chart = $state();
+	let chartId: HTMLCanvasElement | undefined = $state();
+	let chart: Chart | undefined = $state();
 
 	Chart.register(BarController, BarElement, CategoryScale, LinearScale, Legend, Tooltip);
 
@@ -61,7 +60,7 @@
 	}
 
 	onMount(() => {
-		chart = new Chart(chartId, {
+		chart = new Chart(chartId!, {
 			type: 'bar',
 			data: {
 				labels: results.map((result) => `Scenario ${result.id}`),

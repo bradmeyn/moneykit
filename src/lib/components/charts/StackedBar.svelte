@@ -14,8 +14,6 @@
 	import { COLOURFUL, MONOCHROME } from '$lib/constants/colours';
 	import colors from 'tailwindcss/colors';
 
-	
-
 	interface Props {
 		// props
 		data: { label: string; value: number }[];
@@ -26,14 +24,14 @@
 	let { data, formatter, theme = 'monochrome' }: Props = $props();
 
 	const colours = theme === 'monochrome' ? MONOCHROME : COLOURFUL;
-	let chartId: HTMLCanvasElement = $state();
-	let chart: Chart = $state();
+	let chartId: HTMLCanvasElement | undefined = $state();
+	let chart: Chart | undefined = $state();
 
 	// Register the BarController and BarElement
 	Chart.register(BarController, BarElement, CategoryScale, LinearScale, Legend, Tooltip);
 
 	onMount(() => {
-		chart = new Chart(chartId, {
+		chart = new Chart(chartId!, {
 			type: 'bar',
 			data: {
 				labels: ['Total Tax'],

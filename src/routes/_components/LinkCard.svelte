@@ -1,18 +1,74 @@
 <script lang="ts">
-
-	import CardIcon from './CardIcon.svelte';
 	interface Props {
-		name?: string;
-		href?: string;
+		name: string;
+		href: string;
+		description: string;
+		iconPath: string;
 	}
 
-	let { name = '', href = '' }: Props = $props();
+	let { name, href, description, iconPath }: Props = $props();
 </script>
 
 <a
-	class=" hover:border-brand-default card p-3 gap-4 border w-full md:w-[400px] rounded flex items-center justify-start transition-colors duration-300 ease-in-out"
 	{href}
+	class="card-animate block p-6 rounded-xl bg-ui-800/50 border border-ui-700
+	hover:border-brand-default hover:bg-ui-800/70 transition-all duration-300
+	group w-full  hover:-translate-y-1"
 >
-	<CardIcon {name} />
-	<p class="text-xl mb-0 text-white">{name}</p>
+	<div class="flex items-start space-x-4">
+		<div
+			class="mb-4 w-12 h-12 rounded-lg bg-brand-default/10 flex items-center
+		justify-center group-hover:scale-110 transition-transform duration-300 flex-shrink-0"
+		>
+			<svg
+				class="w-6 h-6 text-brand-default"
+				viewBox="0 0 24 24"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="2"
+				stroke-linecap="round"
+				stroke-linejoin="round"
+			>
+				<path d={iconPath} />
+			</svg>
+		</div>
+		<div class="flex-1">
+			<h3 class="text-xl font-medium text-white mb-2">{name}</h3>
+			<p class="text-gray-400 text-sm leading-relaxed">{description}</p>
+		</div>
+	</div>
 </a>
+
+<style>
+	.card-animate {
+		animation: slideUp 0.4s ease-out forwards;
+		opacity: 0;
+	}
+
+	@keyframes slideUp {
+		from {
+			transform: translateY(20px);
+			opacity: 0;
+		}
+		to {
+			transform: translateY(0);
+			opacity: 1;
+		}
+	}
+
+	:global(.card-animate:nth-child(1)) {
+		animation-delay: 0s;
+	}
+	:global(.card-animate:nth-child(2)) {
+		animation-delay: 0.1s;
+	}
+	:global(.card-animate:nth-child(3)) {
+		animation-delay: 0.2s;
+	}
+	:global(.card-animate:nth-child(4)) {
+		animation-delay: 0.3s;
+	}
+	:global(.card-animate:nth-child(5)) {
+		animation-delay: 0.4s;
+	}
+</style>

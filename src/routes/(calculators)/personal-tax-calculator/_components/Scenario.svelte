@@ -37,7 +37,7 @@
 			<div class="mb-2">
 				<p class="text-sm font-semibold text-brand-light">Taxable Income</p>
 				<p class="font-semibold text-2xl md:text-2xl">
-					{formatAsCurrency(result.taxableIncome, false)}
+					{formatAsCurrency(result.taxableIncome)}
 				</p>
 			</div>
 			<TaxBand taxableIncome={scenario.income - scenario.deductions} />
@@ -48,7 +48,7 @@
 					<div>
 						<p class="text-sm font-semibold text-brand-light">Total Tax</p>
 						<p class="font-semibold text-2xl">
-							{formatAsCurrency(result.totalTax, false)}
+							{formatAsCurrency(result.totalTax)}
 						</p>
 						<p class=" text-slate-400">
 							({formatAsPercentage(result.totalTax / result.taxableIncome)})
@@ -66,7 +66,6 @@
 							{ label: 'Medicare Levy Surcharge', value: result.medicareLevySurcharge },
 							{ label: 'HELP Repayment', value: result.helpRepayment }
 						]}
-						labels={['Tax']}
 						formatter={formatAsCurrency}
 					/>
 					<LegendList
@@ -91,34 +90,34 @@
 							<tbody>
 								<tr class="text-lg">
 									<td>Taxable Income</td>
-									<td>{formatAsCurrency(result.taxableIncome, false)}</td>
+									<td>{formatAsCurrency(result.taxableIncome)}</td>
 								</tr>
 
 								<tr>
 									<td>Income Tax</td>
-									<td>{formatAsCurrency(result.incomeTax, false)}</td>
+									<td>{formatAsCurrency(result.incomeTax)}</td>
 								</tr>
 								{#if result.lowIncomeOffset > 0}
 									<tr>
 										<td>Low Income Offset</td>
-										<td>({formatAsCurrency(result.lowIncomeOffset, false)})</td>
+										<td>({formatAsCurrency(result.lowIncomeOffset)})</td>
 									</tr>
 								{/if}
 								<tr>
 									<td>Medicare Levy</td>
-									<td>{formatAsCurrency(result.medicareLevy, false)}</td>
+									<td>{formatAsCurrency(result.medicareLevy)}</td>
 								</tr>
 								<tr>
 									<td>Medicare Levy Surcharge</td>
-									<td>{formatAsCurrency(result.medicareLevySurcharge, false)}</td>
+									<td>{formatAsCurrency(result.medicareLevySurcharge)}</td>
 								</tr>
 								<tr>
 									<td>HELP Repayment</td>
-									<td>{formatAsCurrency(result.helpRepayment, false)}</td>
+									<td>{formatAsCurrency(result.helpRepayment)}</td>
 								</tr>
 								<tr class="text-lg">
 									<td>Total Tax</td>
-									<td>{formatAsCurrency(result.totalTax, false)}</td>
+									<td>{formatAsCurrency(result.totalTax)}</td>
 								</tr>
 							</tbody>
 						</table>

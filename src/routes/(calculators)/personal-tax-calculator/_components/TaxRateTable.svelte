@@ -79,8 +79,10 @@
 			<h3 class="font-semibold px-2">Medicare Levy Surcharge</h3>
 			<table>
 				<thead>
-					<th>Taxable Income</th>
-					<th>Rate</th>
+					<tr>
+						<th>Taxable Income</th>
+						<th>Rate</th>
+					</tr>
 				</thead>
 				<tbody>
 					{#each MEDICARE_LEVY_SURCHARGE as { min, max, rate }}

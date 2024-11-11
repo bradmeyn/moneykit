@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { run } from 'svelte/legacy';
-
 	import * as colors from 'tailwindcss/colors';
 	import { onMount } from 'svelte';
 	import {
@@ -13,36 +11,21 @@
 		Tooltip
 	} from 'chart.js';
 	import { formatAsCurrency } from '$lib/utils/formatters';
-	import type { AnnualData } from '../types';
 	import { BRAND_DARK, BRAND_DEFAULT, BRAND_LIGHT } from '$lib/constants/colours';
+	import type { AnnualData } from '../calculator.svelte';
 
-	
-	interface Props {
-		// props
-		data?: AnnualData[];
-	}
-
-	let { data = [] }: Props = $props();
+	let { data = [] }: { data: AnnualData[] } = $props();
 
 	let years = $derived(data.map((item) => item.year));
 
-	let chartId: HTMLCanvasElement = $state();
-	let chart: Chart = $state();
+	let chartId: HTMLCanvasElement | undefined = $state();
+	let chart: Chart | undefined = $state();
 
 	// Register the BarController and BarElement
 	Chart.register(BarController, BarElement, CategoryScale, LinearScale, Legend, Tooltip);
 
-	const handleDownload = () => {
-		if (chart) {
-			const link = document.createElement('a');
-			link.download = 'growth_chart.png';
-			link.href = chart.toBase64Image();
-			link.click();
-		}
-	};
-
 	onMount(() => {
-		chart = new Chart(chartId, {
+		chart = new Chart(chartId!, {
 			type: 'bar',
 			data: {
 				labels: years,
@@ -83,21 +66,21 @@
 								size: 16,
 								family: 'sans-serif'
 							},
-							color: colors.slate[200]
+							color: colors.gray[200]
 						},
 						ticks: {
 							font: {
 								size: 14,
 								family: 'sans-serif'
 							},
-							color: colors.slate[200]
+							color: colors.gray[200]
 						}
 					},
 					y: {
 						stacked: true,
 						grid: {
 							display: true,
-							color: colors.slate[600]
+							color: colors.gray[600]
 						},
 						beginAtZero: true,
 						ticks: {
@@ -106,60 +89,71 @@
 								size: 16,
 								family: 'sans-serif'
 							},
-							color: colors.slate[200]
+							color: colors.gray[200]
 						}
 					}
 				},
 				plugins: {
 					tooltip: {
 						enabled: true,
-						position: 'nearest',
+						position: 'average',
 						mode: 'index',
 						intersect: false,
 						bodyAlign: 'right',
+						bodySpacing: 8,
+						padding: 12,
 						titleFont: {
 							size: 16
 						},
+
+						cornerRadius: 4,
 						bodyFont: {
-							size: 12,
+							size: 14,
 							family: 'Inter'
 						},
-						padding: 16,
+
+						footerAlign: 'right',
+						footerFont: {
+							size: 16,
+							family: 'Inter'
+						},
+						footerMarginTop: 8,
 
 						bodyColor: 'white',
+						borderWidth: 1,
+						borderColor: colors.gray[600],
+						backgroundColor: colors.gray[800],
+						boxPadding: 4,
+						caretSize: 0,
+						usePointStyle: true,
+						multiKeyBackground: 'transparent',
 
 						callbacks: {
 							title: (tooltip) => `After ${tooltip[0].label} Years`,
 							label: (context) => {
-								const label = context.dataset.label || '';
 								const value = context.parsed.y || 0;
-
-								return `${label}: ${formatAsCurrency(value, false)}`;
+								return ` ${formatAsCurrency(value)}`;
+							},
+							footer: (tooltipItems) => {
+								const total = tooltipItems.reduce((acc, item) => acc + item.parsed.y, 0);
+								return `${formatAsCurrency(total)}`;
 							}
 						}
 					},
 					legend: {
-						display: false,
-						labels: {
-							font: {
-								size: 14,
-								family: 'Inter'
-							},
-							color: 'white',
-							boxWidth: 15
-						}
+						display: false
 					}
 				}
 			}
 		});
 	});
 
-	run(() => {
+	$effect(() => {
 		if (chart) {
 			chart.data.labels = years;
 			(chart.data.datasets[0].data = Array.from(
 				{ length: years.length },
-				(_, i) => data[0].startingValue
+				() => data[0].startingValue
 			)),
 				(chart.data.datasets[1].data = data.map((item) => item.totalContributions));
 			chart.data.datasets[2].data = data.map((item) => item.totalInterest);

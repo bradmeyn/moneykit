@@ -30,11 +30,7 @@
 		{triggerText}
 	</Dialog.Trigger>
 	<Dialog.Portal>
-		<Dialog.Overlay
-			transition={fade}
-			transitionConfig={{ duration: 150 }}
-			class="fixed inset-0 z-50 bg-black/60"
-		/>
+		<Dialog.Overlay class="fixed inset-0 z-50 bg-black/60" />
 		<Dialog.Content
 			class="fixed left-[50%] top-[50%] z-50 w-full max-w-[94%] translate-x-[-50%] translate-y-[-50%] shadow-popover outline-none sm:max-w-[520px] md:w-full"
 		>

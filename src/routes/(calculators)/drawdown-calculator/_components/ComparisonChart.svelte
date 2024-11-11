@@ -17,7 +17,6 @@
 
 	import type { AnnualData, Result } from '../types';
 
-	
 	interface Props {
 		// props
 		formatter: (value: number) => string;
@@ -28,23 +27,25 @@
 	let { formatter, theme = 'monochrome', results }: Props = $props();
 
 	const colours = theme === 'monochrome' ? MONOCHROME : COLOURFUL;
-	let chartId: HTMLCanvasElement = $state();
-	let chart: Chart = $state();
+	let chartId: HTMLCanvasElement | undefined = $state();
+	let chart: Chart | undefined = $state();
 
 	// determine longest data set
 	let longests = results.reduce((acc, result) => {
 		return result.annualData.length > acc ? result.annualData.length : acc;
 	}, 0);
 	let labels = $derived(Array.from({ length: longests }, (_, i) => i + 1));
-	let datasets = $derived(results.map((result) => {
-		return {
-			label: `Scenario ${result.id}`,
-			data: result.annualData.map((item: AnnualData) => item.endingBalance),
-			borderColor: colours[results.indexOf(result)],
-			backgroundColor: colours[results.indexOf(result)] + '40',
-			fill: true
-		};
-	}));
+	let datasets = $derived(
+		results.map((result) => {
+			return {
+				label: `Scenario ${result.id}`,
+				data: result.annualData.map((item: AnnualData) => item.endingBalance),
+				borderColor: colours[results.indexOf(result)],
+				backgroundColor: colours[results.indexOf(result)] + '40',
+				fill: true
+			};
+		})
+	);
 
 	// Register the necessary components for a line chart
 	Chart.register(
@@ -58,7 +59,7 @@
 	);
 
 	onMount(() => {
-		chart = new Chart(chartId, {
+		chart = new Chart(chartId!, {
 			type: 'line',
 			data: {
 				labels,

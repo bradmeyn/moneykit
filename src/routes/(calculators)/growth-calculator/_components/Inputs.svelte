@@ -1,58 +1,29 @@
 <script lang="ts">
-	import CurrencyInput from '$lib/components/inputs/CurrencyInput.svelte';
 	import PercentageInput from '$lib/components/inputs/PercentageInput.svelte';
 	import FrequencySelect from '$lib/components/inputs/FrequencySelect.svelte';
-	import type { FrequencyType } from '$lib/constants/frequencies';
-
-	type Props = {
-		principal: number;
-		contributionAmount: number;
-		interestRate: number;
-		contributionFrequency: FrequencyType;
-		years: number;
-	};
-
-	let {
-		principal = $bindable(),
-		contributionAmount = $bindable(),
-		interestRate = $bindable(),
-		contributionFrequency = $bindable(),
-		years = $bindable()
-	}: Props = $props();
-
-	function handleInput(event: Event) {
-		const input = event.target as HTMLInputElement;
-		const value = parseInt(input.value);
-		if (!isNaN(value) && value >= 0) {
-			years = value;
-		} else {
-			input.value = '';
-		}
-	}
+	import CurrencyInput from '$lib/components/inputs/CurrencyInput.svelte';
+	import Label from '$ui/label/label.svelte';
+	import Input from '$ui/input/input.svelte';
+	import { type GrowthScenario } from '../calculator.svelte';
+	const { scenario = $bindable() }: { scenario: GrowthScenario } = $props();
 </script>
 
 <div class="space-y-3">
-	<CurrencyInput bind:value={principal} class={'mb-3'} />
-	<div class="grid grid-cols-2 gap-2">
-		<div class="col-span-2 md:col-span-1">
-			<label class="label" for="contributionAmount">Contributions</label>
-			<CurrencyInput name={'contributionAmount'} bind:value={contributionAmount} class={'w-full'} />
-		</div>
-		<div class="col-span-2 md:col-span-1">
-			<label class="label" for="contributionFrequency">Frequency</label>
-			<FrequencySelect bind:value={contributionFrequency} name={'Frequency'} />
-		</div>
+	<CurrencyInput bind:value={scenario.principal} id="principal" label="Principal" />
+	<div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+		<CurrencyInput bind:value={scenario.contributionAmount} label="Contributions" />
+		<FrequencySelect bind:value={scenario.contributionFrequency} label="Frequency" />
 	</div>
-	<PercentageInput label="Interest Rate" bind:value={interestRate} />
+	<PercentageInput bind:value={scenario.interestRate} label="Interest Rate" />
+
 	<div>
-		<label for="years">Years</label>
-		<input
-			id={'years'}
-			oninput={handleInput}
-			value={years}
-			class="input-base"
+		<Label for="years">Years</Label>
+		<Input
+			id="years"
 			type="number"
 			min="0"
+			bind:value={scenario.years}
+			onfocus={(e) => e.currentTarget.select()}
 		/>
 	</div>
 </div>

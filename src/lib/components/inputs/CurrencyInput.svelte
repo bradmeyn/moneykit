@@ -1,41 +1,40 @@
 <script lang="ts">
-	import { formatAsNumber } from '$lib/utils/formatters';
+	import { formatAsCurrency, parseCurrency } from '$lib/utils/formatters';
+	import Label from '$lib/components/ui/label/label.svelte';
+	import Input from '$lib/components/ui/input/input.svelte';
 
 	type Props = {
-		name?: string;
-		class?: string;
 		value: number;
-		error?: boolean;
+		label?: string;
+		id?: string;
 	};
 
-	let { name = '', value = $bindable(), class: cls = '', error }: Props = $props();
+	let { value = $bindable(), label = '', id = '' }: Props = $props();
 
-	// Reactive statement to format value whenever it changes
-	let formattedValue = $derived(formatAsNumber(value));
+	let displayValue = $state(formatAsCurrency(value));
 
 	function handleInput(event: Event) {
 		const input = event.target as HTMLInputElement;
-		// change value to a number
-		const number = parseInt(input.value);
-		if (!isNaN(number) && number >= 0) {
-			const newValue = input.value.replace(/[^0-9.]+/g, '');
-			value = +newValue;
-		} else {
-			input.value = '';
-		}
+		const rawValue = input.value;
+		const numericValue = parseCurrency(rawValue);
+		value = numericValue;
+	}
+
+	function handleBlur() {
+		displayValue = formatAsCurrency(value);
 	}
 </script>
 
-<div class={`input-base ${error ? 'input-error' : ''}`}>
-	<div class="flex items-center pointer-events-none text-brand-default mr-2">$</div>
-	<input
-		type="text"
-		{name}
-		id={name}
-		placeholder="0.00"
-		aria-describedby="currency-symbol"
-		aria-labelledby="currency-symbol"
-		value={formattedValue}
-		oninput={handleInput}
+<div>
+	{#if label}
+		<Label for={id}>{label}</Label>
+	{/if}
+	<Input
+		{id}
+		name={id}
+		value={displayValue}
+		onchange={handleInput}
+		onblur={handleBlur}
+		onfocus={(e) => e.currentTarget.select()}
 	/>
 </div>

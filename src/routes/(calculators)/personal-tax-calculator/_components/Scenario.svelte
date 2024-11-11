@@ -66,7 +66,6 @@
 							{ label: 'Medicare Levy Surcharge', value: result.medicareLevySurcharge },
 							{ label: 'HELP Repayment', value: result.helpRepayment }
 						]}
-						labels={['Tax']}
 						formatter={formatAsCurrency}
 					/>
 					<LegendList

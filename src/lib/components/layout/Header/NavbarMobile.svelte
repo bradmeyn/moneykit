@@ -3,10 +3,14 @@
 <script lang="ts">
 	import { onMount, onDestroy } from 'svelte';
 	import { browser } from '$app/environment';
-	export let isOpen = false;
-	import type { Link } from './Header.svelte';
 
-	export let links: Link[];
+	let {
+		links,
+		isOpen
+	}: {
+		links: { name: string; href: string }[];
+		isOpen: boolean;
+	} = $props();
 
 	let resizeHandler: () => void;
 	onMount(() => {
@@ -27,7 +31,7 @@
 </script>
 
 {#if isOpen}
-	<button class="fixed lg:hidden inset-0 bg-black/40 z-10" on:click={() => (isOpen = false)}>
+	<button class="fixed lg:hidden inset-0 bg-black/40 z-10" onclick={() => (isOpen = false)}>
 		<div class="z-50 absolute left-0 top-0 w-full card">
 			<div class="flex justify-between items-center z-10">
 				<span class="text-white font-semibold text-xl"
@@ -36,7 +40,7 @@
 						>Kit</span
 					></span
 				>
-				<button class="text-white p-1 hover:text-brand-default" on:click={() => (isOpen = false)}>
+				<!-- <button class="text-white p-1 hover:text-brand-default" onclick={() => (isOpen = false)}>
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
 						fill="none"
@@ -47,7 +51,7 @@
 					>
 						<path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
 					</svg>
-				</button>
+				</button> -->
 			</div>
 			<nav>
 				<ul class="py-4">

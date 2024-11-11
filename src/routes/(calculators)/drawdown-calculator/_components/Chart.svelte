@@ -18,7 +18,6 @@
 	import type { AnnualData } from '../types';
 	import { COLOURFUL, MONOCHROME } from '$lib/constants/colours';
 
-	
 	interface Props {
 		// props
 		data?: AnnualData[];
@@ -29,8 +28,8 @@
 	let years = $derived(data.map((item) => item.year));
 	let annualDrawdown = $derived(data.map((item) => item.withdrawal));
 
-	let chartId: HTMLCanvasElement = $state();
-	let chart: Chart = $state();
+	let chartId: HTMLCanvasElement | undefined = $state();
+	let chart: Chart | undefined = $state();
 
 	// Register the required components
 	Chart.register(
@@ -45,7 +44,7 @@
 	);
 
 	onMount(() => {
-		chart = new Chart(chartId, {
+		chart = new Chart(chartId!, {
 			type: 'line',
 			data: {
 				labels: years,

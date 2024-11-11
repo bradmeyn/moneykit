@@ -13,7 +13,7 @@
 	} from 'chart.js';
 	import { COLOURFUL, MONOCHROME } from '$lib/constants/colours';
 	import colors from 'tailwindcss/colors';
-	import type { GrowthResult } from '../calculator.svelte';
+	import type { AnnualData, GrowthResult } from '../calculator.svelte';
 
 	interface Props {
 		// props
@@ -25,8 +25,8 @@
 	let { formatter, theme = 'monochrome', results }: Props = $props();
 
 	const colours = theme === 'monochrome' ? MONOCHROME : COLOURFUL;
-	let chartId: HTMLCanvasElement = $state();
-	let chart: Chart = $state();
+	let chartId: HTMLCanvasElement | undefined = $state();
+	let chart: Chart | undefined = $state();
 
 	// determine longest data set
 	let longests = results.reduce((acc, result) => {
@@ -49,7 +49,7 @@
 	Chart.register(BarController, BarElement, CategoryScale, LinearScale, Legend, Tooltip);
 
 	onMount(() => {
-		chart = new Chart(chartId, {
+		chart = new Chart(chartId!, {
 			type: 'bar',
 			data: {
 				labels,

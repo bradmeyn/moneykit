@@ -91,7 +91,7 @@
 
 	th,
 	td {
-		@apply border-b border-ui-700 py-4 px-2 text-left;
+		@apply border-b border-ui-700 py-3 px-2 text-left;
 	}
 	th {
 		@apply text-left text-sm text-ui-300  border-t-transparent;
@@ -103,7 +103,7 @@
 
 @layer components {
 	.card {
-		@apply rounded-lg bg-ui-900 border border-ui-700 p-6;
+		@apply rounded-lg bg-ui-950 border border-ui-700 p-6;
 	}
 }
 

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { formatAsCurrency } from '$lib/utils/formatters';
-	import type { AnnualData } from '../helpers';
+	import type { AnnualData } from '../calculator.svelte';
 
 	interface Props {
 		annualData: AnnualData[];

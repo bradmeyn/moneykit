@@ -12,7 +12,7 @@
 	} from 'chart.js';
 	import { formatAsCurrency } from '$lib/utils/formatters';
 	import { BRAND_DARK, BRAND_DEFAULT, BRAND_LIGHT } from '$lib/constants/colours';
-	import type { AnnualData } from '../helpers';
+	import type { AnnualData } from '../calculator.svelte';
 
 	let { data = [] }: { data: AnnualData[] } = $props();
 
@@ -25,7 +25,7 @@
 	Chart.register(BarController, BarElement, CategoryScale, LinearScale, Legend, Tooltip);
 
 	onMount(() => {
-		chart = new Chart(chartId, {
+		chart = new Chart(chartId!, {
 			type: 'bar',
 			data: {
 				labels: years,
@@ -108,14 +108,20 @@
 
 						cornerRadius: 4,
 						bodyFont: {
-							size: 12,
+							size: 14,
 							family: 'Inter'
 						},
+
+						footerAlign: 'right',
+						footerFont: {
+							size: 16,
+							family: 'Inter'
+						},
+						footerMarginTop: 8,
 
 						bodyColor: 'white',
 						borderWidth: 1,
 						borderColor: colors.gray[600],
-
 						backgroundColor: colors.gray[800],
 						boxPadding: 4,
 						caretSize: 0,
@@ -127,20 +133,15 @@
 							label: (context) => {
 								const value = context.parsed.y || 0;
 								return ` ${formatAsCurrency(value)}`;
+							},
+							footer: (tooltipItems) => {
+								const total = tooltipItems.reduce((acc, item) => acc + item.parsed.y, 0);
+								return `${formatAsCurrency(total)}`;
 							}
 						}
 					},
 					legend: {
-						display: false,
-						labels: {
-							font: {
-								size: 14,
-								family: 'Inter'
-							},
-
-							color: 'white',
-							boxWidth: 15
-						}
+						display: false
 					}
 				}
 			}

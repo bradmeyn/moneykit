@@ -8,22 +8,17 @@
 		Legend,
 		type ChartConfiguration
 	} from 'chart.js';
+	import colors from 'tailwindcss/colors';
 
 	interface Props {
 		data: { label: string; value: number }[];
 		formatter: (value: number) => string;
 		theme?: 'monochrome' | 'colourful';
-		title?: string;
+
 		[key: string]: any;
 	}
 
-	let {
-		data,
-		formatter,
-		theme = 'colourful',
-		title = 'Expense Categories',
-		...rest
-	}: Props = $props();
+	let { data, formatter, theme = 'colourful', title = 'Expense Categories' }: Props = $props();
 
 	// Modern, vibrant color palette
 	const CHART_COLORS = {
@@ -40,9 +35,9 @@
 	const chartColors = CHART_COLORS[theme];
 
 	//  @ts-expect-error - chartId is not initialized
-	let chartId: HTMLCanvasElement = $state();
+	let chartId!: HTMLCanvasElement = $state();
 	//  @ts-expect-error - doughnutChart is not initialized
-	let doughnutChart: Chart = $state();
+	let doughnutChart!: Chart = $state();
 
 	Chart.register(DoughnutController, ArcElement, Tooltip, Legend);
 
@@ -56,8 +51,9 @@
 						data: data.map((item) => item.value),
 						backgroundColor: chartColors,
 						borderWidth: 0,
-						borderRadius: 4,
-						spacing: 2,
+						borderColor: colors.transparent,
+
+						spacing: 3,
 						hoverOffset: 8
 					}
 				]
@@ -65,24 +61,29 @@
 			options: {
 				responsive: true,
 				maintainAspectRatio: false,
-				cutout: '75%',
-				layout: {
-					padding: 20
-				},
+
+				// @ts-expect-error - Weird typings
+				cutout: '70%',
+
 				plugins: {
 					tooltip: {
-						backgroundColor: '#1E293B',
+						borderColor: colors.gray[600],
+						cornerRadius: 4,
+						backgroundColor: colors.gray[800],
+						boxPadding: 4,
+						caretSize: 0,
 						titleFont: {
-							size: 14,
+							size: 16,
 
 							family: "'Inter', sans-serif"
 						},
 						bodyFont: {
-							size: 13,
+							size: 16,
 							family: "'Inter', sans-serif"
 						},
 						padding: 12,
-						cornerRadius: 8,
+						usePointStyle: true,
+						multiKeyBackground: 'transparent',
 						callbacks: {
 							label: function (context) {
 								return ` ${formatter(context.parsed)}`;
@@ -90,31 +91,7 @@
 						}
 					},
 					legend: {
-						display: false,
-						position: 'bottom' as const,
-						align: 'start' as const,
-						labels: {
-							usePointStyle: true,
-							pointStyle: 'circle',
-							padding: 20,
-							color: '#94A3B8',
-							font: {
-								family: "'Inter', sans-serif",
-								size: 14
-							},
-							generateLabels: (chart) => {
-								const data = chart.data;
-
-								return data.labels.map((label, i) => ({
-									text: `${label}    ${formatter(data.datasets[0].data[i])}`,
-									fillStyle: chartColors[i],
-									strokeStyle: chartColors[i],
-									lineWidth: 0,
-									hidden: false,
-									index: i
-								}));
-							}
-						}
+						display: false
 					}
 				}
 			}
@@ -135,9 +112,6 @@
 	});
 </script>
 
-<div class={`w-full relative min-h-[400px] ${rest.class}`}>
-	{#if title}
-		<h2 class="text-2xl font-semibold mb-4 text-center text-slate-100">{title}</h2>
-	{/if}
-	<canvas class="w-full absolute h-full" bind:this={chartId}></canvas>
+<div class="w-full relative min-h-[200px] md:min-h-[200px] min-w-[200px] my-6">
+	<canvas class="w-full absolute inset-0" bind:this={chartId}></canvas>
 </div>

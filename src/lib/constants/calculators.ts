@@ -16,6 +16,7 @@ export const calculatorsByCategory = {
 	// 	{ name: 'Superannuation Comparison', href: '/super-comparison-calculator' },
 	// 	{ name: 'Pension Calculator', href: '/pension-calculator' }
 	// ]
-};
+} as const;
 
 export const categories = Object.keys(calculatorsByCategory);
+export type Category = keyof typeof calculatorsByCategory;

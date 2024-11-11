@@ -17,28 +17,28 @@ const config = {
 		extend: {
 			colors: {
 				brand: {
-					light: colors.emerald[300],
-					default: colors.emerald[500],
-					dark: colors.emerald[700]
+					light: colors.sky[300],
+					default: colors.sky[500],
+					dark: colors.sky[700]
 				},
 				ui: {
-					50: colors.slate[50],
-					100: colors.slate[100],
-					200: colors.slate[200],
-					300: colors.slate[300],
-					400: colors.slate[400],
-					500: colors.slate[500],
-					600: colors.slate[600],
-					700: colors.slate[700],
-					800: colors.slate[800],
-					900: colors.slate[900],
-					950: colors.slate[950]
+					50: colors.gray[50],
+					100: colors.gray[100],
+					200: colors.gray[200],
+					300: colors.gray[300],
+					400: colors.gray[400],
+					500: colors.gray[500],
+					600: colors.gray[600],
+					700: colors.gray[700],
+					800: colors.gray[800],
+					900: colors.gray[900],
+					950: colors.gray[950]
 				},
 				border: 'hsl(var(--border) / <alpha-value>)',
 				input: 'hsl(var(--input) / <alpha-value>)',
 				ring: 'hsl(var(--ring) / <alpha-value>)',
-				background: colors.slate[700],
-				foreground: colors.slate[100],
+				background: 'hsl(var(--background) / <alpha-value>)',
+				foreground: 'hsl(var(--foreground) / <alpha-value>)',
 				primary: {
 					DEFAULT: 'hsl(var(--primary) / <alpha-value>)',
 					foreground: 'hsl(var(--primary-foreground) / <alpha-value>)'

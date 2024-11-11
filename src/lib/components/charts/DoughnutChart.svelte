@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { run } from 'svelte/legacy';
 	import { onMount } from 'svelte';
 	import {
 		Chart,
@@ -40,7 +39,9 @@
 
 	const chartColors = CHART_COLORS[theme];
 
+	//  @ts-expect-error - chartId is not initialized
 	let chartId: HTMLCanvasElement = $state();
+	//  @ts-expect-error - doughnutChart is not initialized
 	let doughnutChart: Chart = $state();
 
 	Chart.register(DoughnutController, ArcElement, Tooltip, Legend);
@@ -73,7 +74,7 @@
 						backgroundColor: '#1E293B',
 						titleFont: {
 							size: 14,
-							weight: '600',
+
 							family: "'Inter', sans-serif"
 						},
 						bodyFont: {
@@ -89,7 +90,7 @@
 						}
 					},
 					legend: {
-						display: true,
+						display: false,
 						position: 'bottom' as const,
 						align: 'start' as const,
 						labels: {
@@ -99,11 +100,11 @@
 							color: '#94A3B8',
 							font: {
 								family: "'Inter', sans-serif",
-								size: 14,
-								weight: '500'
+								size: 14
 							},
 							generateLabels: (chart) => {
 								const data = chart.data;
+
 								return data.labels.map((label, i) => ({
 									text: `${label}    ${formatter(data.datasets[0].data[i])}`,
 									fillStyle: chartColors[i],
@@ -125,11 +126,10 @@
 	let labels = $derived(data.map((item) => item.label));
 	let values = $derived(data.map((item) => item.value));
 
-	run(() => {
+	$effect(() => {
 		if (doughnutChart) {
 			doughnutChart.data.labels = labels;
 			doughnutChart.data.datasets[0].data = values;
-			doughnutChart.data.datasets[0].backgroundColor = chartColors;
 			doughnutChart.update();
 		}
 	});

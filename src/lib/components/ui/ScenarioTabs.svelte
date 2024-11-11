@@ -19,7 +19,7 @@
 	<div class="flex gap-3 p-2 text-sm border-ui-400">
 		{#each scenarioIds as id}
 			<button
-				class={` ${activeScenarioId === id ? 'border-b-2 border-b-brand-default ' : 'text-ui-400'}`}
+				class={` ${activeScenarioId === id ? 'border-b-2 px-2 py-1 border-b-brand-default ' : 'text-ui-400'}`}
 				onclick={() => (activeScenarioId = id)}
 			>
 				Scenario {id}

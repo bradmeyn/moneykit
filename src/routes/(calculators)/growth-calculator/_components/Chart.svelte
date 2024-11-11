@@ -24,15 +24,6 @@
 	// Register the BarController and BarElement
 	Chart.register(BarController, BarElement, CategoryScale, LinearScale, Legend, Tooltip);
 
-	const handleDownload = () => {
-		if (chart) {
-			const link = document.createElement('a');
-			link.download = 'growth_chart.png';
-			link.href = chart.toBase64Image();
-			link.click();
-		}
-	};
-
 	onMount(() => {
 		chart = new Chart(chartId, {
 			type: 'bar',
@@ -75,21 +66,21 @@
 								size: 16,
 								family: 'sans-serif'
 							},
-							color: colors.slate[200]
+							color: colors.gray[200]
 						},
 						ticks: {
 							font: {
 								size: 14,
 								family: 'sans-serif'
 							},
-							color: colors.slate[200]
+							color: colors.gray[200]
 						}
 					},
 					y: {
 						stacked: true,
 						grid: {
 							display: true,
-							color: colors.slate[600]
+							color: colors.gray[600]
 						},
 						beginAtZero: true,
 						ticks: {
@@ -98,7 +89,7 @@
 								size: 16,
 								family: 'sans-serif'
 							},
-							color: colors.slate[200]
+							color: colors.gray[200]
 						}
 					}
 				},
@@ -114,7 +105,6 @@
 						titleFont: {
 							size: 16
 						},
-						borderColor: colors.transparent,
 
 						cornerRadius: 4,
 						bodyFont: {
@@ -123,6 +113,10 @@
 						},
 
 						bodyColor: 'white',
+						borderWidth: 1,
+						borderColor: colors.gray[600],
+
+						backgroundColor: colors.gray[800],
 						boxPadding: 4,
 						caretSize: 0,
 						usePointStyle: true,

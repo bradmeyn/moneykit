@@ -128,9 +128,31 @@
 				},
 				plugins: {
 					tooltip: {
-						enabled: true,
+						position: 'average',
 						mode: 'index',
 						intersect: false,
+						bodySpacing: 8,
+						padding: 12,
+
+						cornerRadius: 4,
+						titleFont: {
+							size: 16,
+							family: "'Inter', sans-serif"
+						},
+						bodyFont: {
+							size: 16,
+							family: "'Inter', sans-serif"
+						},
+						bodyAlign: 'right',
+
+						bodyColor: 'white',
+						borderWidth: 1,
+						borderColor: colors.gray[600],
+						backgroundColor: colors.gray[900],
+						boxPadding: 4,
+						caretSize: 0,
+						usePointStyle: true,
+						multiKeyBackground: 'transparent',
 						callbacks: {
 							title: (tooltip) => `Year ${tooltip[0].label}`,
 							label: (context) => {

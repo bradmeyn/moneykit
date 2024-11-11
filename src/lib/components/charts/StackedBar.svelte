@@ -86,13 +86,37 @@
 				},
 				plugins: {
 					tooltip: {
+						position: 'average',
+						mode: 'index',
+						intersect: false,
+						bodySpacing: 8,
+						padding: 12,
+
+						cornerRadius: 4,
+						titleFont: {
+							size: 16,
+							family: "'Inter', sans-serif"
+						},
+						bodyFont: {
+							size: 16,
+							family: "'Inter', sans-serif"
+						},
+						bodyAlign: 'right',
+
+						bodyColor: 'white',
+						borderWidth: 1,
+						borderColor: colors.gray[600],
+						backgroundColor: colors.gray[900],
+						boxPadding: 4,
+						caretSize: 0,
+						usePointStyle: true,
+						multiKeyBackground: 'transparent',
 						callbacks: {
 							title: (context) => context[0].dataset.label,
 							label: function (context) {
 								return formatter(context.parsed.y);
 							}
-						},
-						boxPadding: 5
+						}
 					},
 					legend: {
 						display: false

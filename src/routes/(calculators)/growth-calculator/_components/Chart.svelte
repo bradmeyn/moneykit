@@ -99,23 +99,23 @@
 						position: 'average',
 						mode: 'index',
 						intersect: false,
-						bodyAlign: 'right',
 						bodySpacing: 8,
 						padding: 12,
-						titleFont: {
-							size: 16
-						},
 
 						cornerRadius: 4,
-						bodyFont: {
-							size: 14,
-							family: 'Inter'
+						titleFont: {
+							size: 16,
+							family: "'Inter', sans-serif"
 						},
-
+						bodyFont: {
+							size: 16,
+							family: "'Inter', sans-serif"
+						},
+						bodyAlign: 'right',
 						footerAlign: 'right',
 						footerFont: {
 							size: 16,
-							family: 'Inter'
+							family: "'Inter', sans-serif"
 						},
 						footerMarginTop: 8,
 

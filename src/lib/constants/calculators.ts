@@ -18,5 +18,5 @@ export const calculatorsByCategory = {
 	// ]
 } as const;
 
-export const categories = Object.keys(calculatorsByCategory);
+export const categories: Category[] = Object.keys(calculatorsByCategory) as Category[];
 export type Category = keyof typeof calculatorsByCategory;

@@ -86,7 +86,7 @@
 							callback: (value) => formatter(+value),
 							font: {
 								size: 14,
-								family: 'sans-serif'
+								family: "'Inter', sans-serif"
 							},
 							color: colors.slate[100]
 						}
@@ -95,24 +95,31 @@
 				plugins: {
 					tooltip: {
 						enabled: true,
-						position: 'nearest',
+						position: 'average',
 						mode: 'index',
 						intersect: false,
-						bodyAlign: 'right',
+						bodySpacing: 8,
+						padding: 12,
+
+						cornerRadius: 4,
 						titleFont: {
-							size: 18
+							size: 16,
+							family: "'Inter', sans-serif"
 						},
 						bodyFont: {
-							size: 12,
-							family: 'Inter'
+							size: 16,
+							family: "'Inter', sans-serif"
 						},
-						padding: {
-							top: 16,
-							bottom: 16,
-							left: 16,
-							right: 16
-						},
+						bodyAlign: 'right',
+
 						bodyColor: 'white',
+						borderWidth: 1,
+						borderColor: colors.gray[600],
+						backgroundColor: colors.gray[900],
+						boxPadding: 4,
+						caretSize: 0,
+						usePointStyle: true,
+						multiKeyBackground: 'transparent',
 						callbacks: {
 							title: (tooltip) => `After ${tooltip[0].label} Years`,
 							label: (context) => {
@@ -123,16 +130,7 @@
 						}
 					},
 					legend: {
-						display: false,
-						position: 'top',
-						labels: {
-							color: colors.slate[100],
-
-							font: {
-								size: 16,
-								family: 'sans-serif'
-							}
-						}
+						display: false
 					}
 				}
 			}

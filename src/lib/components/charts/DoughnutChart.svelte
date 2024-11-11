@@ -74,7 +74,6 @@
 						caretSize: 0,
 						titleFont: {
 							size: 16,
-
 							family: "'Inter', sans-serif"
 						},
 						bodyFont: {

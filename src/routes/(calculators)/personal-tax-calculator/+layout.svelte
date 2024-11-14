@@ -9,7 +9,7 @@
 </script>
 
 <svelte:head>
-	<title>WealthKit | Tax Calculator</title>
+	<title>MoneyKit | Tax Calculator</title>
 	<!-- <meta name="description" content={meta_description} />
 	<meta name="og:description" content={meta_description} /> -->
 	<meta name="twitter:creator" content="@jrib_" />

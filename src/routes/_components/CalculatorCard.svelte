@@ -1,19 +1,22 @@
 <script lang="ts">
-	interface Props {
+	let {
+		name,
+		href,
+		description,
+		iconPath
+	}: {
 		name: string;
 		href: string;
 		description: string;
 		iconPath: string;
-	}
-
-	let { name, href, description, iconPath }: Props = $props();
+	} = $props();
 </script>
 
 <a
 	{href}
 	class="card-animate block p-6 rounded-xl bg-ui-800/50 border border-ui-700
 	hover:border-brand-default hover:bg-ui-800/70 transition-all duration-300
-	group w-full  hover:-translate-y-1"
+	group w-full hover:-translate-y-1"
 >
 	<div class="flex items-start space-x-4">
 		<div

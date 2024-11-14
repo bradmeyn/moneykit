@@ -15,7 +15,6 @@
 	import colors from 'tailwindcss/colors';
 
 	interface Props {
-		// props
 		data: { label: string; value: number }[];
 		formatter: (value: number) => string;
 		theme?: 'monochrome' | 'colourful';

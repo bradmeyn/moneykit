@@ -24,7 +24,7 @@
 	{#snippet children({ checked })}
 		<div class="flex size-4 items-center justify-center text-current">
 			{#if checked}
-				<Minus class="size-3.5" />
+				<Check class={cn('size-3.5', !checked && 'text-transparent')} />
 			{:else}
 				<Check class={cn('size-3.5', !checked && 'text-transparent')} />
 			{/if}

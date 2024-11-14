@@ -14,7 +14,7 @@
 		<ChevronDown class="size-4 inline-block group-hover:rotate-180 transition-all duration-300" />
 	</button>
 	<div
-		class="absolute card p-2 shadow-lg rounded overflow-hidden hidden group-hover:block z-20 w-[500px]"
+		class="absolute card bg-ui-900 p-2 shadow-lg rounded overflow-hidden hidden group-hover:block z-20 w-[500px]"
 	>
 		{#each categories as category}
 			<div class="p-4">

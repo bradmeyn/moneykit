@@ -27,7 +27,7 @@
 		{/each}
 		{#if scenarioIds.length > 1}
 			<button
-				class={` ${activeScenarioId === 0 ? 'border-b-2 border-b-brand-default ' : 'text-ui-400'}`}
+				class={` ${activeScenarioId === 0 ? 'border-b-2 px-2 py-1 border-b-brand-default ' : 'text-ui-400'}`}
 				onclick={() => (activeScenarioId = 0)}
 			>
 				Compare

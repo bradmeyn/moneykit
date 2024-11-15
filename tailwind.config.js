@@ -36,7 +36,7 @@ const config = {
 				},
 				border: 'hsl(var(--border) / <alpha-value>)',
 				input: colors.gray[800],
-				ring: colors.sky[500],
+				ring: colors.gray[500],
 				background: colors.gray[950],
 				foreground: 'hsl(var(--foreground) / <alpha-value>)',
 				primary: {

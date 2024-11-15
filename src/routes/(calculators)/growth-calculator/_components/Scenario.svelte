@@ -143,7 +143,7 @@
 </section>
 
 {#snippet dataCard(label: string, value: number, formatter: (value: number) => string)}
-	<div class="card">
+	<div class="card col-span-4 md:col-span-2 lg:col-span-1">
 		<p class="text-sm text-muted-foreground">{label}</p>
 		<p class="text-lg md:text-xl font-semibold">
 			{formatter(value)}

@@ -27,6 +27,7 @@
 	onMount(() => {
 		chart = new Chart(chartId!, {
 			type: 'bar',
+
 			data: {
 				labels: years,
 				datasets: [
@@ -53,6 +54,7 @@
 			options: {
 				maintainAspectRatio: false,
 				responsive: true,
+
 				scales: {
 					x: {
 						stacked: true,
@@ -100,7 +102,7 @@
 						mode: 'index',
 						intersect: false,
 						bodySpacing: 8,
-						padding: 12,
+						padding: 20,
 
 						cornerRadius: 4,
 						titleFont: {
@@ -141,7 +143,23 @@
 						}
 					},
 					legend: {
-						display: false
+						display: true,
+						position: 'top',
+						align: 'center',
+
+						labels: {
+							boxWidth: 10,
+							boxHeight: 10,
+							padding: 16,
+							usePointStyle: true,
+							pointStyle: 'circle',
+
+							font: {
+								size: 16,
+								family: "'Inter', sans-serif"
+							},
+							color: '#fff'
+						}
 					}
 				}
 			}

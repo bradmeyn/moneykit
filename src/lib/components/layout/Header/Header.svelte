@@ -8,7 +8,7 @@
 			<a href="/" class="flex items-center gap-2">
 				<span class="text-white text-xl"
 					>Money<span
-						class="text-transparent bg-clip-text bg-gradient-to-b from-brand-light to-brand-default"
+						class="text-transparent bg-clip-text bg-gradient-to-b from-brand-light to-brand"
 						>Kit</span
 					></span
 				>

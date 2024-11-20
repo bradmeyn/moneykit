@@ -1,7 +1,7 @@
 <script lang="ts">
 	import html2canvas from 'html2canvas';
 	import Inputs from './Inputs.svelte';
-	import Chart from './Chart.svelte';
+	import GrowthChart from './GrowthChart.svelte';
 	import * as Tabs from '$lib/components/ui/tabs';
 	import Table from './Table.svelte';
 	import { formatAsCurrency, formatAsPercentage } from '$lib/utils/formatters';
@@ -80,17 +80,18 @@
 	</aside>
 
 	<div class="w-full space-y-6">
-		<div class="grid grid-cols-4 gap-3">
+		<div class="grid grid-cols-3 gap-3">
 			{@render dataCard('Principal', scenario.principal, formatAsCurrency)}
 			{@render dataCard('Contributions', result.totalContributions, formatAsCurrency)}
 			{@render dataCard('Interest', result.totalInterest, formatAsCurrency)}
-			{@render dataCard('Total Value', result.totalValue, formatAsCurrency)}
 		</div>
 
 		<div class="card" bind:this={chartContainer}>
 			<div class="flex flex-col md:flex-row gap-4 justify-between mb-3">
 				<div>
-					<p>After {scenario.years} years</p>
+					<p class=" text-muted">
+						After {scenario.years} years at {formatAsPercentage(scenario.interestRate)} p.a
+					</p>
 					<p class="font-semibold text-2xl md:text-2xl">
 						{formatAsCurrency(result.totalValue)}
 					</p>
@@ -118,20 +119,7 @@
 
 			<Tabs.Root value={selectedView} class="mt-4">
 				<Tabs.Content value="chart" class="m-0">
-					<Chart data={result.annualData} />
-					<div class="md:max-w-xs">
-						<p class="font-semibold text-ui-200">
-							After {scenario.years} years at {formatAsPercentage(scenario.interestRate)} p.a
-						</p>
-						<LegendList
-							formatter={formatAsCurrency}
-							data={[
-								{ label: 'Principal', value: result.annualData[0].startingValue },
-								{ label: 'Contributions', value: result.totalContributions },
-								{ label: 'Interest', value: result.totalInterest }
-							]}
-						/>
-					</div>
+					<GrowthChart data={result.annualData} />
 				</Tabs.Content>
 
 				<Tabs.Content value="table" class="m-0">
@@ -143,8 +131,8 @@
 </section>
 
 {#snippet dataCard(label: string, value: number, formatter: (value: number) => string)}
-	<div class="card col-span-4 md:col-span-2 lg:col-span-1">
-		<p class="text-sm text-muted-foreground">{label}</p>
+	<div class="card col-span-3 md:col-span-2 lg:col-span-1">
+		<p class="text-muted">{label}</p>
 		<p class="text-lg md:text-xl font-semibold">
 			{formatter(value)}
 		</p>

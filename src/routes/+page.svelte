@@ -23,8 +23,7 @@
 		<h1 class="text-4xl md:text-7xl font-light mb-6 text-white leading-tight">
 			All the tools for managing your
 			<span class="relative">
-				<span
-					class="text-transparent bg-clip-text bg-gradient-to-r from-brand-light to-brand-default"
+				<span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-light to-brand"
 					>money</span
 				>
 				<!-- Decorative underline -->

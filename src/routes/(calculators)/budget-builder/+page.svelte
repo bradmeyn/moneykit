@@ -4,10 +4,12 @@
 	import { formatAsCurrency } from '$lib/utils/formatters';
 	import BudgetTable from './_components/BudgetTable.svelte';
 	import BudgetCategory from './_components/BudgetCategory.svelte';
-	import { createBudget } from './budgetBuilder.svelte';
+	import { calculateCategoryTotal, convertToFrequency, createBudget } from './budgetBuilder.svelte';
 
 	import BarChart from '$lib/components/charts/BarChart.svelte';
 	import { FREQUENCIES } from '$lib/constants/frequencies';
+
+	import FrequencySelect from '$lib/components/inputs/FrequencySelect.svelte';
 
 	const budget = createBudget();
 
@@ -27,23 +29,27 @@
 </svelte:head>
 
 <main class="flex flex-col flex-1 container text-white max-w-[1200px]">
-	<h1 class="mb-4">Budget</h1>
+	<div class="flex justify-between items-center mb-2">
+		<h1>Budget Builder</h1>
 
+		<div class="min-w-[150px]">
+			<FrequencySelect
+				name="budget-frequency"
+				id="budget-frequency"
+				bind:value={budget.frequency}
+			/>
+		</div>
+	</div>
 	<div class="flex flex-col lg:flex-row gap-4 w-full">
 		<div class="flex-1 flex gap-4 flex-col">
 			<div class="card">
-				<h2>Income</h2>
-				<p class="text-2xl font-semibold mb-2">
-					{formatAsCurrency(budget.annualIncome)}
-				</p>
+				{@render total('Income', budget.totalIncome)}
 
-				<div class="mb-2">
+				<div class="mt-2">
 					{#each budget.incomeCategories as category}
 						<BudgetCategory
 							{category}
-							categoryTotal={budget.income
-								.filter((item) => item.category === category)
-								.reduce((acc, i) => acc + i.amount * FREQUENCIES[i.frequency].value, 0)}
+							categoryTotal={calculateCategoryTotal(budget.income, category, budget.frequency)}
 						>
 							{#snippet table()}
 								<BudgetTable items={budget.income.filter((item) => item.category === category)} />
@@ -53,18 +59,12 @@
 				</div>
 			</div>
 			<div class="card">
-				<h2>Expenses</h2>
-				<p class="text-2xl font-semibold mb-2">
-					{formatAsCurrency(budget.annualExpenses)}
-				</p>
-
-				<div>
+				{@render total('Expenses', budget.totalExpenses)}
+				<div class="mt-2">
 					{#each budget.expenseCategories as category}
 						<BudgetCategory
 							{category}
-							categoryTotal={budget.expenses
-								.filter((item) => item.category === category)
-								.reduce((acc, i) => acc + i.amount * FREQUENCIES[i.frequency].value, 0)}
+							categoryTotal={calculateCategoryTotal(budget.expenses, category, budget.frequency)}
 						>
 							{#snippet table()}
 								<BudgetTable items={budget.expenses.filter((item) => item.category === category)} />
@@ -73,18 +73,14 @@
 					{/each}
 				</div>
 			</div>
+
 			<div class="card">
-				<h2>Savings</h2>
-				<p class="text-2xl font-semibold mb-2">
-					{formatAsCurrency(budget.annualSavings)}
-				</p>
-				<div>
+				{@render total('Savings', budget.totalSavings)}
+				<div class="mt-2">
 					{#each budget.savingsCategories as category}
 						<BudgetCategory
 							{category}
-							categoryTotal={budget.savings
-								.filter((item) => item.category === category)
-								.reduce((acc, i) => acc + i.amount * FREQUENCIES[i.frequency].value, 0)}
+							categoryTotal={calculateCategoryTotal(budget.savings, category, budget.frequency)}
 						>
 							{#snippet table()}
 								<BudgetTable items={budget.savings.filter((item) => item.category === category)} />
@@ -93,29 +89,32 @@
 					{/each}
 				</div>
 			</div>
+			<div class="card">
+				{@render total('Unallocated', budget.unallocated)}
+			</div>
 		</div>
 
 		<div class="flex flex-row lg:flex-col flex-wrap gap-4">
 			<div class=" flex-1 card">
-				<h2>Expense Categories</h2>
+				<h2 class="text-brand-light font-semibold">Category Breakdown</h2>
 				<DoughnutChart data={chartData} formatter={formatAsCurrency} theme={'colourful'} />
 				<LegendList data={chartData} formatter={formatAsCurrency} theme={'colourful'} />
 			</div>
 			<div class="flex-1 card">
-				<h2>Overview</h2>
+				<h2 class="text-brand-light font-semibold">Overview</h2>
 				<BarChart
 					data={[
 						{
 							label: 'Income',
-							value: budget.annualIncome
+							value: budget.totalIncome
 						},
 						{
 							label: 'Expenses',
-							value: budget.annualExpenses
+							value: budget.totalExpenses
 						},
 						{
 							label: 'Savings',
-							value: budget.annualSavings
+							value: budget.totalSavings
 						}
 					]}
 					formatter={formatAsCurrency}
@@ -124,3 +123,15 @@
 		</div>
 	</div>
 </main>
+
+{#snippet total(title: string, total: number)}
+	<h2 class="text-brand-light font-semibold">{title}</h2>
+	<div class="flex items-baseline gap-2">
+		<p class={`text-3xl font-semibold tracking-tight ${total < 0 ? 'text-red-400' : ''}`}>
+			{formatAsCurrency(total)}
+		</p>
+		<p class="text-muted text-lg font-medium">
+			/{FREQUENCIES[budget.frequency].singular}
+		</p>
+	</div>
+{/snippet}

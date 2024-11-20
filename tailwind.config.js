@@ -18,7 +18,7 @@ const config = {
 			colors: {
 				brand: {
 					light: colors.sky[300],
-					default: colors.sky[500],
+					DEFAULT: colors.sky[500],
 					dark: colors.sky[700]
 				},
 				ui: {
@@ -52,7 +52,7 @@ const config = {
 					foreground: 'hsl(var(--destructive-foreground) / <alpha-value>)'
 				},
 				muted: {
-					DEFAULT: 'hsl(var(--muted) / <alpha-value>)',
+					DEFAULT: colors.gray[400],
 					foreground: 'hsl(var(--muted-foreground) / <alpha-value>)'
 				},
 				accent: {

@@ -36,7 +36,7 @@
 			<div class="flex justify-between items-center z-10">
 				<span class="text-white font-semibold text-xl"
 					>Money<span
-						class="text-transparent bg-clip-text bg-gradient-to-b from-brand-light to-brand-default"
+						class="text-transparent bg-clip-text bg-gradient-to-b from-brand-light to-brand"
 						>Kit</span
 					></span
 				>

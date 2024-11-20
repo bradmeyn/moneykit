@@ -36,7 +36,7 @@
 	let datasets = $derived(
 		results.map((result) => {
 			return {
-				label: `Scenario ${result.id}`,
+				label: `${result.id}`,
 				data: result.annualData.map((item: AnnualData) => item.endingValue),
 				backgroundColor: colours[results.indexOf(result)],
 				borderColor: colours[results.indexOf(result)],

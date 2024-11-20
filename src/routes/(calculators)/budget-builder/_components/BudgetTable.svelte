@@ -20,8 +20,8 @@
 		</tr>
 	</thead>
 	<tbody>
-		{#each items as i (i.name)}
-			<BudgetItem {i} />
+		{#each items as budgetItem (budgetItem.name)}
+			<BudgetItem {budgetItem} />
 		{/each}
 	</tbody>
 	<!-- <tfoot>

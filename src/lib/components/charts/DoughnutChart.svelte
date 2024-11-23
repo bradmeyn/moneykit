@@ -9,6 +9,7 @@
 		type ChartConfiguration
 	} from 'chart.js';
 	import colors from 'tailwindcss/colors';
+	import { TOOLTIP } from '$lib/constants/chartConfig';
 
 	interface Props {
 		data: { label: string; value: number }[];
@@ -67,22 +68,7 @@
 
 				plugins: {
 					tooltip: {
-						borderColor: colors.gray[600],
-						cornerRadius: 4,
-						backgroundColor: colors.gray[800],
-						boxPadding: 4,
-						caretSize: 0,
-						titleFont: {
-							size: 16,
-							family: "'Inter', sans-serif"
-						},
-						bodyFont: {
-							size: 16,
-							family: "'Inter', sans-serif"
-						},
-						padding: 12,
-						usePointStyle: true,
-						multiKeyBackground: 'transparent',
+						...TOOLTIP,
 						callbacks: {
 							label: function (context) {
 								return ` ${formatter(context.parsed)}`;

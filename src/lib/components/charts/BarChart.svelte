@@ -13,6 +13,7 @@
 	} from 'chart.js';
 	import { COLOURFUL, MONOCHROME } from '$lib/constants/colours';
 	import colors from 'tailwindcss/colors';
+	import { TOOLTIP } from '$lib/constants/chartConfig';
 
 	interface Props {
 		data: { label: string; value: number }[];
@@ -57,7 +58,7 @@
 						},
 						title: {
 							font: {
-								size: 16,
+								size: 14,
 								family: 'sans-serif'
 							},
 							color: colors.slate[100]
@@ -94,23 +95,7 @@
 						mode: 'index',
 						intersect: false,
 						bodyAlign: 'right',
-						bodySpacing: 8,
-						padding: 12,
-						titleFont: {
-							size: 16
-						},
-						bodyFont: {
-							size: 16
-						},
-						bodyColor: 'white',
-						borderWidth: 1,
-						borderColor: colors.gray[600],
-						backgroundColor: colors.gray[800],
-						boxPadding: 4,
-						caretSize: 0,
-						usePointStyle: true,
-						multiKeyBackground: 'transparent',
-
+						...TOOLTIP,
 						callbacks: {
 							label: function (context) {
 								return formatter(context.parsed.y);

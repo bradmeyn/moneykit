@@ -1,19 +1,21 @@
 <script lang="ts">
 	import { Select as SelectPrimitive, type WithoutChild } from "bits-ui";
-	import SelectScrollUpButton from "./select-scroll-up-button.svelte";
-	import SelectScrollDownButton from "./select-scroll-down-button.svelte";
+	import * as Select from "./index.js";
 	import { cn } from "$lib/utils.js";
 
 	let {
 		ref = $bindable(null),
 		class: className,
 		sideOffset = 4,
+		portalProps,
 		children,
 		...restProps
-	}: WithoutChild<SelectPrimitive.ContentProps> = $props();
+	}: WithoutChild<SelectPrimitive.ContentProps> & {
+		portalProps?: SelectPrimitive.PortalProps;
+	} = $props();
 </script>
 
-<SelectPrimitive.Portal>
+<SelectPrimitive.Portal {...portalProps}>
 	<SelectPrimitive.Content
 		bind:ref
 		{sideOffset}
@@ -23,7 +25,7 @@
 		)}
 		{...restProps}
 	>
-		<SelectScrollUpButton />
+		<Select.ScrollUpButton />
 		<SelectPrimitive.Viewport
 			class={cn(
 				"h-[var(--bits-select-anchor-height)] w-full min-w-[var(--bits-select-anchor-width)] p-1"
@@ -31,6 +33,6 @@
 		>
 			{@render children?.()}
 		</SelectPrimitive.Viewport>
-		<SelectScrollDownButton />
+		<Select.ScrollDownButton />
 	</SelectPrimitive.Content>
 </SelectPrimitive.Portal>

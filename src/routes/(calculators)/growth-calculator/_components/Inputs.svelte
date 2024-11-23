@@ -12,7 +12,12 @@
 	<CurrencyInput bind:value={scenario.principal} id="principal" label="Principal" />
 	<div class="grid grid-cols-1 md:grid-cols-2 gap-2">
 		<CurrencyInput bind:value={scenario.contributionAmount} label="Contributions" />
-		<FrequencySelect bind:value={scenario.contributionFrequency} label="Frequency" />
+		<FrequencySelect
+			bind:value={scenario.contributionFrequency}
+			label="Frequency"
+			id="frequency"
+			name="frequency"
+		/>
 	</div>
 	<PercentageInput bind:value={scenario.interestRate} label="Interest Rate" />
 

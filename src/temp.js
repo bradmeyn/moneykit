@@ -1,6 +1,6 @@
 import { fontFamily } from 'tailwindcss/defaultTheme';
-import tailwindcssAnimate from 'tailwindcss-animate';
 import colors from 'tailwindcss/colors';
+
 /** @type {import('tailwindcss').Config} */
 const config = {
 	darkMode: ['class'],
@@ -38,7 +38,6 @@ const config = {
 				input: colors.gray[800],
 				ring: colors.gray[500],
 				background: colors.gray[950],
-
 				foreground: 'hsl(var(--foreground) / <alpha-value>)',
 				primary: {
 					DEFAULT: 'hsl(var(--primary) / <alpha-value>)',
@@ -91,10 +90,10 @@ const config = {
 			keyframes: {
 				'accordion-down': {
 					from: { height: '0' },
-					to: { height: 'var(--bits-accordion-content-height)' }
+					to: { height: 'var(--radix-accordion-content-height)' }
 				},
 				'accordion-up': {
-					from: { height: 'var(--bits-accordion-content-height)' },
+					from: { height: 'var(--radix-accordion-content-height)' },
 					to: { height: '0' }
 				},
 				'caret-blink': {
@@ -109,7 +108,7 @@ const config = {
 			}
 		}
 	},
-	plugins: [tailwindcssAnimate]
+	plugins: []
 };
 
 export default config;

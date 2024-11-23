@@ -13,6 +13,7 @@
 	} from 'chart.js';
 	import { COLOURFUL, MONOCHROME } from '$lib/constants/colours';
 	import colors from 'tailwindcss/colors';
+	import { TOOLTIP } from '$lib/constants/chartConfig';
 
 	interface Props {
 		// props
@@ -89,28 +90,7 @@
 						position: 'average',
 						mode: 'index',
 						intersect: false,
-						bodySpacing: 8,
-						padding: 12,
-
-						cornerRadius: 4,
-						titleFont: {
-							size: 16,
-							family: "'Inter', sans-serif"
-						},
-						bodyFont: {
-							size: 16,
-							family: "'Inter', sans-serif"
-						},
-						bodyAlign: 'right',
-
-						bodyColor: 'white',
-						borderWidth: 1,
-						borderColor: colors.gray[600],
-						backgroundColor: colors.gray[900],
-						boxPadding: 4,
-						caretSize: 0,
-						usePointStyle: true,
-						multiKeyBackground: 'transparent',
+						...TOOLTIP,
 						callbacks: {
 							title: (context) => context[0].dataset.label,
 							label: function (context) {

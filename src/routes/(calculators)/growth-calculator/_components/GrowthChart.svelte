@@ -13,6 +13,7 @@
 	import { formatAsCurrency } from '$lib/utils/formatters';
 	import { BRAND_DARK, BRAND_DEFAULT, BRAND_LIGHT } from '$lib/constants/colours';
 	import type { AnnualData } from '../calculator.svelte';
+	import { TOOLTIP } from '$lib/constants/chartConfig';
 
 	let { data = [] }: { data: AnnualData[] } = $props();
 
@@ -100,19 +101,7 @@
 						enabled: true,
 						position: 'average',
 						mode: 'index',
-						intersect: false,
-						bodySpacing: 8,
-						padding: 20,
-
-						cornerRadius: 4,
-						titleFont: {
-							size: 16,
-							family: "'Inter', sans-serif"
-						},
-						bodyFont: {
-							size: 16,
-							family: "'Inter', sans-serif"
-						},
+						...TOOLTIP,
 						bodyAlign: 'right',
 						footerAlign: 'right',
 						footerFont: {
@@ -120,15 +109,6 @@
 							family: "'Inter', sans-serif"
 						},
 						footerMarginTop: 8,
-
-						bodyColor: 'white',
-						borderWidth: 1,
-						borderColor: colors.gray[600],
-						backgroundColor: colors.gray[800],
-						boxPadding: 4,
-						caretSize: 0,
-						usePointStyle: true,
-						multiKeyBackground: 'transparent',
 
 						callbacks: {
 							title: (tooltip) => `After ${tooltip[0].label} Years`,

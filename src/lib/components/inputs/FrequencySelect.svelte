@@ -1,8 +1,7 @@
 <script lang="ts">
 	import * as Select from '$lib/components/ui/select';
 
-	import type { FrequencyType } from '$lib/constants/frequencies';
-	import { FREQUENCIES, FREQUENCY_ENUM } from '$lib/constants/frequencies';
+	import { FREQUENCIES, FREQUENCY_ENUM, type FrequencyType } from '$lib/constants/frequencies';
 	import Label from '$ui/label/label.svelte';
 
 	type Props = {

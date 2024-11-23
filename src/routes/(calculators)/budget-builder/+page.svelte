@@ -3,8 +3,8 @@
 	import LegendList from '$lib/components/charts/LegendList.svelte';
 	import { formatAsCurrency } from '$lib/utils/formatters';
 	import BudgetTable from './_components/BudgetTable.svelte';
-	import BudgetCategory from './_components/BudgetCategory.svelte';
-	import { calculateCategoryTotal, convertToFrequency, createBudget } from './budgetBuilder.svelte';
+	import BudgetAccordion from './_components/BudgetAccordion.svelte';
+	import { calculateCategoryTotal, createBudget } from './budgetBuilder.svelte';
 
 	import BarChart from '$lib/components/charts/BarChart.svelte';
 	import { FREQUENCIES } from '$lib/constants/frequencies';
@@ -22,7 +22,7 @@
 </script>
 
 <svelte:head>
-	<title>Budget</title>
+	<title>Budget Builder</title>
 	<!-- <meta name="description" content={meta_description} />
 	<meta name="og:description" content={meta_description} /> -->
 	<meta name="twitter:creator" content="@jrib_" />
@@ -47,14 +47,17 @@
 
 				<div class="mt-2">
 					{#each budget.incomeCategories as category}
-						<BudgetCategory
+						<BudgetAccordion
 							{category}
 							categoryTotal={calculateCategoryTotal(budget.income, category, budget.frequency)}
 						>
 							{#snippet table()}
-								<BudgetTable items={budget.income.filter((item) => item.category === category)} />
+								<BudgetTable
+									frequency={budget.frequency}
+									items={budget.income.filter((item) => item.category === category)}
+								/>
 							{/snippet}
-						</BudgetCategory>
+						</BudgetAccordion>
 					{/each}
 				</div>
 			</div>
@@ -62,14 +65,17 @@
 				{@render total('Expenses', budget.totalExpenses)}
 				<div class="mt-2">
 					{#each budget.expenseCategories as category}
-						<BudgetCategory
+						<BudgetAccordion
 							{category}
 							categoryTotal={calculateCategoryTotal(budget.expenses, category, budget.frequency)}
 						>
 							{#snippet table()}
-								<BudgetTable items={budget.expenses.filter((item) => item.category === category)} />
+								<BudgetTable
+									frequency={budget.frequency}
+									items={budget.expenses.filter((item) => item.category === category)}
+								/>
 							{/snippet}
-						</BudgetCategory>
+						</BudgetAccordion>
 					{/each}
 				</div>
 			</div>
@@ -78,14 +84,17 @@
 				{@render total('Savings', budget.totalSavings)}
 				<div class="mt-2">
 					{#each budget.savingsCategories as category}
-						<BudgetCategory
+						<BudgetAccordion
 							{category}
 							categoryTotal={calculateCategoryTotal(budget.savings, category, budget.frequency)}
 						>
 							{#snippet table()}
-								<BudgetTable items={budget.savings.filter((item) => item.category === category)} />
+								<BudgetTable
+									frequency={budget.frequency}
+									items={budget.savings.filter((item) => item.category === category)}
+								/>
 							{/snippet}
-						</BudgetCategory>
+						</BudgetAccordion>
 					{/each}
 				</div>
 			</div>
@@ -96,7 +105,7 @@
 
 		<div class="flex flex-row lg:flex-col flex-wrap gap-4">
 			<div class=" flex-1 card">
-				<h2 class="text-brand-light font-semibold">Category Breakdown</h2>
+				<h2 class="text-brand font-semibold">Category Breakdown</h2>
 				<DoughnutChart data={chartData} formatter={formatAsCurrency} theme={'colourful'} />
 				<LegendList data={chartData} formatter={formatAsCurrency} theme={'colourful'} />
 			</div>
@@ -125,7 +134,7 @@
 </main>
 
 {#snippet total(title: string, total: number)}
-	<h2 class="text-brand-light font-semibold">{title}</h2>
+	<h2 class="text-brand font-semibold">{title}</h2>
 	<div class="flex items-baseline gap-2">
 		<p class={`text-3xl font-semibold tracking-tight ${total < 0 ? 'text-red-400' : ''}`}>
 			{formatAsCurrency(total)}

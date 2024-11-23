@@ -103,7 +103,7 @@
 
 @layer components {
 	.card {
-		@apply rounded-lg border  border-ui-800 bg-ui-950 p-6;
+		@apply rounded-lg border  border-ui-700 bg-ui-950 p-6;
 	}
 }
 

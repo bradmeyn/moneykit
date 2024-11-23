@@ -17,7 +17,7 @@
 	<meta name="twitter:creator" content="@jrib_" />
 </svelte:head>
 
-<div class="bg-gradient-to-b from-ui-900 to-ui-950 min-h-screen flex flex-col">
+<div class="antialiased bg-gradient-to-b from-slate-800 min-h-screen flex flex-col">
 	<Header />
 	{@render children?.()}
 	<Footer />

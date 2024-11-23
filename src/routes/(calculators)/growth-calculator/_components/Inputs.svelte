@@ -25,6 +25,7 @@
 		<Label for="years">Years</Label>
 		<Input
 			id="years"
+			name="years"
 			type="number"
 			min="0"
 			bind:value={scenario.years}

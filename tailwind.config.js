@@ -18,7 +18,7 @@ const config = {
 			colors: {
 				brand: {
 					light: colors.sky[300],
-					DEFAULT: colors.sky[500],
+					DEFAULT: colors.blue[300],
 					dark: colors.sky[700]
 				},
 				ui: {

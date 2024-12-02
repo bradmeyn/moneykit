@@ -1,7 +1,7 @@
 <script lang="ts">
 	import CurrencyInput from '$lib/components/inputs/CurrencyInput.svelte';
 	import { formatAsCurrency } from '$lib/utils/formatters';
-	import type { BudgetItem } from '../types';
+	import type { BudgetItem } from '../budgetBuilder.svelte';
 	import FrequencyInput from '$lib/components/inputs/FrequencySelect.svelte';
 	import { FREQUENCIES } from '$lib/constants/frequencies';
 

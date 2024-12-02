@@ -2,7 +2,7 @@
 	import BudgetItem from './BudgetItem.svelte';
 	import type { BudgetItem as Item } from '../budgetBuilder.svelte';
 	import { FREQUENCIES, type FrequencyType } from '$constants/frequencies';
-	let { items = [], frequency }: { items?: Item; frequency: FrequencyType } = $props();
+	let { items = $bindable([]), frequency }: { items?: Item[]; frequency: FrequencyType } = $props();
 </script>
 
 <table class="w-full">
@@ -17,8 +17,8 @@
 		</tr>
 	</thead>
 	<tbody>
-		{#each items as budgetItem (budgetItem.name)}
-			<BudgetItem {budgetItem} />
+		{#each items as budgetItem, i (budgetItem.name)}
+			<BudgetItem bind:budgetItem={items[i]} />
 		{/each}
 	</tbody>
 </table>

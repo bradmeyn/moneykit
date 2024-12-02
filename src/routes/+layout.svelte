@@ -4,7 +4,7 @@
 	import Footer from '$lib/components/layout/Footer.svelte';
 
 	interface Props {
-		children?: import('svelte').Snippet;
+		children: import('svelte').Snippet;
 	}
 
 	let { children }: Props = $props();
@@ -19,6 +19,6 @@
 
 <div class="antialiased bg-gradient-to-b from-slate-800 min-h-screen flex flex-col">
 	<Header />
-	{@render children?.()}
+	{@render children()}
 	<Footer />
 </div>

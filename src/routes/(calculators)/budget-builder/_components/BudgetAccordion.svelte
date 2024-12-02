@@ -1,14 +1,16 @@
 <script lang="ts">
 	import * as Accordion from '$lib/components/ui/accordion';
 	import { formatAsCurrency } from '$lib/utils/formatters';
+	import AddItem from './AddItem.svelte';
 
 	interface Props {
 		category?: string;
+		type: 'Income' | 'Expense' | 'Savings';
 		categoryTotal?: number;
-		table?: import('svelte').Snippet;
+		table: import('svelte').Snippet;
 	}
 
-	let { category = '', categoryTotal = 0, table }: Props = $props();
+	let { category = '', type, categoryTotal = 0, table }: Props = $props();
 </script>
 
 <Accordion.Root type="single" class="w-full">
@@ -21,8 +23,9 @@
 				<p class="text-lg">{formatAsCurrency(categoryTotal, false)}</p>
 			</div>
 		</Accordion.Trigger>
-		<Accordion.Content class="p-2 ">
-			{@render table?.()}
+		<Accordion.Content class="p-2">
+			{@render table()}
+			<AddItem {category} {type} />
 		</Accordion.Content>
 	</Accordion.Item>
 </Accordion.Root>

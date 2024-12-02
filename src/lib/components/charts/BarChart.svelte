@@ -23,7 +23,6 @@
 
 	let { data, formatter, theme = 'monochrome' }: Props = $props();
 
-	const colours = theme === 'monochrome' ? MONOCHROME : COLOURFUL;
 	let labels = $derived(data.map((item) => item.label));
 	let values = $derived(data.map((item) => item.value));
 
@@ -41,7 +40,7 @@
 				datasets: [
 					{
 						data: data.map((item) => item.value),
-						backgroundColor: colours,
+						backgroundColor: [colors.blue[500], colors.rose[500], colors.emerald[500]],
 						borderWidth: 0,
 						borderRadius: 5
 					}
@@ -65,7 +64,7 @@
 						},
 						ticks: {
 							font: {
-								size: 11,
+								size: 14,
 								family: 'sans-serif'
 							},
 							color: '#ffffff'

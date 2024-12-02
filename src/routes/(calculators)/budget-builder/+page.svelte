@@ -5,13 +5,16 @@
 	import BudgetTable from './_components/BudgetTable.svelte';
 	import BudgetAccordion from './_components/BudgetAccordion.svelte';
 	import { calculateCategoryTotal, createBudget } from './budgetBuilder.svelte';
-
+	import { setContext } from 'svelte';
 	import BarChart from '$lib/components/charts/BarChart.svelte';
 	import { FREQUENCIES } from '$lib/constants/frequencies';
 
 	import FrequencySelect from '$lib/components/inputs/FrequencySelect.svelte';
 
 	const budget = createBudget();
+
+	// Add context
+	setContext('addBudgetItem', budget.addBudgetItem);
 
 	let chartData = $derived(
 		budget.expenseByCategory.map((item) => ({
@@ -48,6 +51,7 @@
 				<div class="mt-2">
 					{#each budget.incomeCategories as category}
 						<BudgetAccordion
+							type="Income"
 							{category}
 							categoryTotal={calculateCategoryTotal(budget.income, category, budget.frequency)}
 						>
@@ -66,6 +70,7 @@
 				<div class="mt-2">
 					{#each budget.expenseCategories as category}
 						<BudgetAccordion
+							type="Expense"
 							{category}
 							categoryTotal={calculateCategoryTotal(budget.expenses, category, budget.frequency)}
 						>
@@ -85,6 +90,7 @@
 				<div class="mt-2">
 					{#each budget.savingsCategories as category}
 						<BudgetAccordion
+							type="Savings"
 							{category}
 							categoryTotal={calculateCategoryTotal(budget.savings, category, budget.frequency)}
 						>
@@ -103,8 +109,8 @@
 			</div>
 		</div>
 
-		<div class="flex flex-row lg:flex-col flex-wrap gap-4">
-			<div class=" flex-1 card">
+		<div class="flex flex-row lg:flex-col flex-wrap gap-4 min-w-[300px]">
+			<div class=" card">
 				<h2 class="text-brand font-semibold">Category Breakdown</h2>
 				<DoughnutChart data={chartData} formatter={formatAsCurrency} theme={'colourful'} />
 				<LegendList data={chartData} formatter={formatAsCurrency} theme={'colourful'} />

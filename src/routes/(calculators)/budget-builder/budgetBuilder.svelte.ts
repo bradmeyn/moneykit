@@ -282,6 +282,10 @@ export function createBudget() {
 	const totalSavings = $derived<number>(adjustedSavings.reduce((acc, i) => acc + i.amount, 0));
 	const unallocated = $derived<number>(totalIncome - totalExpenses - totalSavings);
 
+	function addBudgetItem(item: BudgetItem) {
+		budgetItems.push(item);
+	}
+
 	return {
 		// Budget Frequency
 		get frequency() {
@@ -333,6 +337,8 @@ export function createBudget() {
 
 		get unallocated() {
 			return unallocated;
-		}
+		},
+
+		addBudgetItem
 	};
 }

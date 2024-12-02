@@ -17,14 +17,14 @@
 	<meta name="twitter:creator" content="@jrib_" />
 </svelte:head>
 
-<div class="flex-1 container mx-auto px-4">
+<main class="flex-1 container mx-auto px-4">
 	<!-- Hero Section -->
 	<div class="text-center max-w-4xl mx-auto pt-16 pb-24">
 		<h1 class="text-4xl md:text-7xl font-light mb-6 text-white leading-tight">
-			All the tools for managing your
+			Your financial planning
 			<span class="relative">
 				<span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-light to-brand"
-					>money</span
+					>toolkit</span
 				>
 				<!-- Decorative underline -->
 			</span>
@@ -40,4 +40,4 @@
 			<CalculatorCard {...calculator} />
 		{/each}
 	</div>
-</div>
+</main>

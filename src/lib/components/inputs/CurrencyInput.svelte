@@ -7,17 +7,19 @@
 		value: number;
 		label?: string;
 		id?: string;
+		onChange?: (value: number) => void;
 	};
 
-	let { value = $bindable(), label = '', id = '' }: Props = $props();
+	let { value = $bindable(), label = '', id = '', onChange }: Props = $props();
 
 	let displayValue = $state(formatAsCurrency(value));
 
-	function handleInput(event: Event) {
+	function handleChange(event: Event) {
 		const input = event.target as HTMLInputElement;
 		const rawValue = input.value;
 		const numericValue = parseCurrency(rawValue);
 		value = numericValue;
+		onChange?.(numericValue);
 	}
 
 	function handleBlur() {
@@ -33,7 +35,7 @@
 		{id}
 		name={id}
 		value={displayValue}
-		onchange={handleInput}
+		onchange={handleChange}
 		onblur={handleBlur}
 		onfocus={(e) => e.currentTarget.select()}
 	/>

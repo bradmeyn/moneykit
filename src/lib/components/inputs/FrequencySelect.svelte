@@ -1,6 +1,5 @@
 <script lang="ts">
 	import * as Select from '$lib/components/ui/select';
-
 	import { FREQUENCIES, FREQUENCY_ENUM, type FrequencyType } from '$lib/constants/frequencies';
 	import Label from '$ui/label/label.svelte';
 
@@ -9,16 +8,19 @@
 		name?: string;
 		id?: string;
 		label?: string;
+		onChange?: (value: FrequencyType) => void;
 	};
 
-	let { value = $bindable(), id = '', name = '', label = '' }: Props = $props();
+	let { value = $bindable(), id = '', name = '', label = '', onChange }: Props = $props();
+
+	const handleChange = (value: FrequencyType) => onChange?.(value);
 </script>
 
 <div>
 	{#if label}
 		<Label for={id}>{label}</Label>
 	{/if}
-	<Select.Root {name} type="single" bind:value>
+	<Select.Root onValueChange={handleChange} {name} type="single" bind:value>
 		<Select.Trigger {id}>
 			{value ? FREQUENCIES[value].label : 'Select'}
 		</Select.Trigger>

@@ -1,12 +1,20 @@
 import { FREQUENCIES, type FrequencyType } from '$lib/constants/frequencies';
+import { v4 as uuidv4 } from 'uuid';
 
 export type BudgetItem = {
-	id: number;
+	id: string;
 	name: string;
 	amount: number;
 	category: string;
 	frequency: FrequencyType;
 	type: 'Income' | 'Expense' | 'Savings';
+};
+
+export type BudgetContext = {
+	addItem: (item: BudgetItem) => void;
+	removeItem: (id: string) => void;
+	updateItem: (item: BudgetItem) => void;
+	getFrequency: () => FrequencyType;
 };
 
 export function convertToFrequency(
@@ -35,7 +43,7 @@ export function createBudget() {
 
 	const budgetItems = $state<BudgetItem[]>([
 		{
-			id: 1,
+			id: uuidv4(),
 			name: 'Salary',
 			amount: 1000,
 			category: 'Wages & Salary',
@@ -43,7 +51,7 @@ export function createBudget() {
 			type: 'Income'
 		},
 		{
-			id: 2,
+			id: uuidv4(),
 			name: 'Bonus',
 			amount: 500,
 			category: 'Wages & Salary',
@@ -51,7 +59,7 @@ export function createBudget() {
 			type: 'Income'
 		},
 		{
-			id: 2,
+			id: uuidv4(),
 			name: 'Rental Income',
 			amount: 500,
 			category: 'Investments',
@@ -59,7 +67,7 @@ export function createBudget() {
 			type: 'Income'
 		},
 		{
-			id: 2,
+			id: uuidv4(),
 			name: 'Interest',
 			amount: 500,
 			category: 'Investments',
@@ -67,7 +75,7 @@ export function createBudget() {
 			type: 'Income'
 		},
 		{
-			id: 2,
+			id: uuidv4(),
 			name: 'Dividends & Distributions',
 			amount: 500,
 			category: 'Investments',
@@ -75,7 +83,7 @@ export function createBudget() {
 			type: 'Income'
 		},
 		{
-			id: 2,
+			id: uuidv4(),
 			name: 'Capital Gains',
 			amount: 500,
 			category: 'Investments',
@@ -83,7 +91,7 @@ export function createBudget() {
 			type: 'Income'
 		},
 		{
-			id: 1,
+			id: uuidv4(),
 			name: 'Rent/Mortgage',
 			amount: 100,
 			category: 'Housing & Utilities',
@@ -91,7 +99,7 @@ export function createBudget() {
 			type: 'Expense'
 		},
 		{
-			id: 11,
+			id: uuidv4(),
 			name: 'Rates',
 			amount: 300,
 			category: 'Housing & Utilities',
@@ -99,7 +107,7 @@ export function createBudget() {
 			type: 'Expense'
 		},
 		{
-			id: 12,
+			id: uuidv4(),
 			name: 'Water',
 			amount: 100,
 			category: 'Housing & Utilities',
@@ -107,7 +115,7 @@ export function createBudget() {
 			type: 'Expense'
 		},
 		{
-			id: 11,
+			id: uuidv4(),
 			name: 'Electricity & Gas',
 			amount: 300,
 			category: 'Housing & Utilities',
@@ -115,7 +123,7 @@ export function createBudget() {
 			type: 'Expense'
 		},
 		{
-			id: 11,
+			id: uuidv4(),
 			name: 'Internet & Phone',
 			amount: 120,
 			category: 'Housing & Utilities',
@@ -123,7 +131,7 @@ export function createBudget() {
 			type: 'Expense'
 		},
 		{
-			id: 2,
+			id: uuidv4(),
 			name: 'Groceries',
 			amount: 50,
 			category: 'Food',
@@ -131,7 +139,7 @@ export function createBudget() {
 			type: 'Expense'
 		},
 		{
-			id: 30,
+			id: uuidv4(),
 			name: 'Takeaway',
 			amount: 50,
 			category: 'Food',
@@ -139,7 +147,7 @@ export function createBudget() {
 			type: 'Expense'
 		},
 		{
-			id: 3,
+			id: uuidv4(),
 			name: 'Gym Membership',
 			amount: 30,
 			category: 'Health',
@@ -147,7 +155,7 @@ export function createBudget() {
 			type: 'Expense'
 		},
 		{
-			id: 4,
+			id: uuidv4(),
 			name: 'Fuel',
 			amount: 50,
 			category: 'Car',
@@ -155,7 +163,7 @@ export function createBudget() {
 			type: 'Expense'
 		},
 		{
-			id: 40,
+			id: uuidv4(),
 			name: 'Registration',
 			amount: 50,
 			category: 'Car',
@@ -163,7 +171,7 @@ export function createBudget() {
 			type: 'Expense'
 		},
 		{
-			id: 41,
+			id: uuidv4(),
 			name: 'Insurance',
 			amount: 1200,
 			category: 'Car',
@@ -171,7 +179,7 @@ export function createBudget() {
 			type: 'Expense'
 		},
 		{
-			id: 42,
+			id: uuidv4(),
 			name: 'Maintenance',
 			amount: 200,
 			category: 'Car',
@@ -179,7 +187,7 @@ export function createBudget() {
 			type: 'Expense'
 		},
 		{
-			id: 5,
+			id: uuidv4(),
 			name: 'Streaming Services',
 			amount: 10,
 			category: 'Entertainment & Leisure',
@@ -187,7 +195,7 @@ export function createBudget() {
 			type: 'Expense'
 		},
 		{
-			id: 5,
+			id: uuidv4(),
 			name: 'Hobbies',
 			amount: 10,
 			category: 'Entertainment & Leisure',
@@ -195,7 +203,7 @@ export function createBudget() {
 			type: 'Expense'
 		},
 		{
-			id: 5,
+			id: uuidv4(),
 			name: 'Eating Out',
 			amount: 10,
 			category: 'Entertainment & Leisure',
@@ -203,7 +211,7 @@ export function createBudget() {
 			type: 'Expense'
 		},
 		{
-			id: 5,
+			id: uuidv4(),
 			name: 'Alcohol',
 			amount: 10,
 			category: 'Entertainment & Leisure',
@@ -211,7 +219,7 @@ export function createBudget() {
 			type: 'Expense'
 		},
 		{
-			id: 2,
+			id: uuidv4(),
 			name: 'Vacation Fund',
 			amount: 50,
 			category: 'Cash Savings',
@@ -219,7 +227,7 @@ export function createBudget() {
 			type: 'Savings'
 		},
 		{
-			id: 3,
+			id: uuidv4(),
 			name: 'Retirement Fund',
 			amount: 200,
 			category: 'Superannuation',
@@ -227,7 +235,7 @@ export function createBudget() {
 			type: 'Savings'
 		},
 		{
-			id: 4,
+			id: uuidv4(),
 			name: 'ETF Portfolio',
 			amount: 200,
 			category: 'Investments',
@@ -286,6 +294,20 @@ export function createBudget() {
 		budgetItems.push(item);
 	}
 
+	function removeBudgetItem(id: string) {
+		const index = budgetItems.findIndex((i) => i.id === id);
+		if (index !== -1) {
+			budgetItems.splice(index, 1);
+		}
+	}
+
+	function updateBudgetItem(item: BudgetItem) {
+		const index = budgetItems.findIndex((i) => i.id === item.id);
+		if (index !== -1) {
+			budgetItems[index] = item;
+		}
+	}
+
 	return {
 		// Budget Frequency
 		get frequency() {
@@ -339,6 +361,8 @@ export function createBudget() {
 			return unallocated;
 		},
 
-		addBudgetItem
+		addBudgetItem,
+		removeBudgetItem,
+		updateBudgetItem
 	};
 }

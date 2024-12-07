@@ -7,10 +7,10 @@
 		category?: string;
 		type: 'Income' | 'Expense' | 'Savings';
 		categoryTotal?: number;
-		table: import('svelte').Snippet;
+		children: import('svelte').Snippet;
 	}
 
-	let { category = '', type, categoryTotal = 0, table }: Props = $props();
+	let { category = '', type, categoryTotal = 0, children }: Props = $props();
 </script>
 
 <Accordion.Root type="single" class="w-full">
@@ -24,7 +24,7 @@
 			</div>
 		</Accordion.Trigger>
 		<Accordion.Content class="p-2">
-			{@render table()}
+			{@render children()}
 			<AddItem {category} {type} />
 		</Accordion.Content>
 	</Accordion.Item>

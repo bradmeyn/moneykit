@@ -2,11 +2,12 @@
 	import { Button } from '$lib/components/ui/button';
 	import CurrencyInput from '$lib/components/inputs/CurrencyInput.svelte';
 	import FrequencyInput from '$lib/components/inputs/FrequencySelect.svelte';
-	import type { BudgetItem } from '../budgetBuilder.svelte';
+	import type { BudgetItem, BudgetContext } from '../budgetBuilder.svelte';
 	import Input from '$ui/input/input.svelte';
 	import { formatAsCurrency } from '$lib/utils/formatters';
 	import { FREQUENCIES } from '$constants/frequencies';
 	import { getContext } from 'svelte';
+	import { v4 as uuidv4 } from 'uuid';
 
 	const {
 		category,
@@ -16,11 +17,11 @@
 		type: 'Income' | 'Expense' | 'Savings';
 	} = $props();
 
-	const addBudgetItem = getContext<(item: BudgetItem) => void>('addBudgetItem');
+	const { addItem } = getContext<BudgetContext>('budget');
 
 	let showForm = $state(false);
 	let newItem = $state<BudgetItem>({
-		id: Math.random(),
+		id: uuidv4(),
 		name: '',
 		amount: 0,
 		frequency: 'monthly',
@@ -28,19 +29,18 @@
 		type
 	});
 
-	// Add validation derived state
 	const isValid = $derived(newItem.name.trim().length > 0 && newItem.amount > 0);
 
 	function handleSubmit() {
 		if (isValid) {
-			addBudgetItem({
+			addItem({
 				...newItem,
 				name: newItem.name.trim()
 			});
 
 			// Reset form
 			newItem = {
-				id: Math.random(),
+				id: uuidv4(),
 				name: '',
 				amount: 0,
 				frequency: 'monthly',

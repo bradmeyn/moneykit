@@ -1,8 +1,13 @@
 <script lang="ts">
-	import BudgetItem from './BudgetItem.svelte';
+	import { FREQUENCIES } from '$constants/frequencies';
+
+	import { getContext } from 'svelte';
 	import type { BudgetItem as Item } from '../budgetBuilder.svelte';
-	import { FREQUENCIES, type FrequencyType } from '$constants/frequencies';
-	let { items = $bindable([]), frequency }: { items?: Item[]; frequency: FrequencyType } = $props();
+	import BudgetItem from './BudgetItem.svelte';
+	let { items }: { items: Item[] } = $props();
+	import type { BudgetContext } from '../budgetBuilder.svelte';
+
+	const { getFrequency } = getContext<BudgetContext>('budget');
 </script>
 
 <table class="w-full">
@@ -12,13 +17,14 @@
 			<th class="text-left text-sm text-ui-400 p-2 border-t-transparent">Amount</th>
 			<th class="text-left text-sm text-ui-400 p-2 border-t-transparent">Frequency</th>
 			<th class="text-right text-sm text-ui-400 p-2 border-t-transparent"
-				>{FREQUENCIES[frequency].label} Total</th
+				>{FREQUENCIES[getFrequency()].label} Total</th
 			>
+			<th class="text-right text-sm text-ui-400 p-2 border-t-transparent"> </th>
 		</tr>
 	</thead>
 	<tbody>
-		{#each items as budgetItem, i (budgetItem.name)}
-			<BudgetItem bind:budgetItem={items[i]} />
+		{#each items as budgetItem (budgetItem.id)}
+			<BudgetItem {budgetItem} />
 		{/each}
 	</tbody>
 </table>

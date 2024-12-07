@@ -11,7 +11,7 @@
 		Legend,
 		Tooltip
 	} from 'chart.js';
-	import { COLOURFUL, MONOCHROME } from '$lib/constants/colours';
+
 	import colors from 'tailwindcss/colors';
 	import { TOOLTIP } from '$lib/constants/chartConfig';
 
@@ -113,8 +113,6 @@
 		if (chart) {
 			chart.data.labels = labels;
 			chart.data.datasets[0].data = values;
-			chart.data.datasets[0].backgroundColor = colours;
-
 			chart.update();
 		}
 	});

@@ -8,13 +8,16 @@
 	import { setContext } from 'svelte';
 	import BarChart from '$lib/components/charts/BarChart.svelte';
 	import { FREQUENCIES } from '$lib/constants/frequencies';
-
 	import FrequencySelect from '$lib/components/inputs/FrequencySelect.svelte';
 
 	const budget = createBudget();
 
-	// Add context
-	setContext('addBudgetItem', budget.addBudgetItem);
+	setContext('budget', {
+		addItem: budget.addBudgetItem,
+		removeItem: budget.removeBudgetItem,
+		updateItem: budget.updateBudgetItem,
+		getFrequency: () => budget.frequency
+	});
 
 	let chartData = $derived(
 		budget.expenseByCategory.map((item) => ({
@@ -55,12 +58,7 @@
 							{category}
 							categoryTotal={calculateCategoryTotal(budget.income, category, budget.frequency)}
 						>
-							{#snippet table()}
-								<BudgetTable
-									frequency={budget.frequency}
-									items={budget.income.filter((item) => item.category === category)}
-								/>
-							{/snippet}
+							<BudgetTable items={budget.income.filter((item) => item.category === category)} />
 						</BudgetAccordion>
 					{/each}
 				</div>
@@ -74,12 +72,7 @@
 							{category}
 							categoryTotal={calculateCategoryTotal(budget.expenses, category, budget.frequency)}
 						>
-							{#snippet table()}
-								<BudgetTable
-									frequency={budget.frequency}
-									items={budget.expenses.filter((item) => item.category === category)}
-								/>
-							{/snippet}
+							<BudgetTable items={budget.expenses.filter((item) => item.category === category)} />
 						</BudgetAccordion>
 					{/each}
 				</div>
@@ -94,12 +87,7 @@
 							{category}
 							categoryTotal={calculateCategoryTotal(budget.savings, category, budget.frequency)}
 						>
-							{#snippet table()}
-								<BudgetTable
-									frequency={budget.frequency}
-									items={budget.savings.filter((item) => item.category === category)}
-								/>
-							{/snippet}
+							<BudgetTable items={budget.savings.filter((item) => item.category === category)} />
 						</BudgetAccordion>
 					{/each}
 				</div>

@@ -25,7 +25,7 @@
 							<a
 								href={calculator.href}
 								class="block text-left border-b-2 w-fit text-sm {activeUrl === calculator.href
-									? 'text-white border-b-2 border-b-brand'
+									? 'text-white border-b-2 border-b-primary'
 									: 'text-ui-400  hover:text-white border-b-transparent'}"
 							>
 								{calculator.name}

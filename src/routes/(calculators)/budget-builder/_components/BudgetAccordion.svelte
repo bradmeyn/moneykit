@@ -9,7 +9,6 @@
 		categoryTotal?: number;
 		children: import('svelte').Snippet;
 	}
-
 	let { category = '', type, categoryTotal = 0, children }: Props = $props();
 </script>
 

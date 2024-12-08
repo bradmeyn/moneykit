@@ -8,7 +8,7 @@
 <section class="flex flex-col-reverse lg:flex-row gap-8">
 	<div class="w-full card">
 		<div class="overflow-x-auto">
-			<p class="text-sm font-semibold text-brand-light">Comparison</p>
+			<p class="text-sm font-semibold text-primary-light">Comparison</p>
 			<table class="w-full border-collapse">
 				<thead>
 					<tr>
@@ -82,12 +82,15 @@
 	</div>
 
 	<div class="w-full card">
-		<p class="text-sm font-semibold text-brand-light">Total Tax</p>
+		<p class="text-sm font-semibold text-primary-light">Total Tax</p>
 		<div class="flex items-center gap-6">
 			{#each $results as result, i}
 				<div class="flex justify-between mb-3">
 					<div class="flex items-center gap-2">
-						<div class="size-3 md:size-4 rounded-full" style="background-color: {COLOURFUL[i]}"></div>
+						<div
+							class="size-3 md:size-4 rounded-full"
+							style="background-color: {COLOURFUL[i]}"
+						></div>
 						<p class="font-semibold text-xl md:text-2xl">
 							{formatAsCurrency(result.totalTax, false)}
 						</p>

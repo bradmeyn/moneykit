@@ -77,9 +77,9 @@
 		@apply text-2xl font-semibold;
 	}
 
-	/* h2 {
-		@apply text-lg font-semibold text-brand-light;
-	} */
+	.card-heading {
+		@apply text-lg font-semibold text-primary-light;
+	}
 
 	label {
 		@apply text-sm text-ui-200 mb-2 block;

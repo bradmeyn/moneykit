@@ -74,7 +74,7 @@
 	</div>
 
 	<div class="w-full card">
-		<h2 class="text-muted">Total value</h2>
+		<h2 class="card-heading">Total value</h2>
 		<div class="flex items-center gap-6">
 			{#each results as result, i}
 				<div class="flex justify-between mb-3">

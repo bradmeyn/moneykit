@@ -25,7 +25,7 @@
 
 <Dialog.Root>
 	<Dialog.Trigger
-		class="bg-brand-dark text-white rounded px-4 py-2 text-sm font-semibold shadow-popover hover:bg-brand-dark/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-background active:scale-98"
+		class="bg-primary-dark text-white rounded px-4 py-2 text-sm font-semibold shadow-popover hover:bg-primary-dark/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background active:scale-98"
 	>
 		{triggerText}
 	</Dialog.Trigger>
@@ -39,7 +39,7 @@
 					{title}
 				</Dialog.Title>
 				<Dialog.Close
-					class="absolute text-white hover:text-brand hover:bg-ui-700 right-5 top-5 p-2 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground focus-visible:ring-offset-2 focus-visible:ring-offset-background active:scale-98"
+					class="absolute text-white hover:text-primary hover:bg-ui-700 right-5 top-5 p-2 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground focus-visible:ring-offset-2 focus-visible:ring-offset-background active:scale-98"
 				>
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
@@ -62,7 +62,7 @@
 				<div class="flex w-full justify-end">
 					<button
 						{disabled}
-						class="w-full bg-brand-dark text-white rounded px-4 py-2 text-sm font-semibold shadow-popover hover:bg-brand-dark/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-background active:scale-98 disabled:bg-brand-dark/60 disabled:cursor-not-allowed disabled:hover:bg-brand-dark/60 disabled:active:scale-100 disabled:shadow-popover"
+						class="w-full bg-primary-dark text-white rounded px-4 py-2 text-sm font-semibold shadow-popover hover:bg-primary-dark/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background active:scale-98 disabled:bg-primary-dark/60 disabled:cursor-not-allowed disabled:hover:bg-primary-dark/60 disabled:active:scale-100 disabled:shadow-popover"
 						onclick={onAction}
 					>
 						{actionText}

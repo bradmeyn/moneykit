@@ -78,7 +78,7 @@
 	<div class="border border-ui-600 h-6 rounded flex overflow-hidden">
 		{#each bands as { fillPercent, widthPercent }, i}
 			<div class="relative h-full" style="width: {widthPercent}%;">
-				<div class="absolute inset-0 bg-brand" style="width: {fillPercent}%;"></div>
+				<div class="absolute inset-0 bg-primary" style="width: {fillPercent}%;"></div>
 			</div>
 		{/each}
 	</div>

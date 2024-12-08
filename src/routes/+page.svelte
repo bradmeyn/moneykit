@@ -23,7 +23,7 @@
 		<h1 class="text-4xl md:text-7xl font-light mb-6 text-white leading-tight">
 			Your financial planning
 			<span class="relative">
-				<span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-light to-brand"
+				<span class="text-transparent bg-clip-text bg-gradient-to-r from-primary-light to-primary"
 					>toolkit</span
 				>
 				<!-- Decorative underline -->

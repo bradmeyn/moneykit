@@ -36,22 +36,10 @@
 			<div class="flex justify-between items-center z-10">
 				<span class="text-white font-semibold text-xl"
 					>Money<span
-						class="text-transparent bg-clip-text bg-gradient-to-b from-brand-light to-brand"
+						class="text-transparent bg-clip-text bg-gradient-to-b from-primary-light to-primary"
 						>Kit</span
 					></span
 				>
-				<!-- <button class="text-white p-1 hover:text-brand-default" onclick={() => (isOpen = false)}>
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						fill="none"
-						viewBox="0 0 24 24"
-						stroke-width="1.5"
-						stroke="currentColor"
-						class="size-6"
-					>
-						<path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
-					</svg>
-				</button> -->
 			</div>
 			<nav>
 				<ul class="py-4">

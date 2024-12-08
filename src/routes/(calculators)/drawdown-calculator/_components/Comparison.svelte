@@ -6,10 +6,10 @@
 </script>
 
 <section class="flex flex-col-reverse lg:flex-row gap-8">
-	<div class="">
+	<div>
 		<div class="card">
 			<div class="overflow-x-auto">
-				<p class="text-sm font-semibold text-brand-light">Comparison</p>
+				<h2 class="card-heading">Comparison</h2>
 				<table class="w-full border-collapse">
 					<thead>
 						<tr>
@@ -17,7 +17,10 @@
 							{#each $results as result, i}
 								<th class="p-2 text-left">
 									<div class="flex items-center gap-2">
-										<div class="w-3 h-3 rounded-full" style="background-color: {COLOURFUL[i]}"></div>
+										<div
+											class="w-3 h-3 rounded-full"
+											style="background-color: {COLOURFUL[i]}"
+										></div>
 										<div class="text-white text-nowrap text-base">Scenario {result.id}</div>
 									</div>
 								</th>
@@ -60,12 +63,15 @@
 	</div>
 
 	<div class="w-full card">
-		<p class="text-sm font-semibold text-brand-light">Duration</p>
+		<h2 class="card-heading">Duration</h2>
 		<div class="flex items-center gap-6">
 			{#each $results as result, i}
 				<div class="flex justify-between mb-3">
 					<div class="flex items-center gap-2">
-						<div class="size-3 md:size-4 rounded-full" style="background-color: {COLOURFUL[i]}"></div>
+						<div
+							class="size-3 md:size-4 rounded-full"
+							style="background-color: {COLOURFUL[i]}"
+						></div>
 						<p class="font-semibold text-xl md:text-2xl">
 							{result.yearsLasted} years
 						</p>

@@ -1,12 +1,11 @@
 <script lang="ts">
 	import CurrencyInput from '$lib/components/inputs/CurrencyInput.svelte';
 	import { formatAsCurrency } from '$lib/utils/formatters';
-	import { convertToFrequency, type BudgetItem } from '../budgetBuilder.svelte';
+	import { convertToFrequency, type BudgetItem } from '../budgetState.svelte';
 	import FrequencyInput from '$lib/components/inputs/FrequencySelect.svelte';
 	import { Trash2 } from 'lucide-svelte';
-	import type { BudgetContext } from '../budgetBuilder.svelte';
-	import { getContext } from 'svelte';
-	import { get } from 'svelte/store';
+
+	import { getBudgetState } from '../budgetState.svelte';
 
 	let {
 		budgetItem
@@ -14,7 +13,7 @@
 		budgetItem: BudgetItem;
 	} = $props();
 
-	const { getFrequency, removeItem, updateItem } = getContext<BudgetContext>('budget');
+	const { frequency, removeItem, updateItem } = getBudgetState();
 </script>
 
 <tr class="">
@@ -46,7 +45,7 @@
 	<td class="text-right min-w-[80px] relative">
 		<span
 			>{formatAsCurrency(
-				convertToFrequency(budgetItem.amount, budgetItem.frequency, getFrequency())
+				convertToFrequency(budgetItem.amount, budgetItem.frequency, frequency)
 			)}</span
 		>
 	</td>

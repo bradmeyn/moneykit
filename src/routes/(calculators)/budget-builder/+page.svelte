@@ -4,20 +4,20 @@
 	import { formatAsCurrency } from '$lib/utils/formatters';
 	import BudgetTable from './_components/BudgetTable.svelte';
 	import BudgetAccordion from './_components/BudgetAccordion.svelte';
-	import { calculateCategoryTotal, createBudget } from './budgetBuilder.svelte';
+	import { calculateCategoryTotal, setBudgetState } from './budgetState.svelte';
 	import { setContext } from 'svelte';
 	import BarChart from '$lib/components/charts/BarChart.svelte';
 	import { FREQUENCIES } from '$lib/constants/frequencies';
 	import FrequencySelect from '$lib/components/inputs/FrequencySelect.svelte';
 
-	const budget = createBudget();
+	const budget = setBudgetState();
 
-	setContext('budget', {
-		addItem: budget.addBudgetItem,
-		removeItem: budget.removeBudgetItem,
-		updateItem: budget.updateBudgetItem,
-		getFrequency: () => budget.frequency
-	});
+	// setContext('budget', {
+	// 	addItem: budget.addBudgetItem,
+	// 	removeItem: budget.removeBudgetItem,
+	// 	updateItem: budget.updateBudgetItem,
+	// 	getFrequency: () => budget.frequency
+	// });
 
 	let chartData = $derived(
 		budget.expenseByCategory.map((item) => ({
@@ -99,12 +99,12 @@
 
 		<div class="flex flex-row lg:flex-col flex-wrap gap-4 min-w-[300px]">
 			<div class=" card">
-				<h2 class="text-brand font-semibold">Category Breakdown</h2>
+				<h2 class="card-heading">Category Breakdown</h2>
 				<DoughnutChart data={chartData} formatter={formatAsCurrency} theme={'colourful'} />
 				<LegendList data={chartData} formatter={formatAsCurrency} theme={'colourful'} />
 			</div>
 			<div class="flex-1 card">
-				<h2 class="text-brand-light font-semibold">Overview</h2>
+				<h2 class="card-heading">Overview</h2>
 				<BarChart
 					data={[
 						{
@@ -128,7 +128,7 @@
 </main>
 
 {#snippet total(title: string, total: number)}
-	<h2 class="text-brand font-semibold">{title}</h2>
+	<h2 class="card-heading">{title}</h2>
 	<div class="flex items-baseline gap-2">
 		<p class={`text-3xl font-semibold tracking-tight ${total < 0 ? 'text-red-400' : ''}`}>
 			{formatAsCurrency(total)}

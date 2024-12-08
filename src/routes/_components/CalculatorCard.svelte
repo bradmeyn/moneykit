@@ -15,16 +15,16 @@
 <a
 	{href}
 	class="card-animate block p-6 rounded-xl bg-ui-800/50 border border-ui-700
-	hover:border-brand hover:bg-ui-800/70 transition-all duration-300
+	hover:border-primary hover:bg-ui-800/70 transition-all duration-300
 	group w-full hover:-translate-y-1"
 >
 	<div class="flex items-start space-x-4">
 		<div
-			class="mb-4 w-12 h-12 rounded-lg bg-brand/10 flex items-center
+			class="mb-4 w-12 h-12 rounded-lg bg-primary/10 flex items-center
 		justify-center group-hover:scale-110 transition-transform duration-300 flex-shrink-0"
 		>
 			<svg
-				class="w-6 h-6 text-brand"
+				class="w-6 h-6 text-primary"
 				viewBox="0 0 24 24"
 				fill="none"
 				stroke="currentColor"

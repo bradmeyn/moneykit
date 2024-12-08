@@ -31,7 +31,7 @@
 		<div class="w-full">
 			<div class="flex flex-col md:flex-row gap-4 justify-between mb-3">
 				<div>
-					<p class="text-sm font-semibold text-brand-light">Drawdown duration</p>
+					<p class="text-sm font-semibold text-primary-light">Drawdown duration</p>
 
 					{#if result.yearsLasted === 50}
 						<p class="font-semibold text-2xl md:text-2xl">Over 50 years</p>

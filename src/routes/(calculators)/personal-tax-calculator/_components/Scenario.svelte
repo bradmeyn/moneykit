@@ -35,7 +35,7 @@
 	<section class="space-y-4 w-full">
 		<div class="card">
 			<div class="mb-2">
-				<p class="text-sm font-semibold text-brand-light">Taxable Income</p>
+				<p class="text-sm font-semibold text-primary-light">Taxable Income</p>
 				<p class="font-semibold text-2xl md:text-2xl">
 					{formatAsCurrency(result.taxableIncome)}
 				</p>
@@ -46,7 +46,7 @@
 			<div class="flex-1 card">
 				<div class="flex flex-col md:flex-row gap-4 justify-between mb-3">
 					<div>
-						<p class="text-sm font-semibold text-brand-light">Total Tax</p>
+						<p class="text-sm font-semibold text-primary-light">Total Tax</p>
 						<p class="font-semibold text-2xl">
 							{formatAsCurrency(result.totalTax)}
 						</p>

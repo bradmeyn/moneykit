@@ -1,5 +1,6 @@
 import { FREQUENCIES, type FrequencyType } from '$lib/constants/frequencies';
 import { v4 as uuidv4 } from 'uuid';
+import { setContext, getContext } from 'svelte';
 
 export type BudgetItem = {
 	id: string;
@@ -8,13 +9,6 @@ export type BudgetItem = {
 	category: string;
 	frequency: FrequencyType;
 	type: 'Income' | 'Expense' | 'Savings';
-};
-
-export type BudgetContext = {
-	addItem: (item: BudgetItem) => void;
-	removeItem: (id: string) => void;
-	updateItem: (item: BudgetItem) => void;
-	getFrequency: () => FrequencyType;
 };
 
 export function convertToFrequency(
@@ -38,7 +32,7 @@ export function calculateCategoryTotal(
 	return convertToFrequency(annualTotal, 'annually', toFrequency);
 }
 
-export function createBudget() {
+export function createBudgetState() {
 	let frequency = $state<FrequencyType>('monthly');
 
 	const budgetItems = $state<BudgetItem[]>([
@@ -290,18 +284,18 @@ export function createBudget() {
 	const totalSavings = $derived<number>(adjustedSavings.reduce((acc, i) => acc + i.amount, 0));
 	const unallocated = $derived<number>(totalIncome - totalExpenses - totalSavings);
 
-	function addBudgetItem(item: BudgetItem) {
+	function addItem(item: BudgetItem) {
 		budgetItems.push(item);
 	}
 
-	function removeBudgetItem(id: string) {
+	function removeItem(id: string) {
 		const index = budgetItems.findIndex((i) => i.id === id);
 		if (index !== -1) {
 			budgetItems.splice(index, 1);
 		}
 	}
 
-	function updateBudgetItem(item: BudgetItem) {
+	function updateItem(item: BudgetItem) {
 		const index = budgetItems.findIndex((i) => i.id === item.id);
 		if (index !== -1) {
 			budgetItems[index] = item;
@@ -309,7 +303,6 @@ export function createBudget() {
 	}
 
 	return {
-		// Budget Frequency
 		get frequency() {
 			return frequency;
 		},
@@ -361,8 +354,18 @@ export function createBudget() {
 			return unallocated;
 		},
 
-		addBudgetItem,
-		removeBudgetItem,
-		updateBudgetItem
+		addItem,
+		removeItem,
+		updateItem
 	};
+}
+
+const BUDGET_KEY = Symbol('budget');
+
+export function setBudgetState() {
+	return setContext(BUDGET_KEY, createBudgetState());
+}
+
+export function getBudgetState() {
+	return getContext<ReturnType<typeof createBudgetState>>(BUDGET_KEY);
 }

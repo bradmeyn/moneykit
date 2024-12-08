@@ -16,10 +16,10 @@ const config = {
 		},
 		extend: {
 			colors: {
-				brand: {
-					light: colors.sky[300],
-					DEFAULT: colors.blue[300],
-					dark: colors.sky[700]
+				primary: {
+					light: colors.blue[300],
+					DEFAULT: colors.blue[500],
+					dark: colors.blue[700]
 				},
 				ui: {
 					50: colors.gray[50],
@@ -38,12 +38,7 @@ const config = {
 				input: colors.gray[800],
 				ring: colors.gray[500],
 				background: colors.gray[950],
-
 				foreground: 'hsl(var(--foreground) / <alpha-value>)',
-				primary: {
-					DEFAULT: 'hsl(var(--primary) / <alpha-value>)',
-					foreground: 'hsl(var(--primary-foreground) / <alpha-value>)'
-				},
 				secondary: {
 					DEFAULT: 'hsl(var(--secondary) / <alpha-value>)',
 					foreground: 'hsl(var(--secondary-foreground) / <alpha-value>)'

@@ -11,7 +11,7 @@
 		Legend,
 		Tooltip
 	} from 'chart.js';
-	import { COLOURFUL, MONOCHROME } from '$lib/constants/colours';
+	import { COLOURS } from '$lib/constants/colours';
 	import colors from 'tailwindcss/colors';
 	import { TOOLTIP } from '$lib/constants/chartConfig';
 
@@ -24,7 +24,6 @@
 
 	let { data, formatter, theme = 'monochrome' }: Props = $props();
 
-	const colours = theme === 'monochrome' ? MONOCHROME : COLOURFUL;
 	let chartId: HTMLCanvasElement | undefined = $state();
 	let chart: Chart | undefined = $state();
 
@@ -39,7 +38,7 @@
 				datasets: data.map((item, i) => ({
 					label: item.label,
 					data: [item.value],
-					backgroundColor: colours[i],
+					backgroundColor: COLOURS[i],
 					borderWidth: 0,
 					borderRadius: 5
 				}))
@@ -106,12 +105,12 @@
 		});
 	});
 
-	run(() => {
+	$effect(() => {
 		if (chart) {
 			chart.data.datasets = data.map((item, i) => ({
 				label: item.label,
 				data: [item.value],
-				backgroundColor: colours[i],
+				backgroundColor: COLOURS[i],
 				borderWidth: 0,
 				borderRadius: 5,
 				barThickness: 80

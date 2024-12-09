@@ -12,7 +12,7 @@
 		Legend,
 		Tooltip
 	} from 'chart.js';
-	import { COLOURFUL, MONOCHROME } from '$lib/constants/colours';
+	import { COLOURS } from '$lib/constants/colours';
 	import colors from 'tailwindcss/colors';
 
 	import type { AnnualData, Result } from '../types';
@@ -26,7 +26,6 @@
 
 	let { formatter, theme = 'monochrome', results }: Props = $props();
 
-	const colours = theme === 'monochrome' ? MONOCHROME : COLOURFUL;
 	let chartId: HTMLCanvasElement | undefined = $state();
 	let chart: Chart | undefined = $state();
 
@@ -40,8 +39,8 @@
 			return {
 				label: `Scenario ${result.id}`,
 				data: result.annualData.map((item: AnnualData) => item.endingBalance),
-				borderColor: colours[results.indexOf(result)],
-				backgroundColor: colours[results.indexOf(result)] + '40',
+				borderColor: COLOURS[results.indexOf(result)],
+				backgroundColor: COLOURS[results.indexOf(result)] + '40',
 				fill: true
 			};
 		})

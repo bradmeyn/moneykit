@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { run } from 'svelte/legacy';
-
 	import { onMount } from 'svelte';
 	import {
 		Chart,
@@ -11,7 +9,7 @@
 		Legend,
 		Tooltip
 	} from 'chart.js';
-	import { COLOURFUL, MONOCHROME } from '$lib/constants/colours';
+	import { COLOURS } from '$lib/constants/COLOURS';
 	import colors from 'tailwindcss/colors';
 
 	type Result = {
@@ -34,7 +32,6 @@
 
 	let { results, formatter, theme = 'monochrome' }: Props = $props();
 
-	const colours = theme === 'monochrome' ? MONOCHROME : COLOURFUL;
 	let chartId: HTMLCanvasElement | undefined = $state();
 	let chart: Chart | undefined = $state();
 
@@ -52,7 +49,7 @@
 		return taxComponents.map((component, index) => ({
 			label: component,
 			data: results.map((result) => result[component]),
-			backgroundColor: colours[index % colours.length],
+			backgroundColor: COLOURS[index % COLOURS.length],
 			borderWidth: 0,
 			borderRadius: 5,
 			barThickness: 80
@@ -110,7 +107,7 @@
 		});
 	});
 
-	run(() => {
+	$effect(() => {
 		if (chart) {
 			chart.data.labels = results.map((result) => `Scenario ${result.id}`);
 			chart.data.datasets = prepareChartData(results);

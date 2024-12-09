@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { run } from 'svelte/legacy';
-
 	import * as colors from 'tailwindcss/colors';
 	import { onMount } from 'svelte';
 	import {
@@ -16,7 +14,7 @@
 	} from 'chart.js';
 	import { formatAsCurrency } from '$lib/utils/formatters';
 	import type { AnnualData } from '../types';
-	import { COLOURFUL, MONOCHROME } from '$lib/constants/colours';
+	import { COLOURS } from '$lib/constants/colours';
 	import { TOOLTIP } from '$lib/constants/chartConfig';
 
 	interface Props {
@@ -27,7 +25,6 @@
 	let { data = [] }: Props = $props();
 
 	let years = $derived(data.map((item) => item.year));
-	let annualDrawdown = $derived(data.map((item) => item.withdrawal));
 
 	let chartId: HTMLCanvasElement | undefined = $state();
 	let chart: Chart | undefined = $state();
@@ -53,24 +50,24 @@
 					{
 						label: 'Balance',
 						data: data.map((i) => i.endingBalance),
-						borderColor: COLOURFUL[0],
-						backgroundColor: COLOURFUL[0] + '40',
+						borderColor: COLOURS[0],
+						backgroundColor: COLOURS[0] + '40',
 						fill: true,
 						borderWidth: 2,
 						pointRadius: 0,
 						pointHoverRadius: 4,
-						pointBackgroundColor: COLOURFUL[0]
+						pointBackgroundColor: COLOURS[0]
 					},
 					{
 						label: 'Drawdown',
 						data: data.map((i) => i.withdrawal),
-						borderColor: MONOCHROME[1],
-						backgroundColor: MONOCHROME[1] + '40',
+						borderColor: COLOURS[1],
+						backgroundColor: COLOURS[1] + '40',
 						fill: true,
 						borderWidth: 2,
 						pointRadius: 0,
 						pointHoverRadius: 4,
-						pointBackgroundColor: MONOCHROME[1]
+						pointBackgroundColor: COLOURS[1]
 					}
 				]
 			},
@@ -151,7 +148,7 @@
 		});
 	});
 
-	run(() => {
+	$effect(() => {
 		if (chart) {
 			chart.data.labels = years;
 			chart.data.datasets[0].data = data.map((item) => item.endingBalance);

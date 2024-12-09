@@ -5,19 +5,11 @@
 	import BudgetTable from './_components/BudgetTable.svelte';
 	import BudgetAccordion from './_components/BudgetAccordion.svelte';
 	import { calculateCategoryTotal, setBudgetState } from './budgetState.svelte';
-	import { setContext } from 'svelte';
 	import BarChart from '$lib/components/charts/BarChart.svelte';
 	import { FREQUENCIES } from '$lib/constants/frequencies';
 	import FrequencySelect from '$lib/components/inputs/FrequencySelect.svelte';
 
 	const budget = setBudgetState();
-
-	// setContext('budget', {
-	// 	addItem: budget.addBudgetItem,
-	// 	removeItem: budget.removeBudgetItem,
-	// 	updateItem: budget.updateBudgetItem,
-	// 	getFrequency: () => budget.frequency
-	// });
 
 	let chartData = $derived(
 		budget.expenseByCategory.map((item) => ({

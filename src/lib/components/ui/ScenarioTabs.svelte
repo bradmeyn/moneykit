@@ -19,7 +19,7 @@
 	<div class="flex gap-3 p-2 text-sm border-ui-400">
 		{#each scenarioIds as id}
 			<button
-				class={` ${activeScenarioId === id ? 'border-b-2 px-2 py-1 border-b-primary ' : 'text-ui-400'}`}
+				class={` ${activeScenarioId === id ? 'border-b-2 px-2 py-1 border-b-primary ' : 'text-ui-400 px-2 py-1'}`}
 				onclick={() => (activeScenarioId = id)}
 			>
 				Scenario {id}
@@ -27,7 +27,7 @@
 		{/each}
 		{#if scenarioIds.length > 1}
 			<button
-				class={` ${activeScenarioId === 0 ? 'border-b-2 px-2 py-1 border-b-primary ' : 'text-ui-400'}`}
+				class={` ${activeScenarioId === 0 ? 'border-b-2 px-2 py-1 border-b-primary ' : 'text-ui-400 px-2 py-1'}`}
 				onclick={() => (activeScenarioId = 0)}
 			>
 				Compare

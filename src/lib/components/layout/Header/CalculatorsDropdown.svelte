@@ -14,12 +14,12 @@
 		<ChevronDown class="size-4 inline-block group-hover:rotate-180 transition-all duration-300" />
 	</button>
 	<div
-		class="absolute card bg-ui-900 p-2 shadow-lg rounded overflow-hidden hidden group-hover:block z-20 w-[500px]"
+		class="absolute card p-2 shadow-lg rounded overflow-hidden hidden group-hover:block z-20 w-[500px]"
 	>
 		{#each categories as category}
 			<div class="p-4">
 				<h3 class="font-semibold text-white text-xs mb-3">{category.toUpperCase()}</h3>
-				<ul class="grid grid-cols-2 gap-2">
+				<ul class="grid grid-cols-2 gap-4">
 					{#each calculatorsByCategory[category] as calculator}
 						<li>
 							<a

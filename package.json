@@ -45,7 +45,6 @@
 		"bcrypt": "^5.1.1",
 		"chart.js": "^4.4.0",
 		"drizzle-orm": "^0.34.1",
-		"html2canvas": "^1.4.1",
 		"nanoid": "^5.0.2",
 		"postgres": "^3.4.5",
 		"uuid": "^10.0.0",

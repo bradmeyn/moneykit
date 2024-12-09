@@ -60,7 +60,7 @@
 					x: {
 						stacked: true,
 						grid: {
-							display: false
+							display: true
 						},
 						title: {
 							display: true,
@@ -104,6 +104,7 @@
 						...TOOLTIP,
 						bodyAlign: 'right',
 						footerAlign: 'right',
+						boxHeight: 20,
 						footerFont: {
 							size: 16,
 							family: "'Inter', sans-serif"
@@ -131,6 +132,7 @@
 							boxWidth: 10,
 							boxHeight: 10,
 							padding: 16,
+
 							usePointStyle: true,
 							pointStyle: 'circle',
 

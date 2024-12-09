@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { run } from 'svelte/legacy';
-
 	import { onMount } from 'svelte';
 	import {
 		Chart,
@@ -11,20 +9,18 @@
 		Legend,
 		Tooltip
 	} from 'chart.js';
-	import { COLOURFUL, MONOCHROME } from '$lib/constants/colours';
+	import { COLOURS } from '$lib/constants/colours';
 	import colors from 'tailwindcss/colors';
 	import type { AnnualData, GrowthResult } from '../calculator.svelte';
 
-	interface Props {
-		// props
+	let {
+		formatter,
+		results
+	}: {
 		formatter: (value: number) => string;
-		theme?: 'monochrome' | 'colourful';
 		results: GrowthResult[];
-	}
+	} = $props();
 
-	let { formatter, theme = 'monochrome', results }: Props = $props();
-
-	const colours = theme === 'monochrome' ? MONOCHROME : COLOURFUL;
 	let chartId: HTMLCanvasElement | undefined = $state();
 	let chart: Chart | undefined = $state();
 
@@ -38,8 +34,8 @@
 			return {
 				label: `${result.id}`,
 				data: result.annualData.map((item: AnnualData) => item.endingValue),
-				backgroundColor: colours[results.indexOf(result)],
-				borderColor: colours[results.indexOf(result)],
+				backgroundColor: COLOURS[results.indexOf(result)],
+				borderColor: COLOURS[results.indexOf(result)],
 				borderRadius: 5
 			};
 		})
@@ -137,7 +133,7 @@
 		});
 	});
 
-	run(() => {
+	$effect(() => {
 		if (chart) {
 			chart.data.labels = labels;
 			chart.data.datasets = datasets;

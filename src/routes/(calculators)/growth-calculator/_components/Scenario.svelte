@@ -1,43 +1,23 @@
 <script lang="ts">
-	import html2canvas from 'html2canvas';
 	import Inputs from './Inputs.svelte';
 	import GrowthChart from './GrowthChart.svelte';
 	import * as Tabs from '$lib/components/ui/tabs';
 	import Table from './Table.svelte';
 	import { formatAsCurrency, formatAsPercentage } from '$lib/utils/formatters';
-	import LegendList from '$lib/components/charts/LegendList.svelte';
 	import { Download } from 'lucide-svelte';
 	import type { GrowthResult, GrowthScenario } from '../calculator.svelte';
 
-	interface Props {
+	let {
+		scenario = $bindable(),
+		result
+	}: {
 		scenario: GrowthScenario;
 		result: GrowthResult;
-	}
-
-	let { scenario = $bindable(), result }: Props = $props();
+	} = $props();
 	let selectedView = $state('chart');
 	let chartContainer: HTMLElement;
 
-	async function downloadChart() {
-		if (chartContainer) {
-			const tabsElement = chartContainer.querySelector('[role="tablist"]');
-			const downloadButton = chartContainer.querySelector('.download-button');
-			if (tabsElement) tabsElement.classList.add('hidden');
-			if (downloadButton) downloadButton.classList.add('hidden');
-
-			const canvas = await html2canvas(chartContainer);
-			const dataUrl = canvas.toDataURL('image/png');
-			const link = document.createElement('a');
-			link.download = 'chart.png';
-			link.href = dataUrl;
-			link.click();
-
-			if (tabsElement) tabsElement.classList.remove('hidden');
-			if (downloadButton) downloadButton.classList.remove('hidden');
-		}
-	}
-
-	function downloadCSV() {
+	function downloadCsv() {
 		const headers = ['Year', 'Starting Value', 'Contributions', 'Interest', 'Ending Value'];
 		const csvContent = [
 			headers.join(','),
@@ -62,14 +42,6 @@
 			document.body.appendChild(link);
 			link.click();
 			document.body.removeChild(link);
-		}
-	}
-
-	function handleDownload() {
-		if (selectedView === 'chart') {
-			downloadChart();
-		} else {
-			downloadCSV();
 		}
 	}
 </script>
@@ -108,9 +80,9 @@
 						</Tabs.List>
 					</Tabs.Root>
 					<button
-						onclick={handleDownload}
-						class="p-2 hover:bg-muted rounded transition-colors duration-200 download-button"
-						title={'Download ' + (selectedView === 'chart' ? 'chart' : 'csv')}
+						onclick={downloadCsv}
+						class="p-2 hover:bg-ui-800 rounded transition-colors duration-200"
+						title={'Download CSV'}
 					>
 						<Download class="size-4" />
 					</button>
@@ -132,7 +104,7 @@
 
 {#snippet dataCard(label: string, value: number, formatter: (value: number) => string)}
 	<div class="card col-span-3 md:col-span-2 lg:col-span-1">
-		<p class="text-muted">{label}</p>
+		<h2 class="card-heading">{label}</h2>
 		<p class="text-lg md:text-xl font-semibold">
 			{formatter(value)}
 		</p>

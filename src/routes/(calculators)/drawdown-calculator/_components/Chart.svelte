@@ -17,12 +17,7 @@
 	import { COLOURS } from '$lib/constants/colours';
 	import { TOOLTIP } from '$lib/constants/chartConfig';
 
-	interface Props {
-		// props
-		data?: AnnualData[];
-	}
-
-	let { data = [] }: Props = $props();
+	let { data = [] }: { data?: AnnualData[] } = $props();
 
 	let years = $derived(data.map((item) => item.year));
 

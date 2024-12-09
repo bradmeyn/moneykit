@@ -1,25 +1,19 @@
-<!-- @migration-task Error while migrating Svelte code: `<th>` is invalid inside `<thead>` -->
-<!-- @migration-task Error while migrating Svelte code: `<th>` is invalid inside `<thead>` -->
 <script lang="ts">
 	import Inputs from './Inputs.svelte';
 	import TaxRateTable from './TaxRateTable.svelte';
 	import type { Scenario, Result } from '../types';
 	import { formatAsCurrency, formatAsPercentage } from '$lib/utils/formatters';
 	import TaxBand from './TaxBand.svelte';
-
 	import Tabs from '$lib/components/ui/Tabs.svelte';
-
 	import StackedBar from '$lib/components/charts/StackedBar.svelte';
 	import LegendList from '$lib/components/charts/LegendList.svelte';
-
-	export let scenario: Scenario;
-	export let result: Result;
+	let { scenario, result }: { scenario: Scenario; result: Result } = $props();
 
 	let options = [
 		{ label: 'Chart', value: 'chart' },
 		{ label: 'Table', value: 'table' }
 	];
-	let selectedView = 'chart';
+	let selectedView = $state('chart');
 </script>
 
 <div class="flex flex-col lg:flex-row gap-8 lg:gap-10">
@@ -59,7 +53,6 @@
 
 				{#if selectedView === 'chart'}
 					<StackedBar
-						theme={'colourful'}
 						data={[
 							{ label: 'Income Tax', value: result.incomeTax },
 							{ label: 'Medicare Levy', value: result.medicareLevy },
@@ -69,7 +62,6 @@
 						formatter={formatAsCurrency}
 					/>
 					<LegendList
-						theme={'colourful'}
 						data={[
 							{ label: 'Income Tax', value: result.incomeTax },
 							{ label: 'Medicare Levy', value: result.medicareLevy },

@@ -10,30 +10,14 @@
 	} from 'chart.js';
 	import colors from 'tailwindcss/colors';
 	import { TOOLTIP } from '$lib/constants/chartConfig';
+	import { COLOURS } from '$constants/colours';
 
 	interface Props {
 		data: { label: string; value: number }[];
 		formatter: (value: number) => string;
-		theme?: 'monochrome' | 'colourful';
-
-		[key: string]: any;
 	}
 
-	let { data, formatter, theme = 'colourful', title = 'Expense Categories' }: Props = $props();
-
-	// Modern, vibrant color palette
-	const CHART_COLORS = {
-		colourful: [
-			'#3B82F6', // bright blue
-			'#EC4899', // pink
-			'#F59E0B', // yellow
-			'#10B981', // green
-			'#6366F1' // indigo
-		],
-		monochrome: ['#1E293B', '#334155', '#475569', '#64748B', '#94A3B8']
-	};
-
-	const chartColors = CHART_COLORS[theme];
+	let { data, formatter }: Props = $props();
 
 	//  @ts-expect-error - chartId is not initialized
 	let chartId!: HTMLCanvasElement = $state();
@@ -50,7 +34,7 @@
 				datasets: [
 					{
 						data: data.map((item) => item.value),
-						backgroundColor: chartColors,
+						backgroundColor: COLOURS,
 						borderWidth: 0,
 						borderColor: colors.transparent,
 

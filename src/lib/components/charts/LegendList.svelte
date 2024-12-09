@@ -1,17 +1,18 @@
 <script lang="ts">
 	import { COLOURS } from '$lib/constants/colours';
 
-	interface Props {
+	let {
+		data,
+		formatter,
+		className = ''
+	}: {
 		data: { label: string; value: number }[];
 		formatter: (value: number) => string;
-		theme?: 'monochrome' | 'colourful';
-		[key: string]: any;
-	}
-
-	let { data, formatter, theme = 'monochrome', ...rest }: Props = $props();
+		className?: string;
+	} = $props();
 </script>
 
-<div class={rest.class}>
+<div class={className}>
 	{#each data as item, i}
 		<div class="flex items-center justify-between border-b border-b-ui-600">
 			<div class="flex items-center gap-2 py-2">

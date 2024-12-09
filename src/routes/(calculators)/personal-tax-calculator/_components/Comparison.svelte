@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { results } from '../store';
 	import { formatAsCurrency, formatAsPercentage } from '$lib/utils/formatters';
-	import { COLOURFUL } from '$lib/constants/colours';
+	import { COLOURS } from '$lib/constants/colours';
 	import ComparisonChart from './ComparisonChart.svelte';
 </script>
 
@@ -16,7 +16,7 @@
 						{#each $results as result, i}
 							<th class="p-2 text-left">
 								<div class="flex items-center gap-2">
-									<div class="w-3 h-3 rounded-full" style="background-color: {COLOURFUL[i]}"></div>
+									<div class="w-3 h-3 rounded-full" style="background-color: {COLOURS[i]}"></div>
 									<div class="text-white text-nowrap text-base">Scenario {result.id}</div>
 								</div>
 							</th>
@@ -87,10 +87,7 @@
 			{#each $results as result, i}
 				<div class="flex justify-between mb-3">
 					<div class="flex items-center gap-2">
-						<div
-							class="size-3 md:size-4 rounded-full"
-							style="background-color: {COLOURFUL[i]}"
-						></div>
+						<div class="size-3 md:size-4 rounded-full" style="background-color: {COLOURS[i]}"></div>
 						<p class="font-semibold text-xl md:text-2xl">
 							{formatAsCurrency(result.totalTax, false)}
 						</p>
@@ -99,8 +96,7 @@
 			{/each}
 		</div>
 		<div>
-			<!-- <Legend class="flex justify-center" {labels} theme={'colourful'} /> -->
-			<ComparisonChart formatter={formatAsCurrency} theme={'colourful'} results={$results} />
+			<ComparisonChart formatter={formatAsCurrency} results={$results} />
 		</div>
 	</div>
 </section>

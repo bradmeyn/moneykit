@@ -15,14 +15,13 @@
 	import colors from 'tailwindcss/colors';
 	import { TOOLTIP } from '$lib/constants/chartConfig';
 
-	interface Props {
-		// props
+	let {
+		data,
+		formatter
+	}: {
 		data: { label: string; value: number }[];
 		formatter: (value: number) => string;
-		theme?: 'monochrome' | 'colourful';
-	}
-
-	let { data, formatter, theme = 'monochrome' }: Props = $props();
+	} = $props();
 
 	let chartId: HTMLCanvasElement | undefined = $state();
 	let chart: Chart | undefined = $state();

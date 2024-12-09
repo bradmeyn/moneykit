@@ -14,17 +14,15 @@
 	} from 'chart.js';
 	import { COLOURS } from '$lib/constants/colours';
 	import colors from 'tailwindcss/colors';
-
 	import type { AnnualData, Result } from '../types';
 
-	interface Props {
-		// props
+	let {
+		formatter,
+		results
+	}: {
 		formatter: (value: number) => string;
-		theme?: 'monochrome' | 'colourful';
 		results: Result[];
-	}
-
-	let { formatter, theme = 'monochrome', results }: Props = $props();
+	} = $props();
 
 	let chartId: HTMLCanvasElement | undefined = $state();
 	let chart: Chart | undefined = $state();

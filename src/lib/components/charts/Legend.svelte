@@ -3,14 +3,13 @@
 
 	interface Props {
 		labels?: string[];
-		theme?: 'monochrome' | 'colourful';
-		[key: string]: any;
+		className?: string;
 	}
 
-	let { labels = [], theme = 'monochrome', ...rest }: Props = $props();
+	let { labels = [], className = '' }: Props = $props();
 </script>
 
-<div class={rest.class}>
+<div class={className}>
 	{#each labels as label, i}
 		<div class="flex items-center justify-between">
 			<div class="flex items-center gap-2 py-2 px-2">

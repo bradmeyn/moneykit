@@ -1,7 +1,7 @@
 <script lang="ts">
 	import ComparisonChart from './ComparisonChart.svelte';
 	import { formatAsCurrency, formatAsPercentage } from '$lib/utils/formatters';
-	import { COLOURFUL } from '$lib/constants/colours';
+	import { COLOURS } from '$lib/constants/colours';
 	import type { GrowthScenario, GrowthResult } from '../calculator.svelte';
 
 	type Props = {
@@ -22,7 +22,7 @@
 						{#each results as result, i}
 							<th class="p-2 text-left">
 								<div class="flex items-center gap-2">
-									<div class="size-3 rounded-full" style="background-color: {COLOURFUL[i]}"></div>
+									<div class="size-3 rounded-full" style="background-color: {COLOURS[i]}"></div>
 									<div class="text-white text-nowrap text-base">Scenario {result.id}</div>
 								</div>
 							</th>
@@ -79,10 +79,7 @@
 			{#each results as result, i}
 				<div class="flex justify-between mb-3">
 					<div class="flex items-center gap-2">
-						<div
-							class="size-3 md:size-4 rounded-full"
-							style="background-color: {COLOURFUL[i]}"
-						></div>
+						<div class="size-3 md:size-4 rounded-full" style="background-color: {COLOURS[i]}"></div>
 						<p class="font-semibold text-xl md:text-2xl">
 							{formatAsCurrency(result.totalValue, false)}
 						</p>
@@ -91,7 +88,7 @@
 			{/each}
 		</div>
 		<div>
-			<ComparisonChart formatter={formatAsCurrency} theme={'colourful'} {results} />
+			<ComparisonChart formatter={formatAsCurrency} {results} />
 		</div>
 	</div>
 </section>

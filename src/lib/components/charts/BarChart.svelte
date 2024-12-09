@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { run } from 'svelte/legacy';
-
 	import { onMount } from 'svelte';
 	import {
 		Chart,
@@ -14,14 +12,15 @@
 
 	import colors from 'tailwindcss/colors';
 	import { TOOLTIP } from '$lib/constants/chartConfig';
+	import { COLOURS } from '$constants/colours';
 
-	interface Props {
+	let {
+		data,
+		formatter
+	}: {
 		data: { label: string; value: number }[];
 		formatter: (value: number) => string;
-		theme?: 'monochrome' | 'colourful';
-	}
-
-	let { data, formatter, theme = 'monochrome' }: Props = $props();
+	} = $props();
 
 	let labels = $derived(data.map((item) => item.label));
 	let values = $derived(data.map((item) => item.value));
@@ -40,7 +39,7 @@
 				datasets: [
 					{
 						data: data.map((item) => item.value),
-						backgroundColor: [colors.blue[500], colors.rose[500], colors.emerald[500]],
+						backgroundColor: [COLOURS[0], COLOURS[1], COLOURS[2], COLOURS[3], COLOURS[4]],
 						borderWidth: 0,
 						borderRadius: 5
 					}
@@ -109,7 +108,7 @@
 		});
 	});
 
-	run(() => {
+	$effect(() => {
 		if (chart) {
 			chart.data.labels = labels;
 			chart.data.datasets[0].data = values;

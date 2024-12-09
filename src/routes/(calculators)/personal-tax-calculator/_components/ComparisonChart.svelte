@@ -9,7 +9,7 @@
 		Legend,
 		Tooltip
 	} from 'chart.js';
-	import { COLOURS } from '$lib/constants/COLOURS';
+	import { COLOURS } from '$lib/constants/colours';
 	import colors from 'tailwindcss/colors';
 
 	type Result = {
@@ -23,14 +23,13 @@
 		totalTax: number;
 	};
 
-	interface Props {
-		// props
+	let {
+		results,
+		formatter
+	}: {
 		results: Result[];
 		formatter: (value: number) => string;
-		theme?: 'monochrome' | 'colourful';
-	}
-
-	let { results, formatter, theme = 'monochrome' }: Props = $props();
+	} = $props();
 
 	let chartId: HTMLCanvasElement | undefined = $state();
 	let chart: Chart | undefined = $state();

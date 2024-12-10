@@ -2,12 +2,13 @@
 	import '../app.css';
 	import Header from '$lib/components/layout/Header/Header.svelte';
 	import Footer from '$lib/components/layout/Footer.svelte';
+	import { type Snippet } from 'svelte';
 
-	interface Props {
-		children: import('svelte').Snippet;
-	}
-
-	let { children }: Props = $props();
+	let {
+		children
+	}: {
+		children: Snippet;
+	} = $props();
 </script>
 
 <svelte:head>

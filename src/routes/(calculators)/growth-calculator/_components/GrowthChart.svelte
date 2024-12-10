@@ -16,9 +16,7 @@
 	import { TOOLTIP } from '$lib/constants/chartConfig';
 
 	let { data = [] }: { data: AnnualData[] } = $props();
-
 	let years = $derived(data.map((item) => item.year));
-
 	let chartId: HTMLCanvasElement | undefined = $state();
 	let chart: Chart | undefined = $state();
 

@@ -2,6 +2,7 @@
 	import Inputs from './Inputs.svelte';
 	import GrowthChart from './GrowthChart.svelte';
 	import * as Tabs from '$lib/components/ui/tabs';
+	import { Button } from '$lib/components/ui/button';
 	import Table from './Table.svelte';
 	import { formatAsCurrency, formatAsPercentage } from '$lib/utils/formatters';
 	import { Download } from 'lucide-svelte';
@@ -79,13 +80,9 @@
 							<Tabs.Trigger value="table">Table</Tabs.Trigger>
 						</Tabs.List>
 					</Tabs.Root>
-					<button
-						onclick={downloadCsv}
-						class="p-2 hover:bg-ui-800 rounded transition-colors duration-200"
-						title={'Download CSV'}
+					<Button size="icon" variant="outline" class="hover:bg-primary" onclick={downloadCsv}
+						><Download /></Button
 					>
-						<Download class="size-4" />
-					</button>
 				</div>
 			</div>
 

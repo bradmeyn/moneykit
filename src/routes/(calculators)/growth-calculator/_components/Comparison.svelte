@@ -4,12 +4,13 @@
 	import { COLOURS } from '$lib/constants/colours';
 	import type { GrowthScenario, GrowthResult } from '../calculator.svelte';
 
-	type Props = {
+	let {
+		scenarios,
+		results
+	}: {
 		scenarios: GrowthScenario[];
 		results: GrowthResult[];
-	};
-
-	let { scenarios, results }: Props = $props();
+	} = $props();
 </script>
 
 <section class="flex flex-col-reverse lg:flex-row gap-8">

@@ -4,11 +4,11 @@
 	import { formatAsCurrency, formatAsPercentage } from '$lib/utils/formatters';
 	import { INCOME_TAX_BRACKETS } from '../taxRates';
 
-	interface Props {
+	let {
+		taxableIncome
+	}: {
 		taxableIncome: number;
-	}
-
-	let { taxableIncome }: Props = $props();
+	} = $props();
 
 	// Calculate the maximum defined range for bands not considering Infinity
 	let maxDefinedRange = $derived(

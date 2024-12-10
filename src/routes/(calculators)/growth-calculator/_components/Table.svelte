@@ -2,16 +2,16 @@
 	import { formatAsCurrency } from '$lib/utils/formatters';
 	import type { AnnualData } from '../calculator.svelte';
 
-	interface Props {
+	let {
+		annualData
+	}: {
 		annualData: AnnualData[];
-	}
-
-	let { annualData }: Props = $props();
+	} = $props();
 </script>
 
 <div class="w-full">
 	<table>
-		<thead class="text-white">
+		<thead>
 			<tr>
 				<th>Year</th>
 				<th>Start</th>

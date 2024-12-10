@@ -1,15 +1,16 @@
 <script lang="ts">
 	import { formatAsCurrency } from '$lib/utils/formatters';
-
-	interface Props {
-		// props
+	let {
+		principal,
+		totalContributions,
+		totalInterest,
+		totalValue
+	}: {
 		principal: number;
 		totalContributions: number;
 		totalInterest: number;
 		totalValue: number;
-	}
-
-	let { principal, totalContributions, totalInterest, totalValue }: Props = $props();
+	} = $props();
 </script>
 
 <h2 class="card-heading">Outcome</h2>

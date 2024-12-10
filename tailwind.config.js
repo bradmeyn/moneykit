@@ -34,11 +34,11 @@ const config = {
 					900: colors.gray[900],
 					950: colors.gray[950]
 				},
-				border: 'hsl(var(--border) / <alpha-value>)',
+				border: colors.gray[800],
 				input: colors.gray[800],
 				ring: colors.gray[500],
 				background: colors.gray[950],
-				foreground: 'hsl(var(--foreground) / <alpha-value>)',
+				foreground: colors.gray[50],
 				secondary: {
 					DEFAULT: 'hsl(var(--secondary) / <alpha-value>)',
 					foreground: 'hsl(var(--secondary-foreground) / <alpha-value>)'

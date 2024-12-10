@@ -4,8 +4,8 @@
 	import { convertToFrequency, type BudgetItem } from '../budgetState.svelte';
 	import FrequencyInput from '$lib/components/inputs/FrequencySelect.svelte';
 	import { Trash2 } from 'lucide-svelte';
-
 	import { getBudgetState } from '../budgetState.svelte';
+	import Button from '$ui/button/button.svelte';
 
 	let {
 		budgetItem
@@ -50,11 +50,13 @@
 		>
 	</td>
 	<td class="text-right">
-		<button
-			class="p-2 hover:bg-ui-800 text-ui-500 hover:text-red-500 rounded"
+		<Button
+			size="icon"
+			variant="ghost"
+			class="  text-muted hover:text-red-500 "
 			onclick={() => removeItem(budgetItem.id)}
 		>
 			<Trash2 class="size-4 " />
-		</button>
+		</Button>
 	</td>
 </tr>

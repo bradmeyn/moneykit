@@ -4,10 +4,12 @@
 	import { formatAsCurrency } from '$lib/utils/formatters';
 	import BudgetTable from './_components/BudgetTable.svelte';
 	import BudgetAccordion from './_components/BudgetAccordion.svelte';
-	import { calculateCategoryTotal, setBudgetState } from './budgetState.svelte';
+	import { calculateCategoryTotal, downloadCsv, setBudgetState } from './budgetState.svelte';
 	import BarChart from '$lib/components/charts/BarChart.svelte';
 	import { FREQUENCIES } from '$lib/constants/frequencies';
 	import FrequencySelect from '$lib/components/inputs/FrequencySelect.svelte';
+	import { Button } from '$lib/components/ui/button';
+	import { Download } from 'lucide-svelte';
 
 	const budget = setBudgetState();
 
@@ -17,6 +19,10 @@
 			value: item.total
 		}))
 	);
+
+	function handleDownload() {
+		downloadCsv(budget.budgetItems);
+	}
 </script>
 
 <svelte:head>
@@ -30,12 +36,18 @@
 	<div class="flex justify-between items-center mb-2">
 		<h1>Budget Builder</h1>
 
-		<div class="min-w-[150px]">
-			<FrequencySelect
-				name="budget-frequency"
-				id="budget-frequency"
-				bind:value={budget.frequency}
-			/>
+		<div class=" flex gap-2">
+			<div class="min-w-[150px]">
+				<FrequencySelect
+					name="budget-frequency"
+					id="budget-frequency"
+					bind:value={budget.frequency}
+				/>
+			</div>
+
+			<Button size="icon" variant="outline" class="hover:bg-primary" onclick={handleDownload}
+				><Download /></Button
+			>
 		</div>
 	</div>
 	<div class="flex flex-col lg:flex-row gap-4 w-full">

@@ -1,6 +1,5 @@
 <script lang="ts">
 	import CalculatorCard from './_components/CalculatorCard.svelte';
-
 	import { calculators } from '$lib/constants/calculators';
 </script>
 

@@ -3,12 +3,12 @@
 	import { formatAsCurrency } from '$lib/utils/formatters';
 	import AddItem from './AddItem.svelte';
 
-	interface Props {
+	type Props = {
 		category?: string;
 		type: 'Income' | 'Expense' | 'Savings';
 		categoryTotal?: number;
 		children: import('svelte').Snippet;
-	}
+	};
 	let { category = '', type, categoryTotal = 0, children }: Props = $props();
 </script>
 

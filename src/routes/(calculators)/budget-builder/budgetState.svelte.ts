@@ -369,3 +369,91 @@ export function setBudgetState() {
 export function getBudgetState() {
 	return getContext<ReturnType<typeof createBudgetState>>(BUDGET_KEY);
 }
+
+export function downloadCsv(budgetItems: BudgetItem[]) {
+	// Sort items by type
+	const income = budgetItems.filter((item) => item.type === 'Income');
+	const expenses = budgetItems.filter((item) => item.type === 'Expense');
+	const savings = budgetItems.filter((item) => item.type === 'Savings');
+
+	// Create CSV header
+	const csvRows = ['Type,Name,Category,Amount,Frequency,Monthly Total,Annual Total'];
+
+	// Helper function to add items of a specific type
+	function addItemsToCSV(items: BudgetItem[], type: string) {
+		if (items.length > 0) {
+			csvRows.push(`${type}`); // Add type header
+
+			items.forEach((item) => {
+				const monthlyAmount = convertToFrequency(item.amount, item.frequency, 'monthly');
+				const annualAmount = convertToFrequency(item.amount, item.frequency, 'annually');
+
+				csvRows.push(
+					`,"${item.name}","${item.category}",${item.amount},${item.frequency},${monthlyAmount.toFixed(2)},${annualAmount.toFixed(2)}`
+				);
+			});
+
+			// Add total for this type
+			const monthlyTotal = items.reduce(
+				(acc, item) => acc + convertToFrequency(item.amount, item.frequency, 'monthly'),
+				0
+			);
+			const annualTotal = items.reduce(
+				(acc, item) => acc + convertToFrequency(item.amount, item.frequency, 'annually'),
+				0
+			);
+			csvRows.push(`${type} Total,,,,${monthlyTotal.toFixed(2)},${annualTotal.toFixed(2)}`);
+			csvRows.push(''); // Add empty line between sections
+		}
+	}
+
+	// Add all item types
+	addItemsToCSV(income, 'Income');
+	addItemsToCSV(expenses, 'Expenses');
+	addItemsToCSV(savings, 'Savings');
+
+	// Calculate unallocated funds (income - (expenses + savings))
+	const monthlyIncome = income.reduce(
+		(acc, item) => acc + convertToFrequency(item.amount, item.frequency, 'monthly'),
+		0
+	);
+	const monthlyExpenses = expenses.reduce(
+		(acc, item) => acc + convertToFrequency(item.amount, item.frequency, 'monthly'),
+		0
+	);
+	const monthlySavings = savings.reduce(
+		(acc, item) => acc + convertToFrequency(item.amount, item.frequency, 'monthly'),
+		0
+	);
+	const monthlyUnallocated = monthlyIncome - (monthlyExpenses + monthlySavings);
+
+	const annualIncome = income.reduce(
+		(acc, item) => acc + convertToFrequency(item.amount, item.frequency, 'annually'),
+		0
+	);
+	const annualExpenses = expenses.reduce(
+		(acc, item) => acc + convertToFrequency(item.amount, item.frequency, 'annually'),
+		0
+	);
+	const annualSavings = savings.reduce(
+		(acc, item) => acc + convertToFrequency(item.amount, item.frequency, 'annually'),
+		0
+	);
+	const annualUnallocated = annualIncome - (annualExpenses + annualSavings);
+
+	csvRows.push(`Unallocated,,,,${monthlyUnallocated.toFixed(2)},${annualUnallocated.toFixed(2)}`);
+
+	// Create the CSV content
+	const csvContent = csvRows.join('\n');
+
+	// Create and trigger download
+	const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+	const link = document.createElement('a');
+	const url = URL.createObjectURL(blob);
+	link.setAttribute('href', url);
+	const date = new Date().toLocaleDateString('en-AU').split('/').join('-');
+	link.setAttribute('download', `budget-${date}.csv`);
+	document.body.appendChild(link);
+	link.click();
+	document.body.removeChild(link);
+}

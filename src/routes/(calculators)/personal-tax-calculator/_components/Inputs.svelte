@@ -3,20 +3,17 @@
 	import { Checkbox } from '$lib/components/ui/checkbox';
 	import { Label } from '$lib/components/ui/label';
 
-	interface Props {
-		// props
-		income?: number;
-		deductions?: number;
-		hasInsurance?: boolean;
-		hasHelpDebt?: boolean;
-	}
-
 	let {
 		income = $bindable(0),
 		deductions = $bindable(0),
 		hasInsurance = $bindable(false),
 		hasHelpDebt = $bindable(false)
-	}: Props = $props();
+	}: {
+		income?: number;
+		deductions?: number;
+		hasInsurance?: boolean;
+		hasHelpDebt?: boolean;
+	} = $props();
 </script>
 
 <div class="space-y-3">

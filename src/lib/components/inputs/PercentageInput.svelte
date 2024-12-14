@@ -2,15 +2,18 @@
 	import { formatAsPercentage, parsePercentage } from '$lib/utils/formatters';
 	import Label from '$lib/components/ui/label/label.svelte';
 	import Input from '$lib/components/ui/input/input.svelte';
+	import { on } from 'svelte/events';
 
 	let {
 		value = $bindable(),
 		label = '',
-		id = ''
+		id = '',
+		onChange
 	}: {
 		value: number;
 		label?: string;
 		id?: string;
+		onChange?: (value: number) => void;
 	} = $props();
 
 	let displayValue = $state(formatAsPercentage(value));
@@ -21,6 +24,7 @@
 		const numericValue = parsePercentage(rawValue);
 		if (!isNaN(numericValue)) {
 			value = numericValue;
+			onChange?.(value);
 		}
 	}
 

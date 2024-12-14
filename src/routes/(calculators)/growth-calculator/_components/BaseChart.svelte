@@ -13,12 +13,23 @@
 		Filler
 	} from 'chart.js';
 	import { formatAsCurrency } from '$lib/utils/formatters';
-	import type { AnnualData } from '../types';
+	import type { AnnualData } from '../calculator.svelte';
 	import { COLOURS } from '$lib/constants/colours';
 	import { TOOLTIP } from '$lib/constants/chartConfig';
 
-	let { data = [] }: { data?: AnnualData[] } = $props();
-	let years = $derived(data.map((item) => item.year));
+	let {
+		baseData = [],
+		comparisonData = [],
+		savingsGoal,
+		isComparing
+	}: {
+		baseData: AnnualData[];
+		comparisonData: AnnualData[];
+		savingsGoal: number;
+		isComparing: boolean;
+	} = $props();
+
+	let years = $derived(baseData.map((item) => item.year));
 	let chartId: HTMLCanvasElement | undefined = $state();
 	let chart: Chart | undefined = $state();
 
@@ -33,34 +44,46 @@
 		Filler
 	);
 
+	// Helper function to create dataset
+	function createDataset(data: AnnualData[], color: string, label: string, options = {}) {
+		return {
+			label,
+			data: Array.from({ length: years.length }, (_, i) => data[i].endingValue),
+			borderColor: color,
+			backgroundColor: color + '40',
+			fill: true,
+			borderWidth: 2,
+			pointRadius: 0,
+			pointHoverRadius: 4,
+			pointBackgroundColor: color,
+			...options
+		};
+	}
+
+	function createGoalDataset(value: number, color: string) {
+		return {
+			label: 'Goal',
+			data: Array.from({ length: years.length }, () => value),
+			borderColor: color,
+			backgroundColor: 'transparent',
+			fill: false,
+			borderWidth: 2,
+			borderDash: [5, 5],
+			pointRadius: 0,
+			pointHoverRadius: 4,
+			pointBackgroundColor: color
+		};
+	}
+
 	onMount(() => {
 		chart = new Chart(chartId!, {
 			type: 'line',
 			data: {
 				labels: years,
 				datasets: [
-					{
-						label: 'Balance',
-						data: data.map((i) => i.endingBalance),
-						borderColor: COLOURS[0],
-						backgroundColor: COLOURS[0] + '40',
-						fill: true,
-						borderWidth: 2,
-						pointRadius: 0,
-						pointHoverRadius: 4,
-						pointBackgroundColor: COLOURS[0]
-					},
-					{
-						label: 'Drawdown',
-						data: data.map((i) => i.withdrawal),
-						borderColor: COLOURS[1],
-						backgroundColor: COLOURS[1] + '40',
-						fill: true,
-						borderWidth: 2,
-						pointRadius: 0,
-						pointHoverRadius: 4,
-						pointBackgroundColor: COLOURS[1]
-					}
+					createDataset(baseData, COLOURS[0], 'Base Scenario'),
+					...(isComparing ? [createDataset(comparisonData, COLOURS[1], 'Comparison')] : []),
+					...(savingsGoal ? [createGoalDataset(savingsGoal, COLOURS[2])] : [])
 				]
 			},
 			options: {
@@ -68,29 +91,22 @@
 				responsive: true,
 				scales: {
 					x: {
-						grid: {
-							display: false
-						},
+						grid: { display: false },
 						title: {
 							display: true,
 							text: 'Year',
-							font: {
-								size: 16,
-								family: 'sans-serif'
-							},
+							font: { size: 16, family: 'sans-serif' },
 							color: colors.slate[200]
 						},
 						ticks: {
-							font: {
-								size: 14,
-								family: 'sans-serif'
-							},
+							font: { size: 14, family: 'sans-serif' },
 							color: colors.slate[200]
 						}
 					},
 					y: {
 						type: 'linear',
 						display: true,
+						stacked: false,
 						position: 'left',
 						grid: {
 							display: true,
@@ -99,19 +115,13 @@
 						beginAtZero: true,
 						ticks: {
 							callback: (value) => formatAsCurrency(+value, false),
-							font: {
-								size: 14,
-								family: 'sans-serif'
-							},
+							font: { size: 14, family: 'sans-serif' },
 							color: colors.slate[200]
 						},
 						title: {
 							display: true,
 							text: 'Balance',
-							font: {
-								size: 16,
-								family: 'sans-serif'
-							},
+							font: { size: 16, family: 'sans-serif' },
 							color: colors.slate[200]
 						}
 					}
@@ -142,9 +152,22 @@
 
 	$effect(() => {
 		if (chart) {
+			// Always start with base dataset
+			chart.data.datasets = [createDataset(baseData, COLOURS[0], 'Base Scenario')];
+
+			// Add comparison if active
+			if (isComparing) {
+				chart.data.datasets.push(createDataset(comparisonData, COLOURS[1], 'Comparison'));
+			}
+
+			// Add goal if exists
+			if (savingsGoal) {
+				chart.data.datasets.push(createGoalDataset(savingsGoal, COLOURS[2]));
+			}
+
+			// Update labels
 			chart.data.labels = years;
-			chart.data.datasets[0].data = data.map((item) => item.endingBalance);
-			chart.data.datasets[1].data = data.map((i) => i.withdrawal);
+
 			chart.update();
 		}
 	});

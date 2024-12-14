@@ -1,23 +1,13 @@
 import { FREQUENCIES, type FrequencyType } from '$lib/constants/frequencies';
+import { setContext, getContext } from 'svelte';
 
 export type GrowthScenario = {
-	id: number;
-	principal: number;
 	contributionAmount: number;
 	interestRate: number;
 	contributionFrequency: FrequencyType;
-	years: number;
 };
 
 export type GrowthResult = {
-	id: number;
-	totalValue: number;
-	totalInterest: number;
-	totalContributions: number;
-	annualData: AnnualData[];
-};
-
-export type CompoundInterestResult = {
 	totalValue: number;
 	totalInterest: number;
 	totalContributions: number;
@@ -40,7 +30,7 @@ function calculateCompoundInterest(
 	years: number = 0,
 	contributionAmount: number = 0,
 	contributionFrequency: number = 0
-): CompoundInterestResult {
+): GrowthResult {
 	if (
 		principal <= 0 ||
 		interestRate <= 0 ||
@@ -88,57 +78,108 @@ function calculateCompoundInterest(
 	};
 }
 
-export function createCalculator() {
-	// Initial state
-	const scenarios = $state<GrowthScenario[]>([
-		{
-			id: 1,
-			principal: 100000,
-			contributionAmount: 1000,
-			interestRate: 0.06,
-			contributionFrequency: 'monthly',
-			years: 10
-		}
-	]);
+function createCalculatorState() {
+	let principal = $state(10000);
+	let savingsGoal = $state(100000);
+	let years = $state(10);
 
-	// Derived calculations
-	const results = $derived<GrowthResult[]>(
-		scenarios.map((scenario) => {
-			const result = calculateCompoundInterest(
-				scenario.principal,
-				scenario.interestRate,
-				scenario.years,
-				scenario.contributionAmount,
-				FREQUENCIES[scenario.contributionFrequency].value
-			);
+	let baseScenario = $state<GrowthScenario>({
+		contributionAmount: 1000,
+		interestRate: 0.07,
+		contributionFrequency: 'monthly'
+	});
 
-			return {
-				id: scenario.id,
-				...result
-			};
-		})
+	const baseResult = $derived(
+		calculateCompoundInterest(
+			principal,
+			baseScenario.interestRate,
+			years,
+			baseScenario.contributionAmount,
+			FREQUENCIES[baseScenario.contributionFrequency].value
+		)
 	);
 
-	function addScenario() {
-		const lastScenario = scenarios[scenarios.length - 1];
+	let comparisonScenario = $state<GrowthScenario>({
+		contributionAmount: 0,
+		interestRate: 0.0,
+		contributionFrequency: 'monthly'
+	});
 
-		scenarios.push({
-			id: scenarios.length + 1,
-			principal: lastScenario.principal,
-			contributionAmount: lastScenario.contributionAmount,
-			interestRate: lastScenario.interestRate,
-			contributionFrequency: lastScenario.contributionFrequency,
-			years: lastScenario.years
-		});
+	const comparisonResult = $derived(
+		calculateCompoundInterest(
+			principal,
+			comparisonScenario.interestRate,
+			years,
+			comparisonScenario.contributionAmount,
+			FREQUENCIES[comparisonScenario.contributionFrequency].value
+		)
+	);
+
+	function updateBase(updates: Partial<GrowthScenario>) {
+		baseScenario = { ...baseScenario, ...updates };
+	}
+
+	function updateComparison(updates: Partial<GrowthScenario>) {
+		comparisonScenario = { ...comparisonScenario, ...updates };
+	}
+
+	function toggleComparison(showComparison: boolean) {
+		if (showComparison) {
+			comparisonScenario = {
+				...baseScenario
+			};
+		} else {
+			comparisonScenario = {
+				contributionAmount: 1000,
+				interestRate: 0.05,
+				contributionFrequency: 'monthly'
+			};
+		}
 	}
 
 	return {
-		get scenarios() {
-			return scenarios;
+		get principal() {
+			return principal;
 		},
-		get results() {
-			return results;
+		set principal(value: number) {
+			principal = value;
 		},
-		addScenario
+		get savingsGoal() {
+			return savingsGoal;
+		},
+		set savingsGoal(value: number) {
+			savingsGoal = value;
+		},
+		get years() {
+			return years;
+		},
+		set years(value: number) {
+			years = value;
+		},
+		get baseScenario() {
+			return baseScenario;
+		},
+		get baseResult() {
+			return baseResult;
+		},
+		get comparisonScenario() {
+			return comparisonScenario;
+		},
+		get comparisonResult() {
+			return comparisonResult;
+		},
+		updateBase,
+		updateComparison,
+		toggleComparison
 	};
+}
+
+const CALCULATOR_KEY = Symbol('growth-calculator');
+
+export function setCalculatorState() {
+	return setContext(CALCULATOR_KEY, createCalculatorState());
+}
+
+export function getCalculatorState() {
+	return getContext<ReturnType<typeof createCalculatorState>>(CALCULATOR_KEY);
 }

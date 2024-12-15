@@ -63,6 +63,7 @@
 		{isComparing ? 'Hide' : 'Compare'}</Button
 	>
 	{#if isComparing}
+		<h2 class="card-heading">Comparison</h2>
 		<PercentageInput
 			onChange={(value) => calculator.updateComparison({ interestRate: value })}
 			value={calculator.comparisonScenario.interestRate}

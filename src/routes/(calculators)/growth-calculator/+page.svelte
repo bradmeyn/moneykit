@@ -5,8 +5,9 @@
 	import { formatAsCurrency } from '$lib/utils/formatters';
 	import { Download } from 'lucide-svelte';
 	import Inputs from './_components/Inputs.svelte';
-	import BaseChart from './_components/BaseChart.svelte';
+	import GrowthChart from './_components/GrowthChart.svelte';
 	import Table from './_components/Table.svelte';
+	import SummaryTable from './_components/SummaryTable.svelte';
 
 	setCalculatorState();
 	let selectedView = $state('chart');
@@ -27,15 +28,10 @@
 	<section class="flex flex-col lg:flex-row gap-8">
 		<Inputs bind:isComparing />
 
-		<div class="w-full space-y-6">
-			<div class="grid grid-cols-3 gap-3">
-				{@render dataCard('Principal', calculator.principal, formatAsCurrency)}
-				{@render dataCard(
-					'Contributions',
-					calculator.baseResult.totalContributions,
-					formatAsCurrency
-				)}
-				{@render dataCard('Interest', calculator.baseResult.totalInterest, formatAsCurrency)}
+		<div class="w-full space-y-4">
+			<div class="card">
+				<h2 class="card-heading">Overview</h2>
+				<SummaryTable {isComparing} />
 			</div>
 
 			<div class="card">
@@ -63,7 +59,7 @@
 
 				<Tabs.Root value={selectedView} class="mt-4">
 					<Tabs.Content value="chart" class="m-0">
-						<BaseChart
+						<GrowthChart
 							baseData={calculator.baseResult.annualData}
 							comparisonData={calculator.comparisonResult.annualData}
 							savingsGoal={calculator.savingsGoal}

@@ -137,6 +137,24 @@ function createCalculatorState() {
 		}
 	}
 
+	const baseGoalAchieved = $derived(
+		baseResult.annualData.some((data) => data.endingValue >= savingsGoal)
+	);
+	const baseYearsToGoal = $derived(() => {
+		const yearReached = baseResult.annualData.findIndex((data) => data.endingValue >= savingsGoal);
+		return yearReached === -1 ? null : yearReached + 1;
+	});
+
+	const comparisonGoalAchieved = $derived(
+		comparisonResult.annualData.some((data) => data.endingValue >= savingsGoal)
+	);
+	const comparisonYearsToGoal = $derived(() => {
+		const yearReached = comparisonResult.annualData.findIndex(
+			(data) => data.endingValue >= savingsGoal
+		);
+		return yearReached === -1 ? null : yearReached + 1;
+	});
+
 	return {
 		get principal() {
 			return principal;
@@ -170,7 +188,19 @@ function createCalculatorState() {
 		},
 		updateBase,
 		updateComparison,
-		toggleComparison
+		toggleComparison,
+		get baseGoalAchieved() {
+			return baseGoalAchieved;
+		},
+		get baseYearsToGoal() {
+			return baseYearsToGoal;
+		},
+		get comparisonGoalAchieved() {
+			return comparisonGoalAchieved;
+		},
+		get comparisonYearsToGoal() {
+			return comparisonYearsToGoal;
+		}
 	};
 }
 

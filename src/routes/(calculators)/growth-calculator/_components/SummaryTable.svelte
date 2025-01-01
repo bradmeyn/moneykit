@@ -109,8 +109,8 @@
 	<table class="w-full">
 		<thead>
 			<tr>
-				<th class="text-left p-2">Summary</th>
-				<th class="text-right p-2">Base</th>
+				<th class="text-left p-2">After {calculator.years} Years</th>
+				<th class="text-right p-2">Outcome</th>
 				{#if isComparing}
 					<th class="text-right p-2">Comparison</th>
 					<th class="text-right p-2">Difference</th>
@@ -119,7 +119,7 @@
 		</thead>
 		<tbody>
 			{#each rows as row}
-				<tr>
+				<tr class={row.label === 'Total Value' ? 'font-bold' : ''}>
 					<td class="p-2">{row.label}</td>
 					<td class="text-right p-2">
 						{#if row.formatValue}

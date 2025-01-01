@@ -4,7 +4,7 @@
 	import { formatAsCurrency } from '$lib/utils/formatters';
 	import BudgetTable from './_components/BudgetTable.svelte';
 	import BudgetAccordion from './_components/BudgetAccordion.svelte';
-	import { calculateCategoryTotal, downloadCsv, setBudgetState } from './budgetState.svelte';
+	import { calculateCategoryTotal, downloadCsv, setBudgetState } from './budget.svelte';
 	import BarChart from '$lib/components/charts/BarChart.svelte';
 	import { FREQUENCIES } from '$lib/constants/frequencies';
 	import FrequencySelect from '$lib/components/inputs/FrequencySelect.svelte';
@@ -27,9 +27,6 @@
 
 <svelte:head>
 	<title>Budget Builder</title>
-	<!-- <meta name="description" content={meta_description} />
-	<meta name="og:description" content={meta_description} /> -->
-	<meta name="twitter:creator" content="@jrib_" />
 </svelte:head>
 
 <main class="flex flex-col flex-1 container text-white max-w-[1200px]">

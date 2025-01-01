@@ -1,10 +1,10 @@
 <script lang="ts">
 	import CurrencyInput from '$lib/components/inputs/CurrencyInput.svelte';
 	import { formatAsCurrency } from '$lib/utils/formatters';
-	import { convertToFrequency, type BudgetItem } from '../budgetState.svelte';
+	import { convertToFrequency, type BudgetItem } from '../budget.svelte';
 	import FrequencyInput from '$lib/components/inputs/FrequencySelect.svelte';
 	import { Trash2 } from 'lucide-svelte';
-	import { getBudgetState } from '../budgetState.svelte';
+	import { getBudgetState } from '../budget.svelte';
 	import Button from '$ui/button/button.svelte';
 
 	let {
@@ -22,7 +22,7 @@
 		<CurrencyInput
 			id="test"
 			label=""
-			onChange={(value) =>
+			onchange={(value) =>
 				updateItem({
 					...budgetItem,
 					amount: value
@@ -33,7 +33,7 @@
 	<td class="w-40">
 		<FrequencyInput
 			value={budgetItem.frequency}
-			onChange={(frequency) =>
+			onchange={(frequency) =>
 				updateItem({
 					...budgetItem,
 					frequency

@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { run } from 'svelte/legacy';
-
 	import { formatAsCurrency, formatAsPercentage } from '$lib/utils/formatters';
 	import { INCOME_TAX_BRACKETS } from '../taxRates';
 
@@ -27,7 +25,7 @@
 	// Calculate total range for percentage calculations
 	let totalRange = $derived(incomeRanges.reduce((sum, range) => sum + range, 0));
 
-	run(() => {
+	$effect(() => {
 		if (incomeRanges.length > 1) {
 			const lastIndex = incomeRanges.length - 1;
 			incomeRanges[lastIndex] = incomeRanges[lastIndex - 1] * 0.4; // Make last bracket 50% of previous
@@ -60,22 +58,22 @@
 	<div class="h-full rounded flex items-end">
 		{#each bands as { min, max, rate, widthPercent }, i}
 			<div
-				class="border-r border-ui-600 last:border-r-0 text-baseline text-left p-2 relative"
+				class="border-r border-ui-600 last:border-r-0 text-baseline text-left px-2 relative"
 				style="width: {widthPercent}%;"
 			>
 				{#if max === Infinity}
-					<div class="text-ui-300 text-sm">Over</div>
-					<div class="text-ui-300 text-sm">{formatAsCurrency(min - 1, false)}</div>
+					<div class="text-muted text-sm">Over</div>
+					<div class="text-muted text-sm">{formatAsCurrency(min - 1, false)}</div>
 				{:else}
-					<div class="text-sm text-ui-300">{formatAsCurrency(min, false)} -</div>
-					<div class="text-sm text-ui-300">{formatAsCurrency(max, false)}</div>
+					<div class="text-sm text-muted">{formatAsCurrency(min, false)} -</div>
+					<div class="text-sm text-muted">{formatAsCurrency(max, false)}</div>
 				{/if}
 				<div class="text-lg font-semibold">{formatAsPercentage(rate)}</div>
 			</div>
 		{/each}
 	</div>
 
-	<div class="border border-ui-600 h-6 rounded flex overflow-hidden">
+	<div class="border border-ui-600 h-6 rounded-lg flex overflow-hidden">
 		{#each bands as { fillPercent, widthPercent }, i}
 			<div class="relative h-full" style="width: {widthPercent}%;">
 				<div class="absolute inset-0 bg-primary" style="width: {fillPercent}%;"></div>

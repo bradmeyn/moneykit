@@ -8,12 +8,12 @@
 		value = $bindable(),
 		label = '',
 		id = '',
-		onChange
+		onchange
 	}: {
 		value: number;
 		label?: string;
 		id?: string;
-		onChange?: (value: number) => void;
+		onchange?: (value: number) => void;
 	} = $props();
 
 	let displayValue = $state(formatAsPercentage(value));
@@ -24,7 +24,7 @@
 		const numericValue = parsePercentage(rawValue);
 		if (!isNaN(numericValue)) {
 			value = numericValue;
-			onChange?.(value);
+			onchange?.(value);
 		}
 	}
 

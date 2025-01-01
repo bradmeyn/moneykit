@@ -14,7 +14,7 @@
 
 <div class={className}>
 	{#each data as item, i}
-		<div class="flex items-center justify-between border-b border-b-ui-600">
+		<div class="flex items-center justify-between border-b border-b-ui-800">
 			<div class="flex items-center gap-2 py-2">
 				<div class="size-3 rounded-xl" style="background-color: {COLOURS[i]}"></div>
 				<p class="text-ui-300 text-sm">{item.label}</p>

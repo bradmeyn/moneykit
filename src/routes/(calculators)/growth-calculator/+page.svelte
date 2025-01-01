@@ -10,8 +10,9 @@
 	import SummaryTable from './_components/SummaryTable.svelte';
 
 	setCalculatorState();
-	let selectedView = $state('chart');
 	let calculator = getCalculatorState();
+	let selectedView = $state('chart');
+
 	let isComparing = $state(false);
 </script>
 
@@ -75,12 +76,3 @@
 		</div>
 	</section>
 </main>
-
-{#snippet dataCard(label: string, value: number, formatter: (value: number) => string)}
-	<div class="card col-span-3 md:col-span-2 lg:col-span-1">
-		<h2 class="card-heading">{label}</h2>
-		<p class="text-lg md:text-xl font-semibold">
-			{formatter(value)}
-		</p>
-	</div>
-{/snippet}

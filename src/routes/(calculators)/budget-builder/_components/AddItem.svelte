@@ -2,12 +2,12 @@
 	import { Button } from '$lib/components/ui/button';
 	import CurrencyInput from '$lib/components/inputs/CurrencyInput.svelte';
 	import FrequencyInput from '$lib/components/inputs/FrequencySelect.svelte';
-	import type { BudgetItem } from '../budgetState.svelte';
+	import type { BudgetItem } from '../budget.svelte';
 	import Input from '$ui/input/input.svelte';
 	import { formatAsCurrency } from '$lib/utils/formatters';
 	import { FREQUENCIES } from '$constants/frequencies';
 	import { v4 as uuidv4 } from 'uuid';
-	import { getBudgetState } from '../budgetState.svelte';
+	import { getBudgetState } from '../budget.svelte';
 
 	const {
 		category,

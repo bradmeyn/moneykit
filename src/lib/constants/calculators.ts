@@ -12,12 +12,6 @@ export const calculatorsByCategory = {
 			description: 'Project your investment growth with our powerful calculator',
 			iconPath: 'M23 6l-9.5 9.5-5-5L1 18 M17 6h6v6'
 		},
-		{
-			name: 'Drawdown Calculator',
-			href: '/drawdown-calculator',
-			description: 'Plan your retirement withdrawals strategically',
-			iconPath: 'M21 12a9 9 0 1 1-6.219-8.56 M12 8v4l2.5 2.5'
-		},
 
 		{
 			name: 'Tax Calculator',
@@ -28,7 +22,6 @@ export const calculatorsByCategory = {
 		}
 	]
 } as const;
-
 
 export type Category = keyof typeof calculatorsByCategory;
 export type CalculatorItem = {

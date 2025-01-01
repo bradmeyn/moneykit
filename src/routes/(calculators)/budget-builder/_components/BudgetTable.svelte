@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { FREQUENCIES } from '$constants/frequencies';
-	import { getBudgetState } from '../budgetState.svelte';
-	import type { BudgetItem as Item } from '../budgetState.svelte';
+	import { getBudgetState } from '../budget.svelte';
+	import type { BudgetItem as Item } from '../budget.svelte';
 	import BudgetItem from './BudgetItem.svelte';
 	let { items }: { items: Item[] } = $props();
 	const { frequency } = getBudgetState();

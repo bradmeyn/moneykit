@@ -8,12 +8,12 @@
 		name?: string;
 		id?: string;
 		label?: string;
-		onChange?: (value: FrequencyType) => void;
+		onchange?: (value: FrequencyType) => void;
 	};
 
-	let { value = $bindable(), id = '', name = '', label = '', onChange }: Props = $props();
+	let { value = $bindable(), id = '', name = '', label = '', onchange }: Props = $props();
 
-	const handleChange = (value: FrequencyType) => onChange?.(value);
+	const handleChange = (value: FrequencyType) => onchange?.(value);
 </script>
 
 <div>

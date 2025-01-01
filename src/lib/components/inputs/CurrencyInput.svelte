@@ -7,10 +7,10 @@
 		value: number;
 		label?: string;
 		id?: string;
-		onChange?: (value: number) => void;
+		onchange?: (value: number) => void;
 	};
 
-	let { value = $bindable(), label = '', id = '', onChange }: Props = $props();
+	let { value = $bindable(), label = '', id = '', onchange }: Props = $props();
 
 	let displayValue = $state(formatAsCurrency(value));
 
@@ -19,7 +19,7 @@
 		const rawValue = input.value;
 		const numericValue = parseCurrency(rawValue);
 		value = numericValue;
-		onChange?.(numericValue);
+		onchange?.(numericValue);
 	}
 
 	function handleBlur() {

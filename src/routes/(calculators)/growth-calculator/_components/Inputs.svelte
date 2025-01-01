@@ -26,20 +26,20 @@
 	<CurrencyInput bind:value={calculator.principal} id="principal" label="Principal" />
 	<div class="grid grid-cols-1 md:grid-cols-2 gap-2">
 		<CurrencyInput
-			onChange={(value) => calculator.updateBase({ contributionAmount: value })}
+			onchange={(value) => calculator.updateBase({ contributionAmount: value })}
 			label="Contributions"
 			value={calculator.baseScenario.contributionAmount}
 		/>
 		<FrequencySelect
 			value={calculator.baseScenario.contributionFrequency}
-			onChange={(value) => calculator.updateBase({ contributionFrequency: value })}
+			onchange={(value) => calculator.updateBase({ contributionFrequency: value })}
 			label="Frequency"
 			id="frequency"
 			name="frequency"
 		/>
 	</div>
 	<PercentageInput
-		onChange={(value) => calculator.updateBase({ interestRate: value })}
+		onchange={(value) => calculator.updateBase({ interestRate: value })}
 		value={calculator.baseScenario.interestRate}
 		label="Interest Rate"
 	/>
@@ -65,21 +65,21 @@
 	{#if isComparing}
 		<h2 class="card-heading">Comparison</h2>
 		<PercentageInput
-			onChange={(value) => calculator.updateComparison({ interestRate: value })}
+			onchange={(value) => calculator.updateComparison({ interestRate: value })}
 			value={calculator.comparisonScenario.interestRate}
 			label="Interest Rate"
 			id="comparison-interest-rate"
 		/>
 		<div class="grid grid-cols-1 md:grid-cols-2 gap-2">
 			<CurrencyInput
-				onChange={(value) => calculator.updateComparison({ contributionAmount: value })}
+				onchange={(value) => calculator.updateComparison({ contributionAmount: value })}
 				label="Contributions"
 				value={calculator.comparisonScenario.contributionAmount}
 				id="comparison-contributions"
 			/>
 			<FrequencySelect
 				value={calculator.comparisonScenario.contributionFrequency}
-				onChange={(value) => calculator.updateComparison({ contributionFrequency: value })}
+				onchange={(value) => calculator.updateComparison({ contributionFrequency: value })}
 				label="Frequency"
 				id="comparison-frequency"
 				name="frequency"

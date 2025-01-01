@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Tabs as TabsPrimitive } from 'bits-ui';
-	import { cn } from '$lib/utils/tailwind';
+	import { cn } from '$lib/utils/tailwind.js';
 
 	let { ref = $bindable(null), class: className, ...restProps }: TabsPrimitive.ListProps = $props();
 </script>
@@ -8,7 +8,7 @@
 <TabsPrimitive.List
 	bind:ref
 	class={cn(
-		'bg-input text-muted-foreground inline-flex h-9 items-center justify-center rounded-lg p-1',
+		'bg-ui-800 text-muted-foreground inline-flex h-9 items-center justify-center rounded-lg p-1',
 		className
 	)}
 	{...restProps}

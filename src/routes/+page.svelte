@@ -4,13 +4,9 @@
 </script>
 
 <svelte:head>
-	<title>MoneyKit - Smart Financial Tools</title>
+	<title>MoneyKit - Financial Tools</title>
 	<meta
 		name="description"
-		content="All the tools you need to manage your money and build wealth effectively."
-	/>
-	<meta
-		name="og:description"
 		content="All the tools you need to manage your money and build wealth effectively."
 	/>
 	<meta name="twitter:creator" content="@jrib_" />
@@ -20,7 +16,7 @@
 	<!-- Hero Section -->
 	<div class="text-center max-w-4xl mx-auto pt-16 pb-24">
 		<h1 class="text-4xl md:text-7xl font-light mb-6 text-white leading-tight">
-			Your financial planning
+			Your personal finance
 			<span class="relative">
 				<span class="text-transparent bg-clip-text bg-gradient-to-r from-primary-light to-primary"
 					>toolkit</span
@@ -28,7 +24,7 @@
 				<!-- Decorative underline -->
 			</span>
 		</h1>
-		<p class="text-gray-400 text-xl mb-12 max-w-2xl mx-auto">
+		<p class="text-muted text-xl mb-12 max-w-2xl mx-auto">
 			Professional-grade financial tools to help you make smarter decisions with your money
 		</p>
 	</div>

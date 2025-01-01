@@ -81,7 +81,7 @@
 			data: {
 				labels: years,
 				datasets: [
-					createDataset(baseData, COLOURS[0], 'Base Scenario'),
+					createDataset(baseData, COLOURS[0], 'Value'),
 					...(isComparing ? [createDataset(comparisonData, COLOURS[1], 'Comparison')] : []),
 					...(savingsGoal ? [createGoalDataset(savingsGoal, COLOURS[2])] : [])
 				]
@@ -153,7 +153,7 @@
 	$effect(() => {
 		if (chart) {
 			// Always start with base dataset
-			chart.data.datasets = [createDataset(baseData, COLOURS[0], 'Base Scenario')];
+			chart.data.datasets = [createDataset(baseData, COLOURS[0], 'Value')];
 
 			// Add comparison if active
 			if (isComparing) {

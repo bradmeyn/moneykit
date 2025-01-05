@@ -32,10 +32,10 @@ export function calculateCategoryTotal(
 	return convertToFrequency(annualTotal, 'annually', toFrequency);
 }
 
-export function createBudgetState() {
-	let frequency = $state<FrequencyType>('monthly');
+class Budget {
+	frequency = $state<FrequencyType>('monthly');
 
-	const budgetItems = $state<BudgetItem[]>([
+	budgetItems = $state<BudgetItem[]>([
 		{
 			id: uuidv4(),
 			name: 'Salary',
@@ -239,135 +239,76 @@ export function createBudgetState() {
 	]);
 
 	// Items by type
-	const income = $derived<BudgetItem[]>(budgetItems.filter((i) => i.type === 'Income'));
-	const expenses = $derived<BudgetItem[]>(budgetItems.filter((i) => i.type === 'Expense'));
-	const savings = $derived<BudgetItem[]>(budgetItems.filter((i) => i.type === 'Savings'));
+	income = $derived<BudgetItem[]>(this.budgetItems.filter((i) => i.type === 'Income'));
+	expenses = $derived<BudgetItem[]>(this.budgetItems.filter((i) => i.type === 'Expense'));
+	savings = $derived<BudgetItem[]>(this.budgetItems.filter((i) => i.type === 'Savings'));
 
 	// Categories
-	const incomeCategories = $state<string[]>([...new Set(income.map((i) => i.category))]);
-	const expenseCategories = $state<string[]>([...new Set(expenses.map((i) => i.category))]);
-	const savingsCategories = $state<string[]>([...new Set(savings.map((i) => i.category))]);
+	incomeCategories = $state<string[]>([...new Set(this.income.map((i) => i.category))]);
+	expenseCategories = $state<string[]>([...new Set(this.expenses.map((i) => i.category))]);
+	savingsCategories = $state<string[]>([...new Set(this.savings.map((i) => i.category))]);
 
 	// Frequency-adjusted items
-	const adjustedIncome = $derived<BudgetItem[]>(
-		income.map((item) => ({
+	adjustedIncome = $derived<BudgetItem[]>(
+		this.income.map((item) => ({
 			...item,
-			amount: convertToFrequency(item.amount, item.frequency, frequency)
+			amount: convertToFrequency(item.amount, item.frequency, this.frequency)
+		}))
+	);
+	adjustedExpenses = $derived<BudgetItem[]>(
+		this.expenses.map((item) => ({
+			...item,
+			amount: convertToFrequency(item.amount, item.frequency, this.frequency)
+		}))
+	);
+	adjustedSavings = $derived<BudgetItem[]>(
+		this.savings.map((item) => ({
+			...item,
+			amount: convertToFrequency(item.amount, item.frequency, this.frequency)
 		}))
 	);
 
-	const adjustedExpenses = $derived<BudgetItem[]>(
-		expenses.map((item) => ({
-			...item,
-			amount: convertToFrequency(item.amount, item.frequency, frequency)
-		}))
-	);
-
-	const adjustedSavings = $derived<BudgetItem[]>(
-		savings.map((item) => ({
-			...item,
-			amount: convertToFrequency(item.amount, item.frequency, frequency)
-		}))
-	);
-
-	const expenseByCategory = $derived<{ category: string; total: number }[]>(
-		expenseCategories.map((category) => {
-			const categoryExpenses = adjustedExpenses.filter((i) => i.category === category);
+	expenseByCategory = $derived<{ category: string; total: number }[]>(
+		this.expenseCategories.map((category) => {
+			const categoryExpenses = this.adjustedExpenses.filter((i) => i.category === category);
 			const total = categoryExpenses.reduce((acc, i) => acc + i.amount, 0);
 			return { category, total };
 		})
 	);
 
 	// Calculate totals for current frequency
-	const totalIncome = $derived<number>(adjustedIncome.reduce((acc, i) => acc + i.amount, 0));
-	const totalExpenses = $derived<number>(adjustedExpenses.reduce((acc, i) => acc + i.amount, 0));
-	const totalSavings = $derived<number>(adjustedSavings.reduce((acc, i) => acc + i.amount, 0));
-	const unallocated = $derived<number>(totalIncome - totalExpenses - totalSavings);
+	totalIncome = $derived<number>(this.adjustedIncome.reduce((acc, i) => acc + i.amount, 0));
+	totalExpenses = $derived<number>(this.adjustedExpenses.reduce((acc, i) => acc + i.amount, 0));
+	totalSavings = $derived<number>(this.adjustedSavings.reduce((acc, i) => acc + i.amount, 0));
+	unallocated = $derived<number>(this.totalIncome - this.totalExpenses - this.totalSavings);
 
-	function addItem(item: BudgetItem) {
-		budgetItems.push(item);
+	addItem(item: BudgetItem) {
+		this.budgetItems.push(item);
 	}
 
-	function removeItem(id: string) {
-		const index = budgetItems.findIndex((i) => i.id === id);
+	removeItem(id: string) {
+		const index = this.budgetItems.findIndex((i) => i.id === id);
 		if (index !== -1) {
-			budgetItems.splice(index, 1);
+			this.budgetItems.splice(index, 1);
 		}
 	}
 
-	function updateItem(item: BudgetItem) {
-		const index = budgetItems.findIndex((i) => i.id === item.id);
+	updateItem(item: BudgetItem) {
+		const index = this.budgetItems.findIndex((i) => i.id === item.id);
 		if (index !== -1) {
-			budgetItems[index] = item;
+			this.budgetItems[index] = item;
 		}
 	}
-
-	return {
-		get frequency() {
-			return frequency;
-		},
-		set frequency(value: FrequencyType) {
-			frequency = value;
-		},
-
-		get budgetItems() {
-			return budgetItems;
-		},
-
-		get income() {
-			return income;
-		},
-
-		get expenses() {
-			return expenses;
-		},
-
-		get savings() {
-			return savings;
-		},
-
-		get incomeCategories() {
-			return incomeCategories;
-		},
-		get expenseCategories() {
-			return expenseCategories;
-		},
-		get savingsCategories() {
-			return savingsCategories;
-		},
-		get expenseByCategory() {
-			return expenseByCategory;
-		},
-
-		// Totals
-		get totalIncome() {
-			return totalIncome;
-		},
-		get totalExpenses() {
-			return totalExpenses;
-		},
-		get totalSavings() {
-			return totalSavings;
-		},
-
-		get unallocated() {
-			return unallocated;
-		},
-
-		addItem,
-		removeItem,
-		updateItem
-	};
 }
 
 const BUDGET_KEY = Symbol('budget');
 
 export function setBudgetState() {
-	return setContext(BUDGET_KEY, createBudgetState());
+	return setContext(BUDGET_KEY, new Budget());
 }
 
 export function getBudgetState() {
-	return getContext<ReturnType<typeof createBudgetState>>(BUDGET_KEY);
+	return getContext<Budget>(BUDGET_KEY);
 }
 
 export function downloadCsv(budgetItems: BudgetItem[]) {

@@ -38,7 +38,7 @@
 	);
 
 	function createDatasets(calculationData: typeof calculator.calculationData) {
-		return [
+		const baseDatasets = [
 			{
 				type: 'line',
 				label: 'Investment Value',
@@ -50,7 +50,7 @@
 				borderWidth: 2,
 				pointRadius: 0,
 				pointHoverRadius: 4,
-				order: 2
+				order: 3
 			},
 			{
 				type: 'line',
@@ -63,23 +63,67 @@
 				fill: false,
 				order: 1
 			}
-			// {
-			// 	type: 'bar',
-			// 	label: 'Withdrawals',
-			// 	data: calculationData.map((d) => (d.withdrawal ? -d.withdrawal : null)),
-			// 	backgroundColor: colors.red[500],
-			// 	order: 3,
-			// 	barPercentage: 1
-			// },
-			// {
-			// 	type: 'bar',
-			// 	label: 'Contributions',
-			// 	data: calculationData.map((d) => d.contribution || null),
-			// 	backgroundColor: colors.green[500],
-			// 	order: 3,
-			// 	barPercentage: 1
-			// }
 		];
+
+		const withdrawalDatasets = [];
+
+		if (calculator.secondaryIncome > 0) {
+			// Add net withdrawals (withdrawals minus secondary income)
+			withdrawalDatasets.push({
+				type: 'bar',
+				label: 'Withdrawals',
+				data: calculationData.map((d) => d.withdrawal - d.secondaryIncome),
+				borderColor: COLOURS[2],
+				backgroundColor: `${COLOURS[2]}33`,
+				fill: true,
+				tension: 0.4,
+				borderWidth: 1,
+				borderRadius: 2,
+				pointRadius: 0,
+				pointHoverRadius: 4,
+				order: 2,
+				barPercentage: 0.8,
+				stack: 'expenses'
+			});
+
+			// Add secondary income bar
+			withdrawalDatasets.push({
+				type: 'bar',
+				label: 'Secondary Income',
+				data: calculationData.map((d) => d.secondaryIncome),
+				borderColor: COLOURS[3] || colors.green[500],
+				backgroundColor: `${COLOURS[3]}33`,
+				fill: true,
+				tension: 0.4,
+				borderWidth: 1,
+				borderRadius: 2,
+				pointRadius: 0,
+				pointHoverRadius: 4,
+				order: 2,
+				barPercentage: 0.8,
+				stack: 'expenses'
+			});
+		} else {
+			// If no secondary income, just show total withdrawals
+			withdrawalDatasets.push({
+				type: 'bar',
+				label: 'Withdrawals',
+				data: calculationData.map((d) => d.withdrawal),
+				borderColor: COLOURS[2],
+				backgroundColor: `${COLOURS[2]}33`,
+				fill: true,
+				tension: 0.4,
+				borderWidth: 1,
+				borderRadius: 2,
+				pointRadius: 0,
+				pointHoverRadius: 4,
+				order: 2,
+				barPercentage: 0.8,
+				stack: 'expenses'
+			});
+		}
+
+		return [...baseDatasets, ...withdrawalDatasets];
 	}
 
 	onMount(() => {
@@ -145,7 +189,20 @@
 						}
 					},
 					legend: {
-						display: true
+						position: 'top',
+						align: 'end',
+						labels: {
+							usePointStyle: true,
+							pointStyle: 'circle',
+							boxWidth: 8,
+							boxHeight: 8,
+							padding: 20,
+							color: '#FFFFFF',
+							font: {
+								size: 14, // Slightly larger font
+								family: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif"
+							}
+						}
 					}
 				}
 			}

@@ -3,12 +3,14 @@
 		name,
 		href,
 		description,
-		iconPath
+		iconPath,
+		viewBox
 	}: {
 		name: string;
 		href: string;
 		description: string;
 		iconPath: string;
+		viewBox: string;
 	} = $props();
 </script>
 
@@ -23,15 +25,7 @@
 			class="mb-4 w-12 h-12 rounded-lg bg-primary/10 flex items-center
 		justify-center group-hover:scale-110 transition-transform duration-300 flex-shrink-0"
 		>
-			<svg
-				class="w-6 h-6 text-primary"
-				viewBox="0 0 24 24"
-				fill="none"
-				stroke="currentColor"
-				stroke-width="2"
-				stroke-linecap="round"
-				stroke-linejoin="round"
-			>
+			<svg class="w-6 h-6 text-primary" {viewBox} fill="currentColor">
 				<path d={iconPath} />
 			</svg>
 		</div>

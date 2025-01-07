@@ -9,9 +9,10 @@ class CalculatorState {
 	growthRate = $state(0.07);
 	inflationRate = $state(0.02);
 	withdrawalRate = $state(0.04);
+	secondaryIncome = $state(0);
 
 	// Step 1: Calculate FIRE Number
-	fireNumber = $derived(this.expenses / this.withdrawalRate);
+	fireNumber = $derived((this.expenses - this.secondaryIncome) / this.withdrawalRate);
 
 	// Step 2: Calculate years to reach FIRE Number
 	yearsToFire = $derived.by(() => {
@@ -36,26 +37,32 @@ class CalculatorState {
 		const realGrowthRate = (1 + this.growthRate) / (1 + this.inflationRate) - 1;
 		let isWithdrawing = false;
 
-		// Start from current age and go to 67
 		for (let age = this.age; age <= 67; age++) {
 			const inflationAdjustedExpenses =
 				this.expenses * Math.pow(1 + this.inflationRate, age - this.age);
+			const inflationAdjustedSecondaryIncome =
+				this.secondaryIncome * Math.pow(1 + this.inflationRate, age - this.age);
+
+			// Calculate net withdrawal needed (expenses minus secondary income)
+			const netWithdrawal = isWithdrawing
+				? Math.max(0, inflationAdjustedExpenses - inflationAdjustedSecondaryIncome)
+				: 0;
 
 			data.push({
 				age,
-				investmentValue: Math.round(amount),
+				investmentValue: Math.max(0, Math.round(amount)), // Prevent negative values
 				fireTarget: this.fireNumber,
 				withdrawal: isWithdrawing ? Math.round(inflationAdjustedExpenses) : 0,
+				secondaryIncome: isWithdrawing ? Math.round(inflationAdjustedSecondaryIncome) : 0,
 				contribution: !isWithdrawing ? yearlyContribution : 0
 			});
 
-			// If we've reached FIRE number, start withdrawing instead of contributing
 			if (amount >= this.fireNumber) {
 				isWithdrawing = true;
 			}
 
 			if (isWithdrawing) {
-				amount = amount * (1 + realGrowthRate) - inflationAdjustedExpenses;
+				amount = Math.max(0, amount * (1 + realGrowthRate) - netWithdrawal);
 			} else {
 				amount = amount * (1 + realGrowthRate) + yearlyContribution;
 			}

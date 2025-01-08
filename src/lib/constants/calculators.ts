@@ -37,12 +37,13 @@ export const calculatorsByCategory = {
 } as const;
 
 export type Category = keyof typeof calculatorsByCategory;
-export type CalculatorItem = {
+export type Calculator = {
 	name: string;
 	href: string;
 	description: string;
 	iconPath: string;
+	viewBox: string;
 };
 
-export const calculators: CalculatorItem[] = Object.values(calculatorsByCategory).flat();
+export const calculators: Calculator[] = Object.values(calculatorsByCategory).flat();
 export const categories: Category[] = Object.keys(calculatorsByCategory) as Category[];

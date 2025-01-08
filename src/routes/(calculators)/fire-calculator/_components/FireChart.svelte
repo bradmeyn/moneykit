@@ -12,7 +12,8 @@
 		Tooltip,
 		Filler,
 		BarController,
-		BarElement
+		BarElement,
+		type ChartDataset
 	} from 'chart.js';
 	import { formatAsCurrency } from '$lib/utils/formatters';
 	import { COLOURS } from '$lib/constants/colours';
@@ -20,7 +21,6 @@
 	import { getCalculatorState } from '../calculator.svelte';
 
 	const calculator = getCalculatorState();
-
 	let chartId: HTMLCanvasElement | undefined = $state();
 	let chart: Chart | undefined = $state();
 
@@ -37,8 +37,12 @@
 		BarElement
 	);
 
+	type MixedDataset =
+		| (ChartDataset<'line', number[]> & { type: 'line' })
+		| (ChartDataset<'bar', number[]> & { type: 'bar' });
+
 	function createDatasets(calculationData: typeof calculator.calculationData) {
-		const baseDatasets = [
+		const baseDatasets: MixedDataset[] = [
 			{
 				type: 'line',
 				label: 'Investment Value',
@@ -65,7 +69,7 @@
 			}
 		];
 
-		const withdrawalDatasets = [];
+		const withdrawalDatasets: MixedDataset[] = [];
 
 		if (calculator.secondaryIncome > 0) {
 			// Add net withdrawals (withdrawals minus secondary income)
@@ -75,12 +79,10 @@
 				data: calculationData.map((d) => d.withdrawal - d.secondaryIncome),
 				borderColor: COLOURS[2],
 				backgroundColor: `${COLOURS[2]}33`,
-				fill: true,
-				tension: 0.4,
+
 				borderWidth: 1,
 				borderRadius: 2,
-				pointRadius: 0,
-				pointHoverRadius: 4,
+
 				order: 2,
 				barPercentage: 0.8,
 				stack: 'expenses'
@@ -93,12 +95,10 @@
 				data: calculationData.map((d) => d.secondaryIncome),
 				borderColor: COLOURS[3] || colors.green[500],
 				backgroundColor: `${COLOURS[3]}33`,
-				fill: true,
-				tension: 0.4,
+
 				borderWidth: 1,
 				borderRadius: 2,
-				pointRadius: 0,
-				pointHoverRadius: 4,
+
 				order: 2,
 				barPercentage: 0.8,
 				stack: 'expenses'
@@ -111,19 +111,19 @@
 				data: calculationData.map((d) => d.withdrawal),
 				borderColor: COLOURS[2],
 				backgroundColor: `${COLOURS[2]}33`,
-				fill: true,
-				tension: 0.4,
+
 				borderWidth: 1,
 				borderRadius: 2,
-				pointRadius: 0,
-				pointHoverRadius: 4,
+
 				order: 2,
 				barPercentage: 0.8,
 				stack: 'expenses'
 			});
 		}
 
-		return [...baseDatasets, ...withdrawalDatasets];
+		const dataset: MixedDataset[] = [...baseDatasets, ...withdrawalDatasets];
+
+		return dataset;
 	}
 
 	onMount(() => {
@@ -199,7 +199,7 @@
 							padding: 20,
 							color: '#FFFFFF',
 							font: {
-								size: 14, // Slightly larger font
+								size: 14,
 								family: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif"
 							}
 						}

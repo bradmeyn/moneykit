@@ -99,7 +99,7 @@
 		</div>
 
 		<div class="flex flex-row lg:flex-col flex-wrap gap-4 min-w-[300px]">
-			<div class=" card">
+			<div class="card flex-1">
 				<h2 class="card-heading">Category Breakdown</h2>
 				<DoughnutChart data={chartData} formatter={formatAsCurrency} />
 				<LegendList data={chartData} formatter={formatAsCurrency} />

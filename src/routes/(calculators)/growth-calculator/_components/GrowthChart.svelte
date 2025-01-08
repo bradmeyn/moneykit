@@ -143,7 +143,20 @@
 						}
 					},
 					legend: {
-						display: false
+						position: 'top',
+						align: 'end',
+						labels: {
+							usePointStyle: true,
+							pointStyle: 'circle',
+							boxWidth: 8,
+							boxHeight: 8,
+							padding: 20,
+							color: '#FFFFFF',
+							font: {
+								size: 14,
+								family: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif"
+							}
+						}
 					}
 				}
 			}

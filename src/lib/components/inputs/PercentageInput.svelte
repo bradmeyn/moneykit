@@ -2,7 +2,6 @@
 	import { formatAsPercentage, parsePercentage } from '$lib/utils/formatters';
 	import Label from '$lib/components/ui/label/label.svelte';
 	import Input from '$lib/components/ui/input/input.svelte';
-	import { on } from 'svelte/events';
 
 	let {
 		value = $bindable(),

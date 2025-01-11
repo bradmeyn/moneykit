@@ -6,7 +6,7 @@
 	import Label from '$ui/label/label.svelte';
 	import Input from '$ui/input/input.svelte';
 	import { Button } from '$lib/components/ui/button';
-	import Separator from '$ui/separator/separator.svelte';
+	import Separator from '$lib/components/Separator.svelte';
 
 	let calculator = getCalculatorState();
 	let {
@@ -58,7 +58,7 @@
 	<div>
 		<CurrencyInput bind:value={calculator.savingsGoal} label="Savings Goal" id="savings-goal" />
 	</div>
-	<Separator />
+
 	<Button class=" w-full" variant="secondary" size="sm" onclick={toggleComparison}>
 		{isComparing ? 'Hide' : 'Compare'}</Button
 	>

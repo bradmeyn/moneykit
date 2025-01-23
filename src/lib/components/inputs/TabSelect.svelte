@@ -3,9 +3,11 @@
 
 	let {
 		value = $bindable(),
-		options
+		options,
+		name
 	}: {
 		value: string | number;
+		name: string;
 		options: {
 			value: string;
 			label: string;
@@ -15,11 +17,11 @@
 
 <div class="flex gap-2 rounded-md bg-ui-800 p-1">
 	{#each options as option}
-		<label class="flex-1 mb-0" for={`tabs-${option.value}`}>
+		<label class="flex-1 mb-0" for={`${name}-tabs-${option.value}`}>
 			<input
 				type="radio"
-				id={`tabs-${option.value}`}
-				name={`tabs-${option.value}`}
+				id={`${name}-tabs-${option.value}`}
+				name={`${name}-tabs-${option.value}`}
 				bind:group={value}
 				value={option.value}
 				checked={value == option.value}

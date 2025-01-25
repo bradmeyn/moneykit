@@ -23,7 +23,7 @@
 			<div class="flex gap-4">
 				<div class="card flex-1">
 					<h2 class="card-heading">Repayments</h2>
-					<p class="text-xl font-semibold">{formatAsCurrency(calc.projection.monthlyRepayment)}</p>
+					<p class="text-xl font-semibold">{formatAsCurrency(calc.projection.repayment)}</p>
 				</div>
 				<div class="card flex-1">
 					<h2 class="card-heading">Total Repayments</h2>
@@ -33,6 +33,12 @@
 					<h2 class="card-heading">Total Interest</h2>
 					<p class="text-xl font-semibold">{formatAsCurrency(calc.projection.totalInterest)}</p>
 				</div>
+				{#if calc.offsetBalance > 0}
+					<div class="card flex-1">
+						<h2 class="card-heading">Interest Saved</h2>
+						<p class="text-xl font-semibold">{formatAsCurrency(calc.projection.interestSaved)}</p>
+					</div>
+				{/if}
 			</div>
 			<div class="card">
 				<MortgageChart />

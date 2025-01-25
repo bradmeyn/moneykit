@@ -33,15 +33,16 @@
 		Filler
 	);
 
-	// Get years array from total months
 	let years = $derived(
-		Array.from({ length: Math.ceil(calculator.totalMonths / 12) }, (_, i) => i + 1)
+		Array.from(
+			{ length: Math.ceil(calculator.totalPeriods / calculator.periodsPerYear) },
+			(_, i) => i + 1
+		)
 	);
 
-	// Helper function to safely get month data or return 0
-	function getSafeMonthData(monthlyData: any[], index: number) {
-		return monthlyData && monthlyData[index]
-			? monthlyData[index]
+	function getSafePeriodData(periodData: any[], index: number) {
+		return periodData && periodData[index]
+			? periodData[index]
 			: { balance: 0, totalInterestPaid: 0 };
 	}
 
@@ -51,12 +52,11 @@
 		label: string,
 		options = {}
 	) {
-		const monthlyData = calculator.projection.monthlyBreakdown || [];
+		const periodData = calculator.projection.breakdown || [];
 
-		// Take the value at the end of each year
 		const data = Array.from({ length: years.length }, (_, i) => {
-			const monthIndex = (i + 1) * 12 - 1;
-			return getSafeMonthData(monthlyData, monthIndex)[valueKey];
+			const periodIndex = (i + 1) * calculator.periodsPerYear - 1;
+			return getSafePeriodData(periodData, periodIndex)[valueKey];
 		});
 
 		return {
@@ -105,6 +105,7 @@
 						display: true,
 						stacked: false,
 						position: 'left',
+						min: 0,
 						grid: {
 							display: true,
 							color: colors.slate[600]
@@ -160,7 +161,6 @@
 		});
 	});
 
-	// Update chart when projection changes
 	$effect(() => {
 		if (chart && chart.data) {
 			chart.data.datasets = [

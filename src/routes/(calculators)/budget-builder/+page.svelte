@@ -131,7 +131,7 @@
 {#snippet total(title: string, total: number)}
 	<h2 class="card-heading">{title}</h2>
 	<div class="flex items-baseline gap-2">
-		<p class={`text-3xl font-semibold tracking-tight ${total < 0 ? 'text-red-400' : ''}`}>
+		<p class={`text-2xl font-semibold  ${total < 0 ? 'text-red-400' : ''}`}>
 			{formatAsCurrency(total)}
 		</p>
 		<p class="text-muted text-lg font-medium">

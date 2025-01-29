@@ -3,44 +3,42 @@ import { setContext, getContext } from 'svelte';
 
 interface MortgageProjection {
 	repayment: number;
+	ioRepayment: number;
 	totalInterest: number;
 	totalRepayment: number;
 	remainingPrincipal: number;
-	interestSaved: number;
 	breakdown: Array<{
 		period: number;
 		principal: number;
 		interest: number;
 		balance: number;
 		totalInterestPaid: number;
-		interestSaved: number;
 		propertyValue: number;
+		extraRepayment: number;
 	}>;
 }
 
 class MortgageCalculator {
 	principal = $state(700000);
 	interestRate = $state(0.06);
-	interestType = $state<'Variable' | 'Fixed'>('Variable');
-	fixedTerm = $state('3');
 	loanType = $state<'Principal & Interest' | 'Interest Only'>('Principal & Interest');
 	ioTerm = $state('3');
-	offsetBalance = $state(0);
+	ioRate = $state(0.05);
 	term = $state(30);
 	propertyValue = $state(0);
-	propertyGrowthRate = $state(0.03);
+	propertyGrowthRate = $state(0.025);
 	frequency = $state<keyof typeof FREQUENCIES>('monthly');
-
-	effectivePrincipal = $derived(Math.max(0, this.principal - this.offsetBalance));
+	extraRepayments = $state(0);
 	totalMonths = $derived(this.term * 12);
 	periodsPerYear = $derived(FREQUENCIES[this.frequency].value);
 	totalPeriods = $derived(this.term * this.periodsPerYear);
 	periodRate = $derived(this.interestRate / this.periodsPerYear);
 	ioPeriods = $derived(parseInt(this.ioTerm) * this.periodsPerYear);
+	extraPerPeriod = $derived(this.extraRepayments);
 	projection = $derived(this.calculateProjection());
 
 	calculateProjection(): MortgageProjection {
-		if (this.effectivePrincipal === 0) {
+		if (this.principal === 0) {
 			return this.emptyProjection();
 		}
 
@@ -52,27 +50,24 @@ class MortgageCalculator {
 	}
 
 	calculatePrincipalAndInterest(): MortgageProjection {
-		const baseProjection =
-			this.offsetBalance > 0 ? this.calculateBaseProjection(this.principal) : null;
+		const payment = this.calculatePayment(this.principal, this.periodRate, this.totalPeriods);
 
-		const payment = this.calculatePayment(
-			this.effectivePrincipal,
-			this.periodRate,
-			this.totalPeriods
-		);
-
-		let remainingBalance = this.effectivePrincipal;
+		let remainingBalance = this.principal;
 		let totalInterest = 0;
 		const breakdown = [];
 		let currentPropertyValue = this.propertyValue;
 
 		for (let period = 1; period <= this.totalPeriods; period++) {
+			// First apply any extra repayments to reduce principal
+			const extraRepayment = remainingBalance > 0 ? this.extraPerPeriod : 0;
+			remainingBalance = Math.max(0, remainingBalance - extraRepayment);
+
+			// Then calculate interest on remaining balance
 			const interestPayment = remainingBalance * this.periodRate;
-			const principalPayment = payment - interestPayment;
-			const baseInterest = baseProjection ? baseProjection.breakdown[period - 1].interest : 0;
+			const principalPayment = Math.min(payment - interestPayment, remainingBalance);
 
 			totalInterest += interestPayment;
-			remainingBalance -= principalPayment;
+			remainingBalance = Math.max(0, remainingBalance - principalPayment);
 			currentPropertyValue *= 1 + this.propertyGrowthRate / this.periodsPerYear;
 
 			breakdown.push({
@@ -81,175 +76,80 @@ class MortgageCalculator {
 				interest: interestPayment,
 				balance: remainingBalance,
 				totalInterestPaid: totalInterest,
-				interestSaved: baseProjection ? baseInterest - interestPayment : 0,
-				propertyValue: currentPropertyValue
+				propertyValue: currentPropertyValue,
+				extraRepayment
 			});
+
+			if (remainingBalance === 0) {
+				break;
+			}
 		}
+
+		const actualTotalPeriods = breakdown.length;
+		const totalRepayment =
+			payment * actualTotalPeriods +
+			breakdown.reduce((sum, period) => sum + period.extraRepayment, 0);
 
 		return {
 			repayment: payment,
+			ioRepayment: 0,
 			totalInterest,
-			totalRepayment: payment * this.totalPeriods,
+			totalRepayment,
 			remainingPrincipal: remainingBalance,
-			interestSaved: baseProjection ? baseProjection.totalInterest - totalInterest : 0,
 			breakdown
 		};
 	}
 
 	calculateInterestOnly(): MortgageProjection {
-		const baseProjection =
-			this.offsetBalance > 0 ? this.calculateBaseProjection(this.principal) : null;
-
-		const ioPayment = this.effectivePrincipal * this.periodRate;
+		const ioPayment = this.principal * (this.ioRate / this.periodsPerYear);
 		let totalInterest = 0;
 		const breakdown = [];
 		let currentPropertyValue = this.propertyValue;
+		let remainingBalance = this.principal;
 
+		// IO Period
 		for (let period = 1; period <= this.ioPeriods; period++) {
-			const baseInterest = baseProjection ? baseProjection.breakdown[period - 1].interest : 0;
+			// First apply extra repayments to reduce principal
+			const extraRepayment = remainingBalance > 0 ? this.extraPerPeriod : 0;
+			remainingBalance = Math.max(0, remainingBalance - extraRepayment);
 
-			totalInterest += ioPayment;
+			// Then calculate interest on remaining balance
+			const interestPayment = remainingBalance * (this.ioRate / this.periodsPerYear);
+
+			totalInterest += interestPayment;
 			currentPropertyValue *= 1 + this.propertyGrowthRate / this.periodsPerYear;
 
 			breakdown.push({
 				period,
 				principal: 0,
-				interest: ioPayment,
-				balance: this.effectivePrincipal,
-				totalInterestPaid: totalInterest,
-				interestSaved: baseProjection ? baseInterest - ioPayment : 0,
-				propertyValue: currentPropertyValue
-			});
-		}
-
-		if (this.ioPeriods < this.totalPeriods) {
-			const remainingPeriods = this.totalPeriods - this.ioPeriods;
-			const piPayment = this.calculatePayment(
-				this.effectivePrincipal,
-				this.periodRate,
-				remainingPeriods
-			);
-
-			let remainingBalance = this.effectivePrincipal;
-
-			for (let period = this.ioPeriods + 1; period <= this.totalPeriods; period++) {
-				const interestPayment = remainingBalance * this.periodRate;
-				const principalPayment = piPayment - interestPayment;
-				const baseInterest = baseProjection ? baseProjection.breakdown[period - 1].interest : 0;
-
-				totalInterest += interestPayment;
-				remainingBalance -= principalPayment;
-				currentPropertyValue *= 1 + this.propertyGrowthRate / this.periodsPerYear;
-
-				breakdown.push({
-					period,
-					principal: principalPayment,
-					interest: interestPayment,
-					balance: remainingBalance,
-					totalInterestPaid: totalInterest,
-					interestSaved: baseProjection ? baseInterest - interestPayment : 0,
-					propertyValue: currentPropertyValue
-				});
-			}
-
-			return {
-				repayment: piPayment,
-				totalInterest,
-				totalRepayment: ioPayment * this.ioPeriods + piPayment * remainingPeriods,
-				remainingPrincipal: remainingBalance,
-				interestSaved: baseProjection ? baseProjection.totalInterest - totalInterest : 0,
-				breakdown
-			};
-		}
-
-		return {
-			repayment: ioPayment,
-			totalInterest,
-			totalRepayment: ioPayment * this.totalPeriods,
-			remainingPrincipal: this.effectivePrincipal,
-			interestSaved: baseProjection ? baseProjection.totalInterest - totalInterest : 0,
-			breakdown
-		};
-	}
-
-	calculateBaseProjection(principal: number): MortgageProjection {
-		if (this.loanType === 'Principal & Interest') {
-			return this.calculateBasePrincipalAndInterest(principal);
-		} else {
-			return this.calculateBaseInterestOnly(principal);
-		}
-	}
-
-	calculateBasePrincipalAndInterest(principal: number): MortgageProjection {
-		const payment = this.calculatePayment(principal, this.periodRate, this.totalPeriods);
-
-		let remainingBalance = principal;
-		let totalInterest = 0;
-		const breakdown = [];
-		let currentPropertyValue = this.propertyValue;
-
-		for (let period = 1; period <= this.totalPeriods; period++) {
-			const interestPayment = remainingBalance * this.periodRate;
-			const principalPayment = payment - interestPayment;
-
-			totalInterest += interestPayment;
-			remainingBalance -= principalPayment;
-			currentPropertyValue *= 1 + this.propertyGrowthRate / this.periodsPerYear;
-
-			breakdown.push({
-				period,
-				principal: principalPayment,
 				interest: interestPayment,
 				balance: remainingBalance,
 				totalInterestPaid: totalInterest,
-				interestSaved: 0,
-				propertyValue: currentPropertyValue
+				propertyValue: currentPropertyValue,
+				extraRepayment
 			});
+
+			if (remainingBalance === 0) {
+				break;
+			}
 		}
 
-		return {
-			repayment: payment,
-			totalInterest,
-			totalRepayment: payment * this.totalPeriods,
-			remainingPrincipal: remainingBalance,
-			interestSaved: 0,
-			breakdown
-		};
-	}
-
-	calculateBaseInterestOnly(principal: number): MortgageProjection {
-		const ioPayment = principal * this.periodRate;
-		let totalInterest = 0;
-		const breakdown = [];
-		let currentPropertyValue = this.propertyValue;
-
-		for (let period = 1; period <= this.ioPeriods; period++) {
-			totalInterest += ioPayment;
-			currentPropertyValue *= 1 + this.propertyGrowthRate / this.periodsPerYear;
-
-			breakdown.push({
-				period,
-				principal: 0,
-				interest: ioPayment,
-				balance: principal,
-				totalInterestPaid: totalInterest,
-				interestSaved: 0,
-				propertyValue: currentPropertyValue
-			});
-		}
-
-		if (this.ioPeriods < this.totalPeriods) {
+		// P&I Period (if applicable)
+		if (remainingBalance > 0 && this.ioPeriods < this.totalPeriods) {
 			const remainingPeriods = this.totalPeriods - this.ioPeriods;
-			const piPayment = this.calculatePayment(principal, this.periodRate, remainingPeriods);
-
-			let remainingBalance = principal;
+			const piPayment = this.calculatePayment(remainingBalance, this.periodRate, remainingPeriods);
 
 			for (let period = this.ioPeriods + 1; period <= this.totalPeriods; period++) {
+				// First apply extra repayments
+				const extraRepayment = remainingBalance > 0 ? this.extraPerPeriod : 0;
+				remainingBalance = Math.max(0, remainingBalance - extraRepayment);
+
+				// Then calculate interest and principal payments
 				const interestPayment = remainingBalance * this.periodRate;
-				const principalPayment = piPayment - interestPayment;
+				const principalPayment = Math.min(piPayment - interestPayment, remainingBalance);
 
 				totalInterest += interestPayment;
-				remainingBalance -= principalPayment;
+				remainingBalance = Math.max(0, remainingBalance - principalPayment);
 				currentPropertyValue *= 1 + this.propertyGrowthRate / this.periodsPerYear;
 
 				breakdown.push({
@@ -258,27 +158,41 @@ class MortgageCalculator {
 					interest: interestPayment,
 					balance: remainingBalance,
 					totalInterestPaid: totalInterest,
-					interestSaved: 0,
-					propertyValue: currentPropertyValue
+					propertyValue: currentPropertyValue,
+					extraRepayment
 				});
+
+				if (remainingBalance === 0) {
+					break;
+				}
 			}
+
+			const actualPIPeriods = breakdown.length - this.ioPeriods;
+			const totalRepayment =
+				ioPayment * this.ioPeriods +
+				piPayment * actualPIPeriods +
+				breakdown.reduce((sum, period) => sum + period.extraRepayment, 0);
 
 			return {
 				repayment: piPayment,
+				ioRepayment: ioPayment,
 				totalInterest,
-				totalRepayment: ioPayment * this.ioPeriods + piPayment * remainingPeriods,
+				totalRepayment,
 				remainingPrincipal: remainingBalance,
-				interestSaved: 0,
 				breakdown
 			};
 		}
 
+		const totalRepayment =
+			ioPayment * breakdown.length +
+			breakdown.reduce((sum, period) => sum + period.extraRepayment, 0);
+
 		return {
-			repayment: ioPayment,
+			repayment: 0,
+			ioRepayment: ioPayment,
 			totalInterest,
-			totalRepayment: ioPayment * this.totalPeriods,
-			remainingPrincipal: principal,
-			interestSaved: 0,
+			totalRepayment,
+			remainingPrincipal: remainingBalance,
 			breakdown
 		};
 	}
@@ -293,10 +207,10 @@ class MortgageCalculator {
 	emptyProjection(): MortgageProjection {
 		return {
 			repayment: 0,
+			ioRepayment: 0,
 			totalInterest: 0,
 			totalRepayment: 0,
 			remainingPrincipal: 0,
-			interestSaved: 0,
 			breakdown: []
 		};
 	}

@@ -42,8 +42,8 @@
 		<Inputs />
 
 		<div class="w-full space-y-4">
-			<div class="flex gap-4">
-				<div class="card flex-1">
+			<div class="grid grid-cols-2 gap-4">
+				<div class="card col-span-2 md:col-span-1">
 					<h2 class="card-heading">FIRE Number</h2>
 					<div class="text-2xl font-semibold">
 						{formatAsCurrency(calculator.fireNumber)}
@@ -51,7 +51,7 @@
 					<div class="text-sm text-muted">25x Annual Expenses</div>
 				</div>
 
-				<div class="card flex-1">
+				<div class="card col-span-2 md:col-span-1">
 					<h2 class="card-heading">FIRE Age</h2>
 					<div class="text-2xl font-semibold">
 						<span>{calculator.yearsToFire + calculator.age}</span>

@@ -47,7 +47,7 @@
 	}
 
 	function createDataset(
-		valueKey: 'balance' | 'totalInterestPaid',
+		valueKey: 'balance' | 'totalInterestPaid' | 'propertyValue',
 		color: string,
 		label: string,
 		options = {}
@@ -80,7 +80,10 @@
 				labels: years,
 				datasets: [
 					createDataset('balance', COLOURS[0], 'Loan Balance'),
-					createDataset('totalInterestPaid', COLOURS[1], 'Total Interest', { fill: false })
+					createDataset('totalInterestPaid', COLOURS[1], 'Total Interest'),
+					...(calculator.propertyValue > 0
+						? [createDataset('propertyValue', COLOURS[2], 'Property Value')]
+						: [])
 				]
 			},
 			options: {
@@ -165,7 +168,10 @@
 		if (chart && chart.data) {
 			chart.data.datasets = [
 				createDataset('balance', COLOURS[0], 'Loan Balance'),
-				createDataset('totalInterestPaid', COLOURS[1], 'Total Interest')
+				createDataset('totalInterestPaid', COLOURS[1], 'Total Interest'),
+				...(calculator.propertyValue > 0
+					? [createDataset('propertyValue', COLOURS[2], 'Property Value')]
+					: [])
 			];
 			chart.data.labels = years;
 			chart.update();

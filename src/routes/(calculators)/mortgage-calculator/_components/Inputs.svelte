@@ -4,16 +4,12 @@
 	import CurrencyInput from '$lib/components/inputs/CurrencyInput.svelte';
 	import Label from '$ui/label/label.svelte';
 	import * as Select from '$lib/components/ui/select';
+	import Button from '$ui/button/button.svelte';
 	import TabSelect from '$lib/components/inputs/TabSelect.svelte';
 	import Slider from '$ui/slider/slider.svelte';
 	import { FREQUENCIES } from '$lib/constants/frequencies';
 	import Separator from '$lib/components/Separator.svelte';
 	let calc = getCalculatorState();
-
-	const interestTypeOptions = [
-		{ value: 'Variable', label: 'Variable' },
-		{ value: 'Fixed', label: 'Fixed' }
-	];
 
 	const loanTypeOptions = [
 		{ value: 'Principal & Interest', label: 'Principal & Interest' },
@@ -24,6 +20,12 @@
 		value: (i + 1).toString(),
 		label: (i + 1).toString()
 	}));
+
+	let includeProperty = $state(false);
+	function toggleProperty() {
+		calc.propertyValue = includeProperty ? 0 : 800000;
+		includeProperty = !includeProperty;
+	}
 </script>
 
 <aside class="max-w-[1000px] min-w-[300px] space-y-4">
@@ -36,6 +38,7 @@
 		<div class="pb-1">{calc.term} {calc.term > 1 ? 'years' : 'year'}</div>
 		<Slider type="single" bind:value={calc.term} max={30} min={1} step={1} />
 	</div>
+	<Separator />
 	<div>
 		<Label for="repayment-frequency">Repayment Frequency</Label>
 		<Select.Root name="repayment-frequency" type="single" bind:value={calc.frequency}>
@@ -49,33 +52,31 @@
 			</Select.Content>
 		</Select.Root>
 	</div>
+	<CurrencyInput bind:value={calc.extraRepayments} id="extra-repayment" label="Extra Repayments" />
+	<Separator />
 	<div>
 		<Label for="loan-type">Loan Type</Label>
 		<TabSelect bind:value={calc.loanType} options={loanTypeOptions} name={'type'} />
 	</div>
 
 	{#if calc.loanType === 'Interest Only'}
+		<PercentageInput bind:value={calc.ioRate} label="Interest Only Rate" />
 		<div class="space-y-2">
 			<Label for="io-term">Interest Only Period (years)</Label>
 			<TabSelect bind:value={calc.ioTerm} options={periodOptions} name="io-period" />
 		</div>
 	{/if}
-	<div>
-		<Label for="interest-type">Interest Type</Label>
-		<TabSelect bind:value={calc.interestType} options={interestTypeOptions} name="interest-type" />
-	</div>
-	{#if calc.interestType === 'Fixed'}
-		<div class="space-y-2">
-			<Label for="fixed-term">Fixed Term (years)</Label>
-			<TabSelect bind:value={calc.fixedTerm} options={periodOptions} name="fixed-term" />
-		</div>
-	{/if}
-	<CurrencyInput bind:value={calc.offsetBalance} id="offset" label="Offset Account" />
+
 	<Separator />
-	<CurrencyInput bind:value={calc.propertyValue} id="property-value" label="Property Value" />
-	<PercentageInput
-		bind:value={calc.propertyGrowthRate}
-		id="property-growth"
-		label="Expected Growth Rate"
-	/>
+	<Button class=" w-full" variant="secondary" size="sm" onclick={toggleProperty}>
+		{includeProperty ? 'Hide Property' : 'Include Property'}</Button
+	>
+	{#if includeProperty}
+		<CurrencyInput bind:value={calc.propertyValue} id="property-value" label="Property Value" />
+		<PercentageInput
+			bind:value={calc.propertyGrowthRate}
+			id="property-growth"
+			label="Property Growth Rate"
+		/>
+	{/if}
 </aside>

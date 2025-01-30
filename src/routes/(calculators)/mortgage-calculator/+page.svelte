@@ -27,9 +27,18 @@
 		<div class="w-full">
 			<div>
 				<div class="card">
-					<div class="flex justify-between">
-						<h2 class="card-heading">Outcome</h2>
-
+					<div class="flex justify-between mb-4">
+						<div>
+							<h2 class="card-heading">{FREQUENCIES[calc.frequency].label} Repayment</h2>
+							<p class="text-2xl font-semibold">
+								{formatAsCurrency(calc.projection.repayment + calc.extraRepayments)}
+							</p>
+							{#if calc.extraRepayments > 0}
+								<small class="text-muted">
+									Includes additional repayment of {formatAsCurrency(calc.extraRepayments)}
+								</small>
+							{/if}
+						</div>
 						<div class="flex items-center gap-2">
 							<Tabs.Root
 								value={selectedView}
@@ -45,44 +54,28 @@
 						</div>
 					</div>
 
-					<div class="space-y-4">
-						<div class="flex gap-16">
+					<div class="flex gap-8">
+						{#if calc.loanType === 'Interest Only'}
 							<div>
-								<p class="text-muted">{FREQUENCIES[calc.frequency].label} Repayment</p>
+								<p class="text-muted">Interest Only Repayment</p>
 								<p class="text-xl font-semibold">
-									{formatAsCurrency(calc.projection.repayment + calc.extraRepayments)}
-								</p>
-								{#if calc.extraRepayments > 0}
-									<small class="text-muted"
-										>Includes additional repayment of {formatAsCurrency(
-											calc.extraRepayments
-										)}</small
-									>
-								{/if}
-							</div>
-							{#if calc.loanType === 'Interest Only'}
-								<div>
-									<p class="text-muted">Interest Only Repayment</p>
-									<p class="text-xl font-semibold">
-										{formatAsCurrency(calc.projection.ioRepayment)}
-									</p>
-								</div>
-							{/if}
-						</div>
-						<div class="flex gap-16">
-							<div>
-								<p class="text-muted">Total Repayments</p>
-								<p class="text-xl font-semibold">
-									{formatAsCurrency(calc.projection.totalRepayment)}
+									{formatAsCurrency(calc.projection.ioRepayment)}
 								</p>
 							</div>
+						{/if}
 
-							<div>
-								<p class="text-muted">Total Interest</p>
-								<p class="text-xl font-semibold">
-									{formatAsCurrency(calc.projection.totalInterest)}
-								</p>
-							</div>
+						<div>
+							<p class="text-muted">Total Repayments</p>
+							<p class="text-xl font-semibold">
+								{formatAsCurrency(calc.projection.totalRepayment)}
+							</p>
+						</div>
+
+						<div>
+							<p class="text-muted">Total Interest</p>
+							<p class="text-xl font-semibold">
+								{formatAsCurrency(calc.projection.totalInterest)}
+							</p>
 						</div>
 					</div>
 

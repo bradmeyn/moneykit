@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { getCalculatorState } from '../calculator.svelte';
 	import { formatAsCurrency } from '$lib/utils/formatters';
-
+	import ScrollArea from '$ui/scroll-area/scroll-area.svelte';
 	const calc = getCalculatorState();
 
 	type AnnualDataType = {
@@ -50,83 +50,29 @@
 	});
 </script>
 
-<div class="w-full overflow-auto max-h-[400px]">
+<ScrollArea class="h-[400px] w-full mt-4">
 	<table class="w-full">
-		<thead class="sticky top-0 bg-gray-900">
-			<tr class="text-left border-b border-gray-800">
-				<th class="p-2">Year</th>
-				<th class="p-2">Opening Balance</th>
-				<th class="p-2">Principal</th>
-				<th class="p-2">Interest</th>
-				<th class="p-2">Extra Repayments</th>
-				<th class="p-2">Closing Balance</th>
+		<thead class="sticky top-0 bg-ui-900">
+			<tr>
+				<th>Year</th>
+				<th>Opening Balance</th>
+				<th>Principal</th>
+				<th>Interest</th>
+				<th>Extra Repayments</th>
+				<th>Closing Balance</th>
 			</tr>
 		</thead>
 		<tbody>
 			{#each annualData as data}
-				<tr class="border-b border-gray-800">
-					<td class="p-2">{data.year}</td>
-					<td class="p-2">{formatAsCurrency(data.startBalance)}</td>
-					<td class="p-2">{formatAsCurrency(data.principal)}</td>
-					<td class="p-2">{formatAsCurrency(data.interest)}</td>
-					<td class="p-2">{formatAsCurrency(data.extraRepayments)}</td>
-					<td class="p-2">{formatAsCurrency(data.endBalance)}</td>
+				<tr>
+					<td>{data.year}</td>
+					<td>{formatAsCurrency(data.startBalance)}</td>
+					<td>{formatAsCurrency(data.principal)}</td>
+					<td>{formatAsCurrency(data.interest)}</td>
+					<td>{formatAsCurrency(data.extraRepayments)}</td>
+					<td>{formatAsCurrency(data.endBalance)}</td>
 				</tr>
 			{/each}
 		</tbody>
 	</table>
-</div>
-
-<div class="w-full overflow-auto max-h-[400px]">
-	<table class="w-full">
-		<thead class="sticky top-0 bg-gray-900">
-			<tr class="text-left border-b border-gray-800">
-				<th class="p-2">Year</th>
-				<th class="p-2">Opening Balance</th>
-				<th class="p-2">Principal</th>
-				<th class="p-2">Interest</th>
-				<th class="p-2">Extra Repayments</th>
-				<th class="p-2">Closing Balance</th>
-			</tr>
-		</thead>
-		<tbody>
-			{#each annualData as data}
-				<tr class="border-b border-gray-800">
-					<td class="p-2">{data.year}</td>
-					<td class="p-2">{formatAsCurrency(data.startBalance)}</td>
-					<td class="p-2">{formatAsCurrency(data.principal)}</td>
-					<td class="p-2">{formatAsCurrency(data.interest)}</td>
-					<td class="p-2">{formatAsCurrency(data.extraRepayments)}</td>
-					<td class="p-2">{formatAsCurrency(data.endBalance)}</td>
-				</tr>
-			{/each}
-		</tbody>
-	</table>
-</div>
-
-<div class="w-full overflow-auto max-h-[400px]">
-	<table class="w-full">
-		<thead class="sticky top-0 bg-gray-900">
-			<tr class="text-left border-b border-gray-800">
-				<th class="p-2">Year</th>
-				<th class="p-2">Opening Balance</th>
-				<th class="p-2">Principal</th>
-				<th class="p-2">Interest</th>
-				<th class="p-2">Extra Repayments</th>
-				<th class="p-2">Closing Balance</th>
-			</tr>
-		</thead>
-		<tbody>
-			{#each annualData as data}
-				<tr class="border-b border-gray-800">
-					<td class="p-2">{data.year}</td>
-					<td class="p-2">{formatAsCurrency(data.startBalance)}</td>
-					<td class="p-2">{formatAsCurrency(data.principal)}</td>
-					<td class="p-2">{formatAsCurrency(data.interest)}</td>
-					<td class="p-2">{formatAsCurrency(data.extraRepayments)}</td>
-					<td class="p-2">{formatAsCurrency(data.endBalance)}</td>
-				</tr>
-			{/each}
-		</tbody>
-	</table>
-</div>
+</ScrollArea>

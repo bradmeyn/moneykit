@@ -120,7 +120,7 @@
 							color: colors.slate[200]
 						},
 						title: {
-							display: true,
+							display: false,
 							text: 'Amount',
 							font: { size: 16, family: 'sans-serif' },
 							color: colors.slate[200]

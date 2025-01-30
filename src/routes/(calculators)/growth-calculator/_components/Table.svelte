@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { formatAsCurrency } from '$lib/utils/formatters';
 	import type { AnnualData } from '../calculator.svelte';
-
+	import ScrollArea from '$ui/scroll-area/scroll-area.svelte';
 	let {
 		annualData
 	}: {
@@ -9,9 +9,9 @@
 	} = $props();
 </script>
 
-<div class="w-full">
-	<table>
-		<thead>
+<ScrollArea class="h-[400px] w-full mt-4">
+	<table class="w-full">
+		<thead class="sticky top-0 bg-ui-900">
 			<tr>
 				<th>Year</th>
 				<th>Start</th>
@@ -32,4 +32,4 @@
 			{/each}
 		</tbody>
 	</table>
-</div>
+</ScrollArea>

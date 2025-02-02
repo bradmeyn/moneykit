@@ -4,12 +4,11 @@
 	import { formatAsCurrency } from '$lib/utils/formatters';
 	import BudgetTable from './_components/BudgetTable.svelte';
 	import BudgetAccordion from './_components/BudgetAccordion.svelte';
-	import { calculateCategoryTotal, downloadCsv, setBudgetState } from './budget.svelte';
+	import { calculateCategoryTotal, setBudgetState } from './budget.svelte';
 	import BarChart from '$lib/components/charts/BarChart.svelte';
 	import { FREQUENCIES } from '$lib/constants/frequencies';
 	import FrequencySelect from '$lib/components/inputs/FrequencySelect.svelte';
-	import { Button } from '$lib/components/ui/button';
-	import { Download } from 'lucide-svelte';
+	import DownloadButton from '$lib/components/DownloadButton.svelte';
 
 	const budget = setBudgetState();
 
@@ -19,14 +18,10 @@
 			value: item.total
 		}))
 	);
-
-	function handleDownload() {
-		downloadCsv(budget.budgetItems);
-	}
 </script>
 
 <svelte:head>
-	<title>Budget Builder</title>
+	<title>MoneyKit | Budget Builder</title>
 </svelte:head>
 
 <main class="flex flex-col flex-1 container text-white max-w-[1200px]">
@@ -42,9 +37,7 @@
 				/>
 			</div>
 
-			<Button size="icon" variant="outline" class="hover:bg-primary" onclick={handleDownload}
-				><Download /></Button
-			>
+			<DownloadButton filename="budget.csv" data={budget.getDownloadData()} />
 		</div>
 	</div>
 	<div class="flex flex-col lg:flex-row gap-4 w-full">
@@ -131,7 +124,7 @@
 {#snippet total(title: string, total: number)}
 	<h2 class="card-heading">{title}</h2>
 	<div class="flex items-baseline gap-2">
-		<p class={`text-3xl font-semibold tracking-tight ${total < 0 ? 'text-red-400' : ''}`}>
+		<p class={`text-2xl font-semibold  ${total < 0 ? 'text-red-400' : ''}`}>
 			{formatAsCurrency(total)}
 		</p>
 		<p class="text-muted text-lg font-medium">

@@ -21,7 +21,6 @@
 				<span class="text-transparent bg-clip-text bg-gradient-to-r from-primary-light to-primary"
 					>toolkit</span
 				>
-				<!-- Decorative underline -->
 			</span>
 		</h1>
 		<p class="text-muted text-xl mb-12 max-w-2xl mx-auto">

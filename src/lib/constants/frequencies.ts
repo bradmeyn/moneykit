@@ -7,8 +7,12 @@ export const FREQUENCIES = {
 	annually: { label: 'Annually', value: 1, singular: 'year' }
 } as const;
 
-// Define the type based on the object keys
 export type FrequencyType = keyof typeof FREQUENCIES;
 
-// Now type the enum array
 export const FREQUENCY_ENUM = Object.keys(FREQUENCIES) as FrequencyType[];
+
+export const REPAYMENT_FREQUENCIES = {
+	weekly: { label: 'Weekly', value: 52, singular: 'week' },
+	fortnightly: { label: 'Fortnightly', value: 26, singular: 'fortnight' },
+	monthly: { label: 'Monthly', value: 12, singular: 'month' }
+} as const;

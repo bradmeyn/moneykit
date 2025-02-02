@@ -4,7 +4,6 @@
 	import { CheckCircle, XCircle } from 'lucide-svelte';
 
 	let calculator = getCalculatorState();
-	let { isComparing }: { isComparing: boolean } = $props();
 
 	type GoalStatus = {
 		text: string;
@@ -105,16 +104,15 @@
 	]);
 </script>
 
-<div class="overflow-x-auto">
+<div class="card">
+	<h2 class="card-heading">Comparison</h2>
 	<table class="w-full">
 		<thead>
 			<tr>
 				<th class="text-left p-2">After {calculator.years} Years</th>
 				<th class="text-right p-2">Outcome</th>
-				{#if isComparing}
-					<th class="text-right p-2">Comparison</th>
-					<th class="text-right p-2">Difference</th>
-				{/if}
+				<th class="text-right p-2">Comparison</th>
+				<th class="text-right p-2">Difference</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -135,31 +133,30 @@
 							{formatAsCurrency(row.baseValue())}
 						{/if}
 					</td>
-					{#if isComparing}
-						<td class="text-right p-2">
-							{#if row.formatValue}
-								<div class="flex items-center justify-end gap-2">
-									{#if row.formatValue(row.comparisonValue()).achieved}
-										<CheckCircle class="w-4 h-4 text-emerald-500" />
-									{:else}
-										<XCircle class="w-4 h-4 text-red-500" />
-									{/if}
-									<span>{row.formatValue(row.comparisonValue()).text}</span>
-								</div>
-							{:else}
-								{formatAsCurrency(row.comparisonValue())}
-							{/if}
-						</td>
-						<td class="text-right p-2">
-							{#if row.showDifference}
-								{row.formatDifference
-									? row.formatDifference()
-									: formatAsCurrency(row.comparisonValue() - row.baseValue())}
-							{:else}
-								-
-							{/if}
-						</td>
-					{/if}
+
+					<td class="text-right p-2">
+						{#if row.formatValue}
+							<div class="flex items-center justify-end gap-2">
+								{#if row.formatValue(row.comparisonValue()).achieved}
+									<CheckCircle class="w-4 h-4 text-emerald-500" />
+								{:else}
+									<XCircle class="w-4 h-4 text-red-500" />
+								{/if}
+								<span>{row.formatValue(row.comparisonValue()).text}</span>
+							</div>
+						{:else}
+							{formatAsCurrency(row.comparisonValue())}
+						{/if}
+					</td>
+					<td class="text-right p-2">
+						{#if row.showDifference}
+							{row.formatDifference
+								? row.formatDifference()
+								: formatAsCurrency(row.comparisonValue() - row.baseValue())}
+						{:else}
+							-
+						{/if}
+					</td>
 				</tr>
 			{/each}
 		</tbody>

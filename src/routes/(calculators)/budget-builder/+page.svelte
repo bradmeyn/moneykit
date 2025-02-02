@@ -21,7 +21,7 @@
 </script>
 
 <svelte:head>
-	<title>Budget Builder</title>
+	<title>MoneyKit | Budget Builder</title>
 </svelte:head>
 
 <main class="flex flex-col flex-1 container text-white max-w-[1200px]">

@@ -4,12 +4,11 @@
 	import { formatAsCurrency } from '$lib/utils/formatters';
 	import BudgetTable from './_components/BudgetTable.svelte';
 	import BudgetAccordion from './_components/BudgetAccordion.svelte';
-	import { calculateCategoryTotal, downloadCsv, setBudgetState } from './budget.svelte';
+	import { calculateCategoryTotal, setBudgetState } from './budget.svelte';
 	import BarChart from '$lib/components/charts/BarChart.svelte';
 	import { FREQUENCIES } from '$lib/constants/frequencies';
 	import FrequencySelect from '$lib/components/inputs/FrequencySelect.svelte';
-	import { Button } from '$lib/components/ui/button';
-	import { Download } from 'lucide-svelte';
+	import DownloadButton from '$lib/components/DownloadButton.svelte';
 
 	const budget = setBudgetState();
 
@@ -19,10 +18,6 @@
 			value: item.total
 		}))
 	);
-
-	function handleDownload() {
-		downloadCsv(budget.budgetItems);
-	}
 </script>
 
 <svelte:head>
@@ -42,9 +37,7 @@
 				/>
 			</div>
 
-			<Button size="icon" variant="outline" class="hover:bg-primary" onclick={handleDownload}
-				><Download /></Button
-			>
+			<DownloadButton filename="budget.csv" data={budget.getDownloadData()} />
 		</div>
 	</div>
 	<div class="flex flex-col lg:flex-row gap-4 w-full">

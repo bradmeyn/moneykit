@@ -155,6 +155,49 @@ function createCalculatorState() {
 		return yearReached === -1 ? null : yearReached + 1;
 	});
 
+	function getDownloadData() {
+		return {
+			headers: ['Year', 'Starting Value', 'Interest Earned', 'Contribution', 'Total Value'],
+			rows: baseResult.annualData.map((data) => [
+				data.year,
+				data.startingValue,
+				data.yearlyInterest,
+				data.yearlyContribution,
+				data.endingValue
+			])
+		};
+	}
+
+	function getDownloadDataWithComparison() {
+		return {
+			headers: [
+				'Year',
+				'Starting Value',
+				'Interest Earned',
+				'Contribution',
+				'Total Value',
+				'Comparison Starting Value',
+				'Comparison Interest',
+				'Comparison Contribution',
+				'Comparison Total'
+			],
+			rows: baseResult.annualData.map((data, index) => {
+				const compData = comparisonResult.annualData[index];
+				return [
+					data.year,
+					data.startingValue,
+					data.yearlyInterest,
+					data.yearlyContribution,
+					data.endingValue,
+					compData?.startingValue || 0,
+					compData?.yearlyInterest || 0,
+					compData?.yearlyContribution || 0,
+					compData?.endingValue || 0
+				];
+			})
+		};
+	}
+
 	return {
 		get principal() {
 			return principal;
@@ -200,7 +243,9 @@ function createCalculatorState() {
 		},
 		get comparisonYearsToGoal() {
 			return comparisonYearsToGoal;
-		}
+		},
+		getDownloadData,
+		getDownloadDataWithComparison
 	};
 }
 

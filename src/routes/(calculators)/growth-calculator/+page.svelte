@@ -4,17 +4,20 @@
 	import { Button } from '$lib/components/ui/button';
 	import { Download } from 'lucide-svelte';
 	import { formatAsCurrency } from '$lib/utils/formatters';
-
 	import Inputs from './_components/Inputs.svelte';
 	import GrowthChart from './_components/GrowthChart.svelte';
 	import Table from './_components/Table.svelte';
-	import SummaryTable from './_components/SummaryTable.svelte';
+	import ComparisonTable from './_components/ComparisonTable.svelte';
+	import DownloadButton from '$lib/components/DownloadButton.svelte';
 
 	setCalculatorState();
 	let calculator = getCalculatorState();
 	let selectedView = $state('chart');
-
 	let isComparing = $state(false);
+
+	let downloadData = $derived(
+		isComparing ? calculator.getDownloadDataWithComparison() : calculator.getDownloadData()
+	);
 </script>
 
 <svelte:head>
@@ -31,19 +34,36 @@
 		<Inputs bind:isComparing />
 
 		<div class="w-full space-y-4">
-			<div class="card">
-				<h2 class="card-heading">Overview</h2>
-				<SummaryTable {isComparing} />
-			</div>
+			{#if isComparing}
+				<ComparisonTable />
+			{/if}
 
 			<div class="card">
 				<div class="flex flex-col md:flex-row gap-4 justify-between mb-3">
-					<div>
-						<h2 class="card-heading">Total value</h2>
-						<p class="font-semibold text-2xl md:text-2xl">
-							{formatAsCurrency(calculator.baseResult.totalValue)}
-						</p>
+					<div class="space-y-4">
+						<div>
+							<h2 class="card-heading">Total after {calculator.years} Years</h2>
+							<p class="font-semibold text-2xl md:text-2xl">
+								{formatAsCurrency(calculator.baseResult.totalValue)}
+							</p>
+						</div>
+						<div class="flex gap-8">
+							<div>
+								<p class="text-muted">Total Contributions</p>
+								<p class="text-xl font-semibold">
+									{formatAsCurrency(calculator.baseResult.totalContributions)}
+								</p>
+							</div>
+
+							<div>
+								<p class="text-muted">Total Interest</p>
+								<p class="text-xl font-semibold">
+									{formatAsCurrency(calculator.baseResult.totalInterest)}
+								</p>
+							</div>
+						</div>
 					</div>
+
 					<div class="flex items-center gap-2">
 						<Tabs.Root
 							value={selectedView}
@@ -55,7 +75,7 @@
 								<Tabs.Trigger value="table">Table</Tabs.Trigger>
 							</Tabs.List>
 						</Tabs.Root>
-						<Button size="icon" variant="outline" class="hover:bg-primary"><Download /></Button>
+						<DownloadButton filename="growth-data.csv" data={downloadData} />
 					</div>
 				</div>
 

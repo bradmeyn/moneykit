@@ -1,33 +1,22 @@
 <script lang="ts">
 	import { setCalculatorState, getCalculatorState } from './calculator.svelte';
 	import * as Tabs from '$lib/components/ui/tabs';
-	import { Button } from '$lib/components/ui/button';
 	import { formatAsCurrency } from '$lib/utils/formatters';
-	import { Download } from 'lucide-svelte';
 	import Inputs from './_components/Inputs.svelte';
 	import FireChart from './_components/FireChart.svelte';
+	import FireTable from './_components/FireTable.svelte';
+	import DownloadButton from '$lib/components/DownloadButton.svelte';
 
 	setCalculatorState();
 	let calculator = getCalculatorState();
 	let selectedView = $state('chart');
 
-	// Function to generate CSV data for download
-	function downloadData() {
-		const csvContent = [
-			['Age', 'Investment Value', 'FIRE Target'],
-			...calculator.calculationData.map((d) => [d.age, d.investmentValue, d.fireTarget])
-		]
-			.map((row) => row.join(','))
-			.join('\n');
-
-		const blob = new Blob([csvContent], { type: 'text/csv' });
-		const url = window.URL.createObjectURL(blob);
-		const a = document.createElement('a');
-		a.href = url;
-		a.download = 'fire-calculation.csv';
-		a.click();
-		window.URL.revokeObjectURL(url);
-	}
+	let downloadData = $derived.by(() => {
+		return {
+			headers: ['Age', 'Investment Value', 'FIRE Target'],
+			rows: calculator.calculationData.map((d) => [d.age, d.investmentValue, d.fireTarget])
+		};
+	});
 </script>
 
 <svelte:head>
@@ -41,91 +30,50 @@
 	<section class="flex flex-col lg:flex-row gap-8">
 		<Inputs />
 
-		<div class="w-full space-y-4">
-			<div class="grid grid-cols-2 gap-4">
-				<div class="card col-span-2 md:col-span-1">
-					<h2 class="card-heading">FIRE Number</h2>
-					<div class="text-2xl font-semibold">
-						{formatAsCurrency(calculator.fireNumber)}
-					</div>
-					<div class="text-sm text-muted">25x Annual Expenses</div>
-				</div>
-
-				<div class="card col-span-2 md:col-span-1">
-					<h2 class="card-heading">FIRE Age</h2>
-					<div class="text-2xl font-semibold">
-						<span>{calculator.yearsToFire + calculator.age}</span>
-					</div>
-					<div class="text-sm text-muted">{calculator.yearsToFire} years</div>
-				</div>
-			</div>
-
-			<div class="card">
-				<div class="flex flex-col md:flex-row gap-4 justify-end mb-3">
-					<div class="flex items-center gap-2">
-						<Tabs.Root
-							value={selectedView}
-							onValueChange={(value) => (selectedView = value)}
-							class="w-[200px]"
-						>
-							<Tabs.List class="grid w-full grid-cols-2">
-								<Tabs.Trigger value="chart">Chart</Tabs.Trigger>
-								<Tabs.Trigger value="table">Table</Tabs.Trigger>
-							</Tabs.List>
-						</Tabs.Root>
-						<Button size="icon" variant="outline" class="hover:bg-primary" onclick={downloadData}>
-							<Download />
-						</Button>
-					</div>
-				</div>
-
-				<Tabs.Root value={selectedView} class="mt-4">
-					<Tabs.Content value="chart" class="m-0">
-						<FireChart />
-					</Tabs.Content>
-
-					<Tabs.Content value="table" class="m-0">
-						<div class="overflow-x-auto">
-							<table class="w-full">
-								<thead>
-									<tr>
-										<th class="text-left p-2">Age</th>
-										<th class="text-right p-2">Investment Value</th>
-										<th class="text-right p-2">FIRE Target</th>
-										<th class="text-right p-2">Expenses</th>
-										{#if calculator.secondaryIncome > 0}
-											<th class="text-right p-2">Secondary Income</th>
-											<th class="text-right p-2">Net Withdrawal</th>
-										{/if}
-									</tr>
-								</thead>
-								<tbody>
-									{#each calculator.calculationData as row}
-										<tr class="border-t border-gray-700">
-											<td class="p-2">{row.age}</td>
-											<td class="text-right p-2">{formatAsCurrency(row.investmentValue)}</td>
-											<td class="text-right p-2">{formatAsCurrency(row.fireTarget)}</td>
-											<td class="text-right p-2"
-												>{row.withdrawal ? formatAsCurrency(row.withdrawal) : '-'}</td
-											>
-											{#if calculator.secondaryIncome > 0}
-												<td class="text-right p-2"
-													>{row.secondaryIncome ? formatAsCurrency(row.secondaryIncome) : '-'}</td
-												>
-												<td class="text-right p-2"
-													>{row.withdrawal
-														? formatAsCurrency(row.withdrawal - row.secondaryIncome)
-														: '-'}</td
-												>
-											{/if}
-										</tr>
-									{/each}
-								</tbody>
-							</table>
+		<div class="card w-full">
+			<h2 class="card-heading mb-1">Outcome</h2>
+			<div class="flex flex-col md:flex-row gap-4 justify-between mb-3">
+				<div class="grid grid-cols-2 gap-16">
+					<div class="col-span-2 md:col-span-1">
+						<h3 class="text-muted">FIRE Number</h3>
+						<div class="text-2xl font-semibold">
+							{formatAsCurrency(calculator.fireNumber)}
 						</div>
-					</Tabs.Content>
-				</Tabs.Root>
+						<div class="text-sm text-muted">25x Annual Expenses</div>
+					</div>
+
+					<div class="col-span-2 md:col-span-1">
+						<h3 class="text-muted">FIRE Age</h3>
+						<div class="text-2xl font-semibold">
+							<span>{calculator.yearsToFire + calculator.age}</span>
+						</div>
+						<div class="text-sm text-muted">{calculator.yearsToFire} years</div>
+					</div>
+				</div>
+				<div class="flex items-center gap-2">
+					<Tabs.Root
+						value={selectedView}
+						onValueChange={(value) => (selectedView = value)}
+						class="w-[200px]"
+					>
+						<Tabs.List class="grid w-full grid-cols-2">
+							<Tabs.Trigger value="chart">Chart</Tabs.Trigger>
+							<Tabs.Trigger value="table">Table</Tabs.Trigger>
+						</Tabs.List>
+					</Tabs.Root>
+					<DownloadButton data={downloadData} filename="fire-calculation.csv" />
+				</div>
 			</div>
+
+			<Tabs.Root value={selectedView}>
+				<Tabs.Content value="chart" class="m-0">
+					<FireChart />
+				</Tabs.Content>
+
+				<Tabs.Content value="table" class="m-0">
+					<FireTable />
+				</Tabs.Content>
+			</Tabs.Root>
 		</div>
 	</section>
 </main>

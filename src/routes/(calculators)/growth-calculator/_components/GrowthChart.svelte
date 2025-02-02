@@ -119,7 +119,7 @@
 							color: colors.slate[200]
 						},
 						title: {
-							display: true,
+							display: false,
 							text: 'Balance',
 							font: { size: 16, family: 'sans-serif' },
 							color: colors.slate[200]

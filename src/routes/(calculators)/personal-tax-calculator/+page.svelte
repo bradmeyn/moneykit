@@ -7,7 +7,6 @@
 	import LegendList from '$lib/components/charts/LegendList.svelte';
 	import { setCalculatorState, getCalculatorState } from './calculator.svelte';
 	import * as Tabs from '$lib/components/ui/tabs';
-	import * as Table from '$lib/components/ui/table';
 
 	setCalculatorState();
 	let calculator = getCalculatorState();
@@ -73,56 +72,52 @@
 
 						<Tabs.Content value="table" class="mt-4">
 							<div>
-								<Table.Root class="max-w-xl">
-									<Table.Header>
-										<Table.Row>
-											<Table.Head>Detail</Table.Head>
-											<Table.Head>Value ($)</Table.Head>
-										</Table.Row>
-									</Table.Header>
-									<Table.Body>
-										<Table.Row>
-											<Table.Cell>Taxable Income</Table.Cell>
-											<Table.Cell>{formatAsCurrency(calculator.result.taxableIncome)}</Table.Cell>
-										</Table.Row>
+								<table class="max-w-xl">
+									<thead>
+										<tr>
+											<th>Detail</th>
+											<th>Value ($)</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td>Taxable Income</td>
+											<td>{formatAsCurrency(calculator.result.taxableIncome)}</td>
+										</tr>
 
-										<Table.Row>
-											<Table.Cell>Income Tax</Table.Cell>
-											<Table.Cell>{formatAsCurrency(calculator.result.incomeTax)}</Table.Cell>
-										</Table.Row>
+										<tr>
+											<td>Income Tax</td>
+											<td>{formatAsCurrency(calculator.result.incomeTax)}</td>
+										</tr>
 
 										{#if calculator.result.lowIncomeOffset > 0}
-											<Table.Row>
-												<Table.Cell>Low Income Offset</Table.Cell>
-												<Table.Cell
-													>({formatAsCurrency(calculator.result.lowIncomeOffset)})</Table.Cell
-												>
-											</Table.Row>
+											<tr>
+												<td>Low Income Offset</td>
+												<td>({formatAsCurrency(calculator.result.lowIncomeOffset)})</td>
+											</tr>
 										{/if}
 
-										<Table.Row>
-											<Table.Cell>Medicare Levy</Table.Cell>
-											<Table.Cell>{formatAsCurrency(calculator.result.medicareLevy)}</Table.Cell>
-										</Table.Row>
+										<tr>
+											<td>Medicare Levy</td>
+											<td>{formatAsCurrency(calculator.result.medicareLevy)}</td>
+										</tr>
 
-										<Table.Row>
-											<Table.Cell>Medicare Levy Surcharge</Table.Cell>
-											<Table.Cell
-												>{formatAsCurrency(calculator.result.medicareLevySurcharge)}</Table.Cell
-											>
-										</Table.Row>
+										<tr>
+											<td>Medicare Levy Surcharge</td>
+											<td>{formatAsCurrency(calculator.result.medicareLevySurcharge)}</td>
+										</tr>
 
-										<Table.Row>
-											<Table.Cell>HELP Repayment</Table.Cell>
-											<Table.Cell>{formatAsCurrency(calculator.result.helpRepayment)}</Table.Cell>
-										</Table.Row>
+										<tr>
+											<td>HELP Repayment</td>
+											<td>{formatAsCurrency(calculator.result.helpRepayment)}</td>
+										</tr>
 
-										<Table.Row class="text-lg">
-											<Table.Cell>Total Tax</Table.Cell>
-											<Table.Cell>{formatAsCurrency(calculator.result.totalTax)}</Table.Cell>
-										</Table.Row>
-									</Table.Body>
-								</Table.Root>
+										<tr class="text-lg">
+											<td>Total Tax</td>
+											<td>{formatAsCurrency(calculator.result.totalTax)}</td>
+										</tr>
+									</tbody>
+								</table>
 							</div>
 						</Tabs.Content>
 					</Tabs.Root>

@@ -15,7 +15,7 @@
 <main class="flex-1 container mx-auto px-4">
 	<!-- Hero Section -->
 	<div class="text-center max-w-4xl mx-auto pt-16 pb-24">
-		<h1 class="text-4xl md:text-7xl font-light mb-6 text-white leading-tight">
+		<h1 class="text-4xl md:text-8xl font-light mb-6 text-white leading-tight">
 			Your personal finance
 			<span class="relative">
 				<span class="text-transparent bg-clip-text bg-gradient-to-r from-primary-light to-primary"
@@ -24,7 +24,9 @@
 			</span>
 		</h1>
 		<p class="text-muted text-xl mb-12 max-w-2xl mx-auto">
-			Professional-grade financial tools to help you make smarter decisions with your money
+			Professional-grade financial tools to help you make <span class="text-white"
+				>smarter decisions</span
+			> with your money
 		</p>
 	</div>
 

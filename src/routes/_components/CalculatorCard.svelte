@@ -22,7 +22,7 @@
 >
 	<div class="flex items-start space-x-4">
 		<div
-			class="mb-4 w-12 h-12 rounded-lg bg-primary/10 flex items-center
+			class="mb-4 size-12 rounded-lg bg-primary/10 flex items-center
 		justify-center group-hover:scale-110 transition-transform duration-300 flex-shrink-0"
 		>
 			<svg class="w-6 h-6 text-primary" {viewBox} fill="currentColor">

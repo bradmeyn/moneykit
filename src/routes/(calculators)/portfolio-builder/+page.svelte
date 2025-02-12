@@ -1,6 +1,10 @@
 <script lang="ts">
 	import CurrencyInput from '$lib/components/inputs/CurrencyInput.svelte';
+	import { formatAsCurrency, formatAsPercentage } from '$utils/formatters';
 	import InvestmentItem from './_components/InvestmentItem.svelte';
+	import { setPortfolioState } from './calculator.svelte';
+
+	const calc = setPortfolioState();
 </script>
 
 <svelte:head>
@@ -17,7 +21,11 @@
 	</div>
 	<div class=" w-full">
 		<div class="md:w-[200px] mb-2">
-			<CurrencyInput id="portfolio-value" value={2000000} label="Portfolio Value" />
+			<CurrencyInput
+				id="portfolio-value"
+				bind:value={calc.portfolioValue}
+				label="Portfolio Value"
+			/>
 		</div>
 		<div class=" w-full">
 			<table class="w-full rounded-lg overflow-hidden">
@@ -31,8 +39,28 @@
 					</tr>
 				</thead>
 				<tbody>
-					<InvestmentItem />
+					{#each calc.portfolio as holding}
+						<InvestmentItem {holding} />
+					{/each}
 				</tbody>
+				<tfoot>
+					<tr>
+						<td colspan="2" class="text-lg border-t-transparent">Total</td>
+						<td
+							class="text-right border-t-transparent text-lg"
+							class:text-red-500={calc.totalWeight > 1}
+						>
+							{formatAsCurrency(calc.total)}
+						</td>
+						<td
+							class="text-right border-t-transparent text-lg"
+							class:text-red-500={calc.totalWeight > 1}
+						>
+							{formatAsPercentage(calc.totalWeight)}
+						</td>
+						<td class="text-right border-t-transparent"></td>
+					</tr>
+				</tfoot>
 			</table>
 		</div>
 	</div>

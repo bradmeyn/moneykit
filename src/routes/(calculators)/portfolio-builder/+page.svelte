@@ -1,6 +1,7 @@
 <script lang="ts">
 	import CurrencyInput from '$lib/components/inputs/CurrencyInput.svelte';
 	import { formatAsCurrency, formatAsPercentage } from '$utils/formatters';
+	import AddInvestment from './_components/AddInvestment.svelte';
 	import InvestmentItem from './_components/InvestmentItem.svelte';
 	import { setPortfolioState } from './calculator.svelte';
 
@@ -28,6 +29,7 @@
 			/>
 		</div>
 		<div class=" w-full">
+			<AddInvestment />
 			<table class="w-full rounded-lg overflow-hidden">
 				<thead>
 					<tr>

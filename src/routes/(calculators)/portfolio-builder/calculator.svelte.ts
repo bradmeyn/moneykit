@@ -10,7 +10,7 @@ type AssetAllocation = {
 	alternatives: number;
 };
 
-type Investment = {
+export type Investment = {
 	code: string;
 	name: string;
 	assetAllocation: AssetAllocation;
@@ -31,7 +31,6 @@ class Portfolio {
 			...this.investments.filter((i) => i.investment.code !== 'CASH'),
 			investment
 		];
-		this.updateUnallocatedCash();
 	};
 
 	updateWeight = (code: string, newWeight: number) => {
@@ -61,28 +60,6 @@ class Portfolio {
 
 	removeInvestment = (code: string) => {
 		this.investments = this.investments.filter((i) => i.investment.code !== code);
-	};
-
-	private updateUnallocatedCash = () => {
-		const totalWeight = this.investments
-			.filter((i) => i.investment.code !== 'CASH')
-			.reduce((sum, holding) => sum + holding.weight, 0);
-
-		const unallocatedWeight = Math.max(0, 1 - totalWeight);
-
-		if (unallocatedWeight > 0) {
-			const cashHolding: PortfolioHolding = {
-				...unallocatedCash,
-				value: this.portfolioValue * unallocatedWeight,
-				weight: unallocatedWeight
-			};
-			this.investments = [
-				...this.investments.filter((i) => i.investment.code !== 'CASH'),
-				cashHolding
-			];
-		} else {
-			this.investments = this.investments.filter((i) => i.investment.code !== 'CASH');
-		}
 	};
 
 	private calculateWeights() {
@@ -121,10 +98,10 @@ export function getPortfolioState() {
 	return getContext<Portfolio>(PORTFOLIO_KEY);
 }
 
-const unallocatedCash: PortfolioHolding = {
+const cashAccount: PortfolioHolding = {
 	investment: {
 		code: 'CASH',
-		name: 'Unallocated Cash',
+		name: 'Cash Account',
 		assetAllocation: {
 			ausEquities: 0,
 			intEquities: 0,
@@ -219,5 +196,116 @@ const defaultPortfolio: PortfolioHolding[] = [
 		value: 200000,
 		weight: 0.1
 	},
-	unallocatedCash
+	cashAccount
+];
+
+export const investmentList: Investment[] = [
+	{
+		code: 'VAS',
+		name: 'Vanguard Australian Shares Index ETF',
+		assetAllocation: {
+			ausEquities: 1,
+			intEquities: 0,
+			ausFixedInterest: 0,
+			intFixedInterest: 0,
+			cash: 0,
+			alternatives: 0
+		}
+	},
+	{
+		code: 'VGS',
+		name: 'Vanguard MSCI Index International Shares ETF',
+		assetAllocation: {
+			ausEquities: 0,
+			intEquities: 1,
+			ausFixedInterest: 0,
+			intFixedInterest: 0,
+			cash: 0,
+			alternatives: 0
+		}
+	},
+	{
+		code: 'VAF',
+		name: 'Vanguard Australian Fixed Interest Index ETF',
+		assetAllocation: {
+			ausEquities: 0,
+			intEquities: 0,
+			ausFixedInterest: 1,
+			intFixedInterest: 0,
+			cash: 0,
+			alternatives: 0
+		}
+	},
+	{
+		code: 'VGE',
+		name: 'Vanguard FTSE Emerging Markets Shares ETF',
+		assetAllocation: {
+			ausEquities: 0,
+			intEquities: 1,
+			ausFixedInterest: 0,
+			intFixedInterest: 0,
+			cash: 0,
+			alternatives: 0
+		}
+	},
+	{
+		code: 'VIF',
+		name: 'Vanguard International Fixed Interest Index ETF',
+		assetAllocation: {
+			ausEquities: 0,
+			intEquities: 0,
+			ausFixedInterest: 0,
+			intFixedInterest: 1,
+			cash: 0,
+			alternatives: 0
+		}
+	},
+	{
+		code: 'VDHG',
+		name: 'Vanguard Diversified High Growth Index ETF',
+		assetAllocation: {
+			ausEquities: 0.36,
+			intEquities: 0.54,
+			ausFixedInterest: 0.03,
+			intFixedInterest: 0.07,
+			cash: 0,
+			alternatives: 0
+		}
+	},
+	{
+		code: 'VDGR',
+		name: 'Vanguard Diversified Growth Index ETF',
+		assetAllocation: {
+			ausEquities: 0.3,
+			intEquities: 0.45,
+			ausFixedInterest: 0.07,
+			intFixedInterest: 0.18,
+			cash: 0,
+			alternatives: 0
+		}
+	},
+	{
+		code: 'VDBA',
+		name: 'Vanguard Diversified Balanced Index ETF',
+		assetAllocation: {
+			ausEquities: 0.24,
+			intEquities: 0.36,
+			ausFixedInterest: 0.12,
+			intFixedInterest: 0.28,
+			cash: 0,
+			alternatives: 0
+		}
+	},
+	{
+		code: 'VDCO',
+		name: 'Vanguard Diversified Conservative Index ETF',
+		assetAllocation: {
+			ausEquities: 0.18,
+			intEquities: 0.27,
+			ausFixedInterest: 0.16,
+			intFixedInterest: 0.39,
+			cash: 0,
+			alternatives: 0
+		}
+	}
 ];

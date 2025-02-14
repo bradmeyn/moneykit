@@ -1,12 +1,10 @@
 <script lang="ts">
-	import { formatAsCurrency, formatAsPercentage } from '$lib/utils/formatters';
+	import { formatAsCurrency } from '$lib/utils/formatters';
 	import { Trash2 } from 'lucide-svelte';
 	import Button from '$ui/button/button.svelte';
 	import PercentageInput from '$lib/components/inputs/PercentageInput.svelte';
 	import { type PortfolioHolding, getPortfolioState } from '../calculator.svelte';
-
 	let { holding }: { holding: PortfolioHolding } = $props();
-
 	const { updateWeight, removeInvestment } = getPortfolioState();
 </script>
 

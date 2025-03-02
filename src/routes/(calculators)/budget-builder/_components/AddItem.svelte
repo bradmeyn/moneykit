@@ -17,7 +17,7 @@
 		type: 'Income' | 'Expense' | 'Savings';
 	} = $props();
 
-	const { addItem } = getBudgetState();
+	const calc = getBudgetState();
 
 	let showForm = $state(false);
 	let newItem = $state<BudgetItem>({
@@ -33,7 +33,7 @@
 
 	function handleSubmit() {
 		if (isValid) {
-			addItem({
+			calc.addItem({
 				...newItem,
 				name: newItem.name.trim()
 			});

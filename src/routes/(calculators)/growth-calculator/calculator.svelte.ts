@@ -24,112 +24,137 @@ export type AnnualData = {
 	endingValue: number;
 };
 
-function calculateCompoundInterest(
-	principal: number = 0,
-	interestRate: number = 0,
-	years: number = 0,
-	contributionAmount: number = 0,
-	contributionFrequency: number = 0
-): GrowthResult {
-	if (
-		principal <= 0 ||
-		interestRate <= 0 ||
-		years <= 0 ||
-		contributionAmount < 0 ||
-		contributionFrequency < 0
-	) {
-		return {
-			totalValue: 0,
-			totalInterest: 0,
-			totalContributions: 0,
-			annualData: []
-		};
-	}
-	let totalValue = principal;
-	let totalInterest = 0;
-	let totalContributions = 0;
+class GrowthCalculatorState {
+	// Input state
+	principal = $state(10000);
+	savingsGoal = $state(100000);
+	years = $state(10);
 
-	const annualData = [];
-
-	for (let i = 0; i < years; i++) {
-		const startingValue = parseFloat(totalValue.toFixed(2));
-		const yearlyInterest = totalValue * interestRate;
-		totalInterest += yearlyInterest;
-		const yearlyContribution = contributionAmount * contributionFrequency;
-		totalContributions += yearlyContribution;
-		totalValue += yearlyInterest + yearlyContribution;
-
-		annualData.push({
-			year: i + 1,
-			startingValue,
-			yearlyInterest: parseFloat(yearlyInterest.toFixed(2)),
-			totalInterest: parseFloat(totalInterest.toFixed(2)),
-			yearlyContribution: parseFloat(yearlyContribution.toFixed(2)),
-			totalContributions: parseFloat(totalContributions.toFixed(2)),
-			endingValue: parseFloat(totalValue.toFixed(2))
-		});
-	}
-
-	return {
-		totalValue,
-		totalInterest,
-		totalContributions,
-		annualData
-	};
-}
-
-function createCalculatorState() {
-	let principal = $state(10000);
-	let savingsGoal = $state(100000);
-	let years = $state(10);
-
-	let baseScenario = $state<GrowthScenario>({
+	// Scenario state
+	baseScenario = $state<GrowthScenario>({
 		contributionAmount: 1000,
 		interestRate: 0.07,
 		contributionFrequency: 'monthly'
 	});
 
-	const baseResult = $derived(
-		calculateCompoundInterest(
-			principal,
-			baseScenario.interestRate,
-			years,
-			baseScenario.contributionAmount,
-			FREQUENCIES[baseScenario.contributionFrequency].value
-		)
-	);
-
-	let comparisonScenario = $state<GrowthScenario>({
+	comparisonScenario = $state<GrowthScenario>({
 		contributionAmount: 0,
 		interestRate: 0.0,
 		contributionFrequency: 'monthly'
 	});
 
-	const comparisonResult = $derived(
-		calculateCompoundInterest(
-			principal,
-			comparisonScenario.interestRate,
-			years,
-			comparisonScenario.contributionAmount,
-			FREQUENCIES[comparisonScenario.contributionFrequency].value
+	// Derived calculation results
+	baseResult = $derived(
+		this.calculateCompoundInterest(
+			this.principal,
+			this.baseScenario.interestRate,
+			this.years,
+			this.baseScenario.contributionAmount,
+			FREQUENCIES[this.baseScenario.contributionFrequency].value
 		)
 	);
 
-	function updateBase(updates: Partial<GrowthScenario>) {
-		baseScenario = { ...baseScenario, ...updates };
+	comparisonResult = $derived(
+		this.calculateCompoundInterest(
+			this.principal,
+			this.comparisonScenario.interestRate,
+			this.years,
+			this.comparisonScenario.contributionAmount,
+			FREQUENCIES[this.comparisonScenario.contributionFrequency].value
+		)
+	);
+
+	baseGoalAchieved = $derived(
+		this.baseResult.annualData.some((data) => data.endingValue >= this.savingsGoal)
+	);
+
+	baseYearsToGoal = $derived.by(() => {
+		const yearReached = this.baseResult.annualData.findIndex(
+			(data) => data.endingValue >= this.savingsGoal
+		);
+		return yearReached === -1 ? null : yearReached + 1;
+	});
+
+	comparisonGoalAchieved = $derived(
+		this.comparisonResult.annualData.some((data) => data.endingValue >= this.savingsGoal)
+	);
+
+	comparisonYearsToGoal = $derived.by(() => {
+		const yearReached = this.comparisonResult.annualData.findIndex(
+			(data) => data.endingValue >= this.savingsGoal
+		);
+		return yearReached === -1 ? null : yearReached + 1;
+	});
+
+	calculateCompoundInterest(
+		principal: number = 0,
+		interestRate: number = 0,
+		years: number = 0,
+		contributionAmount: number = 0,
+		contributionFrequency: number = 0
+	): GrowthResult {
+		if (
+			principal <= 0 ||
+			interestRate <= 0 ||
+			years <= 0 ||
+			contributionAmount < 0 ||
+			contributionFrequency < 0
+		) {
+			return {
+				totalValue: 0,
+				totalInterest: 0,
+				totalContributions: 0,
+				annualData: []
+			};
+		}
+
+		let totalValue = principal;
+		let totalInterest = 0;
+		let totalContributions = 0;
+		const annualData = [];
+
+		for (let i = 0; i < years; i++) {
+			const startingValue = parseFloat(totalValue.toFixed(2));
+			const yearlyInterest = totalValue * interestRate;
+			totalInterest += yearlyInterest;
+			const yearlyContribution = contributionAmount * contributionFrequency;
+			totalContributions += yearlyContribution;
+			totalValue += yearlyInterest + yearlyContribution;
+
+			annualData.push({
+				year: i + 1,
+				startingValue,
+				yearlyInterest: parseFloat(yearlyInterest.toFixed(2)),
+				totalInterest: parseFloat(totalInterest.toFixed(2)),
+				yearlyContribution: parseFloat(yearlyContribution.toFixed(2)),
+				totalContributions: parseFloat(totalContributions.toFixed(2)),
+				endingValue: parseFloat(totalValue.toFixed(2))
+			});
+		}
+
+		return {
+			totalValue,
+			totalInterest,
+			totalContributions,
+			annualData
+		};
 	}
 
-	function updateComparison(updates: Partial<GrowthScenario>) {
-		comparisonScenario = { ...comparisonScenario, ...updates };
+	updateBase(updates: Partial<GrowthScenario>) {
+		this.baseScenario = { ...this.baseScenario, ...updates };
 	}
 
-	function toggleComparison(showComparison: boolean) {
+	updateComparison(updates: Partial<GrowthScenario>) {
+		this.comparisonScenario = { ...this.comparisonScenario, ...updates };
+	}
+
+	toggleComparison(showComparison: boolean) {
 		if (showComparison) {
-			comparisonScenario = {
-				...baseScenario
+			this.comparisonScenario = {
+				...this.baseScenario
 			};
 		} else {
-			comparisonScenario = {
+			this.comparisonScenario = {
 				contributionAmount: 1000,
 				interestRate: 0.05,
 				contributionFrequency: 'monthly'
@@ -137,28 +162,10 @@ function createCalculatorState() {
 		}
 	}
 
-	const baseGoalAchieved = $derived(
-		baseResult.annualData.some((data) => data.endingValue >= savingsGoal)
-	);
-	const baseYearsToGoal = $derived(() => {
-		const yearReached = baseResult.annualData.findIndex((data) => data.endingValue >= savingsGoal);
-		return yearReached === -1 ? null : yearReached + 1;
-	});
-
-	const comparisonGoalAchieved = $derived(
-		comparisonResult.annualData.some((data) => data.endingValue >= savingsGoal)
-	);
-	const comparisonYearsToGoal = $derived(() => {
-		const yearReached = comparisonResult.annualData.findIndex(
-			(data) => data.endingValue >= savingsGoal
-		);
-		return yearReached === -1 ? null : yearReached + 1;
-	});
-
-	function getDownloadData() {
+	getDownloadData() {
 		return {
 			headers: ['Year', 'Starting Value', 'Interest Earned', 'Contribution', 'Total Value'],
-			rows: baseResult.annualData.map((data) => [
+			rows: this.baseResult.annualData.map((data) => [
 				data.year,
 				data.startingValue,
 				data.yearlyInterest,
@@ -168,7 +175,7 @@ function createCalculatorState() {
 		};
 	}
 
-	function getDownloadDataWithComparison() {
+	getDownloadDataWithComparison() {
 		return {
 			headers: [
 				'Year',
@@ -181,8 +188,8 @@ function createCalculatorState() {
 				'Comparison Contribution',
 				'Comparison Total'
 			],
-			rows: baseResult.annualData.map((data, index) => {
-				const compData = comparisonResult.annualData[index];
+			rows: this.baseResult.annualData.map((data, index) => {
+				const compData = this.comparisonResult.annualData[index];
 				return [
 					data.year,
 					data.startingValue,
@@ -197,64 +204,14 @@ function createCalculatorState() {
 			})
 		};
 	}
-
-	return {
-		get principal() {
-			return principal;
-		},
-		set principal(value: number) {
-			principal = value;
-		},
-		get savingsGoal() {
-			return savingsGoal;
-		},
-		set savingsGoal(value: number) {
-			savingsGoal = value;
-		},
-		get years() {
-			return years;
-		},
-		set years(value: number) {
-			years = value;
-		},
-		get baseScenario() {
-			return baseScenario;
-		},
-		get baseResult() {
-			return baseResult;
-		},
-		get comparisonScenario() {
-			return comparisonScenario;
-		},
-		get comparisonResult() {
-			return comparisonResult;
-		},
-		updateBase,
-		updateComparison,
-		toggleComparison,
-		get baseGoalAchieved() {
-			return baseGoalAchieved;
-		},
-		get baseYearsToGoal() {
-			return baseYearsToGoal;
-		},
-		get comparisonGoalAchieved() {
-			return comparisonGoalAchieved;
-		},
-		get comparisonYearsToGoal() {
-			return comparisonYearsToGoal;
-		},
-		getDownloadData,
-		getDownloadDataWithComparison
-	};
 }
 
 const CALCULATOR_KEY = Symbol('growth-calculator');
 
 export function setCalculatorState() {
-	return setContext(CALCULATOR_KEY, createCalculatorState());
+	return setContext(CALCULATOR_KEY, new GrowthCalculatorState());
 }
 
 export function getCalculatorState() {
-	return getContext<ReturnType<typeof createCalculatorState>>(CALCULATOR_KEY);
+	return getContext<GrowthCalculatorState>(CALCULATOR_KEY);
 }

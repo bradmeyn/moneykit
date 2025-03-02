@@ -1,78 +1,52 @@
 import { setContext, getContext } from 'svelte';
-
-// Make the asset allocation values numbers instead of strings for calculations
-type AssetAllocation = {
-	ausEquities: number;
-	intEquities: number;
-	ausFixedInterest: number;
-	intFixedInterest: number;
-	cash: number;
-	alternatives: number;
-};
-
-export type Investment = {
-	code: string;
-	name: string;
-	assetAllocation: AssetAllocation;
-};
+import { ETF_MAP, type ExchangeTradedFund, type AssetAllocation } from './investments';
 
 export type PortfolioHolding = {
-	investment: Investment;
+	investment: ExchangeTradedFund;
 	value: number;
 	weight: number;
+	cost: number; // management cost * value
 };
 
+// Portfolio asset allocation type to track overall allocation
 class Portfolio {
 	portfolioValue = $state(2000000);
 	investments = $state<PortfolioHolding[]>(defaultPortfolio);
 
+	// Derived values
+	portfolio: PortfolioHolding[] = $derived(this.calculateWeights());
+	total = $derived(this.calculateTotal());
+	totalWeight = $derived(this.calculateTotalWeight());
+	assetAllocation = $derived(this.calculateAssetAllocation());
+	weightedManagementCost = $derived(this.calculateWeightedManagementCost());
 	addInvestment = (investment: PortfolioHolding) => {
-		this.investments = [
-			...this.investments.filter((i) => i.investment.code !== 'CASH'),
-			investment
-		];
+		this.investments.push(investment);
 	};
 
-	updateWeight = (code: string, newWeight: number) => {
+	updateWeight = (symbol: string, newWeight: number) => {
 		this.investments = this.investments.map((item) => {
-			if (item.investment.code === code) {
+			if (item.investment.symbol === symbol) {
 				return {
 					...item,
 					weight: newWeight,
-					value: this.portfolioValue * newWeight
+					value: this.portfolioValue * newWeight,
+					cost: item.investment.managementCost * this.portfolioValue * newWeight
 				};
 			}
-			// if (item.investment.code === 'CASH') {
-			// 	const activeTotal = this.investments
-			// 		.filter((i) => i.investment.code !== 'CASH')
-			// 		.reduce((sum, h) => sum + (h.investment.code === code ? newWeight : h.weight), 0);
-
-			// 	const cashWeight = Math.max(0, 1 - activeTotal);
-			// 	return {
-			// 		...item,
-			// 		weight: cashWeight,
-			// 		value: this.portfolioValue * cashWeight
-			// 	};
-			// }
 			return item;
 		});
 	};
 
-	removeInvestment = (code: string) => {
-		this.investments = this.investments.filter((i) => i.investment.code !== code);
+	removeInvestment = (symbol: string) => {
+		this.investments = this.investments.filter((i) => i.investment.symbol !== symbol);
 	};
 
 	private calculateWeights() {
 		return this.investments.map((holding) => {
 			const adjustedValue = holding.value / this.portfolioValue;
-			return { ...holding, weight: adjustedValue };
+			const cost = holding.investment.managementCost * holding.value;
+			return { ...holding, weight: adjustedValue, cost };
 		});
-		// .toSorted((a, b) => {
-		// 	// Always put CASH at the end
-		// 	if (a.investment.code === 'CASH') return 1;
-		// 	if (b.investment.code === 'CASH') return -1;
-		// 	return b.weight - a.weight;
-		// });
 	}
 
 	private calculateTotal() {
@@ -83,9 +57,36 @@ class Portfolio {
 		return this.investments.reduce((acc, holding) => acc + holding.weight, 0);
 	}
 
-	portfolio: PortfolioHolding[] = $derived(this.calculateWeights());
-	total = $derived(this.calculateTotal());
-	totalWeight = $derived(this.calculateTotalWeight());
+	private calculateAssetAllocation(): AssetAllocation {
+		const initialAllocation: AssetAllocation = {
+			ausEquities: 0,
+			intEquities: 0,
+			ausFixedInterest: 0,
+			intFixedInterest: 0,
+			cash: 0,
+			alternatives: 0
+		};
+
+		return this.portfolio.reduce((allocation, holding) => {
+			const weight = holding.weight;
+			const asset = holding.investment.assetAllocation;
+
+			return {
+				ausEquities: allocation.ausEquities + asset.ausEquities * weight,
+				intEquities: allocation.intEquities + asset.intEquities * weight,
+				ausFixedInterest: allocation.ausFixedInterest + asset.ausFixedInterest * weight,
+				intFixedInterest: allocation.intFixedInterest + asset.intFixedInterest * weight,
+				cash: allocation.cash + asset.cash * weight,
+				alternatives: allocation.alternatives + asset.alternatives * weight
+			};
+		}, initialAllocation);
+	}
+
+	private calculateWeightedManagementCost() {
+		return this.portfolio.reduce((acc, holding) => {
+			return acc + holding.weight * (holding.investment.managementCost || 0);
+		}, 0);
+	}
 }
 
 const PORTFOLIO_KEY = Symbol('portfolio');
@@ -100,7 +101,7 @@ export function getPortfolioState() {
 
 const cashAccount: PortfolioHolding = {
 	investment: {
-		code: 'CASH',
+		symbol: 'CASH',
 		name: 'Cash Account',
 		assetAllocation: {
 			ausEquities: 0,
@@ -109,203 +110,69 @@ const cashAccount: PortfolioHolding = {
 			intFixedInterest: 0,
 			cash: 1,
 			alternatives: 0
-		}
+		},
+		managementCost: 0,
+		provider: 'BetaShares', // This is a placeholder, you may want a different provider
+		benchmark: 'None',
+		domicile: 'Australia'
 	},
 	value: 0,
-	weight: 0
+	weight: 0,
+	cost: 0
 };
 
+// Convert existing investments to use ETF_MAP
 const defaultPortfolio: PortfolioHolding[] = [
 	{
-		investment: {
-			code: 'VAS',
-			name: 'Vanguard Australian Shares Index ETF',
-			assetAllocation: {
-				ausEquities: 1,
-				intEquities: 0,
-				ausFixedInterest: 0,
-				intFixedInterest: 0,
-				cash: 0,
-				alternatives: 0
-			}
-		},
+		investment: ETF_MAP['VAS'],
 		value: 500000,
-		weight: 0.25
+		weight: 0.25,
+		cost: 450000
 	},
 	{
-		investment: {
-			code: 'VGS',
-			name: 'Vanguard MSCI Index International Shares ETF',
-			assetAllocation: {
-				ausEquities: 0,
-				intEquities: 1,
-				ausFixedInterest: 0,
-				intFixedInterest: 0,
-				cash: 0,
-				alternatives: 0
-			}
-		},
+		investment: ETF_MAP['VGS'],
 		value: 700000,
-		weight: 0.35
+		weight: 0.35,
+		cost: 650000
 	},
 	{
-		investment: {
-			code: 'VAF',
-			name: 'Vanguard Australian Fixed Interest Index ETF',
-			assetAllocation: {
-				ausEquities: 0,
-				intEquities: 0,
-				ausFixedInterest: 1,
-				intFixedInterest: 0,
-				cash: 0,
-				alternatives: 0
-			}
-		},
+		investment: ETF_MAP['VAF'],
 		value: 300000,
-		weight: 0.15
+		weight: 0.15,
+		cost: 290000
 	},
+
 	{
-		investment: {
-			code: 'VGAD',
-			name: 'Vanguard MSCI Index International Shares (Hedged) ETF',
-			assetAllocation: {
-				ausEquities: 0,
-				intEquities: 1,
-				ausFixedInterest: 0,
-				intFixedInterest: 0,
-				cash: 0,
-				alternatives: 0
-			}
-		},
-		value: 300000,
-		weight: 0.15
-	},
-	{
-		investment: {
-			code: 'VGB',
-			name: 'Vanguard Australian Government Bond Index ETF',
-			assetAllocation: {
-				ausEquities: 0,
-				intEquities: 0,
-				ausFixedInterest: 0.95,
-				intFixedInterest: 0,
-				cash: 0.05,
-				alternatives: 0
-			}
-		},
+		investment: ETF_MAP['VGB'],
 		value: 200000,
-		weight: 0.1
+		weight: 0.1,
+		cost: 190000
 	},
 	cashAccount
 ];
 
-export const investmentList: Investment[] = [
-	{
-		code: 'VAS',
-		name: 'Vanguard Australian Shares Index ETF',
-		assetAllocation: {
-			ausEquities: 1,
-			intEquities: 0,
-			ausFixedInterest: 0,
-			intFixedInterest: 0,
-			cash: 0,
-			alternatives: 0
-		}
-	},
-	{
-		code: 'VGS',
-		name: 'Vanguard MSCI Index International Shares ETF',
-		assetAllocation: {
-			ausEquities: 0,
-			intEquities: 1,
-			ausFixedInterest: 0,
-			intFixedInterest: 0,
-			cash: 0,
-			alternatives: 0
-		}
-	},
-	{
-		code: 'VAF',
-		name: 'Vanguard Australian Fixed Interest Index ETF',
-		assetAllocation: {
-			ausEquities: 0,
-			intEquities: 0,
-			ausFixedInterest: 1,
-			intFixedInterest: 0,
-			cash: 0,
-			alternatives: 0
-		}
-	},
-	{
-		code: 'VGE',
-		name: 'Vanguard FTSE Emerging Markets Shares ETF',
-		assetAllocation: {
-			ausEquities: 0,
-			intEquities: 1,
-			ausFixedInterest: 0,
-			intFixedInterest: 0,
-			cash: 0,
-			alternatives: 0
-		}
-	},
-	{
-		code: 'VIF',
-		name: 'Vanguard International Fixed Interest Index ETF',
-		assetAllocation: {
-			ausEquities: 0,
-			intEquities: 0,
-			ausFixedInterest: 0,
-			intFixedInterest: 1,
-			cash: 0,
-			alternatives: 0
-		}
-	},
-	{
-		code: 'VDHG',
-		name: 'Vanguard Diversified High Growth Index ETF',
-		assetAllocation: {
-			ausEquities: 0.36,
-			intEquities: 0.54,
-			ausFixedInterest: 0.03,
-			intFixedInterest: 0.07,
-			cash: 0,
-			alternatives: 0
-		}
-	},
-	{
-		code: 'VDGR',
-		name: 'Vanguard Diversified Growth Index ETF',
-		assetAllocation: {
-			ausEquities: 0.3,
-			intEquities: 0.45,
-			ausFixedInterest: 0.07,
-			intFixedInterest: 0.18,
-			cash: 0,
-			alternatives: 0
-		}
-	},
-	{
-		code: 'VDBA',
-		name: 'Vanguard Diversified Balanced Index ETF',
-		assetAllocation: {
-			ausEquities: 0.24,
-			intEquities: 0.36,
-			ausFixedInterest: 0.12,
-			intFixedInterest: 0.28,
-			cash: 0,
-			alternatives: 0
-		}
-	},
-	{
-		code: 'VDCO',
-		name: 'Vanguard Diversified Conservative Index ETF',
-		assetAllocation: {
-			ausEquities: 0.18,
-			intEquities: 0.27,
-			ausFixedInterest: 0.16,
-			intFixedInterest: 0.39,
-			cash: 0,
-			alternatives: 0
-		}
-	}
-];
+// Helper function to get available ETFs for portfolio selection
+export function getAvailableETFs(): ExchangeTradedFund[] {
+	return Object.values(ETF_MAP);
+}
+
+// Helper function to calculate portfolio performance metrics
+export function calculatePortfolioMetrics(portfolio: PortfolioHolding[]) {
+	const totalValue = portfolio.reduce((acc, holding) => acc + holding.value, 0);
+	const totalCost = portfolio.reduce((acc, holding) => acc + (holding.cost || holding.value), 0);
+	const totalReturn = totalCost > 0 ? totalValue - totalCost : 0;
+	const totalReturnPercentage = totalCost > 0 ? (totalReturn / totalCost) * 100 : 0;
+
+	// Calculate weighted management cost
+	const weightedCost = portfolio.reduce((acc, holding) => {
+		return acc + holding.weight * (holding.investment.managementCost || 0);
+	}, 0);
+
+	return {
+		totalValue,
+		totalCost,
+		totalReturn,
+		totalReturnPercentage,
+		weightedManagementCost: weightedCost
+	};
+}

@@ -6,14 +6,45 @@
 	import { setPortfolioState } from './calculator.svelte';
 	import DownloadButton from '$lib/components/DownloadButton.svelte';
 	import * as Tabs from '$lib/components/ui/tabs';
-
-	import DoughnutChart from '$lib/components/charts/DoughnutChart.svelte';
-	import LegendList from '$lib/components/charts/LegendList.svelte';
 	import AssetAllocation from './_components/AssetAllocation.svelte';
+	import AssetAllocationTable from './_components/AssetAllocationTable.svelte';
 
 	const calc = setPortfolioState();
 
-	let selectedView = $state<'overview' | 'asset allocation'>('overview');
+	let selectedView = $state<'overview' | 'allocation'>('overview');
+
+	// Labels for asset classes
+	const assetLabels = {
+		ausEquities: 'Australian Equities',
+		intEquities: 'International Equities',
+		ausFixedInterest: 'Australian Fixed Interest',
+		intFixedInterest: 'International Fixed Interest',
+		cash: 'Cash',
+		alternatives: 'Alternatives'
+	};
+
+	// Format asset allocation data for charts
+	let assetAllocationChartData = $derived.by(() => {
+		const allocation = calc.assetAllocation;
+		return Object.entries(allocation)
+			.filter(([_, value]) => value > 0)
+			.map(([key, value]) => ({
+				label: assetLabels[key as keyof typeof assetLabels],
+				value
+			}))
+			.sort((a, b) => b.value - a.value);
+	});
+
+	// Calculate growth vs defensive asset ratios
+	let growthAssets = $derived.by(() => {
+		const allocation = calc.assetAllocation;
+		return allocation.ausEquities + allocation.intEquities + allocation.alternatives;
+	});
+
+	let defensiveAssets = $derived.by(() => {
+		const allocation = calc.assetAllocation;
+		return allocation.ausFixedInterest + allocation.intFixedInterest + allocation.cash;
+	});
 </script>
 
 <svelte:head>
@@ -36,57 +67,75 @@
 				label="Portfolio Value"
 			/>
 		</div>
-		<div class=" w-full card">
-			<div class="flex items-center gap-2">
-				<!-- <DownloadButton filename="growth-data.csv" data={downloadData} /> -->
-			</div>
-			<AddInvestment />
-			<table class="w-full rounded-lg overflow-hidden">
-				<thead>
-					<tr>
-						<th class="text-left border-t-transparent">Code</th>
-						<th class="text-left border-t-transparent">Name</th>
-						<th class="text-right border-t-transparent">Value</th>
-						<th class="text-right border-t-transparent">Cost</th>
-						<th class="text-right border-t-transparent">Weight</th>
-						<th class="text-right border-t-transparent"></th>
-					</tr>
-				</thead>
-				<tbody>
-					{#each calc.portfolio as holding}
-						<InvestmentItem {holding} />
-					{/each}
-				</tbody>
-				<tfoot>
-					<tr>
-						<td colspan="2" class="text-lg border-t-transparent">Total</td>
-						<td
-							class="text-right border-t-transparent text-lg"
-							class:text-red-500={calc.totalWeight > 1}
-						>
-							{formatAsCurrency(calc.total)}
-						</td>
-						<td
-							class="text-right border-t-transparent text-lg"
-							class:text-red-500={calc.totalWeight > 1}
-						>
-							{`${formatAsCurrency(calc.weightedManagementCost * calc.portfolioValue)} pa`}
-							<div class="text-xs">
-								{`${formatAsPercentage(calc.weightedManagementCost)} pa`}
-							</div>
-						</td>
-						<td
-							class="text-right border-t-transparent text-lg"
-							class:text-red-500={calc.totalWeight > 1}
-						>
-							{formatAsPercentage(calc.totalWeight)}
-						</td>
-						<td class="text-right border-t-transparent"></td>
-					</tr>
-				</tfoot>
-			</table>
-		</div>
 
-		<AssetAllocation />
+		<div class="grid grid-cols-1 lg:grid-cols-[3fr,1fr] gap-4">
+			<div class=" w-full card">
+				<div class="flex justify-between items-center mb-4">
+					<AddInvestment />
+					<div class="flex items-center gap-2">
+						<Tabs.Root
+							value={selectedView}
+							onValueChange={(value) => (selectedView = value)}
+							class="w-[200px]"
+						>
+							<Tabs.List class="grid w-full grid-cols-2">
+								<Tabs.Trigger value="overview">Overview</Tabs.Trigger>
+								<Tabs.Trigger value="allocation">Allocation</Tabs.Trigger>
+							</Tabs.List>
+						</Tabs.Root>
+						<DownloadButton filename="growth-data.csv" data={[]} />
+					</div>
+				</div>
+				{#if selectedView === 'overview'}
+					<table class="w-full rounded-lg overflow-hidden">
+						<thead>
+							<tr>
+								<th class="text-left border-t-transparent">Investment</th>
+								<th class="text-right border-t-transparent">Value</th>
+								<th class="text-right border-t-transparent">Cost</th>
+								<th class="text-right border-t-transparent">Weight</th>
+								<th class="text-right border-t-transparent"></th>
+							</tr>
+						</thead>
+						<tbody>
+							{#each calc.portfolio as holding}
+								<InvestmentItem {holding} />
+							{/each}
+						</tbody>
+						<tfoot>
+							<tr>
+								<td class=" border-t-transparent">Total</td>
+								<td
+									class="text-right border-t-transparent font-semibold"
+									class:text-red-500={calc.totalWeight > 1}
+								>
+									{formatAsCurrency(calc.total)}
+								</td>
+								<td
+									class="text-right border-t-transparent font-semibold"
+									class:text-red-500={calc.totalWeight > 1}
+								>
+									{`${formatAsCurrency(calc.weightedManagementCost * calc.portfolioValue)} pa`}
+									<div class="text-xs text-muted">
+										{`${formatAsPercentage(calc.weightedManagementCost)} pa`}
+									</div>
+								</td>
+								<td
+									class="text-right border-t-transparent font-semibold"
+									class:text-red-500={calc.totalWeight > 1}
+								>
+									{formatAsPercentage(calc.totalWeight)}
+								</td>
+								<td class="text-right border-t-transparent"></td>
+							</tr>
+						</tfoot>
+					</table>
+				{:else}
+					<AssetAllocationTable />
+				{/if}
+			</div>
+
+			<AssetAllocation />
+		</div>
 	</div>
 </main>

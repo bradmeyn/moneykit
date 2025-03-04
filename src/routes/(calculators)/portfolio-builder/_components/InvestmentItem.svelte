@@ -10,16 +10,24 @@
 </script>
 
 <tr>
-	<td>{holding.investment.symbol}</td>
-	<td>{holding.investment.name}</td>
+	<td>
+		<div class="flex items-center gap-1">
+			<span class="font-medium">{holding.investment.symbol}</span>
+		</div>
+		<div class="text-xs text-muted-foreground">
+			{holding.investment.name}
+		</div>
+	</td>
 	<td class="text-right relative">
 		{formatAsCurrency(holding.value)}
 	</td>
 	<td class="text-right relative">
 		{`${formatAsCurrency(holding.value * holding.investment.managementCost)} pa`}
 
-		<div class="text-xs">
-			{`${formatAsPercentage(holding.investment.managementCost)} pa`}
+		<div class="text-xs text-muted">
+			{holding.investment.managementCost > 0
+				? `${formatAsPercentage(holding.investment.managementCost)} pa`
+				: 'N/A'}
 		</div>
 	</td>
 	<td class="text-right relative w-28">

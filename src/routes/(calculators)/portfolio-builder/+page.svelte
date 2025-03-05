@@ -6,12 +6,12 @@
 	import { setPortfolioState } from './calculator.svelte';
 	import DownloadButton from '$lib/components/DownloadButton.svelte';
 	import * as Tabs from '$lib/components/ui/tabs';
-	import AssetAllocation from './_components/AssetAllocation.svelte';
+	import AssetAllocationChart from './_components/AssetAllocationChart.svelte';
 	import AssetAllocationTable from './_components/AssetAllocationTable.svelte';
 
 	const calc = setPortfolioState();
 
-	let selectedView = $state<'overview' | 'allocation'>('overview');
+	let selectedView = $state<string>('overview');
 
 	// Labels for asset classes
 	const assetLabels = {
@@ -22,29 +22,6 @@
 		cash: 'Cash',
 		alternatives: 'Alternatives'
 	};
-
-	// Format asset allocation data for charts
-	let assetAllocationChartData = $derived.by(() => {
-		const allocation = calc.assetAllocation;
-		return Object.entries(allocation)
-			.filter(([_, value]) => value > 0)
-			.map(([key, value]) => ({
-				label: assetLabels[key as keyof typeof assetLabels],
-				value
-			}))
-			.sort((a, b) => b.value - a.value);
-	});
-
-	// Calculate growth vs defensive asset ratios
-	let growthAssets = $derived.by(() => {
-		const allocation = calc.assetAllocation;
-		return allocation.ausEquities + allocation.intEquities + allocation.alternatives;
-	});
-
-	let defensiveAssets = $derived.by(() => {
-		const allocation = calc.assetAllocation;
-		return allocation.ausFixedInterest + allocation.intFixedInterest + allocation.cash;
-	});
 </script>
 
 <svelte:head>
@@ -52,39 +29,34 @@
 </svelte:head>
 
 <main class="flex flex-col flex-1 container text-white">
-	<div class="flex justify-between items-center mb-8">
-		<h1>Portfolio Builder</h1>
-
-		<div class=" flex gap-2">
-			<!-- <DownloadButton filename="budget.csv" data={budget.getDownloadData()} /> -->
-		</div>
-	</div>
+	<h1 class="mb-4">Portfolio Builder</h1>
 	<div class=" w-full">
-		<div class="md:w-[200px] mb-2">
-			<CurrencyInput
-				id="portfolio-value"
-				bind:value={calc.portfolioValue}
-				label="Portfolio Value"
-			/>
+		<div class="justify-between flex">
+			<div class="md:w-[200px] mb-2">
+				<CurrencyInput
+					id="portfolio-value"
+					bind:value={calc.portfolioValue}
+					label="Portfolio Value"
+				/>
+			</div>
+			<div class="flex items-center gap-2">
+				<Tabs.Root
+					value={selectedView}
+					onValueChange={(value) => (selectedView = value)}
+					class="w-[200px]"
+				>
+					<Tabs.List class="grid w-full grid-cols-2 bg-ui-950">
+						<Tabs.Trigger value="overview">Overview</Tabs.Trigger>
+						<Tabs.Trigger value="allocation">Allocation</Tabs.Trigger>
+					</Tabs.List>
+				</Tabs.Root>
+				<!-- <DownloadButton filename="growth-data.csv" data={[]} /> -->
+			</div>
 		</div>
-
 		<div class="grid grid-cols-1 lg:grid-cols-[3fr,1fr] gap-4">
 			<div class=" w-full card">
 				<div class="flex justify-between items-center mb-4">
 					<AddInvestment />
-					<div class="flex items-center gap-2">
-						<Tabs.Root
-							value={selectedView}
-							onValueChange={(value) => (selectedView = value)}
-							class="w-[200px]"
-						>
-							<Tabs.List class="grid w-full grid-cols-2">
-								<Tabs.Trigger value="overview">Overview</Tabs.Trigger>
-								<Tabs.Trigger value="allocation">Allocation</Tabs.Trigger>
-							</Tabs.List>
-						</Tabs.Root>
-						<DownloadButton filename="growth-data.csv" data={[]} />
-					</div>
 				</div>
 				{#if selectedView === 'overview'}
 					<table class="w-full rounded-lg overflow-hidden">
@@ -135,7 +107,7 @@
 				{/if}
 			</div>
 
-			<AssetAllocation />
+			<AssetAllocationChart />
 		</div>
 	</div>
 </main>

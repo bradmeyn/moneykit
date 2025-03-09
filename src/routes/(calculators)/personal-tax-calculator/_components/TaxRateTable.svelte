@@ -1,6 +1,5 @@
 <script lang="ts">
 	import * as Tabs from '$lib/components/ui/tabs';
-	import * as Table from '$lib/components/ui/table';
 	import { formatAsPercentage, formatAsCurrency } from '$lib/utils/formatters';
 	import {
 		HELP_REPAYMENT_RATES,
@@ -29,99 +28,99 @@
 			<div class="space-y-4">
 				<div>
 					<h3 class="font-semibold px-2">Income Tax</h3>
-					<Table.Root>
-						<Table.Header>
-							<Table.Row>
-								<Table.Head>Taxable Income</Table.Head>
-								<Table.Head>Rate</Table.Head>
-							</Table.Row>
-						</Table.Header>
-						<Table.Body>
+					<table>
+						<thead>
+							<tr>
+								<th>Taxable Income</th>
+								<th>Rate</th>
+							</tr>
+						</thead>
+						<tbody>
 							{#each INCOME_TAX_BRACKETS as { min, max, rate }}
-								<Table.Row>
-									<Table.Cell class="w-60">
+								<tr>
+									<td class="w-60">
 										{formatAsCurrency(min, false)}{formatMax(max)}
-									</Table.Cell>
-									<Table.Cell>{formatAsPercentage(rate)}</Table.Cell>
-								</Table.Row>
+									</td>
+									<td>{formatAsPercentage(rate)}</td>
+								</tr>
 							{/each}
-						</Table.Body>
-					</Table.Root>
+						</tbody>
+					</table>
 				</div>
 
 				<div>
 					<h3 class="font-semibold px-2">Medicare Levy</h3>
-					<Table.Root>
-						<Table.Header>
-							<Table.Row>
-								<Table.Head>Taxable Income</Table.Head>
-								<Table.Head>Rate</Table.Head>
-							</Table.Row>
-						</Table.Header>
-						<Table.Body>
+					<table>
+						<thead>
+							<tr>
+								<th>Taxable Income</th>
+								<th>Rate</th>
+							</tr>
+						</thead>
+						<tbody>
 							{#each MEDICARE_LEVY as { min, max, rate }}
-								<Table.Row>
-									<Table.Cell class="w-60">
+								<tr>
+									<td class="w-60">
 										{formatAsCurrency(min, false)}{formatMax(max)}
-									</Table.Cell>
-									<Table.Cell>
+									</td>
+									<td>
 										{#if rate === 0.1}
 											{formatAsPercentage(rate)} of income between thresholds
 										{:else}
 											{formatAsPercentage(rate)}
 										{/if}
-									</Table.Cell>
-								</Table.Row>
+									</td>
+								</tr>
 							{/each}
-						</Table.Body>
-					</Table.Root>
+						</tbody>
+					</table>
 				</div>
 
 				<div>
 					<h3 class="font-semibold px-2">Medicare Levy Surcharge</h3>
-					<Table.Root>
-						<Table.Header>
-							<Table.Row>
-								<Table.Head>Taxable Income</Table.Head>
-								<Table.Head>Rate</Table.Head>
-							</Table.Row>
-						</Table.Header>
-						<Table.Body>
+					<table>
+						<thead>
+							<tr>
+								<th>Taxable Income</th>
+								<th>Rate</th>
+							</tr>
+						</thead>
+						<tbody>
 							{#each MEDICARE_LEVY_SURCHARGE as { min, max, rate }}
-								<Table.Row>
-									<Table.Cell class="w-60">
+								<tr>
+									<td class="w-60">
 										{formatAsCurrency(min, false)}{formatMax(max)}
-									</Table.Cell>
-									<Table.Cell>{formatAsPercentage(rate)}</Table.Cell>
-								</Table.Row>
+									</td>
+									<td>{formatAsPercentage(rate)}</td>
+								</tr>
 							{/each}
-						</Table.Body>
-					</Table.Root>
+						</tbody>
+					</table>
 				</div>
 			</div>
 		</Tabs.Content>
 
 		<Tabs.Content value="help" class="mt-4">
-			<Table.Root>
-				<Table.Header>
-					<Table.Row>
-						<Table.Head class="text-left">Taxable Income</Table.Head>
-						<Table.Head class="text-right">Repayment rate</Table.Head>
-					</Table.Row>
-				</Table.Header>
-				<Table.Body>
+			<table>
+				<thead>
+					<tr>
+						<th class="text-left">Taxable Income</th>
+						<th class="text-right">Repayment rate</th>
+					</tr>
+				</thead>
+				<tbody>
 					{#each HELP_REPAYMENT_RATES as { min, max, rate }}
-						<Table.Row>
-							<Table.Cell>
+						<tr>
+							<td>
 								{formatAsCurrency(min, false)}{formatMax(max)}
-							</Table.Cell>
-							<Table.Cell class="text-right">
+							</td>
+							<td class="text-right">
 								{formatAsPercentage(rate)}
-							</Table.Cell>
-						</Table.Row>
+							</td>
+						</tr>
 					{/each}
-				</Table.Body>
-			</Table.Root>
+				</tbody>
+			</table>
 		</Tabs.Content>
 	</Tabs.Root>
 </div>

@@ -1,8 +1,6 @@
 <script lang="ts">
 	import { setCalculatorState, getCalculatorState } from './calculator.svelte';
 	import * as Tabs from '$lib/components/ui/tabs';
-	import { Button } from '$lib/components/ui/button';
-	import { Download } from 'lucide-svelte';
 	import { formatAsCurrency } from '$lib/utils/formatters';
 	import Inputs from './_components/Inputs.svelte';
 	import GrowthChart from './_components/GrowthChart.svelte';

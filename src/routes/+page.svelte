@@ -5,15 +5,10 @@
 
 <svelte:head>
 	<title>MoneyKit - Financial Tools</title>
-	<meta
-		name="description"
-		content="All the tools you need to manage your money and build wealth effectively."
-	/>
-	<meta name="twitter:creator" content="@jrib_" />
+	<meta name="description" content="Professional-grade personal finance toolkit." />
 </svelte:head>
 
 <main class="flex-1 container mx-auto px-4">
-	<!-- Hero Section -->
 	<div class="text-center max-w-4xl mx-auto pt-16 pb-24">
 		<h1 class="text-4xl md:text-8xl font-light mb-6 text-white leading-tight">
 			Your personal finance
@@ -24,13 +19,12 @@
 			</span>
 		</h1>
 		<p class="text-muted text-xl mb-12 max-w-2xl mx-auto">
-			Professional-grade financial tools to help you make <span class="text-white"
+			Professional-grade financial tools to help make <span class="text-white"
 				>smarter decisions</span
 			> with your money
 		</p>
 	</div>
 
-	<!-- Tools Grid -->
 	<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto pb-24">
 		{#each calculators as calculator}
 			<CalculatorCard {...calculator} />

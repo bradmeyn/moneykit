@@ -86,15 +86,15 @@
 	}
 
 	table {
-		@apply w-full table-auto border-collapse border-ui-800 text-sm;
+		@apply w-full table-auto border-collapse border-ui-800 bg-ui-950 text-sm;
 	}
 
 	th,
 	td {
-		@apply border-b border-ui-800 py-3 px-2 text-left;
+		@apply border-b border-ui-800 p-4 py-3 text-left;
 	}
 	th {
-		@apply text-left text-sm text-ui-300  border-t-transparent;
+		@apply text-left text-sm text-muted   border-t-transparent;
 	}
 	td {
 		@apply text-ui-200;
@@ -103,7 +103,7 @@
 
 @layer components {
 	.card {
-		@apply rounded-xl border  border-ui-800 bg-ui-950 p-6;
+		@apply rounded-xl border border-ui-800 bg-ui-950 p-6;
 	}
 
 	.tab-trigger {

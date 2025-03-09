@@ -4,13 +4,14 @@
 	import Input from '$lib/components/ui/input/input.svelte';
 
 	type Props = {
+		class?: string;
 		value: number;
 		label?: string;
 		id?: string;
 		onchange?: (value: number) => void;
 	};
 
-	let { value = $bindable(), label = '', id = '', onchange }: Props = $props();
+	let { value = $bindable(), label = '', id = '', onchange, class: className }: Props = $props();
 
 	let displayValue = $state(formatAsCurrency(value));
 
@@ -33,6 +34,7 @@
 	{/if}
 	<Input
 		{id}
+		class={className}
 		name={id}
 		value={displayValue}
 		onchange={handleChange}

@@ -11,30 +11,36 @@
 
 <tr>
 	<td>
-		<div class="flex items-center gap-1">
-			<span class="font-medium">{holding.investment.symbol}</span>
+		<div class="text-lg">
+			{holding.investment.symbol}
 		</div>
-		<div class="text-xs text-muted-foreground">
+		<div class=" text-muted-foreground">
 			{holding.investment.name}
 		</div>
 	</td>
-	<td class="text-right relative">
+	<td class="text-right text-lg">
 		{formatAsCurrency(holding.value)}
 	</td>
-	<td class="text-right relative">
-		{`${formatAsCurrency(holding.value * holding.investment.managementCost)} pa`}
+	<td class="text-right">
+		{#if holding.investment.symbol !== 'CASH'}
+			{`${formatAsCurrency(holding.value * holding.investment.managementCost)} pa`}
 
-		<div class="text-xs text-muted">
-			{holding.investment.managementCost > 0
-				? `${formatAsPercentage(holding.investment.managementCost)} pa`
-				: 'N/A'}
-		</div>
+			<div class="text-xs text-muted">
+				{holding.investment.managementCost > 0
+					? `${formatAsPercentage(holding.investment.managementCost)} pa`
+					: 'N/A'}
+			</div>
+		{/if}
 	</td>
-	<td class="text-right relative w-28">
-		<PercentageInput
-			value={holding.weight}
-			onchange={(value) => updateWeight(holding.investment.symbol, value)}
-		/>
+	<td class="text-right w-28">
+		{#if holding.investment.symbol !== 'CASH'}
+			<PercentageInput
+				value={holding.weight}
+				onchange={(value) => updateWeight(holding.investment.symbol, value)}
+			/>
+		{:else}
+			<div class="text-lg">{formatAsPercentage(holding.weight)}</div>
+		{/if}
 	</td>
 	<td class="text-right">
 		{#if holding.investment.symbol !== 'CASH'}

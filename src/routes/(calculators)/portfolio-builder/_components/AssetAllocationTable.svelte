@@ -1,43 +1,8 @@
 <script lang="ts">
 	import { formatAsPercentage, formatAsCurrency } from '$utils/formatters';
-	import DoughnutChart from '$lib/components/charts/DoughnutChart.svelte';
-	import LegendList from '$lib/components/charts/LegendList.svelte';
 	import { getPortfolioState } from '../calculator.svelte';
 
 	const portfolio = getPortfolioState();
-
-	// Labels for asset classes
-	const assetLabels = {
-		ausEquities: 'Australian Equities',
-		intEquities: 'International Equities',
-		ausFixedInterest: 'Australian Fixed Interest',
-		intFixedInterest: 'International Fixed Interest',
-		cash: 'Cash',
-		alternatives: 'Alternatives'
-	};
-
-	// Format asset allocation data for charts
-	let assetAllocationChartData = $derived.by(() => {
-		const allocation = portfolio.assetAllocation;
-		return Object.entries(allocation)
-			.filter(([_, value]) => value > 0)
-			.map(([key, value]) => ({
-				label: assetLabels[key as keyof typeof assetLabels],
-				value
-			}))
-			.sort((a, b) => b.value - a.value);
-	});
-
-	// Calculate growth vs defensive asset ratios
-	let growthAssets = $derived.by(() => {
-		const allocation = portfolio.assetAllocation;
-		return allocation.ausEquities + allocation.intEquities + allocation.alternatives;
-	});
-
-	let defensiveAssets = $derived.by(() => {
-		const allocation = portfolio.assetAllocation;
-		return allocation.ausFixedInterest + allocation.intFixedInterest + allocation.cash;
-	});
 </script>
 
 <div>
@@ -58,15 +23,15 @@
 			<tbody>
 				{#each portfolio.portfolio as holding}
 					<tr>
-						<td class="py-2">
-							<div class="flex items-center gap-1">
-								<span class="font-medium">{holding.investment.symbol}</span>
+						<td>
+							<div class="text-lg">
+								{holding.investment.symbol}
 							</div>
-							<div class="text-xs text-muted-foreground">
+							<div class=" text-muted-foreground">
 								{holding.investment.name}
 							</div>
 						</td>
-						<td class="text-right py-2"
+						<td class="text-right"
 							><div>
 								{formatAsCurrency(holding.value)}
 							</div>
@@ -74,7 +39,7 @@
 								{formatAsPercentage(holding.weight)}
 							</div>
 						</td>
-						<td class="text-right py-2">
+						<td class="text-right">
 							<div>
 								{formatAsCurrency(holding.value * holding.investment.assetAllocation.ausEquities)}
 							</div>
@@ -82,7 +47,7 @@
 								{formatAsPercentage(holding.investment.assetAllocation.ausEquities)}
 							</div>
 						</td>
-						<td class="text-right py-2">
+						<td class="text-right">
 							<div>
 								{formatAsCurrency(holding.value * holding.investment.assetAllocation.intEquities)}
 							</div>
@@ -90,7 +55,7 @@
 								{formatAsPercentage(holding.investment.assetAllocation.intEquities)}
 							</div>
 						</td>
-						<td class="text-right py-2">
+						<td class="text-right">
 							<div>
 								{formatAsCurrency(
 									holding.value * holding.investment.assetAllocation.ausFixedInterest
@@ -100,7 +65,7 @@
 								{formatAsPercentage(holding.investment.assetAllocation.ausFixedInterest)}
 							</div>
 						</td>
-						<td class="text-right py-2">
+						<td class="text-right">
 							<div>
 								{formatAsCurrency(
 									holding.value * holding.investment.assetAllocation.intFixedInterest
@@ -110,7 +75,7 @@
 								{formatAsPercentage(holding.investment.assetAllocation.intFixedInterest)}
 							</div>
 						</td>
-						<td class="text-right py-2">
+						<td class="text-right">
 							<div>
 								{formatAsCurrency(holding.value * holding.investment.assetAllocation.cash)}
 							</div>
@@ -118,7 +83,7 @@
 								{formatAsPercentage(holding.investment.assetAllocation.cash)}
 							</div>
 						</td>
-						<td class="text-right py-2">
+						<td class="text-right">
 							<div>
 								{formatAsCurrency(holding.value * holding.investment.assetAllocation.alternatives)}
 							</div>

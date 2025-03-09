@@ -8,6 +8,16 @@ export type AssetAllocation = {
 	alternatives: number;
 };
 
+export const assetLabels = {
+	ausEquities: 'Australian Equities',
+	intEquities: 'International Equities',
+	ausFixedInterest: 'Australian Fixed Interest',
+	intFixedInterest: 'International Fixed Interest',
+	cash: 'Cash',
+	alternatives: 'Alternatives',
+	unallocated: 'Unallocated'
+};
+
 interface Investment {
 	symbol: string;
 	name: string;

@@ -1,26 +1,13 @@
 <script lang="ts">
-	import { formatAsPercentage, formatAsCurrency } from '$utils/formatters';
+	import { formatAsPercentage } from '$utils/formatters';
 	import DoughnutChart from '$lib/components/charts/DoughnutChart.svelte';
 	import LegendList from '$lib/components/charts/LegendList.svelte';
 	import { getPortfolioState } from '../calculator.svelte';
-
+	import { assetLabels } from '../investments';
 	const portfolio = getPortfolioState();
-
-	// Labels for asset classes
-	const assetLabels = {
-		ausEquities: 'Australian Equities',
-		intEquities: 'International Equities',
-		ausFixedInterest: 'Australian Fixed Interest',
-		intFixedInterest: 'International Fixed Interest',
-		cash: 'Cash',
-		alternatives: 'Alternatives',
-		unallocated: 'Unallocated' // Added unallocated label
-	};
 
 	// Calculate unallocated value and percentage
 	let unallocatedValue = $derived.by(() => {
-		// Assuming portfolioValue is the total intended value
-		// and the sum of holdings is what's currently allocated
 		return Math.max(
 			0,
 			portfolio.portfolioValue -
@@ -96,7 +83,7 @@
 </script>
 
 <div class="card">
-	<h2 class="text-lg font-medium mb-3">Allocation Chart</h2>
+	<h2 class="text-lg font-medium mb-3">Asset Allocation</h2>
 	<div class="flex flex-col items-center">
 		<DoughnutChart data={assetAllocationChartData} formatter={formatAsPercentage} />
 		<div class="mt-4 w-full">
@@ -129,13 +116,13 @@
 				<div class="h-2 bg-muted rounded-full mb-3 w-full"></div>
 			{/if}
 
-			<div class="flex justify-between text-xs mb-4">
+			<div class="flex justify-between text-sm mb-4">
 				<div>
-					<span class="inline-block w-2 h-2 rounded-full bg-[#FF7043] mr-1"></span>
+					<span class="inline-block size-2 rounded-full bg-[#FF7043] mr-1"></span>
 					Growth {formatAsPercentage(growthAssets)}
 				</div>
 				<div>
-					<span class="inline-block w-2 h-2 rounded-full bg-[#42A5F5] mr-1"></span>
+					<span class="inline-block size-2 rounded-full bg-[#42A5F5] mr-1"></span>
 					Defensive {formatAsPercentage(defensiveAssets)}
 				</div>
 			</div>

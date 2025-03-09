@@ -1,5 +1,6 @@
 import { setContext, getContext } from 'svelte';
 import { ETF_MAP, type ExchangeTradedFund, type AssetAllocation } from './investments';
+import { formatAsPercentage } from '$utils/formatters';
 
 export type PortfolioHolding = {
 	investment: ExchangeTradedFund;
@@ -8,19 +9,20 @@ export type PortfolioHolding = {
 	cost: number; // management cost * value
 };
 
-// Portfolio asset allocation type to track overall allocation
 class Portfolio {
 	portfolioValue = $state(2000000);
 	investments = $state<PortfolioHolding[]>(defaultPortfolio);
 
 	// Derived values
-	portfolio: PortfolioHolding[] = $derived(this.calculateWeights());
-	total = $derived(this.calculateTotal());
-	totalWeight = $derived(this.calculateTotalWeight());
+	portfolio: PortfolioHolding[] = $derived(this.calculateHoldingDetails());
+	totalAllocated = $derived(this.portfolio?.reduce((acc, holding) => acc + holding.value, 0) || 0);
+	totalValue = $derived(this.portfolio?.reduce((acc, holding) => acc + holding.value, 0) || 0);
+	totalWeight = $derived(this.portfolio?.reduce((acc, holding) => acc + holding.weight, 0) || 0);
 	assetAllocation = $derived(this.calculateAssetAllocation());
-	weightedManagementCost = $derived(this.calculateWeightedManagementCost());
+	totalCost = $derived(this.portfolio?.reduce((acc, holding) => acc + holding.cost, 0) || 0);
 	addInvestment = (investment: PortfolioHolding) => {
-		this.investments.push(investment);
+		// Add investment, keep cash account at the end
+		this.investments = [...this.investments.slice(0, -1), investment, cashAccount];
 	};
 
 	updateWeight = (symbol: string, newWeight: number) => {
@@ -41,20 +43,43 @@ class Portfolio {
 		this.investments = this.investments.filter((i) => i.investment.symbol !== symbol);
 	};
 
-	private calculateWeights() {
-		return this.investments.map((holding) => {
-			const adjustedValue = holding.value / this.portfolioValue;
-			const cost = holding.investment.managementCost * holding.value;
-			return { ...holding, weight: adjustedValue, cost };
-		});
-	}
+	private calculateHoldingDetails() {
+		// First process all non-cash holdings
+		const nonCashHoldings = this.investments
+			.filter((holding) => holding.investment.symbol !== 'CASH')
+			.map((holding) => {
+				const value = holding.value;
+				const weight = value / this.portfolioValue;
+				const cost = holding.investment.managementCost * value;
 
-	private calculateTotal() {
-		return this.portfolio.reduce((acc, holding) => acc + holding.value, 0);
-	}
+				return {
+					...holding,
+					weight,
+					cost
+				};
+			});
 
-	private calculateTotalWeight() {
-		return this.investments.reduce((acc, holding) => acc + holding.weight, 0);
+		// Calculate total value and weight of non-cash holdings
+		const nonCashTotal = nonCashHoldings.reduce((acc, holding) => acc + holding.value, 0);
+		const nonCashWeight = nonCashTotal / this.portfolioValue;
+
+		// Find the cash holding
+		const cashHolding = this.investments.find((h) => h.investment.symbol === 'CASH');
+
+		// Calculate cash values
+		const cashValue = Math.max(0, this.portfolioValue - nonCashTotal);
+		const cashWeight = Math.max(0, 1 - nonCashWeight);
+
+		// Update cash holding
+		const updatedCashHolding = {
+			...(cashHolding || cashAccount),
+			value: cashValue,
+			weight: cashWeight,
+			cost: 0
+		};
+
+		// Return combined holdings with cash at the end
+		return [...nonCashHoldings, updatedCashHolding];
 	}
 
 	private calculateAssetAllocation(): AssetAllocation {
@@ -82,10 +107,147 @@ class Portfolio {
 		}, initialAllocation);
 	}
 
-	private calculateWeightedManagementCost() {
-		return this.portfolio.reduce((acc, holding) => {
-			return acc + holding.weight * (holding.investment.managementCost || 0);
-		}, 0);
+	// Method to get portfolio overview data as CSV
+	// Method to get portfolio overview data as CSV
+	getPortfolioOverviewCsv() {
+		const headers = [
+			'Investment',
+			'Symbol',
+			'Value',
+			'Weight',
+			'Management Fee (%)',
+			'Management Fee ($)',
+			'Australian Equities',
+			'International Equities',
+			'Australian Fixed Interest',
+			'International Fixed Interest',
+			'Cash',
+			'Alternatives'
+		];
+
+		const rows = this.portfolio.map((holding) => {
+			const asset = holding.investment.assetAllocation;
+			return [
+				holding.investment.name,
+				holding.investment.symbol,
+				holding.value,
+				formatAsPercentage(holding.weight),
+				formatAsPercentage(holding.investment.managementCost),
+				holding.cost,
+				formatAsPercentage(asset.ausEquities),
+				formatAsPercentage(asset.intEquities),
+				formatAsPercentage(asset.ausFixedInterest),
+				formatAsPercentage(asset.intFixedInterest),
+				formatAsPercentage(asset.cash),
+				formatAsPercentage(asset.alternatives)
+			];
+		});
+
+		// Add total row
+		const totalAllocation = this.assetAllocation;
+		rows.push([
+			'Total',
+			'',
+			this.totalAllocated,
+			formatAsPercentage(this.totalWeight),
+			formatAsPercentage(this.totalCost / this.totalAllocated),
+			this.totalCost,
+			formatAsPercentage(totalAllocation.ausEquities),
+			formatAsPercentage(totalAllocation.intEquities),
+			formatAsPercentage(totalAllocation.ausFixedInterest),
+			formatAsPercentage(totalAllocation.intFixedInterest),
+			formatAsPercentage(totalAllocation.cash),
+			formatAsPercentage(totalAllocation.alternatives)
+		]);
+
+		return { headers, rows };
+	}
+
+	// Method to get asset class summary data as CSV
+	// Method to get asset class summary data as CSV
+	getAssetClassSummaryCsv() {
+		const headers = ['Asset Class', 'Value', 'Weight'];
+
+		// Calculate values for each asset class
+		const totalAllocation = this.assetAllocation;
+		const totalValue = this.totalAllocated;
+
+		// Create rows for each asset class
+		const rows = [
+			[
+				'Australian Equities',
+				totalAllocation.ausEquities * totalValue,
+				formatAsPercentage(totalAllocation.ausEquities)
+			],
+			[
+				'International Equities',
+				totalAllocation.intEquities * totalValue,
+				formatAsPercentage(totalAllocation.intEquities)
+			],
+			[
+				'Australian Fixed Interest',
+				totalAllocation.ausFixedInterest * totalValue,
+				formatAsPercentage(totalAllocation.ausFixedInterest)
+			],
+			[
+				'International Fixed Interest',
+				totalAllocation.intFixedInterest * totalValue,
+				formatAsPercentage(totalAllocation.intFixedInterest)
+			],
+			['Cash', totalAllocation.cash * totalValue, formatAsPercentage(totalAllocation.cash)],
+			[
+				'Alternatives',
+				totalAllocation.alternatives * totalValue,
+				formatAsPercentage(totalAllocation.alternatives)
+			],
+			['Total', totalValue, formatAsPercentage(this.totalWeight)],
+			[
+				'', // Empty row
+				'',
+				''
+			],
+			// Calculate growth assets (Australian Equities, International Equities, Alternatives)
+			[
+				'Growth Assets',
+				(totalAllocation.ausEquities + totalAllocation.intEquities + totalAllocation.alternatives) *
+					totalValue,
+				formatAsPercentage(
+					totalAllocation.ausEquities + totalAllocation.intEquities + totalAllocation.alternatives
+				)
+			],
+			// Calculate defensive assets (Fixed Interest, Cash)
+			[
+				'Defensive Assets',
+				(totalAllocation.ausFixedInterest +
+					totalAllocation.intFixedInterest +
+					totalAllocation.cash) *
+					totalValue,
+				formatAsPercentage(
+					totalAllocation.ausFixedInterest + totalAllocation.intFixedInterest + totalAllocation.cash
+				)
+			]
+		];
+
+		return { headers, rows };
+	}
+
+	// Method to get combined data for all tables
+	getAllDataCsv() {
+		const overviewData = this.getPortfolioOverviewCsv();
+		const assetClassSummary = this.getAssetClassSummaryCsv();
+
+		// Combine with blank row separators
+		const headers = overviewData.headers;
+		const rows = [
+			...overviewData.rows,
+			Array(headers.length).fill(''), // Empty row as separator
+			['ASSET CLASS SUMMARY'], // Title for the next section
+			Array(headers.length).fill(''), // Empty row as separator
+			assetClassSummary.headers,
+			...assetClassSummary.rows
+		];
+
+		return { headers, rows };
 	}
 }
 
@@ -112,7 +274,7 @@ const cashAccount: PortfolioHolding = {
 			alternatives: 0
 		},
 		managementCost: 0,
-		provider: 'BetaShares', // This is a placeholder, you may want a different provider
+		provider: 'BetaShares',
 		benchmark: 'None',
 		domicile: 'Australia'
 	},
@@ -150,29 +312,3 @@ const defaultPortfolio: PortfolioHolding[] = [
 	},
 	cashAccount
 ];
-
-// Helper function to get available ETFs for portfolio selection
-export function getAvailableETFs(): ExchangeTradedFund[] {
-	return Object.values(ETF_MAP);
-}
-
-// Helper function to calculate portfolio performance metrics
-export function calculatePortfolioMetrics(portfolio: PortfolioHolding[]) {
-	const totalValue = portfolio.reduce((acc, holding) => acc + holding.value, 0);
-	const totalCost = portfolio.reduce((acc, holding) => acc + (holding.cost || holding.value), 0);
-	const totalReturn = totalCost > 0 ? totalValue - totalCost : 0;
-	const totalReturnPercentage = totalCost > 0 ? (totalReturn / totalCost) * 100 : 0;
-
-	// Calculate weighted management cost
-	const weightedCost = portfolio.reduce((acc, holding) => {
-		return acc + holding.weight * (holding.investment.managementCost || 0);
-	}, 0);
-
-	return {
-		totalValue,
-		totalCost,
-		totalReturn,
-		totalReturnPercentage,
-		weightedManagementCost: weightedCost
-	};
-}

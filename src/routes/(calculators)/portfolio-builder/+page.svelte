@@ -12,16 +12,6 @@
 	const calc = setPortfolioState();
 
 	let selectedView = $state<string>('overview');
-
-	// Labels for asset classes
-	const assetLabels = {
-		ausEquities: 'Australian Equities',
-		intEquities: 'International Equities',
-		ausFixedInterest: 'Australian Fixed Interest',
-		intFixedInterest: 'International Fixed Interest',
-		cash: 'Cash',
-		alternatives: 'Alternatives'
-	};
 </script>
 
 <svelte:head>
@@ -46,11 +36,15 @@
 					class="w-[200px]"
 				>
 					<Tabs.List class="grid w-full grid-cols-2 bg-ui-950">
-						<Tabs.Trigger value="overview">Overview</Tabs.Trigger>
-						<Tabs.Trigger value="allocation">Allocation</Tabs.Trigger>
+						<Tabs.Trigger class="data-[state=active]:bg-ui-700" value="overview"
+							>Overview</Tabs.Trigger
+						>
+						<Tabs.Trigger class="data-[state=active]:bg-ui-700" value="allocation"
+							>Allocation</Tabs.Trigger
+						>
 					</Tabs.List>
 				</Tabs.Root>
-				<!-- <DownloadButton filename="growth-data.csv" data={[]} /> -->
+				<DownloadButton filename="portfolio.csv" data={calc.getAllDataCsv()} />
 			</div>
 		</div>
 		<div class="grid grid-cols-1 lg:grid-cols-[3fr,1fr] gap-4">
@@ -76,24 +70,24 @@
 						</tbody>
 						<tfoot>
 							<tr>
-								<td class=" border-t-transparent">Total</td>
+								<td class=" border-t-transparent text-lg">Total</td>
 								<td
-									class="text-right border-t-transparent font-semibold"
+									class="text-right border-t-transparent font-semibold text-lg"
 									class:text-red-500={calc.totalWeight > 1}
 								>
-									{formatAsCurrency(calc.total)}
+									{formatAsCurrency(calc.totalValue)}
 								</td>
 								<td
-									class="text-right border-t-transparent font-semibold"
+									class="text-right border-t-transparent font-semibold text-lg"
 									class:text-red-500={calc.totalWeight > 1}
 								>
-									{`${formatAsCurrency(calc.weightedManagementCost * calc.portfolioValue)} pa`}
+									{`${formatAsCurrency(calc.totalCost)} pa`}
 									<div class="text-xs text-muted">
-										{`${formatAsPercentage(calc.weightedManagementCost)} pa`}
+										{`${formatAsPercentage(calc.totalCost / calc.totalAllocated)} pa`}
 									</div>
 								</td>
 								<td
-									class="text-right border-t-transparent font-semibold"
+									class="text-right border-t-transparent font-semibold text-lg"
 									class:text-red-500={calc.totalWeight > 1}
 								>
 									{formatAsPercentage(calc.totalWeight)}

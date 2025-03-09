@@ -68,4 +68,10 @@
 	:global(.card-animate:nth-child(5)) {
 		animation-delay: 0.4s;
 	}
+	:global(.card-animate:nth-child(6)) {
+		animation-delay: 0.5s;
+	}
+	:global(.card-animate:nth-child(7)) {
+		animation-delay: 0.6s;
+	}
 </style>

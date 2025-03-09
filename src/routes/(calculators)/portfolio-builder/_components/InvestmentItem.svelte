@@ -11,14 +11,14 @@
 
 <tr>
 	<td>
-		<div class="text-lg">
+		<div class="">
 			{holding.investment.symbol}
 		</div>
 		<div class=" text-muted-foreground">
 			{holding.investment.name}
 		</div>
 	</td>
-	<td class="text-right text-lg">
+	<td class="text-right">
 		{formatAsCurrency(holding.value)}
 	</td>
 	<td class="text-right">
@@ -39,7 +39,7 @@
 				onchange={(value) => updateWeight(holding.investment.symbol, value)}
 			/>
 		{:else}
-			<div class="text-lg">{formatAsPercentage(holding.weight)}</div>
+			<div class="">{formatAsPercentage(holding.weight)}</div>
 		{/if}
 	</td>
 	<td class="text-right">

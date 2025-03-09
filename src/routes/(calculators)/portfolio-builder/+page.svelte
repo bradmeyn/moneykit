@@ -70,15 +70,15 @@
 						</tbody>
 						<tfoot>
 							<tr>
-								<td class=" border-t-transparent text-lg">Total</td>
+								<td class=" border-t-transparent">Total</td>
 								<td
-									class="text-right border-t-transparent font-semibold text-lg"
+									class="text-right border-t-transparent font-semibold"
 									class:text-red-500={calc.totalWeight > 1}
 								>
 									{formatAsCurrency(calc.totalValue)}
 								</td>
 								<td
-									class="text-right border-t-transparent font-semibold text-lg"
+									class="text-right border-t-transparent font-semibold"
 									class:text-red-500={calc.totalWeight > 1}
 								>
 									{`${formatAsCurrency(calc.totalCost)} pa`}
@@ -87,7 +87,7 @@
 									</div>
 								</td>
 								<td
-									class="text-right border-t-transparent font-semibold text-lg"
+									class="text-right border-t-transparent font-semibold"
 									class:text-red-500={calc.totalWeight > 1}
 								>
 									{formatAsPercentage(calc.totalWeight)}

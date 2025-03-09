@@ -164,7 +164,6 @@ class Portfolio {
 	}
 
 	// Method to get asset class summary data as CSV
-	// Method to get asset class summary data as CSV
 	getAssetClassSummaryCsv() {
 		const headers = ['Asset Class', 'Value', 'Weight'];
 

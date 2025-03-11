@@ -13,7 +13,7 @@
 		budgetItem: BudgetItem;
 	} = $props();
 
-	const { frequency, removeItem, updateItem } = getBudgetState();
+	const budget = getBudgetState();
 </script>
 
 <tr class="">
@@ -23,7 +23,7 @@
 			id="test"
 			label=""
 			onchange={(value) =>
-				updateItem({
+				budget.updateItem({
 					...budgetItem,
 					amount: value
 				})}
@@ -34,7 +34,7 @@
 		<FrequencyInput
 			value={budgetItem.frequency}
 			onchange={(frequency) =>
-				updateItem({
+				budget.updateItem({
 					...budgetItem,
 					frequency
 				})}
@@ -45,7 +45,7 @@
 	<td class="text-right min-w-[80px] relative">
 		<span
 			>{formatAsCurrency(
-				convertToFrequency(budgetItem.amount, budgetItem.frequency, frequency)
+				convertToFrequency(budgetItem.amount, budgetItem.frequency, budget.frequency)
 			)}</span
 		>
 	</td>
@@ -54,7 +54,7 @@
 			size="icon"
 			variant="ghost"
 			class="  text-muted hover:text-red-500 "
-			onclick={() => removeItem(budgetItem.id)}
+			onclick={() => budget.removeItem(budgetItem.id)}
 		>
 			<Trash2 class="size-4 " />
 		</Button>

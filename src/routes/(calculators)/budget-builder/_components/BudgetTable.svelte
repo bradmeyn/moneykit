@@ -4,7 +4,7 @@
 	import type { BudgetItem as Item } from '../budget.svelte';
 	import BudgetItem from './BudgetItem.svelte';
 	let { items }: { items: Item[] } = $props();
-	const { frequency } = getBudgetState();
+	const budget = getBudgetState();
 </script>
 
 {#if items.length > 0}
@@ -15,7 +15,7 @@
 				<th class="text-left text-sm text-ui-400 p-2 border-t-transparent">Amount</th>
 				<th class="text-left text-sm text-ui-400 p-2 border-t-transparent">Frequency</th>
 				<th class="text-right text-sm text-ui-400 p-2 border-t-transparent"
-					>{FREQUENCIES[frequency].label} Total</th
+					>{FREQUENCIES[budget.frequency].label} Total</th
 				>
 				<th class="text-right text-sm text-ui-400 p-2 border-t-transparent"> </th>
 			</tr>

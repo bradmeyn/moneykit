@@ -13,9 +13,7 @@
 		<span>Calculators</span>
 		<ChevronDown class="size-4 inline-block group-hover:rotate-180 transition-all duration-300" />
 	</button>
-	<div
-		class="absolute card p-2 shadow-lg rounded overflow-hidden hidden group-hover:block z-20 w-[500px]"
-	>
+	<div class="absolute card p-2 shadow-lg overflow-hidden hidden group-hover:block z-20 w-[500px]">
 		{#each categories as category}
 			<div class="p-4">
 				<h3 class="font-semibold text-white text-xs mb-3">{category.toUpperCase()}</h3>

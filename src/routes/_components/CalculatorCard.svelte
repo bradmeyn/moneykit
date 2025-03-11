@@ -74,4 +74,7 @@
 	:global(.card-animate:nth-child(7)) {
 		animation-delay: 0.6s;
 	}
+	:global(.card-animate:nth-child(8)) {
+		animation-delay: 0.7s;
+	}
 </style>

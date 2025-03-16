@@ -30,15 +30,25 @@
 
 <aside class="max-w-[1000px] min-w-[300px] space-y-4">
 	<h2 class="card-heading">Inputs</h2>
-	<CurrencyInput bind:value={calc.principal} id="principal" label="Principal" />
-	<PercentageInput bind:value={calc.interestRate} label="Interest Rate" />
+
+	<div>
+		<Label for="principal">Principal</Label>
+		<CurrencyInput bind:value={calc.principal} id="principal" />
+	</div>
+
+	<div>
+		<Label for="interest-rate">Interest Rate</Label>
+		<PercentageInput bind:value={calc.interestRate} id="interest-rate" />
+	</div>
 
 	<div>
 		<Label for="term">Term</Label>
 		<div class="pb-1">{calc.term} {calc.term > 1 ? 'years' : 'year'}</div>
-		<Slider type="single" bind:value={calc.term} max={30} min={1} step={1} />
+		<Slider type="single" bind:value={calc.term} max={30} min={1} step={1} id="term" />
 	</div>
+
 	<Separator />
+
 	<div>
 		<Label for="repayment-frequency">Repayment Frequency</Label>
 		<Select.Root name="repayment-frequency" type="single" bind:value={calc.frequency}>
@@ -52,31 +62,46 @@
 			</Select.Content>
 		</Select.Root>
 	</div>
-	<CurrencyInput bind:value={calc.extraRepayments} id="extra-repayment" label="Extra Repayments" />
+
+	<div>
+		<Label for="extra-repayment">Extra Repayments</Label>
+		<CurrencyInput bind:value={calc.extraRepayments} id="extra-repayment" />
+	</div>
+
 	<Separator />
+
 	<div>
 		<Label for="loan-type">Loan Type</Label>
-		<TabSelect bind:value={calc.loanType} options={loanTypeOptions} name={'type'} />
+		<TabSelect bind:value={calc.loanType} options={loanTypeOptions} name={'type'} id="loan-type" />
 	</div>
 
 	{#if calc.loanType === 'Interest Only'}
-		<PercentageInput bind:value={calc.ioRate} label="Interest Only Rate" />
+		<div>
+			<Label for="io-rate">Interest Only Rate</Label>
+			<PercentageInput bind:value={calc.ioRate} id="io-rate" />
+		</div>
+
 		<div class="space-y-2">
 			<Label for="io-term">Interest Only Period (years)</Label>
-			<TabSelect bind:value={calc.ioTerm} options={periodOptions} name="io-period" />
+			<TabSelect bind:value={calc.ioTerm} options={periodOptions} name="io-period" id="io-term" />
 		</div>
 	{/if}
 
 	<Separator />
-	<Button class=" w-full" variant="secondary" size="sm" onclick={toggleProperty}>
-		{includeProperty ? 'Hide Property' : 'Include Property'}</Button
-	>
+
+	<Button class="w-full" variant="secondary" size="sm" onclick={toggleProperty}>
+		{includeProperty ? 'Hide Property' : 'Include Property'}
+	</Button>
+
 	{#if includeProperty}
-		<CurrencyInput bind:value={calc.propertyValue} id="property-value" label="Property Value" />
-		<PercentageInput
-			bind:value={calc.propertyGrowthRate}
-			id="property-growth"
-			label="Property Growth Rate"
-		/>
+		<div>
+			<Label for="property-value">Property Value</Label>
+			<CurrencyInput bind:value={calc.propertyValue} id="property-value" />
+		</div>
+
+		<div>
+			<Label for="property-growth">Property Growth Rate</Label>
+			<PercentageInput bind:value={calc.propertyGrowthRate} id="property-growth" />
+		</div>
 	{/if}
 </aside>

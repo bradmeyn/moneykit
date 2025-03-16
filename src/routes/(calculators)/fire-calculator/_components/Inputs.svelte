@@ -19,24 +19,36 @@
 
 <aside class="max-w-[1000px] min-w-[300px] space-y-4">
 	<h2 class="card-heading">Inputs</h2>
+
 	<div>
 		<Label for="age">Age</Label>
-
 		<Input id="age" name="age" bind:value={calculator.age} type="number" />
 	</div>
-	<CurrencyInput
-		bind:value={calculator.currentInvestments}
-		id="current-investments"
-		label="Current Investments"
-	/>
-	<CurrencyInput
-		bind:value={calculator.contributions}
-		id="contributions"
-		label="Monthly Contributions"
-	/>
-	<PercentageInput bind:value={calculator.growthRate} id="growth-rate" label="Investment Growth" />
-	<PercentageInput bind:value={calculator.inflationRate} id="inflation-rate" label="Inflation" />
-	<CurrencyInput bind:value={calculator.expenses} id="expenses" label="Annual Expenses" />
+
+	<div>
+		<Label for="current-investments">Current Investments</Label>
+		<CurrencyInput bind:value={calculator.currentInvestments} id="current-investments" />
+	</div>
+
+	<div>
+		<Label for="contributions">Monthly Contributions</Label>
+		<CurrencyInput bind:value={calculator.contributions} id="contributions" />
+	</div>
+
+	<div>
+		<Label for="growth-rate">Investment Return (p.a.)</Label>
+		<PercentageInput bind:value={calculator.growthRate} id="growth-rate" />
+	</div>
+
+	<div>
+		<Label for="inflation-rate">Inflation Rate (p.a.)</Label>
+		<PercentageInput bind:value={calculator.inflationRate} id="inflation-rate" />
+	</div>
+
+	<div>
+		<Label for="expenses">Annual Expenses</Label>
+		<CurrencyInput bind:value={calculator.expenses} id="expenses" />
+	</div>
 
 	<div>
 		<div class="flex gap-2 mb-2 items-center">
@@ -49,7 +61,7 @@
 	</div>
 
 	<Separator />
-	<Button class=" w-full " variant="secondary" size="sm" {onclick}>
+	<Button class="w-full" variant="secondary" size="sm" {onclick}>
 		<div>
 			{baristaFi ? 'FIRE' : 'Barista/Coast FI'}
 		</div>
@@ -59,11 +71,8 @@
 	</Button>
 	{#if baristaFi}
 		<div>
-			<CurrencyInput
-				label="Secondary Income"
-				bind:value={calculator.secondaryIncome}
-				id="secondary-income"
-			/>
+			<Label for="secondary-income">Secondary Income</Label>
+			<CurrencyInput bind:value={calculator.secondaryIncome} id="secondary-income" />
 		</div>
 	{/if}
 </aside>

@@ -1,18 +1,17 @@
 <script lang="ts">
 	import { formatAsPercentage, parsePercentage } from '$lib/utils/formatters';
-	import Label from '$lib/components/ui/label/label.svelte';
 	import Input from '$lib/components/ui/input/input.svelte';
 
 	let {
 		value = $bindable(),
-		label = '',
 		id = '',
-		onchange
+		onchange,
+		placeholder
 	}: {
 		value: number;
-		label?: string;
 		id?: string;
 		onchange?: (value: number) => void;
+		placeholder?: string;
 	} = $props();
 
 	let displayValue = $state(formatAsPercentage(value));
@@ -32,15 +31,11 @@
 	}
 </script>
 
-<div>
-	{#if label}
-		<Label for={id}>{label}</Label>
-	{/if}
-	<Input
-		{id}
-		value={displayValue}
-		onchange={handleInput}
-		onblur={handleBlur}
-		onfocus={(e) => e.currentTarget.select()}
-	/>
-</div>
+<Input
+	{id}
+	{placeholder}
+	value={displayValue}
+	onchange={handleInput}
+	onblur={handleBlur}
+	onfocus={(e) => e.currentTarget.select()}
+/>

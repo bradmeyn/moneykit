@@ -23,26 +23,41 @@
 
 <aside class="max-w-[1000px] min-w-[300px] space-y-4">
 	<h2 class="card-heading">Inputs</h2>
-	<CurrencyInput bind:value={calculator.principal} id="principal" label="Principal" />
+
+	<div>
+		<Label for="principal">Principal</Label>
+		<CurrencyInput bind:value={calculator.principal} id="principal" />
+	</div>
+
 	<div class="grid grid-cols-1 md:grid-cols-2 gap-2">
-		<CurrencyInput
-			onchange={(value) => calculator.updateBase({ contributionAmount: value })}
-			label="Contributions"
-			value={calculator.baseScenario.contributionAmount}
-		/>
-		<FrequencySelect
-			value={calculator.baseScenario.contributionFrequency}
-			onchange={(value) => calculator.updateBase({ contributionFrequency: value })}
-			label="Frequency"
-			id="frequency"
-			name="frequency"
+		<div>
+			<Label for="contributions">Contributions</Label>
+			<CurrencyInput
+				id="contributions"
+				onchange={(value) => calculator.updateBase({ contributionAmount: value })}
+				value={calculator.baseScenario.contributionAmount}
+			/>
+		</div>
+		<div>
+			<Label for="frequency">Frequency</Label>
+			<FrequencySelect
+				value={calculator.baseScenario.contributionFrequency}
+				onchange={(value) => calculator.updateBase({ contributionFrequency: value })}
+				id="frequency"
+				name="frequency"
+			/>
+		</div>
+	</div>
+
+	<div>
+		<Label for="interest-rate">Interest Rate</Label>
+		<PercentageInput
+			id="interest-rate"
+			onchange={(value) => calculator.updateBase({ interestRate: value })}
+			value={calculator.baseScenario.interestRate}
 		/>
 	</div>
-	<PercentageInput
-		onchange={(value) => calculator.updateBase({ interestRate: value })}
-		value={calculator.baseScenario.interestRate}
-		label="Interest Rate"
-	/>
+
 	<div>
 		<Label for="years">Years</Label>
 		<Input
@@ -54,36 +69,49 @@
 			onfocus={(e) => e.currentTarget.select()}
 		/>
 	</div>
+
 	<Separator />
+
 	<div>
-		<CurrencyInput bind:value={calculator.savingsGoal} label="Savings Goal" id="savings-goal" />
+		<Label for="savings-goal">Savings Goal</Label>
+		<CurrencyInput bind:value={calculator.savingsGoal} id="savings-goal" />
 	</div>
 
-	<Button class=" w-full" variant="secondary" size="sm" onclick={toggleComparison}>
-		{isComparing ? 'Hide' : 'Compare'}</Button
-	>
+	<Button class="w-full" variant="secondary" size="sm" onclick={toggleComparison}>
+		{isComparing ? 'Hide' : 'Compare'}
+	</Button>
+
 	{#if isComparing}
 		<h2 class="card-heading">Comparison</h2>
-		<PercentageInput
-			onchange={(value) => calculator.updateComparison({ interestRate: value })}
-			value={calculator.comparisonScenario.interestRate}
-			label="Interest Rate"
-			id="comparison-interest-rate"
-		/>
+
+		<div>
+			<Label for="comparison-interest-rate">Interest Rate</Label>
+			<PercentageInput
+				id="comparison-interest-rate"
+				onchange={(value) => calculator.updateComparison({ interestRate: value })}
+				value={calculator.comparisonScenario.interestRate}
+			/>
+		</div>
+
 		<div class="grid grid-cols-1 md:grid-cols-2 gap-2">
-			<CurrencyInput
-				onchange={(value) => calculator.updateComparison({ contributionAmount: value })}
-				label="Contributions"
-				value={calculator.comparisonScenario.contributionAmount}
-				id="comparison-contributions"
-			/>
-			<FrequencySelect
-				value={calculator.comparisonScenario.contributionFrequency}
-				onchange={(value) => calculator.updateComparison({ contributionFrequency: value })}
-				label="Frequency"
-				id="comparison-frequency"
-				name="frequency"
-			/>
+			<div>
+				<Label for="comparison-contributions">Contributions</Label>
+				<CurrencyInput
+					id="comparison-contributions"
+					onchange={(value) => calculator.updateComparison({ contributionAmount: value })}
+					value={calculator.comparisonScenario.contributionAmount}
+				/>
+			</div>
+
+			<div>
+				<Label for="comparison-frequency">Frequency</Label>
+				<FrequencySelect
+					value={calculator.comparisonScenario.contributionFrequency}
+					onchange={(value) => calculator.updateComparison({ contributionFrequency: value })}
+					id="comparison-frequency"
+					name="frequency"
+				/>
+			</div>
 		</div>
 	{/if}
 </aside>

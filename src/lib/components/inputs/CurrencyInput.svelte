@@ -1,17 +1,16 @@
 <script lang="ts">
 	import { formatAsCurrency, parseCurrency } from '$lib/utils/formatters';
-	import Label from '$lib/components/ui/label/label.svelte';
 	import Input from '$lib/components/ui/input/input.svelte';
 
 	type Props = {
 		class?: string;
 		value: number;
-		label?: string;
 		id?: string;
+		placeholder?: string;
 		onchange?: (value: number) => void;
 	};
 
-	let { value = $bindable(), label = '', id = '', onchange, class: className }: Props = $props();
+	let { value = $bindable(), id = '', onchange, class: className, placeholder }: Props = $props();
 
 	let displayValue = $state(formatAsCurrency(value));
 
@@ -28,17 +27,13 @@
 	}
 </script>
 
-<div>
-	{#if label}
-		<Label for={id}>{label}</Label>
-	{/if}
-	<Input
-		{id}
-		class={className}
-		name={id}
-		value={displayValue}
-		onchange={handleChange}
-		onblur={handleBlur}
-		onfocus={(e) => e.currentTarget.select()}
-	/>
-</div>
+<Input
+	{id}
+	class={className}
+	name={id}
+	{placeholder}
+	value={displayValue}
+	onchange={handleChange}
+	onblur={handleBlur}
+	onfocus={(e) => e.currentTarget.select()}
+/>

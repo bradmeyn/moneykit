@@ -7,9 +7,16 @@
 	const calculator = getCalculatorState();
 </script>
 
-<div class="space-y-3">
-	<CurrencyInput label="Income" bind:value={calculator.income} />
-	<CurrencyInput label="Deductions" bind:value={calculator.deductions} />
+<div class="space-y-4">
+	<div>
+		<Label for="income">Income</Label>
+		<CurrencyInput id="income" bind:value={calculator.income} />
+	</div>
+
+	<div>
+		<Label for="deductions">Deductions</Label>
+		<CurrencyInput id="deductions" bind:value={calculator.deductions} />
+	</div>
 
 	<Label class="flex items-center space-x-2 px-2">
 		<Checkbox

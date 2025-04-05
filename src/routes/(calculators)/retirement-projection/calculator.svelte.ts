@@ -1,6 +1,15 @@
 import { setContext, getContext } from 'svelte';
 import { formatAsCurrency } from '$lib/utils/formatters';
+
 class CalculatorState {
+	ASSUMED_RETURNS = {
+		highGrowth: 0.08,
+		growth: 0.07,
+		balanced: 0.05,
+		conservative: 0.03,
+		cash: 0.03
+	};
+
 	// Personal details
 	age = $state(55);
 	retirementAge = $state(67);
@@ -19,15 +28,44 @@ class CalculatorState {
 	retirementReturn = $state(0.05);
 	inflationRate = $state(0.02);
 
-	// Other investments
-	otherInvestments = $state(0);
-	investmentReturn = $state(0.07);
+	investments = $state([
+		{
+			name: '123 Main St',
+			type: 'property',
+			value: 5000000,
+			rentalIncome: 20000,
+			expectedReturn: 0.05 // capital growth
+		},
+		{
+			name: 'Personal Investment Account',
+			type: 'shares',
+			value: 150000,
+			expectedReturn: 0.07
+		},
+		{
+			name: 'Bank Savings Account',
+			type: 'cash',
+			value: 50000,
+			expectedReturn: 0.04
+		}
+	]);
+
+	// Home Ownership (pension)
+	isHomeOwner = $state(true);
+
+	// Calculate total value of non-super investments
+	getTotalInvestmentsValue = $derived(
+		this.investments.reduce((total, investment) => total + investment.value, 0)
+	);
 
 	outcome = $derived.by(() => {
 		const currentYear = new Date().getFullYear();
 		const currentAge = this.age;
 		let balance = this.superannuationBalance;
-		let otherBalance = this.otherInvestments;
+
+		// Use investments array for non-super assets
+		let investmentsValues = [...this.investments.map((inv) => inv.value)];
+
 		const yearlyData = [];
 		let balanceAtRetirement = 0;
 
@@ -52,8 +90,10 @@ class CalculatorState {
 				// Add contributions
 				balance += totalContributions;
 
-				// Apply investment return on other investments
-				otherBalance = otherBalance * (1 + this.investmentReturn);
+				// Apply investment return on other investments (each with its own rate)
+				investmentsValues = investmentsValues.map(
+					(value, index) => value * (1 + this.investments[index].expectedReturn)
+				);
 			}
 			// Step 2: Retirement phase
 			else {
@@ -69,7 +109,11 @@ class CalculatorState {
 
 				// Calculate investment returns (before withdrawal)
 				balance = balance * (1 + this.retirementReturn);
-				otherBalance = otherBalance * (1 + this.investmentReturn);
+
+				// Apply investment returns to each investment
+				investmentsValues = investmentsValues.map(
+					(value, index) => value * (1 + this.investments[index].expectedReturn)
+				);
 
 				// Withdraw retirement income (prioritize super balance)
 				if (balance >= adjustedIncomeNeeded) {
@@ -78,24 +122,42 @@ class CalculatorState {
 					// If super is insufficient, use other investments to cover the gap
 					const gap = adjustedIncomeNeeded - balance;
 					balance = 0;
-					otherBalance = Math.max(0, otherBalance - gap);
+
+					// Withdraw from investments proportionally to their values
+					const totalInvestmentsValue = investmentsValues.reduce((sum, val) => sum + val, 0);
+
+					if (totalInvestmentsValue > 0) {
+						// Calculate proportional reduction for each investment
+						investmentsValues = investmentsValues.map((value) => {
+							const proportion = value / totalInvestmentsValue;
+							return Math.max(0, value - gap * proportion);
+						});
+					}
 				}
 			}
+
+			// Calculate total investments value for this year
+			const totalInvestmentsValue = investmentsValues.reduce((sum, val) => sum + val, 0);
 
 			yearlyData.push({
 				year: currentYearNum,
 				age: ageThisYear,
 				isRetired,
 				superannuationBalance: Math.round(balance),
-				otherInvestmentsBalance: Math.round(otherBalance),
-				totalBalance: Math.round(balance + otherBalance),
+				otherInvestmentsBalance: Math.round(totalInvestmentsValue),
+				totalBalance: Math.round(balance + totalInvestmentsValue),
 				yearsSinceRetirement: isRetired ? ageThisYear - this.retirementAge : null,
 				incomeNeeded: isRetired
 					? Math.round(
 							this.retirementIncome *
 								Math.pow(1 + this.inflationRate, ageThisYear - this.retirementAge)
 						)
-					: null
+					: null,
+				// Add detailed investments data
+				investmentsBreakdown: this.investments.map((inv, idx) => ({
+					name: inv.name,
+					value: Math.round(investmentsValues[idx])
+				}))
 			});
 		}
 
@@ -141,14 +203,22 @@ class CalculatorState {
 
 		// We need to keep track of previous balances to calculate drawdowns
 		let prevSuperBalance = this.superannuationBalance;
-		let prevOtherBalance = this.otherInvestments;
+		let prevInvestmentsValues = [...this.investments.map((inv) => inv.value)];
 
 		for (const item of this.outcome.yearlyData) {
 			// Only include retirement years (when drawdowns occur)
 			if (item.isRetired) {
 				// Calculate expected balances after returns but before withdrawals
 				const expectedSuperBalance = prevSuperBalance * (1 + this.retirementReturn);
-				const expectedOtherBalance = prevOtherBalance * (1 + this.investmentReturn);
+
+				// Calculate expected value for each investment
+				const expectedInvestmentsValues = this.investments.map(
+					(inv, idx) => prevInvestmentsValues[idx] * (1 + inv.expectedReturn)
+				);
+				const expectedTotalInvestmentsValue = expectedInvestmentsValues.reduce(
+					(sum, val) => sum + val,
+					0
+				);
 
 				// Calculate drawdowns based on the difference between expected and actual balances
 				let superDrawdown = 0;
@@ -159,8 +229,8 @@ class CalculatorState {
 						superDrawdown = expectedSuperBalance - item.superannuationBalance;
 					}
 
-					if (expectedOtherBalance >= item.otherInvestmentsBalance) {
-						otherDrawdown = expectedOtherBalance - item.otherInvestmentsBalance;
+					if (expectedTotalInvestmentsValue >= item.otherInvestmentsBalance) {
+						otherDrawdown = expectedTotalInvestmentsValue - item.otherInvestmentsBalance;
 					}
 				}
 
@@ -174,10 +244,21 @@ class CalculatorState {
 
 			// Update previous balances for next iteration
 			prevSuperBalance = item.superannuationBalance;
-			prevOtherBalance = item.otherInvestmentsBalance;
+			prevInvestmentsValues = item.investmentsBreakdown.map((inv) => inv.value);
 		}
 
 		return { columns, rows };
+	}
+
+	// New method to get detailed investment breakdown
+	getInvestmentsBreakdown(year: number) {
+		const yearData = this.outcome.yearlyData.find((data) => data.year === year);
+		if (!yearData) return [];
+
+		return yearData.investmentsBreakdown.map((inv) => ({
+			name: inv.name,
+			value: formatAsCurrency(inv.value)
+		}));
 	}
 }
 

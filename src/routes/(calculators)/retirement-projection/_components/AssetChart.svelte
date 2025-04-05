@@ -34,11 +34,12 @@
 	);
 
 	function createDatasets(yearlyData: typeof calculator.outcome.yearlyData) {
-		return [
+		// Create datasets array starting with superannuation
+		const datasets = [
 			{
-				type: 'line',
+				type: 'line' as const,
 				label: 'Super Balance',
-				data: yearlyData.map((d) => d.superannuationBalance),
+				data: yearlyData.map((d) => (d.superannuationBalance > 0 ? d.superannuationBalance : null)),
 				borderColor: COLOURS[0],
 				backgroundColor: `${COLOURS[0]}33`,
 				fill: true,
@@ -47,21 +48,39 @@
 				pointRadius: 0,
 				pointHoverRadius: 4,
 				order: 1
-			},
-			{
-				type: 'line',
-				label: 'Other Investments',
-				data: yearlyData.map((d) => d.otherInvestmentsBalance),
-				borderColor: COLOURS[1],
-				backgroundColor: `${COLOURS[1]}33`,
-				fill: true,
-				tension: 0.4,
-				borderWidth: 2,
-				pointRadius: 0,
-				pointHoverRadius: 4,
-				order: 2
 			}
 		];
+
+		// If we have at least one data point with investment breakdown data
+		if (yearlyData.length > 0 && yearlyData[0].investmentsBreakdown) {
+			// Instead of grouping all investments, create individual line for each investment
+			const investmentNames = yearlyData[0].investmentsBreakdown.map((inv) => inv.name);
+
+			// For each investment, create a line
+			investmentNames.forEach((name, index) => {
+				// Calculate color index to avoid color collisions
+				const colorIndex = (index + 1) % COLOURS.length;
+
+				datasets.push({
+					type: 'line' as const,
+					label: name,
+					data: yearlyData.map((d) => {
+						const investment = d.investmentsBreakdown.find((inv) => inv.name === name);
+						return investment && investment.value > 0 ? investment.value : null;
+					}),
+					borderColor: COLOURS[colorIndex],
+					backgroundColor: `${COLOURS[colorIndex]}33`,
+					fill: true,
+					tension: 0.4,
+					borderWidth: 2,
+					pointRadius: 0,
+					pointHoverRadius: 4,
+					order: index + 2
+				});
+			});
+		}
+
+		return datasets;
 	}
 
 	onMount(() => {

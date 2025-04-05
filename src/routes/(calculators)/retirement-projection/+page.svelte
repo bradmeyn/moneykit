@@ -8,14 +8,7 @@
 	import IncomeChart from './_components/IncomeChart.svelte';
 	import OutcomeCard from './_components/OutcomeCard.svelte';
 	import ScrollableTable from '$ui/ScrollableTable.svelte';
-	import {
-		ThumbsUp,
-		ThumbsDown,
-		TrendingUp,
-		TrendingDown,
-		CheckCircle,
-		AlertTriangle
-	} from 'lucide-svelte';
+	import { CheckCircle, AlertTriangle } from 'lucide-svelte';
 
 	setCalculatorState();
 	const calc = getCalculatorState();
@@ -47,7 +40,7 @@
 				<div class="card h-fit">
 					<h3 class="text-muted">Superannuation Longevity</h3>
 					<div class="text-2xl font-semibold">
-						{calc.outcome.superLongevity} years
+						{calc.outcome.superLongevity} Years
 					</div>
 				</div>
 
@@ -57,7 +50,7 @@
 						{#if calc.outcome.sufficientFunding}
 							<span class=" flex items-center gap-2">
 								<CheckCircle class="text-green-500" size={24} />
-								<span>Sufficient</span>
+								<span>Achievable</span>
 							</span>
 						{:else}
 							<span class=" flex items-center gap-2">

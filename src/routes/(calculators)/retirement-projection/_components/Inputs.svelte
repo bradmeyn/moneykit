@@ -3,15 +3,13 @@
 	import PercentageInput from '$lib/components/inputs/PercentageInput.svelte';
 	import CurrencyInput from '$lib/components/inputs/CurrencyInput.svelte';
 	import Label from '$ui/label/label.svelte';
-	import * as Select from '$lib/components/ui/select';
-	import Button from '$ui/button/button.svelte';
-	import TabSelect from '$lib/components/inputs/TabSelect.svelte';
-	import Slider from '$ui/slider/slider.svelte';
-	import { FREQUENCIES } from '$lib/constants/frequencies';
-	import Separator from '$lib/components/Separator.svelte';
+
 	import * as Accordion from '$lib/components/ui/accordion';
-	import * as Tabs from '$lib/components/ui/tabs';
+
+	import { Checkbox } from '$lib/components/ui/checkbox';
 	import Input from '$ui/input/input.svelte';
+	import AddAsset from './AddAsset.svelte';
+	import { formatAsCurrency } from '$utils/formatters';
 
 	let calc = getCalculatorState();
 </script>
@@ -19,13 +17,13 @@
 <aside class="space-y-4">
 	<h2 class="card-heading">Inputs</h2>
 
-	<Accordion.Root type="multiple" class="w-full" value={['personal-details']}>
+	<Accordion.Root type="multiple" class="w-full" value={['retirement-details']}>
 		<!-- Personal Details Section -->
-		<Accordion.Item value="personal-details">
+		<Accordion.Item value="retirement-details">
 			<Accordion.Trigger
 				class="flex justify-between w-full px-4 py-2 text-left font-medium bg-ui-900 hover:bg-ui-700 rounded"
 			>
-				Personal Details
+				Retirement Details
 			</Accordion.Trigger>
 			<Accordion.Content class="px-4 pt-2 pb-4">
 				<div class="space-y-4">
@@ -50,6 +48,22 @@
 							bind:value={calc.retirementIncome}
 						/>
 					</div>
+					<div class="space-y-2">
+						<Label for="super-balance">Superannuation Balance</Label>
+						<CurrencyInput id="super-balance" bind:value={calc.superannuationBalance} />
+					</div>
+					<div class="space-y-2">
+						<Label for="salary1">Annual Salary</Label>
+						<CurrencyInput id="salary1" placeholder="60,000" bind:value={calc.currentIncome} />
+					</div>
+					<Label class="flex items-center space-x-2 px-2 text-white">
+						<Checkbox bind:checked={calc.isHomeOwner} name="is-home-owner" id="is-home-owner" />
+						<span
+							class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+						>
+							Home Owner
+						</span>
+					</Label>
 				</div>
 			</Accordion.Content>
 		</Accordion.Item>
@@ -59,18 +73,18 @@
 			<Accordion.Trigger
 				class="flex justify-between w-full px-4 py-2 text-left font-medium bg-ui-900 hover:bg-ui-700 rounded"
 			>
-				Financial Details
+				Other Assets
 			</Accordion.Trigger>
 			<Accordion.Content class="px-4 pt-2 pb-4">
-				<div class="space-y-4">
-					<div class="space-y-2">
-						<Label for="super-balance">Superannuation Balance</Label>
-						<CurrencyInput id="super-balance" bind:value={calc.superannuationBalance} />
-					</div>
-					<div class="space-y-2">
-						<Label for="salary1">Annual Salary</Label>
-						<CurrencyInput id="salary1" placeholder="60,000" bind:value={calc.currentIncome} />
-					</div>
+				<div>
+					{#each calc.investments as investment}
+						<div class=" border-b py-2">
+							<small class="text-ui-400 text-sm">{investment.name}</small>
+							<div>{formatAsCurrency(investment.value)}</div>
+						</div>
+					{/each}
+
+					<AddAsset />
 				</div>
 			</Accordion.Content>
 		</Accordion.Item>
@@ -80,7 +94,7 @@
 			<Accordion.Trigger
 				class="flex justify-between w-full px-4 py-2 text-left font-medium bg-ui-900 hover:bg-ui-700 rounded"
 			>
-				Market Assumptions
+				Assumptions
 			</Accordion.Trigger>
 			<Accordion.Content class="px-4 pt-2 pb-4">
 				<div class="space-y-4">

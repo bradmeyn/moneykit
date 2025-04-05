@@ -11,7 +11,13 @@
 
 	let { value = $bindable(), id = '', name = '', onchange }: Props = $props();
 
-	const handleChange = (value: FrequencyType) => onchange?.(value);
+	// Type assertion to tell TypeScript that the string is actually a FrequencyType
+	const handleChange = (value: string) => {
+		// Only call onchange if the value is a valid FrequencyType
+		if (value as FrequencyType) {
+			onchange?.(value as FrequencyType);
+		}
+	};
 </script>
 
 <Select.Root onValueChange={handleChange} {name} type="single" bind:value>

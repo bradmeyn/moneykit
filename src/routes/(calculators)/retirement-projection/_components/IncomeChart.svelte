@@ -41,19 +41,50 @@
 
 	function calculateIncomeSourceBreakdown(yearlyData: typeof calculator.outcome.yearlyData) {
 		return yearlyData.map((d) => {
-			if (!d.isRetired || !d.incomeNeeded) return { superWithdrawal: 0, otherWithdrawal: 0 };
+			if (!d.isRetired || !d.incomeNeeded) return { superWithdrawal: 0, investmentWithdrawals: [] };
 
 			const incomeNeeded = d.incomeNeeded;
 			// Maximum that can be withdrawn from super in this year
 			const maxSuperWithdrawal = Math.min(d.superannuationBalance, incomeNeeded);
 
-			// Amount needed from other sources if super is insufficient
-			const otherWithdrawal =
-				incomeNeeded > maxSuperWithdrawal
-					? Math.min(d.otherInvestmentsBalance, incomeNeeded - maxSuperWithdrawal)
-					: 0;
+			// If super can cover everything, no need for other investments
+			if (maxSuperWithdrawal >= incomeNeeded) {
+				return { superWithdrawal: maxSuperWithdrawal, investmentWithdrawals: [] };
+			}
 
-			return { superWithdrawal: maxSuperWithdrawal, otherWithdrawal };
+			// Amount still needed after super
+			let remainingNeeded = incomeNeeded - maxSuperWithdrawal;
+
+			// Calculate withdrawals from each investment
+			const investmentWithdrawals: Array<{ name: string; withdrawal: number }> = [];
+
+			// If we have investment breakdown data
+			if (d.investmentsBreakdown && d.investmentsBreakdown.length > 0) {
+				// Total investment value for proportion calculations
+				const totalInvestmentValue = d.otherInvestmentsBalance;
+
+				if (totalInvestmentValue > 0) {
+					// Calculate withdrawal from each investment proportionally
+					d.investmentsBreakdown.forEach((inv) => {
+						if (inv.value > 0) {
+							const proportion = inv.value / totalInvestmentValue;
+							const withdrawal = Math.min(inv.value, remainingNeeded * proportion);
+
+							if (withdrawal > 0) {
+								investmentWithdrawals.push({
+									name: inv.name,
+									withdrawal
+								});
+							}
+						}
+					});
+				}
+			}
+
+			return {
+				superWithdrawal: maxSuperWithdrawal,
+				investmentWithdrawals
+			};
 		});
 	}
 
@@ -69,8 +100,10 @@
 			{
 				type: 'bar',
 				label: 'Super Drawdown',
-				data: incomeBreakdown.map((breakdown) => breakdown.superWithdrawal),
-				backgroundColor: `${COLOURS[0]}33`,
+				data: incomeBreakdown.map((breakdown) =>
+					breakdown.superWithdrawal > 0 ? breakdown.superWithdrawal : null
+				),
+				backgroundColor: `${COLOURS[0]}70`,
 				borderColor: COLOURS[0],
 				borderWidth: 1,
 				borderRadius: 2,
@@ -78,20 +111,9 @@
 				order: 2
 			},
 			{
-				type: 'bar',
-				label: 'Other Investment Income',
-				data: incomeBreakdown.map((breakdown) => breakdown.otherWithdrawal),
-				backgroundColor: `${COLOURS[1]}CC`,
-				borderColor: COLOURS[1],
-				borderWidth: 1,
-				borderRadius: 2,
-				stack: 'income-stack',
-				order: 3
-			},
-			{
 				type: 'line',
 				label: 'Target Income',
-				data: retirementData.map((d) => d.incomeNeeded || 0),
+				data: retirementData.map((d) => (d.incomeNeeded > 0 ? d.incomeNeeded : null)),
 				borderColor: COLOURS[2],
 				backgroundColor: 'transparent',
 				borderWidth: 2,
@@ -102,6 +124,35 @@
 				order: 1
 			}
 		];
+
+		// Get all unique investment names across all years
+		const allInvestmentNames = new Set<string>();
+		incomeBreakdown.forEach((breakdown) => {
+			breakdown.investmentWithdrawals.forEach((inv) => {
+				allInvestmentNames.add(inv.name);
+			});
+		});
+
+		// Create a dataset for each investment
+		Array.from(allInvestmentNames).forEach((name, index) => {
+			// Calculate color index (start from index 1 to avoid color collision with super)
+			const colorIndex = (index + 1) % COLOURS.length;
+
+			datasets.push({
+				type: 'bar',
+				label: `${name} Income`,
+				data: incomeBreakdown.map((breakdown) => {
+					const investmentData = breakdown.investmentWithdrawals.find((inv) => inv.name === name);
+					return investmentData && investmentData.withdrawal > 0 ? investmentData.withdrawal : null;
+				}),
+				backgroundColor: `${COLOURS[colorIndex]}CC`,
+				borderColor: COLOURS[colorIndex],
+				borderWidth: 1,
+				borderRadius: 2,
+				stack: 'income-stack',
+				order: index + 3
+			});
+		});
 
 		return datasets;
 	}
@@ -168,7 +219,35 @@
 							label: (context) => {
 								const label = context.dataset.label || '';
 								const value = context.parsed.y || 0;
+								// Don't show zero values
+								if (value <= 0) return '';
 								return `${label}: ${formatAsCurrency(value)}`;
+							},
+							// Filter out empty labels
+							afterBody: (tooltipItems) => {
+								// If we're in retirement phase, add total income
+								const age = parseInt(tooltipItems[0].label);
+								const yearData = calculator.outcome.yearlyData.find((d) => d.age === age);
+
+								if (yearData && yearData.isRetired && yearData.incomeNeeded) {
+									const totalDrawdown = tooltipItems.reduce((sum, item) => {
+										// Skip the target income line, only count actual drawdowns
+										if (item.dataset.type === 'bar') {
+											return sum + (item.parsed.y || 0);
+										}
+										return sum;
+									}, 0);
+
+									const coverage = (totalDrawdown / yearData.incomeNeeded) * 100;
+
+									return [
+										'',
+										`Total Income: ${formatAsCurrency(totalDrawdown)}`,
+										`Income Coverage: ${coverage.toFixed(1)}%`
+									];
+								}
+
+								return [];
 							}
 						}
 					},

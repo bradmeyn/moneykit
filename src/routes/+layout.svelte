@@ -1,7 +1,6 @@
 <script lang="ts">
 	import '../app.css';
-	import Header from '$lib/components/layout/Header/Header.svelte';
-	import Footer from '$lib/components/layout/Footer.svelte';
+	import Header from '$lib/components/header/header.svelte';
 	import { type Snippet } from 'svelte';
 
 	let {
@@ -9,6 +8,8 @@
 	}: {
 		children: Snippet;
 	} = $props();
+
+	const year = new Date().getFullYear();
 </script>
 
 <svelte:head>
@@ -18,8 +19,14 @@
 	<meta name="twitter:creator" content="@jrib_" />
 </svelte:head>
 
-<div class="antialiased bg-gradient-to-b from-slate-800 min-h-screen flex flex-col">
+<div class="antialiased bg-ui-900 min-h-screen flex flex-col">
 	<Header />
 	{@render children()}
-	<Footer />
+	<footer
+		class=" mt-auto items-center p-4 bg-neutral text-neutral-content justify-center text-muted"
+	>
+		<p class="text-xs text-center">
+			Copyright © {year} - All right reserved
+		</p>
+	</footer>
 </div>

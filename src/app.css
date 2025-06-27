@@ -86,12 +86,12 @@
 	}
 
 	table {
-		@apply w-full table-auto border-collapse border-ui-800 bg-ui-950 text-sm;
+		@apply w-full table-auto border-collapse border-ui-800  text-sm;
 	}
 
 	th,
 	td {
-		@apply border-b border-ui-800 p-4 py-3 text-left;
+		@apply border-b border-ui-800 p-4 py-2 text-left;
 	}
 	th {
 		@apply text-left text-sm text-muted   border-t-transparent;
@@ -110,6 +110,10 @@
 		@apply rounded-none bg-transparent w-20 !important;
 		@apply data-[state=active]:bg-transparent data-[state=active]:border-b-2 data-[state=active]:border-b-primary data-[state=active]:px-2 data-[state=active]:py-1;
 		@apply data-[state=inactive]:text-ui-400 data-[state=inactive]:px-2 data-[state=inactive]:py-1;
+	}
+
+	.tab-trigger--scenarios {
+		@apply bg-transparent px-4 py-2 data-[state=active]:border-b data-[state=active]:bg-transparent border-b-white rounded-none;
 	}
 }
 

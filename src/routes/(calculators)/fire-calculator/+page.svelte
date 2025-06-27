@@ -2,14 +2,17 @@
 	import { setCalculatorState, getCalculatorState } from './calculator.svelte';
 	import * as Tabs from '$lib/components/ui/tabs';
 	import { formatAsCurrency } from '$lib/utils/formatters';
-	import Inputs from './_components/Inputs.svelte';
-	import FireChart from './_components/FireChart.svelte';
-	import FireTable from './_components/FireTable.svelte';
-	import DownloadButton from '$lib/components/DownloadButton.svelte';
+	import Inputs from './_components/fire-inputs.svelte';
+	import FireChart from './_components/fire-chart.svelte';
+	import FireTable from './_components/fire-table.svelte';
+	import DownloadButton from '$lib/components/download-button.svelte';
+	import ScrollableTable from '$ui/scrollable-table.svelte';
 
 	setCalculatorState();
 	let calculator = getCalculatorState();
 	let selectedView = $state('chart');
+
+	const { columns, rows } = calculator.getTableData();
 
 	let downloadData = $derived.by(() => {
 		return {
@@ -71,7 +74,7 @@
 				</Tabs.Content>
 
 				<Tabs.Content value="table" class="m-0">
-					<FireTable />
+					<ScrollableTable {columns} {rows} />
 				</Tabs.Content>
 			</Tabs.Root>
 		</div>

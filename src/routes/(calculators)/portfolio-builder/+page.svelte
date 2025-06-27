@@ -1,13 +1,13 @@
 <script lang="ts">
-	import CurrencyInput from '$lib/components/inputs/CurrencyInput.svelte';
+	import CurrencyInput from '$lib/components/inputs/currency-input.svelte';
 	import { formatAsCurrency, formatAsPercentage } from '$utils/formatters';
-	import AddInvestment from './_components/AddInvestment.svelte';
-	import InvestmentItem from './_components/InvestmentItem.svelte';
+	import AddInvestment from './_components/add-investment.svelte';
+	import InvestmentItem from './_components/investment-item.svelte';
 	import { setPortfolioState } from './calculator.svelte';
-	import DownloadButton from '$lib/components/DownloadButton.svelte';
+	import DownloadButton from '$lib/components/download-button.svelte';
 	import * as Tabs from '$lib/components/ui/tabs';
-	import AssetAllocationChart from './_components/AssetAllocationChart.svelte';
-	import AssetAllocationTable from './_components/AssetAllocationTable.svelte';
+	import AssetAllocationChart from './_components/allocation-chart.svelte';
+	import AssetAllocationTable from './_components/allocation-table.svelte';
 
 	const calc = setPortfolioState();
 
@@ -70,15 +70,15 @@
 						</tbody>
 						<tfoot>
 							<tr>
-								<td class=" border-t-transparent text-lg">Total</td>
+								<td class=" border-t-transparent">Total</td>
 								<td
-									class="text-right border-t-transparent font-semibold text-lg"
+									class="text-right border-t-transparent font-semibold"
 									class:text-red-500={calc.totalWeight > 1}
 								>
 									{formatAsCurrency(calc.totalValue)}
 								</td>
 								<td
-									class="text-right border-t-transparent font-semibold text-lg"
+									class="text-right border-t-transparent font-semibold"
 									class:text-red-500={calc.totalWeight > 1}
 								>
 									{`${formatAsCurrency(calc.totalCost)} pa`}
@@ -87,7 +87,7 @@
 									</div>
 								</td>
 								<td
-									class="text-right border-t-transparent font-semibold text-lg"
+									class="text-right border-t-transparent font-semibold"
 									class:text-red-500={calc.totalWeight > 1}
 								>
 									{formatAsPercentage(calc.totalWeight)}

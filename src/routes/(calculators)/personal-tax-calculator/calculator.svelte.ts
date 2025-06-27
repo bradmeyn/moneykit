@@ -1,5 +1,5 @@
 import { setContext, getContext } from 'svelte';
-import { calculatePersonalTax } from './taxRates';
+import { calculatePersonalTax } from './tax-rates';
 
 export type TaxInputs = {
 	income: number;

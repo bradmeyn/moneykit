@@ -1,7 +1,7 @@
 import colors from 'tailwindcss/colors';
 
 export const COLOURS = [
-	colors.sky[500],
+	colors.blue[500],
 	colors.pink[500],
 	colors.emerald[500],
 	colors.yellow[500],

@@ -1,10 +1,10 @@
 <script lang="ts">
-	import Inputs from './_components/Inputs.svelte';
-	import TaxRateTable from './_components/TaxRateTable.svelte';
+	import Inputs from './_components/tax-inputs.svelte';
+	import TaxRateTable from './_components/rate-table.svelte';
 	import { formatAsCurrency, formatAsPercentage } from '$lib/utils/formatters';
-	import TaxBand from './_components/TaxBand.svelte';
-	import StackedBar from '$lib/components/charts/StackedBar.svelte';
-	import LegendList from '$lib/components/charts/LegendList.svelte';
+	import TaxBand from './_components/tax-band.svelte';
+	import StackedBar from '$lib/components/charts/stacked-bar.svelte';
+	import LegendList from '$lib/components/charts/legend-list.svelte';
 	import { setCalculatorState, getCalculatorState } from './calculator.svelte';
 	import * as Tabs from '$lib/components/ui/tabs';
 

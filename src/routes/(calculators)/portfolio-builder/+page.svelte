@@ -47,7 +47,7 @@
 				<DownloadButton filename="portfolio.csv" data={calc.getAllDataCsv()} />
 			</div>
 		</div>
-		<div class="grid grid-cols-1 lg:grid-cols-[3fr,1fr] gap-4">
+		<div class="grid grid-cols-1 lg:grid-cols-[3fr_1fr] gap-4">
 			<div class=" w-full card">
 				<div class="flex justify-between items-center mb-4">
 					<AddInvestment />

@@ -13,7 +13,7 @@
 		<h1 class="text-4xl md:text-8xl font-light mb-6 text-white leading-tight">
 			Your personal finance
 			<span class="relative">
-				<span class="text-transparent bg-clip-text bg-gradient-to-r from-primary-light to-primary"
+				<span class="text-transparent bg-clip-text bg-linear-to-r from-primary-light to-primary"
 					>toolkit</span
 				>
 			</span>

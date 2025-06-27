@@ -63,7 +63,7 @@
 				<ul>
 					{#each filteredInvestments as investment}
 						<button
-							class="border-t-1 border-t w-full cursor-pointer hover:bg-primary-dark/10 p-2 outline-none"
+							class="border-t border-t w-full cursor-pointer hover:bg-primary-dark/10 p-2 outline-none"
 							onclick={() => handleAddInvestment(investment)}
 						>
 							<li class="text-start">

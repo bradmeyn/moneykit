@@ -1,14 +1,14 @@
 <script lang="ts">
 	import { getCalculatorState } from '../calculator.svelte';
-	import PercentageInput from '$lib/components/inputs/PercentageInput.svelte';
-	import CurrencyInput from '$lib/components/inputs/CurrencyInput.svelte';
+	import PercentageInput from '$lib/components/inputs/percentage-input.svelte';
+	import CurrencyInput from '$lib/components/inputs/currency-input.svelte';
 	import Label from '$ui/label/label.svelte';
 	import * as Select from '$lib/components/ui/select';
 	import Button from '$ui/button/button.svelte';
-	import TabSelect from '$lib/components/inputs/TabSelect.svelte';
+	import TabSelect from '$lib/components/inputs/tab-select.svelte';
 	import Slider from '$ui/slider/slider.svelte';
 	import { FREQUENCIES } from '$lib/constants/frequencies';
-	import Separator from '$lib/components/Separator.svelte';
+	import Separator from '$lib/components/separator.svelte';
 	let calc = getCalculatorState();
 
 	const loanTypeOptions = [
@@ -72,7 +72,7 @@
 
 	<div>
 		<Label for="loan-type">Loan Type</Label>
-		<TabSelect bind:value={calc.loanType} options={loanTypeOptions} name={'type'} id="loan-type" />
+		<TabSelect bind:value={calc.loanType} options={loanTypeOptions} name={'type'} />
 	</div>
 
 	{#if calc.loanType === 'Interest Only'}
@@ -83,7 +83,7 @@
 
 		<div class="space-y-2">
 			<Label for="io-term">Interest Only Period (years)</Label>
-			<TabSelect bind:value={calc.ioTerm} options={periodOptions} name="io-period" id="io-term" />
+			<TabSelect bind:value={calc.ioTerm} options={periodOptions} name="io-period" />
 		</div>
 	{/if}
 

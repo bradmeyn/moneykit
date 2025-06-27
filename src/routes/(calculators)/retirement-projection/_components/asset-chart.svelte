@@ -6,18 +6,16 @@
 		LineController,
 		LineElement,
 		PointElement,
+		type ChartDataset,
 		CategoryScale,
 		LinearScale,
 		Legend,
 		Tooltip,
-		Filler,
-		BarController,
-		BarElement,
-		type ChartDataset
+		Filler
 	} from 'chart.js';
 	import { formatAsCurrency } from '$lib/utils/formatters';
 	import { COLOURS } from '$lib/constants/colours';
-	import { TOOLTIP } from '$lib/constants/chartConfig';
+	import { TOOLTIP } from '$constants/chart-config';
 	import { getCalculatorState } from '../calculator.svelte';
 
 	const calculator = getCalculatorState();
@@ -32,21 +30,16 @@
 		LinearScale,
 		Legend,
 		Tooltip,
-		Filler,
-		BarController,
-		BarElement
+		Filler
 	);
 
-	type MixedDataset =
-		| (ChartDataset<'line', number[]> & { type: 'line' })
-		| (ChartDataset<'bar', number[]> & { type: 'bar' });
-
-	function createDatasets(calculationData: typeof calculator.calculationData) {
-		const baseDatasets: MixedDataset[] = [
+	function createDatasets(yearlyData: typeof calculator.outcome.yearlyData) {
+		// Create datasets array starting with superannuation
+		const datasets = [
 			{
-				type: 'line',
-				label: 'Investment Value',
-				data: calculationData.map((d) => d.investmentValue),
+				type: 'line' as const,
+				label: 'Super Balance',
+				data: yearlyData.map((d) => (d.superannuationBalance > 0 ? d.superannuationBalance : null)),
 				borderColor: COLOURS[0],
 				backgroundColor: `${COLOURS[0]}33`,
 				fill: true,
@@ -54,84 +47,48 @@
 				borderWidth: 2,
 				pointRadius: 0,
 				pointHoverRadius: 4,
-				order: 3
-			},
-			{
-				type: 'line',
-				label: 'FIRE Target',
-				data: calculationData.map((d) => d.fireTarget),
-				borderColor: COLOURS[1],
-				borderDash: [5, 5],
-				borderWidth: 2,
-				pointRadius: 0,
-				fill: false,
 				order: 1
 			}
 		];
 
-		const withdrawalDatasets: MixedDataset[] = [];
+		// If we have at least one data point with investment breakdown data
+		if (yearlyData.length > 0 && yearlyData[0].investmentsBreakdown) {
+			// Instead of grouping all investments, create individual line for each investment
+			const investmentNames = yearlyData[0].investmentsBreakdown.map((inv) => inv.name);
 
-		if (calculator.secondaryIncome > 0) {
-			// Add net withdrawals (withdrawals minus secondary income)
-			withdrawalDatasets.push({
-				type: 'bar',
-				label: 'Withdrawals',
-				data: calculationData.map((d) => d.withdrawal - d.secondaryIncome),
-				borderColor: COLOURS[2],
-				backgroundColor: `${COLOURS[2]}33`,
+			// For each investment, create a line
+			investmentNames.forEach((name, index) => {
+				// Calculate color index to avoid color collisions
+				const colorIndex = (index + 1) % COLOURS.length;
 
-				borderWidth: 1,
-				borderRadius: 2,
-
-				order: 2,
-				barPercentage: 0.8,
-				stack: 'expenses'
-			});
-
-			// Add secondary income bar
-			withdrawalDatasets.push({
-				type: 'bar',
-				label: 'Secondary Income',
-				data: calculationData.map((d) => d.secondaryIncome),
-				borderColor: COLOURS[3] || colors.green[500],
-				backgroundColor: `${COLOURS[3]}33`,
-
-				borderWidth: 1,
-				borderRadius: 2,
-
-				order: 2,
-				barPercentage: 0.8,
-				stack: 'expenses'
-			});
-		} else {
-			// If no secondary income, just show total withdrawals
-			withdrawalDatasets.push({
-				type: 'bar',
-				label: 'Withdrawals',
-				data: calculationData.map((d) => d.withdrawal),
-				borderColor: COLOURS[2],
-				backgroundColor: `${COLOURS[2]}33`,
-
-				borderWidth: 1,
-				borderRadius: 2,
-
-				order: 2,
-				barPercentage: 0.8,
-				stack: 'expenses'
+				datasets.push({
+					type: 'line' as const,
+					label: name,
+					data: yearlyData.map((d) => {
+						const investment = d.investmentsBreakdown.find((inv) => inv.name === name);
+						return investment && investment.value > 0 ? investment.value : null;
+					}),
+					borderColor: COLOURS[colorIndex],
+					backgroundColor: `${COLOURS[colorIndex]}33`,
+					fill: true,
+					tension: 0.4,
+					borderWidth: 2,
+					pointRadius: 0,
+					pointHoverRadius: 4,
+					order: index + 2
+				});
 			});
 		}
 
-		const dataset: MixedDataset[] = [...baseDatasets, ...withdrawalDatasets];
-
-		return dataset;
+		return datasets;
 	}
 
 	onMount(() => {
 		chart = new Chart(chartId!, {
 			type: 'line',
 			data: {
-				labels: calculator.calculationData.map((d) => d.age),
-				datasets: createDatasets(calculator.calculationData)
+				labels: calculator.outcome.yearlyData.map((d) => d.age),
+				datasets: createDatasets(calculator.outcome.yearlyData)
 			},
 			options: {
 				maintainAspectRatio: false,
@@ -165,8 +122,8 @@
 							color: colors.slate[200]
 						},
 						title: {
-							display: false,
-							text: 'Balance',
+							display: true,
+							text: 'Asset Balance',
 							font: { size: 16, family: 'sans-serif' },
 							color: colors.slate[200]
 						}
@@ -183,7 +140,7 @@
 							title: (tooltip) => `Age ${tooltip[0].label}`,
 							label: (context) => {
 								const label = context.dataset.label || '';
-								const value = Math.abs(context.parsed.y || 0);
+								const value = context.parsed.y || 0;
 								return `${label}: ${formatAsCurrency(value)}`;
 							}
 						}
@@ -210,12 +167,12 @@
 	});
 
 	$effect(() => {
-		if (chart) {
-			// Always start with base dataset
-			chart.data.datasets = createDatasets(calculator.calculationData);
+		if (chart && calculator.outcome.yearlyData) {
+			// Update datasets with new data
+			chart.data.datasets = createDatasets(calculator.outcome.yearlyData);
 
 			// Update labels
-			chart.data.labels = calculator.calculationData.map((d) => d.age);
+			chart.data.labels = calculator.outcome.yearlyData.map((d) => d.age);
 
 			chart.update();
 		}

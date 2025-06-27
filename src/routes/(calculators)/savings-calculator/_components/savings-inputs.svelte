@@ -1,12 +1,12 @@
 <script lang="ts">
 	import { getCalculatorState } from '../calculator.svelte';
-	import PercentageInput from '$lib/components/inputs/PercentageInput.svelte';
-	import FrequencySelect from '$lib/components/inputs/FrequencySelect.svelte';
-	import CurrencyInput from '$lib/components/inputs/CurrencyInput.svelte';
+	import PercentageInput from '$lib/components/inputs/percentage-input.svelte';
+	import FrequencySelect from '$lib/components/inputs/frequency-select.svelte';
+	import CurrencyInput from '$lib/components/inputs/currency-input.svelte';
 	import Label from '$ui/label/label.svelte';
 	import Input from '$ui/input/input.svelte';
 	import { Button } from '$lib/components/ui/button';
-	import Separator from '$lib/components/Separator.svelte';
+	import Separator from '$lib/components/separator.svelte';
 
 	let calculator = getCalculatorState();
 	let {

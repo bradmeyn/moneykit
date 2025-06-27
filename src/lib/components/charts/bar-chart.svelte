@@ -11,7 +11,7 @@
 	} from 'chart.js';
 
 	import colors from 'tailwindcss/colors';
-	import { TOOLTIP } from '$lib/constants/chartConfig';
+	import { TOOLTIP } from '$constants/chart-config';
 	import { COLOURS } from '$constants/colours';
 
 	let {

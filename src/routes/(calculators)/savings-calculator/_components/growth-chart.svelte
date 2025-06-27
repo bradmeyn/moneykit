@@ -13,12 +13,23 @@
 		Filler
 	} from 'chart.js';
 	import { formatAsCurrency } from '$lib/utils/formatters';
+	import type { AnnualData } from '../calculator.svelte';
 	import { COLOURS } from '$lib/constants/colours';
-	import { TOOLTIP } from '$lib/constants/chartConfig';
-	import { getCalculatorState } from '../calculator.svelte';
+	import { TOOLTIP } from '$constants/chart-config';
 
-	const calculator = getCalculatorState();
+	let {
+		baseData = [],
+		comparisonData = [],
+		savingsGoal,
+		isComparing
+	}: {
+		baseData: AnnualData[];
+		comparisonData: AnnualData[];
+		savingsGoal: number;
+		isComparing: boolean;
+	} = $props();
 
+	let years = $derived(baseData.map((item) => item.year));
 	let chartId: HTMLCanvasElement | undefined = $state();
 	let chart: Chart | undefined = $state();
 
@@ -33,35 +44,11 @@
 		Filler
 	);
 
-	let years = $derived(
-		Array.from(
-			{ length: Math.ceil(calculator.totalPeriods / calculator.periodsPerYear) },
-			(_, i) => i + 1
-		)
-	);
-
-	function getSafePeriodData(periodData: any[], index: number) {
-		return periodData && periodData[index]
-			? periodData[index]
-			: { balance: 0, totalInterestPaid: 0 };
-	}
-
-	function createDataset(
-		valueKey: 'balance' | 'totalInterestPaid' | 'propertyValue',
-		color: string,
-		label: string,
-		options = {}
-	) {
-		const periodData = calculator.projection.breakdown || [];
-
-		const data = Array.from({ length: years.length }, (_, i) => {
-			const periodIndex = (i + 1) * calculator.periodsPerYear - 1;
-			return getSafePeriodData(periodData, periodIndex)[valueKey];
-		});
-
+	// Helper function to create dataset
+	function createDataset(data: AnnualData[], color: string, label: string, options = {}) {
 		return {
 			label,
-			data,
+			data: Array.from({ length: years.length }, (_, i) => data[i].endingValue),
 			borderColor: color,
 			backgroundColor: color + '40',
 			fill: true,
@@ -73,17 +60,30 @@
 		};
 	}
 
+	function createGoalDataset(value: number, color: string) {
+		return {
+			label: 'Goal',
+			data: Array.from({ length: years.length }, () => value),
+			borderColor: color,
+			backgroundColor: 'transparent',
+			fill: false,
+			borderWidth: 2,
+			borderDash: [5, 5],
+			pointRadius: 0,
+			pointHoverRadius: 4,
+			pointBackgroundColor: color
+		};
+	}
+
 	onMount(() => {
 		chart = new Chart(chartId!, {
 			type: 'line',
 			data: {
 				labels: years,
 				datasets: [
-					createDataset('balance', COLOURS[0], 'Loan Balance'),
-					createDataset('totalInterestPaid', COLOURS[1], 'Total Interest'),
-					...(calculator.propertyValue > 0
-						? [createDataset('propertyValue', COLOURS[2], 'Property Value')]
-						: [])
+					createDataset(baseData, COLOURS[0], 'Value'),
+					...(isComparing ? [createDataset(comparisonData, COLOURS[1], 'Comparison')] : []),
+					...(savingsGoal ? [createGoalDataset(savingsGoal, COLOURS[2])] : [])
 				]
 			},
 			options: {
@@ -108,7 +108,6 @@
 						display: true,
 						stacked: false,
 						position: 'left',
-						min: 0,
 						grid: {
 							display: true,
 							color: colors.slate[600]
@@ -121,7 +120,7 @@
 						},
 						title: {
 							display: false,
-							text: 'Amount',
+							text: 'Balance',
 							font: { size: 16, family: 'sans-serif' },
 							color: colors.slate[200]
 						}
@@ -165,15 +164,23 @@
 	});
 
 	$effect(() => {
-		if (chart && chart.data) {
-			chart.data.datasets = [
-				createDataset('balance', COLOURS[0], 'Loan Balance'),
-				createDataset('totalInterestPaid', COLOURS[1], 'Total Interest'),
-				...(calculator.propertyValue > 0
-					? [createDataset('propertyValue', COLOURS[2], 'Property Value')]
-					: [])
-			];
+		if (chart) {
+			// Always start with base dataset
+			chart.data.datasets = [createDataset(baseData, COLOURS[0], 'Value')];
+
+			// Add comparison if active
+			if (isComparing) {
+				chart.data.datasets.push(createDataset(comparisonData, COLOURS[1], 'Comparison'));
+			}
+
+			// Add goal if exists
+			if (savingsGoal) {
+				chart.data.datasets.push(createGoalDataset(savingsGoal, COLOURS[2]));
+			}
+
+			// Update labels
 			chart.data.labels = years;
+
 			chart.update();
 		}
 	});

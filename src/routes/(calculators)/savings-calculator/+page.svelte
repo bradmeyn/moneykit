@@ -2,11 +2,11 @@
 	import { setCalculatorState, getCalculatorState } from './calculator.svelte';
 	import * as Tabs from '$lib/components/ui/tabs';
 	import { formatAsCurrency } from '$lib/utils/formatters';
-	import Inputs from './_components/Inputs.svelte';
-	import GrowthChart from './_components/GrowthChart.svelte';
-	import Table from './_components/Table.svelte';
-	import ComparisonTable from './_components/ComparisonTable.svelte';
-	import DownloadButton from '$lib/components/DownloadButton.svelte';
+	import Inputs from './_components/savings-inputs.svelte';
+	import GrowthChart from './_components/growth-chart.svelte';
+	import ComparisonTable from './_components/comparison-table.svelte';
+	import DownloadButton from '$lib/components/download-button.svelte';
+	import ScrollableTable from '$ui/scrollable-table.svelte';
 
 	setCalculatorState();
 	let calculator = getCalculatorState();
@@ -16,6 +16,8 @@
 	let downloadData = $derived(
 		isComparing ? calculator.getDownloadDataWithComparison() : calculator.getDownloadData()
 	);
+
+	const tableData = calculator.getTableData();
 </script>
 
 <svelte:head>
@@ -25,7 +27,7 @@
 	<meta name="twitter:creator" content="@jrib_" />
 </svelte:head>
 
-<main class="flex flex-col flex-1 container mx-auto text-white">
+<main class="flex flex-col flex-1 container mx-auto">
 	<h1 class="mb-4">Savings Calculator</h1>
 
 	<section class="flex flex-col lg:flex-row gap-8">
@@ -88,7 +90,7 @@
 					</Tabs.Content>
 
 					<Tabs.Content value="table" class="m-0">
-						<Table annualData={calculator.baseResult.annualData} />
+						<ScrollableTable columns={tableData.columns} rows={tableData.rows} />
 					</Tabs.Content>
 				</Tabs.Root>
 			</div>

@@ -6,7 +6,7 @@
 		INCOME_TAX_BRACKETS,
 		MEDICARE_LEVY,
 		MEDICARE_LEVY_SURCHARGE
-	} from '../taxRates';
+	} from '../tax-rates';
 
 	function formatMax(max: number) {
 		return max === Infinity ? '+' : ` - ${formatAsCurrency(max, false)}`;

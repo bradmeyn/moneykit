@@ -1,5 +1,5 @@
 <script lang="ts">
-	import CalculatorsDropdown from './CalculatorsDropdown.svelte';
+	import CalculatorsDropdown from './dropdown-menu.svelte';
 </script>
 
 <header class="h-16 relative">

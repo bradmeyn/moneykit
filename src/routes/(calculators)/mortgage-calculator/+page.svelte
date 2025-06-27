@@ -1,16 +1,17 @@
 <script lang="ts">
 	import { getCalculatorState, setCalculatorState } from './calculator.svelte';
-	import Inputs from './_components/Inputs.svelte';
-	import MortgageChart from './_components/MortgageChart.svelte';
-	import MortgageSchedule from './_components/MortgageSchedule.svelte';
+	import Inputs from './_components/mortgage-inputs.svelte';
+	import MortgageChart from './_components/mortgage-chart.svelte';
 	import { formatAsCurrency } from '$utils/formatters';
 	import { FREQUENCIES } from '$constants/frequencies';
 	import * as Tabs from '$lib/components/ui/tabs';
 	import { Button } from '$lib/components/ui/button';
 	import { Download } from 'lucide-svelte';
+	import ScrollableTable from '$ui/scrollable-table.svelte';
+	
 	setCalculatorState();
 	let calc = getCalculatorState();
-
+	const { columns, rows } = calc.getScheduleData();
 	let selectedView = $state('chart');
 </script>
 
@@ -85,7 +86,7 @@
 						</Tabs.Content>
 
 						<Tabs.Content value="table" class="m-0">
-							<MortgageSchedule />
+							<ScrollableTable {columns} {rows} />
 						</Tabs.Content>
 					</Tabs.Root>
 				</div>

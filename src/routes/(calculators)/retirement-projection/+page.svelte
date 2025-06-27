@@ -2,12 +2,12 @@
 	import { setCalculatorState, getCalculatorState } from './calculator.svelte';
 	import * as Tabs from '$lib/components/ui/tabs';
 	import { formatAsCurrency } from '$lib/utils/formatters';
-	import Inputs from './_components/Inputs.svelte';
-	import DownloadButton from '$lib/components/DownloadButton.svelte';
-	import AssetChart from './_components/AssetChart.svelte';
-	import IncomeChart from './_components/IncomeChart.svelte';
-	import OutcomeCard from './_components/OutcomeCard.svelte';
-	import ScrollableTable from '$ui/ScrollableTable.svelte';
+	import Inputs from './_components/retirement-inputs.svelte';
+	import DownloadButton from '$lib/components/download-button.svelte';
+	import AssetChart from './_components/asset-chart.svelte';
+	import IncomeChart from './_components/income-chart.svelte';
+	import OutcomeCard from './_components/outcome-card.svelte';
+	import ScrollableTable from '$ui/scrollable-table.svelte';
 	import { CheckCircle, AlertTriangle } from 'lucide-svelte';
 
 	setCalculatorState();

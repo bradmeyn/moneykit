@@ -1,14 +1,14 @@
 <script lang="ts">
-	import DoughnutChart from '$lib/components/charts/DoughnutChart.svelte';
-	import LegendList from '$lib/components/charts/LegendList.svelte';
+	import DoughnutChart from '$lib/components/charts/doughnut-chart.svelte';
+	import LegendList from '$lib/components/charts/legend-list.svelte';
 	import { formatAsCurrency } from '$lib/utils/formatters';
-	import BudgetTable from './_components/BudgetTable.svelte';
-	import BudgetAccordion from './_components/BudgetAccordion.svelte';
+	import BudgetTable from './_components/budget-table.svelte';
+	import BudgetAccordion from './_components/budget-accordion.svelte';
 	import { calculateCategoryTotal, setBudgetState } from './budget.svelte';
-	import BarChart from '$lib/components/charts/BarChart.svelte';
+	import BarChart from '$lib/components/charts/bar-chart.svelte';
 	import { FREQUENCIES } from '$lib/constants/frequencies';
-	import FrequencySelect from '$lib/components/inputs/FrequencySelect.svelte';
-	import DownloadButton from '$lib/components/DownloadButton.svelte';
+	import FrequencySelect from '$lib/components/inputs/frequency-select.svelte';
+	import DownloadButton from '$lib/components/download-button.svelte';
 
 	const budget = setBudgetState();
 

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import CurrencyInput from '$lib/components/inputs/CurrencyInput.svelte';
+	import CurrencyInput from '$lib/components/inputs/currency-input.svelte';
 	import { Checkbox } from '$lib/components/ui/checkbox';
 	import { Label } from '$lib/components/ui/label';
 	import { getCalculatorState } from '../calculator.svelte';

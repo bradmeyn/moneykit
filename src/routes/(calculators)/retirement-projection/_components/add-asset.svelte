@@ -1,13 +1,13 @@
 <script lang="ts">
 	import { getCalculatorState } from '../calculator.svelte';
+	import { v4 as uuid } from 'uuid';
 	import * as Dialog from '$lib/components/ui/dialog';
 	import { Input } from '$lib/components/ui/input';
-	import { ScrollArea } from '$lib/components/ui/scroll-area';
 	import { Button } from '$lib/components/ui/button';
-	import CurrencyInput from '$lib/components/inputs/CurrencyInput.svelte';
+	import CurrencyInput from '$lib/components/inputs/currency-input.svelte';
 	import Label from '$ui/label/label.svelte';
 	import * as Select from '$lib/components/ui/select';
-	import PercentageInput from '$lib/components/inputs/PercentageInput.svelte';
+	import PercentageInput from '$lib/components/inputs/percentage-input.svelte';
 
 	const assetTypes = ['Cash', 'Investment Property', 'Shares'];
 
@@ -16,6 +16,7 @@
 	let open = $state(false);
 
 	let asset = $state({
+		id: uuid(),
 		name: '',
 		value: 0,
 		type: 'Shares',

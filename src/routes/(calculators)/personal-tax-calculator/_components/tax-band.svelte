@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { formatAsCurrency, formatAsPercentage } from '$lib/utils/formatters';
-	import { INCOME_TAX_BRACKETS } from '../taxRates';
+	import { INCOME_TAX_BRACKETS } from '../tax-rates';
 
 	let {
 		taxableIncome

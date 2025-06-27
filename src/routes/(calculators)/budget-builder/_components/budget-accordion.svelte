@@ -1,7 +1,7 @@
 <script lang="ts">
 	import * as Accordion from '$lib/components/ui/accordion';
 	import { formatAsCurrency } from '$lib/utils/formatters';
-	import AddItem from './AddItem.svelte';
+	import AddItem from './add-item.svelte';
 
 	type Props = {
 		category?: string;

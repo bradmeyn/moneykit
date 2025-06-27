@@ -2,7 +2,7 @@
 	import { FREQUENCIES } from '$constants/frequencies';
 	import { getBudgetState } from '../budget.svelte';
 	import type { BudgetItem as Item } from '../budget.svelte';
-	import BudgetItem from './BudgetItem.svelte';
+	import BudgetItem from './budget-item.svelte';
 	let { items }: { items: Item[] } = $props();
 	const budget = getBudgetState();
 </script>

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { formatAsPercentage } from '$utils/formatters';
-	import DoughnutChart from '$lib/components/charts/DoughnutChart.svelte';
-	import LegendList from '$lib/components/charts/LegendList.svelte';
+	import DoughnutChart from '$lib/components/charts/doughnut-chart.svelte';
+	import LegendList from '$lib/components/charts/legend-list.svelte';
 	import { getPortfolioState } from '../calculator.svelte';
 	import { assetLabels } from '../investments';
 	const portfolio = getPortfolioState();

@@ -14,7 +14,6 @@ class CalculatorState {
 	age = $state(55);
 	retirementAge = $state(67);
 	retirementIncome = $state(52000);
-
 	currentIncome = $state(85000);
 	sgRate = $state(0.12);
 
@@ -30,6 +29,7 @@ class CalculatorState {
 
 	investments = $state([
 		{
+			id: '1',
 			name: '123 Main St',
 			type: 'property',
 			value: 5000000,
@@ -37,18 +37,24 @@ class CalculatorState {
 			expectedReturn: 0.05 // capital growth
 		},
 		{
+			id: '2',
 			name: 'Personal Investment Account',
 			type: 'shares',
 			value: 150000,
 			expectedReturn: 0.07
 		},
 		{
+			id: '3',
 			name: 'Bank Savings Account',
 			type: 'cash',
 			value: 50000,
 			expectedReturn: 0.04
 		}
 	]);
+
+	removeInvestment(id: string) {
+		this.investments = this.investments.filter((investment) => investment.id !== id);
+	}
 
 	// Home Ownership (pension)
 	isHomeOwner = $state(true);

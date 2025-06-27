@@ -1,5 +1,6 @@
 import { FREQUENCIES } from '$constants/frequencies';
 import { setContext, getContext } from 'svelte';
+import { formatAsCurrency } from '$utils/formatters';
 
 interface MortgageProjection {
 	repayment: number;
@@ -212,6 +213,29 @@ class MortgageCalculator {
 			totalRepayment: 0,
 			remainingPrincipal: 0,
 			breakdown: []
+		};
+	}
+
+	getScheduleData() {
+		return {
+			columns: [
+				'Period',
+				'Principal Payment',
+				'Interest Payment',
+				'Balance',
+				'Total Interest Paid',
+				'Property Value',
+				'Extra Repayment'
+			],
+			rows: this.projection.breakdown.map((period) => [
+				period.period,
+				formatAsCurrency(period.principal),
+				formatAsCurrency(period.interest),
+				formatAsCurrency(period.balance),
+				formatAsCurrency(period.totalInterestPaid),
+				formatAsCurrency(period.propertyValue),
+				formatAsCurrency(period.extraRepayment)
+			])
 		};
 	}
 }

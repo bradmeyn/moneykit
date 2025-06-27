@@ -2,7 +2,7 @@
 	import { formatAsCurrency } from '$lib/utils/formatters';
 	import { Trash2 } from 'lucide-svelte';
 	import Button from '$ui/button/button.svelte';
-	import PercentageInput from '$lib/components/inputs/PercentageInput.svelte';
+	import PercentageInput from '$lib/components/inputs/percentage-input.svelte';
 	import { formatAsPercentage } from '$lib/utils/formatters';
 	import { type PortfolioHolding, getPortfolioState } from '../calculator.svelte';
 	let { holding }: { holding: PortfolioHolding } = $props();

@@ -1,4 +1,5 @@
 import { FREQUENCIES, type FrequencyType } from '$lib/constants/frequencies';
+import { formatAsCurrency } from '$utils/formatters';
 import { setContext, getContext } from 'svelte';
 
 export type GrowthScenario = {
@@ -171,6 +172,19 @@ class GrowthCalculatorState {
 				data.yearlyInterest,
 				data.yearlyContribution,
 				data.endingValue
+			])
+		};
+	}
+
+	getTableData() {
+		return {
+			columns: ['Year', 'Starting Value', 'Interest Earned', 'Contribution', 'Total Value'],
+			rows: this.baseResult.annualData.map((data) => [
+				data.year,
+				formatAsCurrency(data.startingValue),
+				formatAsCurrency(data.yearlyInterest),
+				formatAsCurrency(data.yearlyContribution),
+				formatAsCurrency(data.endingValue)
 			])
 		};
 	}

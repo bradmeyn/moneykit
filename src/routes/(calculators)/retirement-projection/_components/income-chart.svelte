@@ -16,7 +16,7 @@
 	} from 'chart.js';
 	import { formatAsCurrency } from '$lib/utils/formatters';
 	import { COLOURS } from '$lib/constants/colours';
-	import { TOOLTIP } from '$lib/constants/chartConfig';
+	import { TOOLTIP } from '$constants/chart-config';
 	import { getCalculatorState } from '../calculator.svelte';
 
 	const calculator = getCalculatorState();
@@ -169,6 +169,7 @@
 				datasets: createDatasets(calculator.outcome.yearlyData)
 			},
 			options: {
+				
 				maintainAspectRatio: false,
 				responsive: true,
 				scales: {
@@ -289,6 +290,6 @@
 	});
 </script>
 
-<div class="min-h-[300px] lg:min-h-[350px] relative mt-8">
+<div class="min-h-[400px] lg:min-h-[500px] relative mt-8">
 	<canvas class="w-full absolute min-h-full p-1" bind:this={chartId}></canvas>
 </div>

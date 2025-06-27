@@ -1,15 +1,17 @@
 <script lang="ts">
 	import { getCalculatorState } from '../calculator.svelte';
-	import PercentageInput from '$lib/components/inputs/PercentageInput.svelte';
-	import CurrencyInput from '$lib/components/inputs/CurrencyInput.svelte';
+	import PercentageInput from '$lib/components/inputs/percentage-input.svelte';
+	import CurrencyInput from '$lib/components/inputs/currency-input.svelte';
 	import Label from '$ui/label/label.svelte';
 
 	import * as Accordion from '$lib/components/ui/accordion';
 
 	import { Checkbox } from '$lib/components/ui/checkbox';
 	import Input from '$ui/input/input.svelte';
-	import AddAsset from './AddAsset.svelte';
+	import AddAsset from './add-asset.svelte';
 	import { formatAsCurrency } from '$utils/formatters';
+	import Button from '$ui/button/button.svelte';
+	import { Trash2 } from 'lucide-svelte';
 
 	let calc = getCalculatorState();
 </script>
@@ -78,9 +80,20 @@
 			<Accordion.Content class="px-4 pt-2 pb-4">
 				<div>
 					{#each calc.investments as investment}
-						<div class=" border-b py-2">
-							<small class="text-ui-400 text-sm">{investment.name}</small>
-							<div>{formatAsCurrency(investment.value)}</div>
+						<div class=" border-b py-2 flex items-center justify-between">
+							<div>
+								<small class="text-ui-400 text-sm">{investment.name}</small>
+								<div>{formatAsCurrency(investment.value)}</div>
+							</div>
+
+							<Button
+								size="icon"
+								variant="ghost"
+								class="text-muted hover:text-red-500"
+								onclick={() => calc.removeInvestment(investment.id)}
+							>
+								<Trash2 class="size-4" />
+							</Button>
 						</div>
 					{/each}
 

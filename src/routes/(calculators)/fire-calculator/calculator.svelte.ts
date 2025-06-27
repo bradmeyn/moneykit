@@ -1,3 +1,4 @@
+import { formatAsCurrency } from '$utils/formatters';
 import { setContext, getContext } from 'svelte';
 
 class CalculatorState {
@@ -70,6 +71,27 @@ class CalculatorState {
 
 		return data;
 	});
+
+	getTableData() {
+		return {
+			columns: [
+				'Age',
+				'Investment Value',
+				'Fire Target',
+				'Withdrawal',
+				'Secondary Income',
+				'Contribution'
+			],
+			rows: this.calculationData.map((row) => [
+				row.age,
+				formatAsCurrency(row.investmentValue),
+				formatAsCurrency(row.fireTarget),
+				formatAsCurrency(row.withdrawal),
+				formatAsCurrency(row.secondaryIncome),
+				formatAsCurrency(row.contribution)
+			])
+		};
+	}
 }
 
 const CALCULATOR_KEY = Symbol('fire-calculator');

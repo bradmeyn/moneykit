@@ -82,7 +82,7 @@
 					{#each calc.investments as investment}
 						<div class=" border-b py-2 flex items-center justify-between">
 							<div>
-								<small class="text-ui-400 text-sm">{investment.name}</small>
+								<small class="text-sm">{investment.name}</small>
 								<div>{formatAsCurrency(investment.value)}</div>
 							</div>
 

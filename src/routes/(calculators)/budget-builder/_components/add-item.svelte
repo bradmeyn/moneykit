@@ -62,7 +62,7 @@
 			<Input bind:value={newItem.name} id="new-item-name" placeholder="Enter item name" />
 		</div>
 		<div class="text-white p-2 w-40">
-			<CurrencyInput id="new-item-amount" label="" bind:value={newItem.amount} />
+			<CurrencyInput id="new-item-amount" bind:value={newItem.amount} />
 		</div>
 		<div class="text-white p-2 w-40">
 			<FrequencyInput bind:value={newItem.frequency} id="new-item-frequency" />

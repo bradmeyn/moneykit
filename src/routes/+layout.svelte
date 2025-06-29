@@ -10,21 +10,19 @@
 	} = $props();
 
 	const year = new Date().getFullYear();
+	const description = 'A collection of personal finance tools';
 </script>
 
 <svelte:head>
 	<title>MoneyKit</title>
-	<!-- <meta name="description" content={meta_description} />
-	<meta name="og:description" content={meta_description} /> -->
-	<meta name="twitter:creator" content="@jrib_" />
+	<meta name="description" content={description} />
+	<meta name="og:description" content={description} />
 </svelte:head>
 
-<div class="antialiased bg-ui-900 min-h-screen flex flex-col">
+<div class="antialiased min-h-screen flex flex-col bg-gray-950 text-white">
 	<Header />
 	{@render children()}
-	<footer
-		class=" mt-auto items-center p-4 bg-neutral text-neutral-content justify-center text-muted"
-	>
+	<footer class=" mt-auto items-center p-4 text-muted-foreground justify-center">
 		<p class="text-xs text-center">
 			Copyright © {year} - All right reserved
 		</p>

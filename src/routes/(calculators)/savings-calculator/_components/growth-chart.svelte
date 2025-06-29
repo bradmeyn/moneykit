@@ -1,5 +1,4 @@
 <script lang="ts">
-	import * as colors from 'tailwindcss/colors';
 	import { onMount } from 'svelte';
 	import {
 		Chart,
@@ -96,11 +95,11 @@
 							display: true,
 							text: 'Year',
 							font: { size: 16, family: 'sans-serif' },
-							color: colors.slate[200]
+							color: '#FFFFFF'
 						},
 						ticks: {
 							font: { size: 14, family: 'sans-serif' },
-							color: colors.slate[200]
+							color: '#FFFFFF'
 						}
 					},
 					y: {
@@ -110,19 +109,19 @@
 						position: 'left',
 						grid: {
 							display: true,
-							color: colors.slate[600]
+							color: '#333333'
 						},
 						beginAtZero: true,
 						ticks: {
 							callback: (value) => formatAsCurrency(+value, false),
 							font: { size: 14, family: 'sans-serif' },
-							color: colors.slate[200]
+							color: '#FFFFFF'
 						},
 						title: {
 							display: false,
 							text: 'Balance',
 							font: { size: 16, family: 'sans-serif' },
-							color: colors.slate[200]
+							color: '#FFFFFF'
 						}
 					}
 				},

@@ -11,13 +11,13 @@
 	<table class="w-full">
 		<thead>
 			<tr>
-				<th class="text-left text-sm text-ui-400 p-2 border-t-transparent">Item</th>
-				<th class="text-left text-sm text-ui-400 p-2 border-t-transparent">Amount</th>
-				<th class="text-left text-sm text-ui-400 p-2 border-t-transparent">Frequency</th>
-				<th class="text-right text-sm text-ui-400 p-2 border-t-transparent"
+				<th class="text-left text-sm text-card-foreground p-2 border-t-transparent">Item</th>
+				<th class="text-left text-sm text-card-foreground p-2 border-t-transparent">Amount</th>
+				<th class="text-left text-sm text-card-foreground p-2 border-t-transparent">Frequency</th>
+				<th class="text-right text-sm text-card-foreground p-2 border-t-transparent"
 					>{FREQUENCIES[budget.frequency].label} Total</th
 				>
-				<th class="text-right text-sm text-ui-400 p-2 border-t-transparent"> </th>
+				<th class="text-right text-sm text-card-foreground p-2 border-t-transparent"> </th>
 			</tr>
 		</thead>
 		<tbody>

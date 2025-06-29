@@ -93,7 +93,7 @@
 				type: 'bar',
 				label: 'Secondary Income',
 				data: calculationData.map((d) => d.secondaryIncome),
-				borderColor: COLOURS[3] || colors.green[500],
+				borderColor: COLOURS[3],
 				backgroundColor: `${COLOURS[3]}33`,
 
 				borderWidth: 1,
@@ -143,11 +143,11 @@
 							display: true,
 							text: 'Age',
 							font: { size: 16, family: 'sans-serif' },
-							color: colors.slate[200]
+							color: '#eeeeee'
 						},
 						ticks: {
 							font: { size: 14, family: 'sans-serif' },
-							color: colors.slate[200]
+							color: '#eeeeee'
 						}
 					},
 					y: {
@@ -156,19 +156,19 @@
 						position: 'left',
 						grid: {
 							display: true,
-							color: colors.slate[600]
+							color: '#333333'
 						},
 						beginAtZero: true,
 						ticks: {
 							callback: (value) => formatAsCurrency(+value, false),
 							font: { size: 14, family: 'sans-serif' },
-							color: colors.slate[200]
+							color: '#eeeeee'
 						},
 						title: {
 							display: false,
 							text: 'Balance',
 							font: { size: 16, family: 'sans-serif' },
-							color: colors.slate[200]
+							color: '#eeeeee'
 						}
 					}
 				},

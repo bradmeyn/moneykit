@@ -7,8 +7,7 @@
 		<div class="flex items-center gap-8 w-full">
 			<a href="/" class="flex items-center gap-2">
 				<span class="text-white text-xl"
-					>Money<span
-						class="text-transparent bg-clip-text bg-linear-to-b from-primary-light to-primary"
+					>Money<span class="text-transparent bg-clip-text bg-linear-to-b from-primary to-primary"
 						>Kit</span
 					></span
 				>

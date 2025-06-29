@@ -10,15 +10,15 @@
 
 <main class="flex-1 container mx-auto px-4">
 	<div class="text-center max-w-4xl mx-auto pt-16 pb-24">
-		<h1 class="text-4xl md:text-8xl font-light mb-6 text-white leading-tight">
+		<h1 class="text-4xl md:text-8xl mb-6 text-white leading-none font-light">
 			Your personal finance
 			<span class="relative">
-				<span class="text-transparent bg-clip-text bg-linear-to-r from-primary-light to-primary"
+				<span class="text-transparent bg-clip-text bg-linear-to-r from-primary to-primary"
 					>toolkit</span
 				>
 			</span>
 		</h1>
-		<p class="text-muted text-xl mb-12 max-w-2xl mx-auto">
+		<p class=" text-xl mb-12 max-w-2xl mx-auto">
 			Professional-grade financial tools to help make <span class="text-white"
 				>smarter decisions</span
 			> with your money

@@ -5,8 +5,7 @@
 
 <Tooltip.Provider>
 	<Tooltip.Root>
-		<Tooltip.Trigger
-			class="flex justify-center items-center rounded-full size-2 bg-ui-700 p-2 text-ui-200"
+		<Tooltip.Trigger class="flex justify-center items-center rounded-full size-2 bg-ui-700 p-2 "
 			><div class="text-sm">?</div></Tooltip.Trigger
 		>
 		<Tooltip.Content>

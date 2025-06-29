@@ -2,13 +2,12 @@
 	import { page } from '$app/stores';
 	import { ChevronDown } from 'lucide-svelte';
 	import { calculatorsByCategory, categories } from '$lib/constants/calculators';
-
 	let activeUrl = $derived($page.url.pathname);
 </script>
 
 <div class="relative group">
 	<button
-		class="py-4 block text-lg md:text-sm text-left text-ui-400 hover:text-white border-b-transparent"
+		class="py-4 block text-lg md:text-sm text-left text-card-foreground hover:text-white border-b-transparent"
 	>
 		<span>Calculators</span>
 		<ChevronDown class="size-4 inline-block group-hover:rotate-180 transition-all duration-300" />
@@ -22,9 +21,10 @@
 						<li>
 							<a
 								href={calculator.href}
-								class="block text-left border-b-2 w-fit text-sm {activeUrl === calculator.href
+								class="block text-left border-b-2 w-fit text-sm text-muted-foreground {activeUrl ===
+								calculator.href
 									? 'text-white border-b-2 border-b-primary'
-									: 'text-ui-400  hover:text-white border-b-transparent'}"
+									: 'text-card-foreground  hover:text-white border-b-transparent'}"
 							>
 								{calculator.name}
 							</a>

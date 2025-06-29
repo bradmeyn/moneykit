@@ -25,7 +25,7 @@
 		{#if holding.investment.symbol !== 'CASH'}
 			{`${formatAsCurrency(holding.value * holding.investment.managementCost)} pa`}
 
-			<div class="text-xs text-muted">
+			<div class="text-xs text-muted-foreground">
 				{holding.investment.managementCost > 0
 					? `${formatAsPercentage(holding.investment.managementCost)} pa`
 					: 'N/A'}
@@ -47,7 +47,7 @@
 			<Button
 				size="icon"
 				variant="ghost"
-				class="text-muted hover:text-red-500"
+				class="text-m hover:text-red-500"
 				onclick={() => removeInvestment(holding.investment.symbol)}
 			>
 				<Trash2 class="size-4" />

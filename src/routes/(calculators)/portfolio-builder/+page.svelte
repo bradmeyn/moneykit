@@ -23,11 +23,7 @@
 	<div class=" w-full">
 		<div class="justify-between flex">
 			<div class="md:w-[200px] mb-2">
-				<CurrencyInput
-					id="portfolio-value"
-					bind:value={calc.portfolioValue}
-					label="Portfolio Value"
-				/>
+				<CurrencyInput id="portfolio-value" bind:value={calc.portfolioValue} />
 			</div>
 			<div class="flex items-center gap-2">
 				<Tabs.Root
@@ -82,7 +78,7 @@
 									class:text-red-500={calc.totalWeight > 1}
 								>
 									{`${formatAsCurrency(calc.totalCost)} pa`}
-									<div class="text-xs text-muted">
+									<div class="text-xs text-muted-foreground">
 										{`${formatAsPercentage(calc.totalCost / calc.totalAllocated)} pa`}
 									</div>
 								</td>

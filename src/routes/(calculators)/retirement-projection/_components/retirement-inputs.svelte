@@ -23,7 +23,7 @@
 		<!-- Personal Details Section -->
 		<Accordion.Item value="retirement-details">
 			<Accordion.Trigger
-				class="flex justify-between w-full px-4 py-2 text-left font-medium bg-ui-900 hover:bg-ui-700 rounded"
+				class="flex justify-between w-full px-4 py-2 text-left font-medium border-b rounded"
 			>
 				Retirement Details
 			</Accordion.Trigger>
@@ -73,7 +73,7 @@
 		<!-- Financial Details Section -->
 		<Accordion.Item value="financial-details">
 			<Accordion.Trigger
-				class="flex justify-between w-full px-4 py-2 text-left font-medium bg-ui-900 hover:bg-ui-700 rounded"
+				class="flex justify-between w-full px-4 py-2 text-left font-medium border-b rounded"
 			>
 				Other Assets
 			</Accordion.Trigger>
@@ -89,7 +89,7 @@
 							<Button
 								size="icon"
 								variant="ghost"
-								class="text-muted hover:text-red-500"
+								class="text-muted-foreground hover:text-red-500"
 								onclick={() => calc.removeInvestment(investment.id)}
 							>
 								<Trash2 class="size-4" />
@@ -105,7 +105,7 @@
 		<!-- Market Assumptions Section -->
 		<Accordion.Item value="market-assumptions">
 			<Accordion.Trigger
-				class="flex justify-between w-full px-4 py-2 text-left font-medium bg-ui-900 hover:bg-ui-700 rounded"
+				class="flex justify-between w-full px-4 py-2 text-left font-medium border-b rounded"
 			>
 				Assumptions
 			</Accordion.Trigger>

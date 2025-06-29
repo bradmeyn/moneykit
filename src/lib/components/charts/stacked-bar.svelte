@@ -56,7 +56,7 @@
 								size: 16,
 								family: 'sans-serif'
 							},
-							color: colors.slate[100]
+							color: '#ffffff'
 						},
 						ticks: {
 							font: {
@@ -69,7 +69,7 @@
 					y: {
 						grid: {
 							display: true,
-							color: colors.slate[600]
+							color: '#333333'
 						},
 						stacked: true,
 						beginAtZero: true,
@@ -79,7 +79,7 @@
 								size: 16,
 								family: 'sans-serif'
 							},
-							color: colors.slate[100]
+							color: '#ffffff'
 						}
 					}
 				},

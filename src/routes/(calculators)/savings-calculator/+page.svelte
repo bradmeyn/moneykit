@@ -42,21 +42,21 @@
 				<div class="flex flex-col md:flex-row gap-4 justify-between mb-3">
 					<div class="space-y-4">
 						<div>
-							<h2 class="card-heading">Total after {calculator.years} Years</h2>
+							<h2 class="text-muted-foreground">Total after {calculator.years} Years</h2>
 							<p class="font-semibold text-2xl md:text-2xl">
 								{formatAsCurrency(calculator.baseResult.totalValue)}
 							</p>
 						</div>
 						<div class="flex gap-8">
 							<div>
-								<p class="text-muted">Total Contributions</p>
+								<p class="text-muted-foreground">Total Contributions</p>
 								<p class="text-xl font-semibold">
 									{formatAsCurrency(calculator.baseResult.totalContributions)}
 								</p>
 							</div>
 
 							<div>
-								<p class="text-muted">Total Interest</p>
+								<p class="text-muted-foreground">Total Interest</p>
 								<p class="text-xl font-semibold">
 									{formatAsCurrency(calculator.baseResult.totalInterest)}
 								</p>

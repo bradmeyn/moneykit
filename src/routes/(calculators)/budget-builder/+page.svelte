@@ -9,6 +9,7 @@
 	import { FREQUENCIES } from '$lib/constants/frequencies';
 	import FrequencySelect from '$lib/components/inputs/frequency-select.svelte';
 	import DownloadButton from '$lib/components/download-button.svelte';
+	import * as Card from '$ui/card/index';
 
 	const budget = setBudgetState();
 
@@ -122,12 +123,12 @@
 </main>
 
 {#snippet total(title: string, total: number)}
-	<h2 class="card-heading">{title}</h2>
+	<h2 class="card-heading mb-2">{title}</h2>
 	<div class="flex items-baseline gap-2">
 		<p class={`text-2xl font-semibold  ${total < 0 ? 'text-red-400' : ''}`}>
 			{formatAsCurrency(total)}
 		</p>
-		<p class="text-muted text-lg font-medium">
+		<p class=" text-muted-foreground">
 			/{FREQUENCIES[budget.frequency].singular}
 		</p>
 	</div>

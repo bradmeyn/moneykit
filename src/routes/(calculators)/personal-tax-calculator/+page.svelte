@@ -37,7 +37,7 @@
 		<section class="space-y-4 w-full">
 			<div class="card">
 				<div class="mb-2">
-					<p class="text-sm font-semibold text-primary-light">Taxable Income</p>
+					<p class="text-muted-foreground">Taxable Income</p>
 					<p class="font-semibold text-2xl md:text-2xl">
 						{formatAsCurrency(calculator.result.taxableIncome)}
 					</p>
@@ -49,11 +49,11 @@
 					<Tabs.Root value={selectedView} onValueChange={(value) => (selectedView = value)}>
 						<div class="flex justify-between">
 							<div>
-								<h2 class="card-heading">Tax Payable</h2>
+								<h2 class="text-muted-foreground">Tax</h2>
 								<p class="font-semibold text-2xl">
 									{formatAsCurrency(calculator.result.totalTax)}
 								</p>
-								<p class=" text-slate-400">
+								<p class=" text-muted-foreground">
 									({formatAsPercentage(
 										calculator.result.totalTax / calculator.result.taxableIncome
 									)})

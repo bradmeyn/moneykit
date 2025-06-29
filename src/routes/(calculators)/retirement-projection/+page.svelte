@@ -3,7 +3,7 @@
 	import * as Tabs from '$lib/components/ui/tabs';
 	import { formatAsCurrency } from '$lib/utils/formatters';
 	import Inputs from './_components/retirement-inputs.svelte';
-	import DownloadButton from '$lib/components/download-button.svelte';
+
 	import AssetChart from './_components/asset-chart.svelte';
 	import IncomeChart from './_components/income-chart.svelte';
 	import OutcomeCard from './_components/outcome-card.svelte';
@@ -32,20 +32,20 @@
 		<div class="flex-1 flex flex-col gap-2 w-full">
 			<div class="grid grid-cols-3 gap-2">
 				<div class="card h-fit">
-					<h3 class="text-muted">Balance at Retirement (Age {calc.retirementAge})</h3>
+					<h3 class="text-muted-foreground">Balance at Retirement (Age {calc.retirementAge})</h3>
 					<div class="text-2xl font-semibold">
 						{formatAsCurrency(calc.outcome.balanceAtRetirement)}
 					</div>
 				</div>
 				<div class="card h-fit">
-					<h3 class="text-muted">Superannuation Longevity</h3>
+					<h3 class="text-muted-foreground">Superannuation Longevity</h3>
 					<div class="text-2xl font-semibold">
 						{calc.outcome.superLongevity} Years
 					</div>
 				</div>
 
 				<div class="card h-fit">
-					<h3 class="text-muted">Retirement Goal</h3>
+					<h3 class="text-muted-foreground">Retirement Goal</h3>
 					<div class="text-2xl font-semibold flex items-center">
 						{#if calc.outcome.sufficientFunding}
 							<span class=" flex items-center gap-2">
@@ -62,19 +62,9 @@
 				</div>
 			</div>
 			<Tabs.Root value={outcomeView} onValueChange={(value) => (outcomeView = value)}>
-				<Tabs.List
-					class="w-full border-b border-ui-700 bg-transparent rounded-none flex justify-start p-0"
-				>
-					<Tabs.Trigger
-						value="assets"
-						class="bg-transparent px-4 py-2 data-[state=active]:border-b data-[state=active]:bg-transparent border-b-white rounded-none"
-						>Assets</Tabs.Trigger
-					>
-					<Tabs.Trigger
-						value="income"
-						class="bg-transparent px-4 py-2 data-[state=active]:border-b data-[state=active]:bg-transparent border-b-white rounded-none"
-						>Income</Tabs.Trigger
-					>
+				<Tabs.List class="min-w-[200px] ">
+					<Tabs.Trigger value="assets">Assets</Tabs.Trigger>
+					<Tabs.Trigger value="income">Income</Tabs.Trigger>
 				</Tabs.List>
 			</Tabs.Root>
 

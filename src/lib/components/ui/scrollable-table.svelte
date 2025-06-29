@@ -19,7 +19,7 @@
 
 <ScrollArea class="h-[{height}] w-full">
 	<table class="w-full">
-		<thead class="sticky top-0 bg-ui-950">
+		<thead class="sticky top-0">
 			<tr>
 				{#each columns as column, i}
 					<th class="{getAlignment(i)} p-2">{column}</th>

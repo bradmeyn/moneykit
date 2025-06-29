@@ -4,7 +4,6 @@
 	import { formatAsCurrency } from '$lib/utils/formatters';
 	import Inputs from './_components/fire-inputs.svelte';
 	import FireChart from './_components/fire-chart.svelte';
-	import FireTable from './_components/fire-table.svelte';
 	import DownloadButton from '$lib/components/download-button.svelte';
 	import ScrollableTable from '$ui/scrollable-table.svelte';
 
@@ -24,7 +23,6 @@
 
 <svelte:head>
 	<title>MoneyKit | FIRE</title>
-	<meta name="twitter:creator" content="@jrib_" />
 </svelte:head>
 
 <main class="flex flex-col flex-1 container mx-auto text-white">
@@ -38,19 +36,19 @@
 			<div class="flex flex-col md:flex-row gap-4 justify-between mb-3">
 				<div class="grid grid-cols-2 gap-16">
 					<div class="col-span-2 md:col-span-1">
-						<h3 class="text-muted">FIRE Number</h3>
+						<h3 class="">FIRE Number</h3>
 						<div class="text-2xl font-semibold">
 							{formatAsCurrency(calculator.fireNumber)}
 						</div>
-						<div class="text-sm text-muted">25x Annual Expenses</div>
+						<div class="text-sm">25x Annual Expenses</div>
 					</div>
 
 					<div class="col-span-2 md:col-span-1">
-						<h3 class="text-muted">FIRE Age</h3>
+						<h3 class="">FIRE Age</h3>
 						<div class="text-2xl font-semibold">
 							<span>{calculator.yearsToFire + calculator.age}</span>
 						</div>
-						<div class="text-sm text-muted">{calculator.yearsToFire} years</div>
+						<div class="text-sm">{calculator.yearsToFire} years</div>
 					</div>
 				</div>
 				<div class="flex items-center gap-2">

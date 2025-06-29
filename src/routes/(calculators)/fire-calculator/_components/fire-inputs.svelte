@@ -5,7 +5,7 @@
 	import Label from '$ui/label/label.svelte';
 	import Input from '$ui/input/input.svelte';
 	import { Button } from '$lib/components/ui/button';
-	import Separator from '$lib/components/Separator.svelte';
+	import Separator from '$lib/components/separator.svelte';
 	import Explainer from '$lib/components/explainer.svelte';
 
 	let calculator = getCalculatorState();

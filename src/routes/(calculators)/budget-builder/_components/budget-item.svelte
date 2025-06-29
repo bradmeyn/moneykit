@@ -48,12 +48,7 @@
 		>
 	</td>
 	<td class="text-right">
-		<Button
-			size="icon"
-			variant="ghost"
-			class="  text-muted hover:text-red-500 "
-			onclick={() => budget.removeItem(budgetItem.id)}
-		>
+		<Button size="icon" variant="ghost" onclick={() => budget.removeItem(budgetItem.id)}>
 			<Trash2 class="size-4 " />
 		</Button>
 	</td>

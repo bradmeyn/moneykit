@@ -53,7 +53,7 @@
 					</svg>
 				</Dialog.Close>
 
-				<Dialog.Description class="text-sm text-ui-300 py-2 text-foreground-alt">
+				<Dialog.Description class="text-sm py-2 text-foreground-alt">
 					{description}
 				</Dialog.Description>
 

@@ -58,22 +58,22 @@
 	<div class="h-full rounded flex items-end">
 		{#each bands as { min, max, rate, widthPercent }, i}
 			<div
-				class="border-r border-ui-600 last:border-r-0 text-baseline text-left px-2 relative"
+				class="border-r last:border-r-0 text-baseline text-left px-2 relative"
 				style="width: {widthPercent}%;"
 			>
 				{#if max === Infinity}
-					<div class="text-muted text-sm">Over</div>
-					<div class="text-muted text-sm">{formatAsCurrency(min - 1, false)}</div>
+					<div class="text-muted-foreground text-sm">Over</div>
+					<div class="text-muted-foreground text-sm">{formatAsCurrency(min - 1, false)}</div>
 				{:else}
-					<div class="text-sm text-muted">{formatAsCurrency(min, false)} -</div>
-					<div class="text-sm text-muted">{formatAsCurrency(max, false)}</div>
+					<div class="text-sm text-muted-foreground">{formatAsCurrency(min, false)} -</div>
+					<div class="text-sm text-muted-foreground">{formatAsCurrency(max, false)}</div>
 				{/if}
 				<div class="text-lg font-semibold">{formatAsPercentage(rate)}</div>
 			</div>
 		{/each}
 	</div>
 
-	<div class="border border-ui-600 h-6 rounded-lg flex overflow-hidden">
+	<div class="border h-6 rounded-lg flex overflow-hidden">
 		{#each bands as { fillPercent, widthPercent }, i}
 			<div class="relative h-full" style="width: {widthPercent}%;">
 				<div class="absolute inset-0 bg-primary" style="width: {fillPercent}%;"></div>

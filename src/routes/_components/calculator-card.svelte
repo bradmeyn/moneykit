@@ -16,27 +16,27 @@
 
 <a
 	{href}
-	class="card-animate block p-6 rounded-xl bg-ui-800/50 border border-ui-700
-	hover:border-primary hover:bg-ui-800/70 transition-all duration-300
+	class="card-animate block card
+	hover:border-primary transition-all duration-300
 	group w-full hover:-translate-y-1"
 >
 	<div class="flex items-start space-x-4">
 		<div
 			class="mb-4 size-12 rounded-lg bg-primary/10 flex items-center
-		justify-center group-hover:scale-110 transition-transform duration-300 flex-shrink-0"
+		justify-center group-hover:scale-110 transition-transform duration-300 shrink-0"
 		>
-			<svg class="w-6 h-6 text-primary" {viewBox} fill="currentColor">
+			<svg class="size-5 text-primary" {viewBox} fill="currentColor">
 				<path d={iconPath} />
 			</svg>
 		</div>
 		<div class="flex-1">
 			<h3 class="text-xl font-medium text-white mb-2">{name}</h3>
-			<p class="text-gray-400 text-sm leading-relaxed">{description}</p>
+			<p class="text-muted-foreground text-sm leading-relaxed">{description}</p>
 		</div>
 	</div>
 </a>
 
-<style>
+<!-- <style>
 	.card-animate {
 		animation: slideUp 0.4s ease-out forwards;
 		opacity: 0;
@@ -77,4 +77,4 @@
 	:global(.card-animate:nth-child(8)) {
 		animation-delay: 0.7s;
 	}
-</style>
+</style> -->

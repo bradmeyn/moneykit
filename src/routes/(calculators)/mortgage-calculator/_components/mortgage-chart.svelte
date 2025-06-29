@@ -96,11 +96,11 @@
 							display: true,
 							text: 'Year',
 							font: { size: 16, family: 'sans-serif' },
-							color: colors.slate[200]
+							color: '#FFFFFF'
 						},
 						ticks: {
 							font: { size: 14, family: 'sans-serif' },
-							color: colors.slate[200]
+							color: '#FFFFFF'
 						}
 					},
 					y: {
@@ -111,19 +111,19 @@
 						min: 0,
 						grid: {
 							display: true,
-							color: colors.slate[600]
+							color: '#333333'
 						},
 						beginAtZero: true,
 						ticks: {
 							callback: (value) => formatAsCurrency(+value, false),
 							font: { size: 14, family: 'sans-serif' },
-							color: colors.slate[200]
+							color: '#FFFFFF'
 						},
 						title: {
 							display: false,
 							text: 'Amount',
 							font: { size: 16, family: 'sans-serif' },
-							color: colors.slate[200]
+							color: '#FFFFFF'
 						}
 					}
 				},

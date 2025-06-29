@@ -8,7 +8,7 @@
 	import { Button } from '$lib/components/ui/button';
 	import { Download } from 'lucide-svelte';
 	import ScrollableTable from '$ui/scrollable-table.svelte';
-	
+
 	setCalculatorState();
 	let calc = getCalculatorState();
 	const { columns, rows } = calc.getScheduleData();
@@ -30,12 +30,15 @@
 				<div class="card">
 					<div class="flex justify-between mb-4">
 						<div>
-							<h2 class="card-heading">{FREQUENCIES[calc.frequency].label} Repayment</h2>
+							<h2 class="text-muted-foreground">Repayment</h2>
 							<p class="text-2xl font-semibold">
 								{formatAsCurrency(calc.projection.repayment + calc.extraRepayments)}
+								<span class="text-sm text-muted-foreground font-normal">
+									/ {FREQUENCIES[calc.frequency].singular}
+								</span>
 							</p>
 							{#if calc.extraRepayments > 0}
-								<small class="text-muted">
+								<small class="text-muted-foreground">
 									Includes additional repayment of {formatAsCurrency(calc.extraRepayments)}
 								</small>
 							{/if}
@@ -58,7 +61,7 @@
 					<div class="flex gap-8">
 						{#if calc.loanType === 'Interest Only'}
 							<div>
-								<p class="text-muted">Interest Only Repayment</p>
+								<p class="text-muted-foreground">Interest Only Repayment</p>
 								<p class="text-xl font-semibold">
 									{formatAsCurrency(calc.projection.ioRepayment)}
 								</p>
@@ -66,14 +69,14 @@
 						{/if}
 
 						<div>
-							<p class="text-muted">Total Repayments</p>
+							<p class="text-muted-foreground">Total Repayments</p>
 							<p class="text-xl font-semibold">
 								{formatAsCurrency(calc.projection.totalRepayment)}
 							</p>
 						</div>
 
 						<div>
-							<p class="text-muted">Total Interest</p>
+							<p class="text-muted-foreground">Total Interest</p>
 							<p class="text-xl font-semibold">
 								{formatAsCurrency(calc.projection.totalInterest)}
 							</p>

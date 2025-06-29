@@ -1,4 +1,3 @@
-import { fontFamily } from 'tailwindcss/defaultTheme';
 import tailwindcssAnimate from 'tailwindcss-animate';
 import colors from 'tailwindcss/colors';
 /** @type {import('tailwindcss').Config} */
@@ -80,9 +79,7 @@ const config = {
 				md: 'calc(var(--radius) - 2px)',
 				sm: 'calc(var(--radius) - 4px)'
 			},
-			fontFamily: {
-				sans: [...fontFamily.sans]
-			},
+
 			keyframes: {
 				'accordion-down': {
 					from: { height: '0' },

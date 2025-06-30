@@ -11,6 +11,9 @@
 		"lint": "prettier --plugin-search-dir . --check . && eslint .",
 		"format": "prettier --plugin-search-dir . --write ."
 	},
+	"engines": {
+		"node": ">=20"
+	},
 	"devDependencies": {
 		"@internationalized/date": "^3.8.2",
 		"@lucide/svelte": "^0.525.0",

@@ -1,5 +1,6 @@
 <script lang="ts">
-	import CalculatorsDropdown from './dropdown-menu.svelte';
+	import DesktopMenu from './desktop-menu.svelte';
+	import MobileMenu from './mobile-menu.svelte';
 </script>
 
 <header class="h-16 relative">
@@ -12,10 +13,9 @@
 					></span
 				>
 			</a>
-			<nav class="hidden md:flex items-center justify-between w-full">
-				<ul class="flex gap-6 items-center">
-					<CalculatorsDropdown />
-				</ul>
+			<nav class=" items-center justify-between w-full">
+				<DesktopMenu />
+				<MobileMenu />
 			</nav>
 		</div>
 	</div>

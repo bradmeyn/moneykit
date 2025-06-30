@@ -8,7 +8,7 @@
 	import TabSelect from '$lib/components/inputs/tab-select.svelte';
 	import Slider from '$ui/slider/slider.svelte';
 	import { FREQUENCIES } from '$lib/constants/frequencies';
-	import Separator from '$lib/components/separator.svelte';
+	import Separator from '$lib/components/ui/separator.svelte';
 	let calc = getCalculatorState();
 
 	const loanTypeOptions = [

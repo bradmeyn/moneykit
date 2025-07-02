@@ -4,13 +4,13 @@
 </script>
 
 <svelte:head>
-	<title>MoneyKit - Financial Tools</title>
+	<title>MoneyKit</title>
 	<meta name="description" content="Professional-grade personal finance toolkit." />
 </svelte:head>
 
 <main class="flex-1 container mx-auto px-4">
-	<div class="text-center max-w-4xl mx-auto pt-16 pb-24">
-		<h1 class="text-4xl md:text-8xl mb-6 text-white leading-none font-light">
+	<div class="text-center max-w-4xl mx-auto py-6 mb-6">
+		<h1 class="text-4xl md:text-8xl mb-6 text-white leading-none">
 			Your personal finance
 			<span class="relative">
 				<span class="text-transparent bg-clip-text bg-linear-to-r from-primary to-primary"
@@ -18,10 +18,10 @@
 				>
 			</span>
 		</h1>
-		<p class=" text-xl mb-12 max-w-2xl mx-auto">
-			Professional-grade financial tools to help make <span class="text-white"
+		<p class=" text-2xl max-w-4xl mx-auto text-muted-foreground">
+			Professional-grade financial tools designed to help you make <span class="text-white"
 				>smarter decisions</span
-			> with your money
+			> with your money.
 		</p>
 	</div>
 

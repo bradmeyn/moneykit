@@ -3,7 +3,6 @@
 	import * as Tabs from '$lib/components/ui/tabs';
 	import { formatAsCurrency } from '$lib/utils/formatters';
 	import Inputs from './_components/retirement-inputs.svelte';
-
 	import AssetChart from './_components/asset-chart.svelte';
 	import IncomeChart from './_components/income-chart.svelte';
 	import OutcomeCard from './_components/outcome-card.svelte';

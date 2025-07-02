@@ -5,10 +5,9 @@
 	let activeUrl = $derived(page.url.pathname);
 </script>
 
-<!-- DESKTOP -->
-<div class="relative group md:relative hidden md:block">
+<div class="relative group md:relative hidden md:block w-fit">
 	<button
-		class="py-4 block text-lg md:text-sm text-left text-muted-foreground hover:text-white border-b-transparent"
+		class="py-4 block text-lg md:text-sm text-left text-muted-foreground hover:text-white border-b-transparent w-fit"
 	>
 		<span>Calculators</span>
 		<ChevronDown class="size-4 inline-block group-hover:rotate-180 transition-all duration-300" />
@@ -36,5 +35,3 @@
 		{/each}
 	</div>
 </div>
-
-<!-- MOBILE -->

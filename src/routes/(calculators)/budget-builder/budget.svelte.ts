@@ -300,6 +300,10 @@ class Budget {
 		}
 	}
 
+	clearAll() {
+		this.budgetItems = [];
+	}
+
 	getDownloadData() {
 		// Sort items by type
 		const income = this.budgetItems.filter((item) => item.type === 'Income');

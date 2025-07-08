@@ -9,7 +9,7 @@
 	import { FREQUENCIES } from '$lib/constants/frequencies';
 	import FrequencySelect from '$lib/components/inputs/frequency-select.svelte';
 	import DownloadButton from '$lib/components/download-button.svelte';
-	import * as Card from '$ui/card/index';
+	import ClearAllDialog from './_components/clear-all-dialog.svelte';
 
 	const budget = setBudgetState();
 
@@ -37,7 +37,7 @@
 					bind:value={budget.frequency}
 				/>
 			</div>
-
+			<ClearAllDialog />
 			<DownloadButton filename="budget.csv" data={budget.getDownloadData()} />
 		</div>
 	</div>

@@ -19,6 +19,20 @@
 			value: item.total
 		}))
 	);
+
+	let frequencyOptions = $derived(
+		Object.entries(FREQUENCIES).map(([key, value]) => ({
+			value: key,
+			label: value.label
+		}))
+	);
+
+	function changeFrequency() {
+		const keys = Object.keys(FREQUENCIES) as (keyof typeof FREQUENCIES)[];
+		const currentIndex = keys.indexOf(budget.frequency);
+		const nextIndex = (currentIndex + 1) % keys.length;
+		budget.frequency = keys[nextIndex];
+	}
 </script>
 
 <svelte:head>
@@ -128,8 +142,8 @@
 		<p class={`text-2xl font-semibold  ${total < 0 ? 'text-red-400' : ''}`}>
 			{formatAsCurrency(total)}
 		</p>
-		<p class=" text-muted-foreground">
-			/{FREQUENCIES[budget.frequency].singular}
-		</p>
+		<button class=" text-muted-foreground hover:cursor-pointer" onclick={changeFrequency}>
+			/ {FREQUENCIES[budget.frequency].singular}
+		</button>
 	</div>
 {/snippet}

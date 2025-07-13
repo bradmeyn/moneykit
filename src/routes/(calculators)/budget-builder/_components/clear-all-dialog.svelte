@@ -16,7 +16,7 @@
 
 <AlertDialog.Root bind:open>
 	<AlertDialog.Trigger>
-		<Button size="icon" variant="secondary">
+		<Button size="icon" variant="outline">
 			<Trash class="size-5" />
 		</Button>
 	</AlertDialog.Trigger>

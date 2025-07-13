@@ -1,7 +1,7 @@
 <script lang="ts">
 	import DoughnutChart from '$lib/components/charts/doughnut-chart.svelte';
 	import LegendList from '$lib/components/charts/legend-list.svelte';
-	import { formatAsCurrency } from '$lib/utils/formatters';
+	import { formatAsCurrency, formatAsPercentage } from '$lib/utils/formatters';
 	import BudgetTable from './_components/budget-table.svelte';
 	import BudgetAccordion from './_components/budget-accordion.svelte';
 	import { calculateCategoryTotal, setBudgetState } from './budget.svelte';
@@ -13,19 +13,24 @@
 
 	const budget = setBudgetState();
 
-	let chartData = $derived(
-		budget.expenseByCategory.map((item) => ({
-			label: item.category,
-			value: item.total
-		}))
-	);
+	let chartData = $derived.by(() => {
+		const total = budget.totalExpenses + budget.totalSavings;
+		let items = budget.expenseByCategory
+			.map((item) => ({
+				label: item.category,
+				value: item.total / total
+			}))
+			.filter((item) => item.value !== 0);
 
-	let frequencyOptions = $derived(
-		Object.entries(FREQUENCIES).map(([key, value]) => ({
-			value: key,
-			label: value.label
-		}))
-	);
+		const savingsValue = budget.totalSavings / total;
+		if (savingsValue !== 0) {
+			items.push({
+				label: 'Savings',
+				value: savingsValue
+			});
+		}
+		return items;
+	});
 
 	function changeFrequency() {
 		const keys = Object.keys(FREQUENCIES) as (keyof typeof FREQUENCIES)[];
@@ -105,34 +110,36 @@
 				{@render total('Unallocated', budget.unallocated)}
 			</div>
 		</div>
+		{#if budget.totalExpenses + budget.totalSavings > 0}
+			<div class="flex flex-row lg:flex-col flex-wrap gap-4 min-w-[300px] h-fit">
+				<div class="card flex-1">
+					<h2 class="card-heading">Spending Breakdown</h2>
+					<DoughnutChart data={chartData} formatter={formatAsPercentage} />
+					<LegendList data={chartData} formatter={formatAsPercentage} />
+				</div>
 
-		<div class="flex flex-row lg:flex-col flex-wrap gap-4 min-w-[300px]">
-			<div class="card flex-1">
-				<h2 class="card-heading">Category Breakdown</h2>
-				<DoughnutChart data={chartData} formatter={formatAsCurrency} />
-				<LegendList data={chartData} formatter={formatAsCurrency} />
+				<div class="flex-1 card">
+					<h2 class="card-heading">Overview</h2>
+					<BarChart
+						data={[
+							{
+								label: 'Income',
+								value: budget.totalIncome
+							},
+							{
+								label: 'Expenses',
+								value: budget.totalExpenses
+							},
+							{
+								label: 'Savings',
+								value: budget.totalSavings
+							}
+						]}
+						formatter={formatAsCurrency}
+					/>
+				</div>
 			</div>
-			<div class="flex-1 card">
-				<h2 class="card-heading">Overview</h2>
-				<BarChart
-					data={[
-						{
-							label: 'Income',
-							value: budget.totalIncome
-						},
-						{
-							label: 'Expenses',
-							value: budget.totalExpenses
-						},
-						{
-							label: 'Savings',
-							value: budget.totalSavings
-						}
-					]}
-					formatter={formatAsCurrency}
-				/>
-			</div>
-		</div>
+		{/if}
 	</div>
 </main>
 

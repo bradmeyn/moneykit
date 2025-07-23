@@ -3,7 +3,7 @@
 	import { formatAsCurrency } from '$lib/utils/formatters';
 	import { convertToFrequency, type BudgetItem } from '../budget.svelte';
 	import FrequencyInput from '$lib/components/inputs/frequency-select.svelte';
-	import { Trash2 } from 'lucide-svelte';
+	import { Trash } from 'lucide-svelte';
 	import { getBudgetState } from '../budget.svelte';
 	import Button from '$ui/button/button.svelte';
 
@@ -16,7 +16,7 @@
 	const budget = getBudgetState();
 </script>
 
-<tr class="">
+<tr>
 	<td class="text-sm w-56">{budgetItem.name}</td>
 	<td class="w-40">
 		<CurrencyInput
@@ -49,7 +49,7 @@
 	</td>
 	<td class="text-right">
 		<Button size="icon" variant="ghost" onclick={() => budget.removeItem(budgetItem.id)}>
-			<Trash2 class="size-4 " />
+			<Trash />
 		</Button>
 	</td>
 </tr>

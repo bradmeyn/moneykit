@@ -27,5 +27,5 @@
 		</tbody>
 	</table>
 {:else}
-	<p class="p-2">No items</p>
+	<p class="p-2 text-muted-foreground text-center">No items in this category</p>
 {/if}

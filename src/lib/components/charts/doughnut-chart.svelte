@@ -12,12 +12,13 @@
 	import { TOOLTIP } from '$constants/chart-config';
 	import { COLOURS } from '$constants/colours';
 
-	interface Props {
+	let {
+		data,
+		formatter
+	}: {
 		data: { label: string; value: number }[];
 		formatter: (value: number) => string;
-	}
-
-	let { data, formatter }: Props = $props();
+	} = $props();
 
 	//  @ts-expect-error - chartId is not initialized
 	let chartId!: HTMLCanvasElement = $state();
@@ -37,7 +38,6 @@
 						backgroundColor: COLOURS,
 						borderWidth: 0,
 						borderColor: colors.transparent,
-
 						spacing: 3,
 						hoverOffset: 8
 					}
@@ -46,10 +46,8 @@
 			options: {
 				responsive: true,
 				maintainAspectRatio: false,
-
 				// @ts-expect-error - Weird typings
 				cutout: '70%',
-
 				plugins: {
 					tooltip: {
 						...TOOLTIP,

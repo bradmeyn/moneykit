@@ -2,25 +2,26 @@
 	import { Button } from '$lib/components/ui/button';
 	import CurrencyInput from '$lib/components/inputs/currency-input.svelte';
 	import FrequencyInput from '$lib/components/inputs/frequency-select.svelte';
-	import type { BudgetItem } from '../budget.svelte';
+	import type { BudgetItem as BudgetItemType } from '../budget.svelte';
 	import Input from '$ui/input/input.svelte';
 	import { formatAsCurrency } from '$lib/utils/formatters';
 	import { FREQUENCIES } from '$constants/frequencies';
 	import { v4 as uuidv4 } from 'uuid';
 	import { getBudgetState } from '../budget.svelte';
+	import BudgetItem from './budget-item.svelte';
 
 	const {
 		category,
 		type
 	}: {
 		category: string;
-		type: 'Income' | 'Expense' | 'Savings';
+		type: BudgetItemType['type'];
 	} = $props();
 
 	const calc = getBudgetState();
 
 	let showForm = $state(false);
-	let newItem = $state<BudgetItem>({
+	let newItem = $state<BudgetItemType>({
 		id: uuidv4(),
 		name: '',
 		amount: 0,

@@ -1,15 +1,19 @@
 <script lang="ts">
 	import * as Accordion from '$lib/components/ui/accordion';
 	import { formatAsCurrency } from '$lib/utils/formatters';
-	import AddItem from './add-item.svelte';
+	import { type BudgetItem, getBudgetState } from '../budget.svelte';
 
-	type Props = {
+	let {
+		category = '',
+		type,
+		categoryTotal = 0,
+		children
+	}: {
 		category?: string;
-		type: 'Income' | 'Expense' | 'Savings';
+		type: BudgetItem['type'];
 		categoryTotal?: number;
 		children: import('svelte').Snippet;
-	};
-	let { category = '', type, categoryTotal = 0, children }: Props = $props();
+	} = $props();
 </script>
 
 <Accordion.Root type="single" class="w-full">
@@ -22,7 +26,6 @@
 		</Accordion.Trigger>
 		<Accordion.Content class="p-2">
 			{@render children()}
-			<AddItem {category} {type} />
 		</Accordion.Content>
 	</Accordion.Item>
 </Accordion.Root>

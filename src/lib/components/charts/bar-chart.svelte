@@ -9,8 +9,6 @@
 		Legend,
 		Tooltip
 	} from 'chart.js';
-
-	import colors from 'tailwindcss/colors';
 	import { TOOLTIP } from '$constants/chart-config';
 	import { COLOURS } from '$constants/colours';
 
@@ -59,7 +57,7 @@
 								size: 14,
 								family: 'sans-serif'
 							},
-							color: colors.slate[100]
+							color: '#ffffff'
 						},
 						ticks: {
 							font: {
@@ -72,7 +70,7 @@
 					y: {
 						grid: {
 							display: true,
-							color: colors.slate[600]
+							color: '#333333'
 						},
 						stacked: true,
 						beginAtZero: true,
@@ -82,7 +80,7 @@
 								size: 14,
 								family: 'sans-serif'
 							},
-							color: '#CBD5E1'
+							color: '#ffffff'
 						}
 					}
 				},

@@ -2,29 +2,37 @@
 	import * as AlertDialog from '$lib/components/ui/alert-dialog/index';
 	import Button from '$ui/button/button.svelte';
 	import { Trash } from 'lucide-svelte';
-	import { getBudgetState } from '../budget.svelte';
+	import type { Snippet } from 'svelte';
 
-	const calc = getBudgetState();
+	let {
+		trigger,
+		text = 'all budget items',
+		onDelete
+	}: { trigger?: Snippet; text?: string; onDelete: () => void } = $props();
 
 	let open = $state(false);
 
 	function handleDelete() {
-		calc.clearAll();
+		onDelete();
 		open = false;
 	}
 </script>
 
 <AlertDialog.Root bind:open>
 	<AlertDialog.Trigger>
-		<Button size="icon" variant="outline">
-			<Trash class="size-5" />
-		</Button>
+		{#if trigger}
+			{@render trigger()}
+		{:else}
+			<Button size="icon" variant="outline">
+				<Trash class="size-4" />
+			</Button>
+		{/if}
 	</AlertDialog.Trigger>
 	<AlertDialog.Content>
 		<AlertDialog.Header>
-			<AlertDialog.Title>Remove all budget items??</AlertDialog.Title>
+			<AlertDialog.Title>Delete {text}?</AlertDialog.Title>
 			<AlertDialog.Description>
-				Are you sure you want to delete all budget items? This action cannot be undone.
+				Are you sure you want to delete {text}? This action cannot be undone.
 			</AlertDialog.Description>
 		</AlertDialog.Header>
 		<AlertDialog.Footer>

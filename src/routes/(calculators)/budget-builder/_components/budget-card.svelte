@@ -6,7 +6,7 @@
 	import BudgetTable from './budget-table.svelte';
 	import BudgetAccordion from './budget-accordion.svelte';
 	import Button from '$ui/button/button.svelte';
-	import AddItem from './add-item.svelte';
+	import AddItemDialog from './add-item-dialog.svelte';
 	import { Trash } from 'lucide-svelte';
 	import ClearAllDialog from './clear-all-dialog.svelte';
 
@@ -64,18 +64,24 @@
 				categoryTotal={calculateCategoryTotal(items, category, budget.frequency)}
 			>
 				<BudgetTable items={categoryItems} />
-				<div class="flex items-center justify-between">
-					<AddItem {category} {type} />
-					<ClearAllDialog
-						onDelete={() => budget.deleteItemsByCategory(type, category)}
-						text="all {category} items"
-					>
-						{#snippet trigger()}
-							<Button variant="ghost">
-								<Trash class="size-4" />
-							</Button>
-						{/snippet}
-					</ClearAllDialog>
+				<div class="flex items-center gap-2 justify-end mt-2">
+					<AddItemDialog {category} {type} />
+					{#if categoryItems.length > 0}
+						<ClearAllDialog
+							onDelete={() => budget.deleteItemsByCategory(type, category)}
+							text={`all ${category} items`}
+						>
+							{#snippet trigger()}
+								<Button variant="secondary" size="sm">Delete Items</Button>
+							{/snippet}
+						</ClearAllDialog>
+					{:else}
+						<Button
+							variant="secondary"
+							size="sm"
+							onclick={() => budget.deleteCategory(type, category)}>Delete Category</Button
+						>
+					{/if}
 				</div>
 			</BudgetAccordion>
 		{/each}

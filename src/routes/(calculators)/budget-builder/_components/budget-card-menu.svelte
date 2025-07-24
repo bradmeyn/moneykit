@@ -1,10 +1,11 @@
 <script lang="ts">
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
-	import { EllipsisVertical, Pencil, Trash } from 'lucide-svelte';
+	import { EllipsisVertical, Pencil, Plus, Trash } from 'lucide-svelte';
 	import { type BudgetItem, getBudgetState } from '../budget.svelte';
 	import Button from '$ui/button/button.svelte';
 	import ClearAllDialog from './clear-all-dialog.svelte';
 	import CategoryManager from './category-manager.svelte';
+	import AddItemDialog from './add-item-dialog.svelte';
 
 	let { type }: { type: BudgetItem['type'] } = $props();
 	const budget = getBudgetState();
@@ -20,11 +21,21 @@
 	<DropdownMenu.Content>
 		<DropdownMenu.Group>
 			<DropdownMenu.Item onSelect={(e) => e.preventDefault()}>
+				<AddItemDialog {type}>
+					{#snippet trigger()}
+						<div class="flex items-center gap-2">
+							<Plus />
+							<span> Add Item</span>
+						</div>
+					{/snippet}
+				</AddItemDialog>
+			</DropdownMenu.Item>
+			<DropdownMenu.Item onSelect={(e) => e.preventDefault()}>
 				<CategoryManager {type} categories={budget.categories[type]}>
 					{#snippet trigger()}
 						<div class="flex items-center gap-2">
 							<Pencil />
-							<span> Manage categories </span>
+							<span> Manage Categories </span>
 						</div>
 					{/snippet}
 				</CategoryManager>
@@ -34,7 +45,7 @@
 					{#snippet trigger()}
 						<div class="flex items-center gap-2">
 							<Trash />
-							<span> Delete items </span>
+							<span> Delete Items </span>
 						</div>
 					{/snippet}
 				</ClearAllDialog>

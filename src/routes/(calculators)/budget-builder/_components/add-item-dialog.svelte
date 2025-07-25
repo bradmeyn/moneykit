@@ -24,9 +24,7 @@
 	} = $props();
 
 	const budget = getBudgetState();
-
 	let open = $state(false);
-
 	let newItem = $state<BudgetItemType>({
 		id: uuidv4(),
 		name: '',
@@ -44,9 +42,33 @@
 			newItem.amount > 0 &&
 			(category !== 'uncategorised' || newItem.category.trim().length > 0)
 	);
+	let categoryError = $state('');
 
+	function validateCategory() {
+		if (addingNewCategory) {
+			if (!newCategoryName.trim()) {
+				categoryError = 'Category name cannot be empty.';
+				return false;
+			}
+			if (budget.categories[type].includes(newCategoryName.trim())) {
+				categoryError = 'Category already exists.';
+				return false;
+			}
+			categoryError = '';
+			if (newCategoryName.trim() === 'New Category') {
+				categoryError = 'Please choose a different name for the new category.';
+				return false;
+			}
+		}
+		return true;
+	}
 	function handleSubmit() {
 		if (isValid) {
+			// Validate category if it's a new category
+			if (addingNewCategory && !validateCategory()) {
+				return;
+			}
+
 			// If adding a new category, add it first
 			if (newCategoryName.trim()) {
 				budget.addCategory(type, newCategoryName.trim());
@@ -84,11 +106,13 @@
 
 <Dialog.Root bind:open>
 	<Dialog.Trigger>
-		{#if trigger}
-			{@render trigger()}
-		{:else}
-			<Button size="sm">Add Item</Button>
-		{/if}
+		{#snippet children()}
+			{#if trigger}
+				{@render trigger()}
+			{:else}
+				<Button size="sm">Add Item</Button>
+			{/if}
+		{/snippet}
 	</Dialog.Trigger>
 	<Dialog.Content class="sm:max-w-[500px]">
 		<Dialog.Header>
@@ -124,46 +148,53 @@
 				</div>
 			</div>
 
-			{#if category === 'uncategorised'}
-				<Label for="item-category" class="text-sm font-medium">Category</Label>
-				<Select.Root
-					type="single"
-					bind:value={newItem.category}
-					onValueChange={(value) => (newItem.category = value)}
-				>
-					<Select.Trigger class="w-full">
-						{#if !newItem.category}
-							<span>Select a category</span>
-						{:else}
-							<span>{newItem.category}</span>
-						{/if}
-					</Select.Trigger>
-					<Select.Content>
-						<Select.Group>
-							{#each [...budget.categories[type], 'New Category'] as category}
-								<Select.Item value={category} />
-							{/each}
-						</Select.Group>
-					</Select.Content>
-				</Select.Root>
-				{#if addingNewCategory}
-					<div class="space-y-2">
-						<Label for="new-category-name">New Category Name</Label>
-						<Input
-							id="new-category-name"
-							bind:value={newCategoryName}
-							placeholder="Enter new category name"
-						/>
-					</div>
+			<div>
+				{#if category === 'uncategorised'}
+					<Label for="item-category" class="text-sm font-medium">Category</Label>
+					<Select.Root
+						type="single"
+						bind:value={newItem.category}
+						onValueChange={(value) => (newItem.category = value)}
+					>
+						<Select.Trigger class="w-full">
+							{#if !newItem.category}
+								<span>Select a category</span>
+							{:else}
+								<span>{newItem.category}</span>
+							{/if}
+						</Select.Trigger>
+						<Select.Content>
+							<Select.Group>
+								{#each [...budget.categories[type], 'New Category'] as category}
+									<Select.Item value={category} />
+								{/each}
+							</Select.Group>
+						</Select.Content>
+					</Select.Root>
 				{/if}
+			</div>
+			{#if addingNewCategory}
+				<div>
+					<Label for="new-category-name">New Category Name</Label>
+					<Input
+						id="new-category-name"
+						bind:value={newCategoryName}
+						onblur={validateCategory}
+						onfocus={() => (categoryError = '')}
+						placeholder="Enter new category name"
+					/>
+					{#if categoryError}
+						<small class="text-red-500">{categoryError}</small>
+					{/if}
+				</div>
 			{/if}
 
-			<div class="rounded-md bg-muted p-3">
+			<!-- <div class="rounded-md bg-muted p-3">
 				<div class="text-sm text-muted-foreground">Monthly equivalent:</div>
 				<div class="text-lg font-semibold">
 					{formatAsCurrency(newItem.amount * FREQUENCIES[newItem.frequency].value, false)}
 				</div>
-			</div>
+			</div> -->
 		</div>
 
 		<Dialog.Footer>

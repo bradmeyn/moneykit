@@ -1,7 +1,7 @@
 import { FREQUENCIES, type FrequencyType } from '$lib/constants/frequencies';
-import { v4 as uuidv4 } from 'uuid';
 import { setContext, getContext } from 'svelte';
 import { defaultBudgetItems, defaultCategories } from './default-budget-items';
+import { browser } from '$app/environment';
 
 export type BudgetItem = {
 	id: string;
@@ -34,6 +34,20 @@ export function calculateCategoryTotal(
 }
 
 class Budget {
+	hasSavedBudget = $state<boolean>(false);
+
+	checkLocalStorage() {
+		if (browser) {
+			const storedBudget = localStorage.getItem('budget-data');
+			if (storedBudget) this.hasSavedBudget = true;
+		}
+	}
+
+	constructor() {
+		this.checkLocalStorage();
+		this.loadFromStorage();
+	}
+
 	frequency = $state<FrequencyType>('monthly');
 	budgetItems = $state<BudgetItem[]>(defaultBudgetItems);
 
@@ -249,6 +263,34 @@ class Budget {
 			rows,
 			filename: `budget-${new Date().toLocaleDateString('en-AU').split('/').join('-')}.csv`
 		};
+	}
+
+	saveToStorage() {
+		if (!browser) return; // Avoid running on server-side
+		const data = {
+			budgetItems: this.budgetItems,
+			categories: this.categories
+		};
+		localStorage.setItem('budget-data', JSON.stringify(data));
+		console.log('Budget data saved to localStorage');
+	}
+
+	private loadFromStorage() {
+		if (!browser) return; // Avoid running on server-side
+		try {
+			const saved = localStorage.getItem('budget-data');
+			if (saved) {
+				const data = JSON.parse(saved);
+				this.budgetItems = data.budgetItems || defaultBudgetItems;
+				this.categories = data.categories || defaultCategories;
+			}
+		} catch (error) {
+			console.error('Failed to load budget data:', error);
+		}
+	}
+
+	clearStorage() {
+		localStorage.removeItem('budget-data');
 	}
 }
 

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
-	import { EllipsisVertical, Trash, Download } from 'lucide-svelte';
+	import { EllipsisVertical, Trash, Download, Save } from 'lucide-svelte';
 	import Button from '$ui/button/button.svelte';
 	import ClearAllDialog from './clear-all-dialog.svelte';
 	import { downloadCsv } from '$utils/file-download';
@@ -26,6 +26,16 @@
 			<DropdownMenu.Item onSelect={downloadData}>
 				<Download /> <span>Download CSV</span>
 			</DropdownMenu.Item>
+			<DropdownMenu.Separator />
+			<DropdownMenu.Item
+				onSelect={(e) => {
+					e.preventDefault();
+					budget.saveToStorage();
+				}}
+			>
+				<Save class="size-4" />
+				<span>Save Budget</span>
+			</DropdownMenu.Item>
 
 			<DropdownMenu.Separator />
 
@@ -34,7 +44,7 @@
 					{#snippet trigger()}
 						<div class="flex items-center gap-2">
 							<Trash class="size-4" />
-							<span>Clear budget</span>
+							<span>Clear Budget</span>
 						</div>
 					{/snippet}
 				</ClearAllDialog>

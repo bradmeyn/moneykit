@@ -71,6 +71,8 @@
 	--sidebar-accent-foreground: oklch(0.985 0 0);
 	--sidebar-border: oklch(1 0 0 / 10%);
 	--sidebar-ring: oklch(0.552 0.016 285.938);
+
+	--brand: oklch(66.522% 0.17799 260.39);
 }
 
 @theme inline {
@@ -112,6 +114,7 @@
 
 	--color-primary-light: var(--primary-light);
 	--color-primary-dark: var(--primary-dark);
+	--color-brand: var(--brand);
 
 	--color-ui-50: #f8fafc;
 	--color-ui-100: #f1f5f9;

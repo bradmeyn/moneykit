@@ -10,7 +10,9 @@ export const COLOURS = [
 	'#14b8a6' // teal[500]
 ];
 
-export const BRAND_DEFAULT = COLOURS[0];
-export const BRAND_LIGHT = COLOURS[1];
-export const BRAND_DARK = COLOURS[2];
-export const BRAND = [BRAND_DEFAULT, BRAND_LIGHT, BRAND_DARK];
+export const COLOUR_BRAND = '#3b82f6';
+
+export const COLOUR_BRAND_LIGHT = '#60a5fa';
+export const COLOUR_BRAND_DARK = '#1e40af';
+
+export const BRAND = [COLOUR_BRAND, COLOUR_BRAND_LIGHT, COLOUR_BRAND_DARK];

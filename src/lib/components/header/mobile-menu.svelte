@@ -73,7 +73,7 @@
 			<!-- Header -->
 			<div class="flex items-center justify-between p-4 border-b border-border">
 				<span class="text-white text-xl"
-					>Money<span class="text-transparent bg-clip-text bg-linear-to-b from-primary to-primary"
+					>Money<span class="text-transparent bg-clip-text bg-linear-to-b from-brand to-brand"
 						>Kit</span
 					></span
 				>
@@ -113,7 +113,7 @@
 										onclick={closeMenu}
 										class="block py-2 px-3 rounded-md text-sm transition-colors {activeUrl ===
 										calculator.href
-											? 'bg-primary/20 text-primary border-l-2 border-l-primary'
+											? 'bg-brand/20 text-brand border-l-2 border-l-brand'
 											: 'text-muted-foreground hover:text-white hover:bg-muted/50'}"
 									>
 										{calculator.name}

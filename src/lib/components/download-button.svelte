@@ -2,15 +2,21 @@
 <script lang="ts">
 	import { Button } from '$lib/components/ui/button';
 	import { Download } from 'lucide-svelte';
+	import type { Snippet } from 'svelte';
 
 	interface DownloadData {
 		headers: string[];
 		rows: (string | number)[][];
 	}
 
-	let { data, filename = 'download.csv' } = $props<{
+	let {
+		data,
+		filename = 'moneykit.csv',
+		trigger
+	} = $props<{
 		data: DownloadData;
 		filename?: string;
+		trigger?: Snippet;
 	}>();
 
 	function downloadCsv() {
@@ -34,6 +40,10 @@
 	}
 </script>
 
-<Button size="icon" variant="outline" class="hover:bg-primary" onclick={downloadCsv}>
-	<Download />
-</Button>
+{#if trigger}
+	{@render trigger()}
+{:else}
+	<Button size="icon" variant="outline" onclick={downloadCsv}>
+		<Download />
+	</Button>
+{/if}

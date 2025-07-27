@@ -22,7 +22,7 @@
 </svelte:head>
 
 <main class="container mx-auto text-white">
-	<h1 class="mb-4">Retirement Calculator</h1>
+	<h1 class="mb-4 calculator-heading">Retirement Calculator</h1>
 
 	<section class="flex gap-8">
 		<div class="max-w-[1000px] min-w-[300px]">

@@ -17,15 +17,15 @@
 <a
 	{href}
 	class="card-animate block card
-	hover:border-primary transition-all duration-300
+	hover:border-brand transition-all duration-300
 	group w-full hover:-translate-y-1"
 >
 	<div class="flex items-start space-x-4">
 		<div
-			class="mb-4 size-12 rounded-lg bg-primary/10 flex items-center
+			class="mb-4 size-12 rounded-lg bg-brand/10 flex items-center
 		justify-center group-hover:scale-110 transition-transform duration-300 shrink-0"
 		>
-			<svg class="size-5 text-primary" {viewBox} fill="currentColor">
+			<svg class="size-5 text-brand" {viewBox} fill="currentColor">
 				<path d={iconPath} />
 			</svg>
 		</div>

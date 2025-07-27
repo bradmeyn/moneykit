@@ -23,7 +23,7 @@
 								href={calculator.href}
 								class="block text-left border-b-2 w-fit text-sm text-muted-foreground {activeUrl ===
 								calculator.href
-									? 'text-white border-b-2 border-b-primary'
+									? 'text-white border-b-2 border-b-brand'
 									: 'text-card-foreground  hover:text-white border-b-transparent'}"
 							>
 								{calculator.name}

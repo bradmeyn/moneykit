@@ -1,6 +1,7 @@
 import { FREQUENCIES, type FrequencyType } from '$lib/constants/frequencies';
-import { v4 as uuidv4 } from 'uuid';
 import { setContext, getContext } from 'svelte';
+import { defaultBudgetItems, defaultCategories } from './default-budget-items';
+import { browser } from '$app/environment';
 
 export type BudgetItem = {
 	id: string;
@@ -8,7 +9,7 @@ export type BudgetItem = {
 	amount: number;
 	category: string;
 	frequency: FrequencyType;
-	type: 'Income' | 'Expense' | 'Savings';
+	type: 'income' | 'expense' | 'savings';
 };
 
 export function convertToFrequency(
@@ -33,235 +34,105 @@ export function calculateCategoryTotal(
 }
 
 class Budget {
-	frequency = $state<FrequencyType>('monthly');
+	hasSavedBudget = $state<boolean>(false);
+	showLoadPrompt = $state<boolean>(false);
+	autoSaveEnabled = $state<boolean>(true);
 
-	budgetItems = $state<BudgetItem[]>([
-		{
-			id: uuidv4(),
-			name: 'Salary',
-			amount: 1000,
-			category: 'Wages & Salary',
-			frequency: 'monthly',
-			type: 'Income'
-		},
-		{
-			id: uuidv4(),
-			name: 'Bonus',
-			amount: 500,
-			category: 'Wages & Salary',
-			frequency: 'annually',
-			type: 'Income'
-		},
-		{
-			id: uuidv4(),
-			name: 'Rental Income',
-			amount: 500,
-			category: 'Investments',
-			frequency: 'annually',
-			type: 'Income'
-		},
-		{
-			id: uuidv4(),
-			name: 'Interest',
-			amount: 500,
-			category: 'Investments',
-			frequency: 'annually',
-			type: 'Income'
-		},
-		{
-			id: uuidv4(),
-			name: 'Dividends & Distributions',
-			amount: 500,
-			category: 'Investments',
-			frequency: 'quarterly',
-			type: 'Income'
-		},
-		{
-			id: uuidv4(),
-			name: 'Capital Gains',
-			amount: 500,
-			category: 'Investments',
-			frequency: 'annually',
-			type: 'Income'
-		},
-		{
-			id: uuidv4(),
-			name: 'Rent/Mortgage',
-			amount: 100,
-			category: 'Housing & Utilities',
-			frequency: 'monthly',
-			type: 'Expense'
-		},
-		{
-			id: uuidv4(),
-			name: 'Rates',
-			amount: 300,
-			category: 'Housing & Utilities',
-			frequency: 'quarterly',
-			type: 'Expense'
-		},
-		{
-			id: uuidv4(),
-			name: 'Water',
-			amount: 100,
-			category: 'Housing & Utilities',
-			frequency: 'monthly',
-			type: 'Expense'
-		},
-		{
-			id: uuidv4(),
-			name: 'Electricity & Gas',
-			amount: 300,
-			category: 'Housing & Utilities',
-			frequency: 'quarterly',
-			type: 'Expense'
-		},
-		{
-			id: uuidv4(),
-			name: 'Internet & Phone',
-			amount: 120,
-			category: 'Housing & Utilities',
-			frequency: 'monthly',
-			type: 'Expense'
-		},
-		{
-			id: uuidv4(),
-			name: 'Groceries',
-			amount: 50,
-			category: 'Food',
-			frequency: 'weekly',
-			type: 'Expense'
-		},
-		{
-			id: uuidv4(),
-			name: 'Takeaway',
-			amount: 50,
-			category: 'Food',
-			frequency: 'weekly',
-			type: 'Expense'
-		},
-		{
-			id: uuidv4(),
-			name: 'Gym Membership',
-			amount: 30,
-			category: 'Health',
-			frequency: 'monthly',
-			type: 'Expense'
-		},
-		{
-			id: uuidv4(),
-			name: 'Fuel',
-			amount: 50,
-			category: 'Car',
-			frequency: 'weekly',
-			type: 'Expense'
-		},
-		{
-			id: uuidv4(),
-			name: 'Registration',
-			amount: 50,
-			category: 'Car',
-			frequency: 'weekly',
-			type: 'Expense'
-		},
-		{
-			id: uuidv4(),
-			name: 'Insurance',
-			amount: 1200,
-			category: 'Car',
-			frequency: 'annually',
-			type: 'Expense'
-		},
-		{
-			id: uuidv4(),
-			name: 'Maintenance',
-			amount: 200,
-			category: 'Car',
-			frequency: 'annually',
-			type: 'Expense'
-		},
-		{
-			id: uuidv4(),
-			name: 'Streaming Services',
-			amount: 10,
-			category: 'Entertainment & Leisure',
-			frequency: 'monthly',
-			type: 'Expense'
-		},
-		{
-			id: uuidv4(),
-			name: 'Hobbies',
-			amount: 10,
-			category: 'Entertainment & Leisure',
-			frequency: 'monthly',
-			type: 'Expense'
-		},
-		{
-			id: uuidv4(),
-			name: 'Eating Out',
-			amount: 10,
-			category: 'Entertainment & Leisure',
-			frequency: 'monthly',
-			type: 'Expense'
-		},
-		{
-			id: uuidv4(),
-			name: 'Alcohol',
-			amount: 10,
-			category: 'Entertainment & Leisure',
-			frequency: 'monthly',
-			type: 'Expense'
-		},
-		{
-			id: uuidv4(),
-			name: 'Vacation Fund',
-			amount: 50,
-			category: 'Cash Savings',
-			frequency: 'annually',
-			type: 'Savings'
-		},
-		{
-			id: uuidv4(),
-			name: 'Retirement Fund',
-			amount: 200,
-			category: 'Superannuation',
-			frequency: 'monthly',
-			type: 'Savings'
-		},
-		{
-			id: uuidv4(),
-			name: 'ETF Portfolio',
-			amount: 200,
-			category: 'Investments',
-			frequency: 'monthly',
-			type: 'Savings'
+	constructor() {
+		this.checkForSavedData();
+	}
+
+	private checkForSavedData() {
+		if (browser) {
+			const storedBudget = localStorage.getItem('budget-data');
+			if (storedBudget) {
+				this.hasSavedBudget = true;
+				this.showLoadPrompt = true;
+			}
 		}
-	]);
+	}
+
+	loadBudget() {
+		if (!browser) return;
+		try {
+			const saved = localStorage.getItem('budget-data');
+			if (saved) {
+				const data = JSON.parse(saved);
+				this.budgetItems = data.budgetItems || defaultBudgetItems;
+				this.categories = data.categories || defaultCategories;
+			}
+		} catch (error) {
+			console.error('Failed to load budget data:', error);
+		} finally {
+			this.showLoadPrompt = false;
+		}
+	}
+
+	frequency = $state<FrequencyType>('monthly');
+	budgetItems = $state<BudgetItem[]>(defaultBudgetItems);
 
 	// Items by type
-	income = $derived<BudgetItem[]>(this.budgetItems.filter((i) => i.type === 'Income'));
-	expenses = $derived<BudgetItem[]>(this.budgetItems.filter((i) => i.type === 'Expense'));
-	savings = $derived<BudgetItem[]>(this.budgetItems.filter((i) => i.type === 'Savings'));
+	income = $derived<BudgetItem[]>(this.budgetItems.filter((i) => i.type === 'income'));
+	expenses = $derived<BudgetItem[]>(this.budgetItems.filter((i) => i.type === 'expense'));
+	savings = $derived<BudgetItem[]>(this.budgetItems.filter((i) => i.type === 'savings'));
 
 	// Categories
-	incomeCategories = $state<string[]>([...new Set(this.income.map((i) => i.category))]);
-	expenseCategories = $state<string[]>([...new Set(this.expenses.map((i) => i.category))]);
-	savingsCategories = $state<string[]>([...new Set(this.savings.map((i) => i.category))]);
+	categories = $state({
+		income: defaultCategories.income,
+		expense: defaultCategories.expense,
+		savings: defaultCategories.savings
+	});
+
+	addCategory(type: BudgetItem['type'], category: string) {
+		this.categories[type].push(category);
+		if (this.autoSaveEnabled) this.saveToStorage();
+	}
+	deleteCategory(type: BudgetItem['type'], category: string) {
+		// Remove items with this category
+		this.budgetItems = this.budgetItems.filter(
+			(item) => !(item.type === type && item.category === category)
+		);
+		// Remove category from the list
+		const index = this.categories[type].indexOf(category);
+		if (index !== -1) {
+			this.categories[type].splice(index, 1);
+		}
+		if (this.autoSaveEnabled) this.saveToStorage();
+	}
+	updateCategory(type: BudgetItem['type'], oldCategory: string, newCategory: string) {
+		const index = this.categories[type].indexOf(oldCategory);
+		if (index !== -1) {
+			this.categories[type][index] = newCategory;
+			// Update all items in this category
+			this.budgetItems.forEach((item) => {
+				if (item.category === oldCategory && item.type === type) {
+					item.category = newCategory;
+				}
+			});
+		}
+		if (this.autoSaveEnabled) this.saveToStorage();
+	}
+	deleteItemsByCategory(type: BudgetItem['type'], category: string) {
+		this.budgetItems = this.budgetItems.filter(
+			(item) => !(item.type === type && item.category === category)
+		);
+		if (this.autoSaveEnabled) this.saveToStorage();
+	}
 
 	// Frequency-adjusted items
-	adjustedIncome = $derived<BudgetItem[]>(
+	adjustedincome = $derived<BudgetItem[]>(
 		this.income.map((item) => ({
 			...item,
 			amount: convertToFrequency(item.amount, item.frequency, this.frequency)
 		}))
 	);
-	adjustedExpenses = $derived<BudgetItem[]>(
+	adjustedexpenses = $derived<BudgetItem[]>(
 		this.expenses.map((item) => ({
 			...item,
 			amount: convertToFrequency(item.amount, item.frequency, this.frequency)
 		}))
 	);
-	adjustedSavings = $derived<BudgetItem[]>(
+	adjustedsavings = $derived<BudgetItem[]>(
 		this.savings.map((item) => ({
 			...item,
 			amount: convertToFrequency(item.amount, item.frequency, this.frequency)
@@ -269,21 +140,22 @@ class Budget {
 	);
 
 	expenseByCategory = $derived<{ category: string; total: number }[]>(
-		this.expenseCategories.map((category) => {
-			const categoryExpenses = this.adjustedExpenses.filter((i) => i.category === category);
-			const total = categoryExpenses.reduce((acc, i) => acc + i.amount, 0);
+		this.categories.expense.map((category) => {
+			const categoryexpenses = this.adjustedexpenses.filter((i) => i.category === category);
+			const total = categoryexpenses.reduce((acc, i) => acc + i.amount, 0);
 			return { category, total };
 		})
 	);
 
 	// Calculate totals for current frequency
-	totalIncome = $derived<number>(this.adjustedIncome.reduce((acc, i) => acc + i.amount, 0));
-	totalExpenses = $derived<number>(this.adjustedExpenses.reduce((acc, i) => acc + i.amount, 0));
-	totalSavings = $derived<number>(this.adjustedSavings.reduce((acc, i) => acc + i.amount, 0));
+	totalIncome = $derived<number>(this.adjustedincome.reduce((acc, i) => acc + i.amount, 0));
+	totalExpenses = $derived<number>(this.adjustedexpenses.reduce((acc, i) => acc + i.amount, 0));
+	totalSavings = $derived<number>(this.adjustedsavings.reduce((acc, i) => acc + i.amount, 0));
 	unallocated = $derived<number>(this.totalIncome - this.totalExpenses - this.totalSavings);
 
 	addItem(item: BudgetItem) {
 		this.budgetItems.push(item);
+		if (this.autoSaveEnabled) this.saveToStorage();
 	}
 
 	removeItem(id: string) {
@@ -291,6 +163,7 @@ class Budget {
 		if (index !== -1) {
 			this.budgetItems.splice(index, 1);
 		}
+		if (this.autoSaveEnabled) this.saveToStorage();
 	}
 
 	updateItem(item: BudgetItem) {
@@ -298,13 +171,38 @@ class Budget {
 		if (index !== -1) {
 			this.budgetItems[index] = item;
 		}
+		if (this.autoSaveEnabled) this.saveToStorage();
+	}
+
+	deleteItemsByType(type: BudgetItem['type'] | null = null) {
+		if (!type) {
+			this.budgetItems = [];
+			return;
+		}
+		this.budgetItems = this.budgetItems.filter((item) => item.type !== type);
+		if (this.autoSaveEnabled) this.saveToStorage();
+	}
+
+	clearBudget() {
+		this.budgetItems = [];
+		this.categories = {
+			income: [],
+			expense: [],
+			savings: []
+		};
+		if (this.autoSaveEnabled) this.saveToStorage();
+	}
+
+	resetBudget() {
+		this.budgetItems = defaultBudgetItems;
+		this.categories = defaultCategories;
 	}
 
 	getDownloadData() {
 		// Sort items by type
-		const income = this.budgetItems.filter((item) => item.type === 'Income');
-		const expenses = this.budgetItems.filter((item) => item.type === 'Expense');
-		const savings = this.budgetItems.filter((item) => item.type === 'Savings');
+		const income = this.budgetItems.filter((item) => item.type === 'income');
+		const expenses = this.budgetItems.filter((item) => item.type === 'expense');
+		const savings = this.budgetItems.filter((item) => item.type === 'savings');
 
 		const headers = [
 			'Type',
@@ -360,38 +258,38 @@ class Budget {
 		}
 
 		// Add all item types
-		addItemsToRows(income, 'Income');
-		addItemsToRows(expenses, 'Expenses');
-		addItemsToRows(savings, 'Savings');
+		addItemsToRows(income, 'income');
+		addItemsToRows(expenses, 'expenses');
+		addItemsToRows(savings, 'savings');
 
 		// Calculate unallocated funds
-		const monthlyIncome = income.reduce(
+		const monthlyincome = income.reduce(
 			(acc, item) => acc + convertToFrequency(item.amount, item.frequency, 'monthly'),
 			0
 		);
-		const monthlyExpenses = expenses.reduce(
+		const monthlyexpenses = expenses.reduce(
 			(acc, item) => acc + convertToFrequency(item.amount, item.frequency, 'monthly'),
 			0
 		);
-		const monthlySavings = savings.reduce(
+		const monthlysavings = savings.reduce(
 			(acc, item) => acc + convertToFrequency(item.amount, item.frequency, 'monthly'),
 			0
 		);
-		const monthlyUnallocated = monthlyIncome - (monthlyExpenses + monthlySavings);
+		const monthlyUnallocated = monthlyincome - (monthlyexpenses + monthlysavings);
 
-		const annualIncome = income.reduce(
+		const annualincome = income.reduce(
 			(acc, item) => acc + convertToFrequency(item.amount, item.frequency, 'annually'),
 			0
 		);
-		const annualExpenses = expenses.reduce(
+		const annualexpenses = expenses.reduce(
 			(acc, item) => acc + convertToFrequency(item.amount, item.frequency, 'annually'),
 			0
 		);
-		const annualSavings = savings.reduce(
+		const annualsavings = savings.reduce(
 			(acc, item) => acc + convertToFrequency(item.amount, item.frequency, 'annually'),
 			0
 		);
-		const annualUnallocated = annualIncome - (annualExpenses + annualSavings);
+		const annualUnallocated = annualincome - (annualexpenses + annualsavings);
 
 		rows.push([
 			'Unallocated',
@@ -408,6 +306,20 @@ class Budget {
 			rows,
 			filename: `budget-${new Date().toLocaleDateString('en-AU').split('/').join('-')}.csv`
 		};
+	}
+
+	saveToStorage() {
+		if (!browser) return;
+		const data = {
+			budgetItems: this.budgetItems,
+			categories: this.categories
+		};
+		localStorage.setItem('budget-data', JSON.stringify(data));
+		console.log('Budget data saved to localStorage', data);
+	}
+
+	clearStorage() {
+		localStorage.removeItem('budget-data');
 	}
 }
 

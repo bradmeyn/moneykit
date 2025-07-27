@@ -1,6 +1,6 @@
 <script lang="ts">
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
-	import { EllipsisVertical, Trash, Download, Save } from 'lucide-svelte';
+	import { EllipsisVertical, Trash, Download, Save, RefreshCcw } from 'lucide-svelte';
 	import Button from '$ui/button/button.svelte';
 	import ClearAllDialog from './clear-all-dialog.svelte';
 	import { downloadCsv } from '$utils/file-download';
@@ -38,12 +38,35 @@
 			</DropdownMenu.Item>
 
 			<DropdownMenu.Separator />
+			<DropdownMenu.Item
+				onSelect={(e) => {
+					e.preventDefault();
+					budget.resetBudget();
+				}}
+			>
+				<RefreshCcw />
+				<span>Reset Budget</span>
+			</DropdownMenu.Item>
+
+			<DropdownMenu.Separator />
 
 			<DropdownMenu.Item onSelect={(e) => e.preventDefault()}>
-				<ClearAllDialog onDelete={budget.deleteItemsByType}>
+				<ClearAllDialog onDelete={() => budget.deleteItemsByType()}>
 					{#snippet trigger()}
 						<div class="flex items-center gap-2">
-							<Trash class="size-4" />
+							<Trash />
+							<span>Delete Items</span>
+						</div>
+					{/snippet}
+				</ClearAllDialog>
+			</DropdownMenu.Item>
+			<DropdownMenu.Separator />
+
+			<DropdownMenu.Item onSelect={(e) => e.preventDefault()}>
+				<ClearAllDialog onDelete={() => budget.clearBudget()}>
+					{#snippet trigger()}
+						<div class="flex items-center gap-2">
+							<Trash />
 							<span>Clear Budget</span>
 						</div>
 					{/snippet}

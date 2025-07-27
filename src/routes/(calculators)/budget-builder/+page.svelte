@@ -8,6 +8,9 @@
 	import BudgetCard from './_components/budget-card.svelte';
 	const budget = setBudgetState();
 	import ActionsMenu from './_components/actions-menu.svelte';
+	import LoadBudgetAlert from './_components/load-budget-alert.svelte';
+	import Switch from '$ui/switch/switch.svelte';
+	import Label from '$ui/label/label.svelte';
 
 	let chartData = $derived.by(() => {
 		const total = budget.totalExpenses + budget.totalSavings;
@@ -35,9 +38,16 @@
 
 <main class="flex flex-col flex-1 container text-white max-w-[1200px]">
 	<div class="flex justify-between items-center mb-2">
-		<h1>Budget Builder</h1>
-		<div class=" flex gap-2">
-			<div class="min-w-[150px]">
+		<h1 class="text-4xl font-bold">Budget Builder</h1>
+		{#if budget.showLoadPrompt}
+			<LoadBudgetAlert />
+		{/if}
+		<div class="flex items-center gap-6">
+			<div class="text-center">
+				<Label for="auto-save" class="text-xs mb-1">Auto Save</Label>
+				<Switch id="auto-save" name="auto-save" bind:checked={budget.autoSaveEnabled} />
+			</div>
+			<div class="min-w-[170px]">
 				<FrequencySelect
 					name="budget-frequency"
 					id="budget-frequency"
@@ -47,6 +57,7 @@
 			<ActionsMenu />
 		</div>
 	</div>
+
 	<div class="flex flex-col lg:flex-row gap-4 w-full">
 		<div class="flex-1 flex gap-4 flex-col">
 			<BudgetCard

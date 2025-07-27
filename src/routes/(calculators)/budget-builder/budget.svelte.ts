@@ -35,17 +35,37 @@ export function calculateCategoryTotal(
 
 class Budget {
 	hasSavedBudget = $state<boolean>(false);
+	showLoadPrompt = $state<boolean>(false);
+	autoSaveEnabled = $state<boolean>(true);
 
-	checkLocalStorage() {
+	constructor() {
+		this.checkForSavedData();
+	}
+
+	private checkForSavedData() {
 		if (browser) {
 			const storedBudget = localStorage.getItem('budget-data');
-			if (storedBudget) this.hasSavedBudget = true;
+			if (storedBudget) {
+				this.hasSavedBudget = true;
+				this.showLoadPrompt = true;
+			}
 		}
 	}
 
-	constructor() {
-		this.checkLocalStorage();
-		this.loadFromStorage();
+	loadBudget() {
+		if (!browser) return;
+		try {
+			const saved = localStorage.getItem('budget-data');
+			if (saved) {
+				const data = JSON.parse(saved);
+				this.budgetItems = data.budgetItems || defaultBudgetItems;
+				this.categories = data.categories || defaultCategories;
+			}
+		} catch (error) {
+			console.error('Failed to load budget data:', error);
+		} finally {
+			this.showLoadPrompt = false;
+		}
 	}
 
 	frequency = $state<FrequencyType>('monthly');
@@ -65,6 +85,7 @@ class Budget {
 
 	addCategory(type: BudgetItem['type'], category: string) {
 		this.categories[type].push(category);
+		if (this.autoSaveEnabled) this.saveToStorage();
 	}
 	deleteCategory(type: BudgetItem['type'], category: string) {
 		// Remove items with this category
@@ -76,6 +97,7 @@ class Budget {
 		if (index !== -1) {
 			this.categories[type].splice(index, 1);
 		}
+		if (this.autoSaveEnabled) this.saveToStorage();
 	}
 	updateCategory(type: BudgetItem['type'], oldCategory: string, newCategory: string) {
 		const index = this.categories[type].indexOf(oldCategory);
@@ -88,11 +110,13 @@ class Budget {
 				}
 			});
 		}
+		if (this.autoSaveEnabled) this.saveToStorage();
 	}
 	deleteItemsByCategory(type: BudgetItem['type'], category: string) {
 		this.budgetItems = this.budgetItems.filter(
 			(item) => !(item.type === type && item.category === category)
 		);
+		if (this.autoSaveEnabled) this.saveToStorage();
 	}
 
 	// Frequency-adjusted items
@@ -131,6 +155,7 @@ class Budget {
 
 	addItem(item: BudgetItem) {
 		this.budgetItems.push(item);
+		if (this.autoSaveEnabled) this.saveToStorage();
 	}
 
 	removeItem(id: string) {
@@ -138,6 +163,7 @@ class Budget {
 		if (index !== -1) {
 			this.budgetItems.splice(index, 1);
 		}
+		if (this.autoSaveEnabled) this.saveToStorage();
 	}
 
 	updateItem(item: BudgetItem) {
@@ -145,6 +171,7 @@ class Budget {
 		if (index !== -1) {
 			this.budgetItems[index] = item;
 		}
+		if (this.autoSaveEnabled) this.saveToStorage();
 	}
 
 	deleteItemsByType(type: BudgetItem['type'] | null = null) {
@@ -153,6 +180,22 @@ class Budget {
 			return;
 		}
 		this.budgetItems = this.budgetItems.filter((item) => item.type !== type);
+		if (this.autoSaveEnabled) this.saveToStorage();
+	}
+
+	clearBudget() {
+		this.budgetItems = [];
+		this.categories = {
+			income: [],
+			expense: [],
+			savings: []
+		};
+		if (this.autoSaveEnabled) this.saveToStorage();
+	}
+
+	resetBudget() {
+		this.budgetItems = defaultBudgetItems;
+		this.categories = defaultCategories;
 	}
 
 	getDownloadData() {
@@ -266,27 +309,13 @@ class Budget {
 	}
 
 	saveToStorage() {
-		if (!browser) return; // Avoid running on server-side
+		if (!browser) return;
 		const data = {
 			budgetItems: this.budgetItems,
 			categories: this.categories
 		};
 		localStorage.setItem('budget-data', JSON.stringify(data));
-		console.log('Budget data saved to localStorage');
-	}
-
-	private loadFromStorage() {
-		if (!browser) return; // Avoid running on server-side
-		try {
-			const saved = localStorage.getItem('budget-data');
-			if (saved) {
-				const data = JSON.parse(saved);
-				this.budgetItems = data.budgetItems || defaultBudgetItems;
-				this.categories = data.categories || defaultCategories;
-			}
-		} catch (error) {
-			console.error('Failed to load budget data:', error);
-		}
+		console.log('Budget data saved to localStorage', data);
 	}
 
 	clearStorage() {

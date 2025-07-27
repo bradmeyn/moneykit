@@ -38,7 +38,7 @@
 
 <main class="flex flex-col flex-1 container text-white max-w-[1200px]">
 	<div class="flex justify-between items-center mb-2">
-		<h1 class="text-4xl font-bold">Budget Builder</h1>
+		<h1 class="calculator-heading">Budget Builder</h1>
 		{#if budget.showLoadPrompt}
 			<LoadBudgetAlert />
 		{/if}

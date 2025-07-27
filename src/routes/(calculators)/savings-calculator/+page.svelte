@@ -28,7 +28,7 @@
 </svelte:head>
 
 <main class="flex flex-col flex-1 container mx-auto">
-	<h1 class="mb-4">Savings Calculator</h1>
+	<h1 class="mb-4 calculator-heading">Savings Calculator</h1>
 
 	<section class="flex flex-col lg:flex-row gap-8">
 		<Inputs bind:isComparing />

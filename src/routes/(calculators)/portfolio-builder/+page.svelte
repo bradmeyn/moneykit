@@ -19,7 +19,7 @@
 </svelte:head>
 
 <main class="flex flex-col flex-1 container text-white">
-	<h1 class="mb-4">Portfolio Builder</h1>
+	<h1 class="mb-4 calculator-heading">Portfolio Builder</h1>
 	<div class=" w-full">
 		<div class="justify-between flex">
 			<div class="md:w-[200px] mb-2">

@@ -141,8 +141,8 @@
 		@apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
 	}
 
-	h1 {
-		@apply text-2xl font-semibold;
+	.calculator-heading {
+		@apply text-2xl md:text-4xl font-bold;
 	}
 
 	.card-heading {

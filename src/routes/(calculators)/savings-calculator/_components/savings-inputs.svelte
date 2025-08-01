@@ -25,7 +25,7 @@
 	<h2 class="card-heading">Inputs</h2>
 
 	<div>
-		<Label for="principal">Principal</Label>
+		<Label for="principal">Starting Amount</Label>
 		<CurrencyInput bind:value={calculator.principal} id="principal" />
 	</div>
 

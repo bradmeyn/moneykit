@@ -2,6 +2,7 @@
 	import { setCalculatorState, getCalculatorState } from './calculator.svelte';
 	import * as Tabs from '$lib/components/ui/tabs';
 	import { formatAsCurrency } from '$lib/utils/formatters';
+	import { CheckCircle, XCircle } from 'lucide-svelte';
 	import Inputs from './_components/savings-inputs.svelte';
 	import GrowthChart from './_components/growth-chart.svelte';
 	import ComparisonTable from './_components/comparison-table.svelte';
@@ -17,37 +18,44 @@
 		isComparing ? calculator.getDownloadDataWithComparison() : calculator.getDownloadData()
 	);
 
-	const tableData = calculator.getTableData();
+	const tableData = $derived.by(() => calculator.getTableData(isComparing));
+
+	// Goal status for the main scenario
+	const goalStatus = $derived.by(() => {
+		if (calculator.savingsGoal <= 0) return null;
+
+		const yearReached = calculator.baseResult.annualData.findIndex(
+			(data) => data.endingValue >= calculator.savingsGoal
+		);
+
+		return {
+			text: yearReached === -1 ? 'Not achieved' : `Achieved in ${yearReached + 1} years`,
+			achieved: yearReached !== -1
+		};
+	});
 </script>
 
 <svelte:head>
-	<title>MoneyKit | Savings Calculator</title>
-	<!-- <meta name="description" content={meta_description} />
-	<meta name="og:description" content={meta_description} /> -->
-	<meta name="twitter:creator" content="@jrib_" />
+	<title>Savings Growth Calculator</title>
 </svelte:head>
 
 <main class="flex flex-col flex-1 container mx-auto">
-	<h1 class="mb-4 calculator-heading">Savings Calculator</h1>
+	<h1 class="mb-4 calculator-heading">Savings Growth Calculator</h1>
 
 	<section class="flex flex-col lg:flex-row gap-8">
 		<Inputs bind:isComparing />
 
 		<div class="w-full space-y-4">
-			{#if isComparing}
-				<ComparisonTable />
-			{/if}
-
 			<div class="card">
 				<div class="flex flex-col md:flex-row gap-4 justify-between mb-3">
 					<div class="space-y-4">
 						<div>
-							<h2 class="text-muted-foreground">Total after {calculator.years} Years</h2>
+							<h2 class="text-muted-foreground">Value after {calculator.years} Years</h2>
 							<p class="font-semibold text-2xl md:text-2xl">
 								{formatAsCurrency(calculator.baseResult.totalValue)}
 							</p>
 						</div>
-						<div class="flex gap-8">
+						<div class="flex gap-8 flex-wrap">
 							<div>
 								<p class="text-muted-foreground">Total Contributions</p>
 								<p class="text-xl font-semibold">
@@ -61,6 +69,22 @@
 									{formatAsCurrency(calculator.baseResult.totalInterest)}
 								</p>
 							</div>
+
+							{#if goalStatus}
+								<div>
+									<p class="text-muted-foreground">Goal Status</p>
+									<div class="flex items-center gap-2">
+										{#if goalStatus.achieved}
+											<CheckCircle class="w-5 h-5 text-emerald-500" />
+										{:else}
+											<XCircle class="w-5 h-5 text-red-500" />
+										{/if}
+										<p class="text-xl font-semibold">
+											{goalStatus.text}
+										</p>
+									</div>
+								</div>
+							{/if}
 						</div>
 					</div>
 
@@ -94,6 +118,9 @@
 					</Tabs.Content>
 				</Tabs.Root>
 			</div>
+			{#if isComparing}
+				<ComparisonTable />
+			{/if}
 		</div>
 	</section>
 </main>

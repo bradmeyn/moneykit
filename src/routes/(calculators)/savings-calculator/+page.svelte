@@ -47,11 +47,11 @@
 
 		<div class="w-full space-y-4">
 			<div class="card">
-				<div class="flex flex-col md:flex-row gap-4 justify-between mb-3">
+				<div class="flex flex-col-reverse md:flex-row gap-4 justify-between mb-3 items-start">
 					<div class="space-y-4">
 						<div>
 							<h2 class="text-muted-foreground">Value after {calculator.years} Years</h2>
-							<p class="font-semibold text-2xl md:text-2xl">
+							<p class="font-semibold text-2xl md:text-3xl">
 								{formatAsCurrency(calculator.baseResult.totalValue)}
 							</p>
 						</div>

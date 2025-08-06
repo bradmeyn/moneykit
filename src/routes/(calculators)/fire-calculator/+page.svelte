@@ -32,11 +32,10 @@
 		<Inputs />
 
 		<div class="card w-full">
-			<h2 class="card-heading mb-1">Outcome</h2>
-			<div class="flex flex-col md:flex-row gap-4 justify-between mb-3">
+			<div class="flex flex-col-reverse md:flex-row gap-4 justify-between items-start mb-3">
 				<div class="grid grid-cols-2 gap-16">
 					<div class="col-span-2 md:col-span-1">
-						<h3 class="">FIRE Number</h3>
+						<h3 class="text-muted-foreground">FIRE Number</h3>
 						<div class="text-2xl font-semibold">
 							{formatAsCurrency(calculator.fireNumber)}
 						</div>
@@ -44,7 +43,7 @@
 					</div>
 
 					<div class="col-span-2 md:col-span-1">
-						<h3 class="">FIRE Age</h3>
+						<h3 class="text-muted-foreground">FIRE Age</h3>
 						<div class="text-2xl font-semibold">
 							<span>{calculator.yearsToFire + calculator.age}</span>
 						</div>

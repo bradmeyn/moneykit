@@ -47,13 +47,6 @@
 				<Label for="auto-save" class="text-xs mb-1">Auto Save</Label>
 				<Switch id="auto-save" name="auto-save" bind:checked={budget.autoSaveEnabled} />
 			</div>
-			<div class="min-w-[170px]">
-				<FrequencySelect
-					name="budget-frequency"
-					id="budget-frequency"
-					bind:value={budget.frequency}
-				/>
-			</div>
 			<ActionsMenu />
 		</div>
 	</div>

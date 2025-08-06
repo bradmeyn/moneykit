@@ -16,7 +16,7 @@
 
 <a
 	{href}
-	class="card-animate block card
+	class="block card
 	hover:border-brand transition-all duration-300
 	group w-full hover:-translate-y-1"
 >
@@ -35,46 +35,3 @@
 		</div>
 	</div>
 </a>
-
-<!-- <style>
-	.card-animate {
-		animation: slideUp 0.4s ease-out forwards;
-		opacity: 0;
-	}
-
-	@keyframes slideUp {
-		from {
-			transform: translateY(20px);
-			opacity: 0;
-		}
-		to {
-			transform: translateY(0);
-			opacity: 1;
-		}
-	}
-
-	:global(.card-animate:nth-child(1)) {
-		animation-delay: 0s;
-	}
-	:global(.card-animate:nth-child(2)) {
-		animation-delay: 0.1s;
-	}
-	:global(.card-animate:nth-child(3)) {
-		animation-delay: 0.2s;
-	}
-	:global(.card-animate:nth-child(4)) {
-		animation-delay: 0.3s;
-	}
-	:global(.card-animate:nth-child(5)) {
-		animation-delay: 0.4s;
-	}
-	:global(.card-animate:nth-child(6)) {
-		animation-delay: 0.5s;
-	}
-	:global(.card-animate:nth-child(7)) {
-		animation-delay: 0.6s;
-	}
-	:global(.card-animate:nth-child(8)) {
-		animation-delay: 0.7s;
-	}
-</style> -->

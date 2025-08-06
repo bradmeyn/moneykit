@@ -100,7 +100,7 @@
 		</div>
 
 		<div>
-			<Label for="property-growth">Property Growth Rate</Label>
+			<Label for="property-growth">Property Growth (p.a.)</Label>
 			<PercentageInput bind:value={calc.propertyGrowthRate} id="property-growth" />
 		</div>
 	{/if}

@@ -112,15 +112,15 @@
 			<Accordion.Content class="px-4 pt-2 pb-4">
 				<div class="space-y-4">
 					<div>
-						<Label for="growth-rate">Accumulation Return</Label>
+						<Label for="growth-rate">Pre-Retirement Return (p.a.)</Label>
 						<PercentageInput value={calc.accumulationReturn} id="growth-rate" />
 					</div>
 					<div>
-						<Label for="growth-rate">Pension Return</Label>
+						<Label for="growth-rate">Retirement Return (p.a.)</Label>
 						<PercentageInput value={calc.retirementReturn} id="growth-rate" />
 					</div>
 					<div>
-						<Label for="inflation-rate">Inflation Rate</Label>
+						<Label for="inflation-rate">Inflation Rate (p.a.)</Label>
 						<PercentageInput bind:value={calc.inflationRate} id="inflation-rate" />
 					</div>
 					<div>

@@ -24,7 +24,7 @@
 				{#each portfolio.portfolio as holding}
 					<tr>
 						<td>
-							<div class="text-lg">
+							<div>
 								{holding.investment.symbol}
 							</div>
 							<div class=" text-muted-foreground">
@@ -97,10 +97,10 @@
 				<!-- Totals Row -->
 				<tr class="border-t border-gray-300 font-semibold">
 					<td class="py-3">Totals</td>
-					<td class="text-right py-3">{formatAsCurrency(portfolio.total)}</td>
+					<td class="text-right py-3">{formatAsCurrency(portfolio.totalValue)}</td>
 					<td class="text-right py-3">
 						<div>
-							{formatAsCurrency(portfolio.total * portfolio.assetAllocation.ausEquities)}
+							{formatAsCurrency(portfolio.totalValue * portfolio.assetAllocation.ausEquities)}
 						</div>
 						<div class="text-xs text-muted-foreground">
 							{formatAsPercentage(portfolio.assetAllocation.ausEquities)}
@@ -108,7 +108,7 @@
 					</td>
 					<td class="text-right py-3">
 						<div>
-							{formatAsCurrency(portfolio.total * portfolio.assetAllocation.intEquities)}
+							{formatAsCurrency(portfolio.totalValue * portfolio.assetAllocation.intEquities)}
 						</div>
 						<div class="text-xs text-muted-foreground">
 							{formatAsPercentage(portfolio.assetAllocation.intEquities)}
@@ -116,7 +116,7 @@
 					</td>
 					<td class="text-right py-3">
 						<div>
-							{formatAsCurrency(portfolio.total * portfolio.assetAllocation.ausFixedInterest)}
+							{formatAsCurrency(portfolio.totalValue * portfolio.assetAllocation.ausFixedInterest)}
 						</div>
 						<div class="text-xs text-muted-foreground">
 							{formatAsPercentage(portfolio.assetAllocation.ausFixedInterest)}
@@ -124,21 +124,21 @@
 					</td>
 					<td class="text-right py-3">
 						<div>
-							{formatAsCurrency(portfolio.total * portfolio.assetAllocation.intFixedInterest)}
+							{formatAsCurrency(portfolio.totalValue * portfolio.assetAllocation.intFixedInterest)}
 						</div>
 						<div class="text-xs text-muted-foreground">
 							{formatAsPercentage(portfolio.assetAllocation.intFixedInterest)}
 						</div>
 					</td>
 					<td class="text-right py-3">
-						<div>{formatAsCurrency(portfolio.total * portfolio.assetAllocation.cash)}</div>
+						<div>{formatAsCurrency(portfolio.totalValue * portfolio.assetAllocation.cash)}</div>
 						<div class="text-xs text-muted-foreground">
 							{formatAsPercentage(portfolio.assetAllocation.cash)}
 						</div>
 					</td>
 					<td class="text-right py-3">
 						<div>
-							{formatAsCurrency(portfolio.total * portfolio.assetAllocation.alternatives)}
+							{formatAsCurrency(portfolio.totalValue * portfolio.assetAllocation.alternatives)}
 						</div>
 						<div class="text-xs text-muted-foreground">
 							{formatAsPercentage(portfolio.assetAllocation.alternatives)}

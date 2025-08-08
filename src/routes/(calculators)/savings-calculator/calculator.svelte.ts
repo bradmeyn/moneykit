@@ -176,7 +176,38 @@ class GrowthCalculatorState {
 		};
 	}
 
-	getTableData() {
+	getTableData(isComparing: boolean = false) {
+		if (isComparing) {
+			return {
+				columns: [
+					'Year',
+					'Starting',
+					'Interest',
+					'Contribution',
+					'Total',
+					'Comp Starting',
+					'Comp Interest',
+					'Comp Contribution',
+					'Comp Total'
+				],
+				rows: this.baseResult.annualData.map((data, index) => {
+					const compData = this.comparisonResult.annualData[index];
+					return [
+						data.year,
+						formatAsCurrency(data.startingValue),
+						formatAsCurrency(data.yearlyInterest),
+						formatAsCurrency(data.yearlyContribution),
+						formatAsCurrency(data.endingValue),
+						formatAsCurrency(compData?.startingValue || 0),
+						formatAsCurrency(compData?.yearlyInterest || 0),
+						formatAsCurrency(compData?.yearlyContribution || 0),
+						formatAsCurrency(compData?.endingValue || 0)
+					];
+				})
+			};
+		}
+
+		// Default single scenario table
 		return {
 			columns: ['Year', 'Starting Value', 'Interest Earned', 'Contribution', 'Total Value'],
 			rows: this.baseResult.annualData.map((data) => [

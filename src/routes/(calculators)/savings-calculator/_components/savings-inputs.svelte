@@ -25,7 +25,7 @@
 	<h2 class="card-heading">Inputs</h2>
 
 	<div>
-		<Label for="principal">Principal</Label>
+		<Label for="principal">Starting Amount</Label>
 		<CurrencyInput bind:value={calculator.principal} id="principal" />
 	</div>
 
@@ -50,7 +50,7 @@
 	</div>
 
 	<div>
-		<Label for="interest-rate">Interest Rate</Label>
+		<Label for="interest-rate">Investment Return (p.a.)</Label>
 		<PercentageInput
 			id="interest-rate"
 			onchange={(value) => calculator.updateBase({ interestRate: value })}
@@ -59,7 +59,7 @@
 	</div>
 
 	<div>
-		<Label for="years">Years</Label>
+		<Label for="years">Years Invested</Label>
 		<Input
 			id="years"
 			name="years"

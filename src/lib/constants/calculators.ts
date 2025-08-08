@@ -4,24 +4,24 @@ export const calculatorsByCategory = {
 			name: 'Budget Builder',
 			href: '/budget-builder',
 			viewBox: '0 0 576 512',
-			description: 'Create a personal budget',
+			description: 'Create and download a detailed personal budget',
 			iconPath:
 				'M400 96l0 .7c-5.3-.4-10.6-.7-16-.7L256 96c-16.5 0-32.5 2.1-47.8 6c-.1-2-.2-4-.2-6c0-53 43-96 96-96s96 43 96 96zm-16 32c3.5 0 7 .1 10.4 .3c4.2 .3 8.4 .7 12.6 1.3C424.6 109.1 450.8 96 480 96l11.5 0c10.4 0 18 9.8 15.5 19.9l-13.8 55.2c15.8 14.8 28.7 32.8 37.5 52.9l13.3 0c17.7 0 32 14.3 32 32l0 96c0 17.7-14.3 32-32 32l-32 0c-9.1 12.1-19.9 22.9-32 32l0 64c0 17.7-14.3 32-32 32l-32 0c-17.7 0-32-14.3-32-32l0-32-128 0 0 32c0 17.7-14.3 32-32 32l-32 0c-17.7 0-32-14.3-32-32l0-64c-34.9-26.2-58.7-66.3-63.2-112L68 304c-37.6 0-68-30.4-68-68s30.4-68 68-68l4 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-4 0c-11 0-20 9-20 20s9 20 20 20l31.2 0c12.1-59.8 57.7-107.5 116.3-122.8c12.9-3.4 26.5-5.2 40.5-5.2l128 0zm64 136a24 24 0 1 0 -48 0 24 24 0 1 0 48 0z'
 		},
 		{
-			name: 'Future Savings Calculator',
+			name: 'Future Savings',
 			href: '/savings-calculator',
 			viewBox: '0 0 576 512',
-			description: 'Project your future savings overtime and time to reach your goal',
+			description: 'Estimate your future savings and time to reach your goal',
 			iconPath:
 				'M384 160c-17.7 0-32-14.3-32-32s14.3-32 32-32l160 0c17.7 0 32 14.3 32 32l0 160c0 17.7-14.3 32-32 32s-32-14.3-32-32l0-82.7L342.6 374.6c-12.5 12.5-32.8 12.5-45.3 0L192 269.3 54.6 406.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l160-160c12.5-12.5 32.8-12.5 45.3 0L320 306.7 466.7 160 384 160z'
 		},
 
 		{
-			name: 'Personal Tax Calculator',
+			name: 'Personal Tax',
 			href: '/personal-tax-calculator',
 			viewBox: '0 0 448 512',
-			description: 'Estimate your income tax liability',
+			description: 'Estimate your personal income tax liability',
 			iconPath:
 				'M312 24v10.5c6.4 1.2 12.6 2.7 18.2 4.2c12.8 3.4 20.4 16.6 17 29.4s-16.6 20.4-29.4 17c-10.9-2.9-21.1-4.9-30.2-5c-7.3-.1-14.7 1.7-19.4 4.4c-2.1 1.3-3.1 2.4-3.5 3c-.3.5-.7 1.2-.7 2.8v.6c.2.2.9 1.2 3.3 2.6c5.8 3.5 14.4 6.2 27.4 10.1l.9.3c11.1 3.3 25.9 7.8 37.9 15.3c13.7 8.6 26.1 22.9 26.4 44.9c.3 22.5-11.4 38.9-26.7 48.5c-6.7 4.1-13.9 7-21.3 8.8v10.6c0 13.3-10.7 24-24 24s-24-10.7-24-24v-11.4c-9.5-2.3-18.2-5.3-25.6-7.8l-6-2c-12.6-4.2-19.4-17.8-15.2-30.4s17.8-19.4 30.4-15.2l7.3 2.5c13.6 4.6 23.4 7.9 33.9 8.3c8 .3 15.1-1.6 19.2-4.1c1.9-1.2 2.8-2.2 3.2-2.9c.4-.6.9-1.8.8-4.1v-.2c0-1 0-2.1-4-4.6c-5.7-3.6-14.3-6.4-27.1-10.3l-1.9-.6c-10.8-3.2-25-7.5-36.4-14.4c-13.5-8.1-26.5-22-26.6-44.1c-.1-22.9 12.9-38.6 27.7-47.4c6.4-3.8 13.3-6.4 20.2-8.2V24c0-13.3 10.7-24 24-24s24 10.7 24 24zM568.2 336.3c13.1 17.8 9.3 42.8-8.5 55.9L433.1 485.5c-23.4 17.2-51.6 26.5-80.7 26.5H192 32c-17.7 0-32-14.3-32-32v-64c0-17.7 14.3-32 32-32h36.8l44.9-36c22.7-18.2 50.9-28 80-28h78.3 16 64c17.7 0 32 14.3 32 32s-14.3 32-32 32h-64-16c-8.8 0-16 7.2-16 16s7.2 16 16 16h120.6l119.7-88.2c17.8-13.1 42.8-9.3 55.9 8.5zM193.6 384z'
 		},
@@ -36,7 +36,7 @@ export const calculatorsByCategory = {
 	],
 	Debt: [
 		{
-			name: 'Mortgage Repayment Calculator',
+			name: 'Mortgage Repayments',
 			href: '/mortgage-calculator',
 			description: 'Estimate repayments, payback period and interest paid.',
 			viewBox: '0 0 576 512',

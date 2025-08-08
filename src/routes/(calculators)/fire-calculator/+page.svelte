@@ -4,8 +4,9 @@
 	import { formatAsCurrency } from '$lib/utils/formatters';
 	import Inputs from './_components/fire-inputs.svelte';
 	import FireChart from './_components/fire-chart.svelte';
-	import DownloadButton from '$lib/components/download-button.svelte';
+
 	import ScrollableTable from '$ui/scrollable-table.svelte';
+	import CalculatorActions from '$lib/components/calculator-actions.svelte';
 
 	setCalculatorState();
 	let calculator = getCalculatorState();
@@ -26,17 +27,19 @@
 </svelte:head>
 
 <main class="flex flex-col flex-1 container mx-auto text-white">
-	<h1 class="mb-4 calculator-heading">FIRE Calculator</h1>
+	<div class="flex justify-between items-center">
+		<h1 class="mb-4 calculator-heading">FIRE Calculator</h1>
+		<CalculatorActions getCsvData={() => downloadData} filename="fire-calculator.csv" />
+	</div>
 
 	<section class="flex flex-col lg:flex-row gap-8">
 		<Inputs />
 
 		<div class="card w-full">
-			<h2 class="card-heading mb-1">Outcome</h2>
-			<div class="flex flex-col md:flex-row gap-4 justify-between mb-3">
+			<div class="flex flex-col-reverse md:flex-row gap-4 justify-between items-start mb-3">
 				<div class="grid grid-cols-2 gap-16">
 					<div class="col-span-2 md:col-span-1">
-						<h3 class="">FIRE Number</h3>
+						<h3 class="text-muted-foreground">FIRE Number</h3>
 						<div class="text-2xl font-semibold">
 							{formatAsCurrency(calculator.fireNumber)}
 						</div>
@@ -44,7 +47,7 @@
 					</div>
 
 					<div class="col-span-2 md:col-span-1">
-						<h3 class="">FIRE Age</h3>
+						<h3 class="text-muted-foreground">FIRE Age</h3>
 						<div class="text-2xl font-semibold">
 							<span>{calculator.yearsToFire + calculator.age}</span>
 						</div>
@@ -62,7 +65,6 @@
 							<Tabs.Trigger value="table">Table</Tabs.Trigger>
 						</Tabs.List>
 					</Tabs.Root>
-					<DownloadButton data={downloadData} filename="fire-calculation.csv" />
 				</div>
 			</div>
 

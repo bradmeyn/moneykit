@@ -1,5 +1,5 @@
 // Current financial year
-export const CURRENT_FINANCIAL_YEAR = 2025; // Updated to reflect the end of the period shown
+export const CURRENT_FINANCIAL_YEAR = '2024-25';
 
 // Income tax brackets
 export const INCOME_TAX_BRACKETS = [

@@ -5,6 +5,7 @@
 	import { ScrollArea } from '$lib/components/ui/scroll-area';
 	import { getPortfolioState } from '../calculator.svelte';
 	import { ETF_MAP, getETFList, type ExchangeTradedFund } from '../investments';
+	import { Button } from '$lib/components/ui/button';
 
 	const { addInvestment } = getPortfolioState();
 	const calc = getPortfolioState();
@@ -40,10 +41,7 @@
 
 <Dialog.Root bind:open>
 	<Dialog.Trigger class="mb-2">
-		<div class="relative w-full min-w-96 cursor-pointer flex items-center text-muted-foreground">
-			<Input placeholder="Add investment..." readonly class="pl-10 block w-full py-5" />
-			<Search class="absolute left-3 size-4 " />
-		</div>
+		<Button size="sm" class="w-full">Add Investment</Button>
 	</Dialog.Trigger>
 
 	<Dialog.Content class="bg-card">

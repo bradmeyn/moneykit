@@ -20,24 +20,19 @@
 </svelte:head>
 
 <main class="flex flex-col flex-1 container text-white">
-	<h1 class="mb-4 calculator-heading">Portfolio Builder</h1>
 	<div class=" w-full">
 		<div class="justify-between flex">
-			<div class="md:w-[200px] mb-2">
-				<CurrencyInput id="portfolio-value" bind:value={calc.portfolioValue} />
-			</div>
+			<h1 class="mb-4 calculator-heading">Portfolio Builder</h1>
 			<CalculatorActions getCsvData={() => calc.getAllDataCsv()} filename="portfolio.csv" />
 		</div>
 		<div class="grid grid-cols-1 lg:grid-cols-[3fr_1fr] gap-4">
 			<div class=" w-full card">
 				<div class="flex justify-between items-start mb-4">
-					<AddInvestment />
+					<div class="md:w-[200px] mb-2">
+						<CurrencyInput id="portfolio-value" bind:value={calc.portfolioValue} />
+					</div>
 
-					<Tabs.Root
-						value={selectedView}
-						onValueChange={(value) => (selectedView = value)}
-						class="w-[200px]"
-					>
+					<Tabs.Root value={selectedView} onValueChange={(value) => (selectedView = value)}>
 						<Tabs.List>
 							<Tabs.Trigger value="overview">Overview</Tabs.Trigger>
 							<Tabs.Trigger value="allocation">Allocation</Tabs.Trigger>
@@ -91,6 +86,9 @@
 				{:else}
 					<AssetAllocationTable />
 				{/if}
+				<div class="flex justify-end mt-4">
+					<AddInvestment />
+				</div>
 			</div>
 
 			<AssetAllocationChart />

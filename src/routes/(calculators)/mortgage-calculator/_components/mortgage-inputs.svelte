@@ -47,7 +47,7 @@
 		<Slider type="single" bind:value={calc.term} max={30} min={1} step={1} id="term" />
 	</div>
 
-	<Separator />
+	<hr />
 
 	<div>
 		<Label for="repayment-frequency">Repayment Frequency</Label>
@@ -68,8 +68,7 @@
 		<CurrencyInput bind:value={calc.extraRepayments} id="extra-repayment" />
 	</div>
 
-	<Separator />
-
+	<hr />
 	<div>
 		<Label for="loan-type">Loan Type</Label>
 		<TabSelect bind:value={calc.loanType} options={loanTypeOptions} name={'type'} />

@@ -6,7 +6,6 @@
 	import Inputs from './_components/savings-inputs.svelte';
 	import GrowthChart from './_components/growth-chart.svelte';
 	import ComparisonTable from './_components/comparison-table.svelte';
-	import DownloadButton from '$lib/components/download-button.svelte';
 	import ScrollableTable from '$ui/scrollable-table.svelte';
 	import CalculatorActions from '$lib/components/calculator-actions.svelte';
 

@@ -4,7 +4,7 @@
 	import AddInvestment from './_components/add-investment.svelte';
 	import InvestmentItem from './_components/investment-item.svelte';
 	import { setPortfolioState } from './calculator.svelte';
-	import DownloadButton from '$lib/components/download-button.svelte';
+
 	import * as Tabs from '$lib/components/ui/tabs';
 	import AssetAllocationChart from './_components/allocation-chart.svelte';
 	import AssetAllocationTable from './_components/allocation-table.svelte';

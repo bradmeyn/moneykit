@@ -6,7 +6,6 @@
 	import Label from '$ui/label/label.svelte';
 	import Input from '$ui/input/input.svelte';
 	import { Button } from '$lib/components/ui/button';
-	import Separator from '$lib/components/ui/separator.svelte';
 
 	let calculator = getCalculatorState();
 	let {
@@ -70,7 +69,7 @@
 		/>
 	</div>
 
-	<Separator />
+	<hr />
 
 	<div>
 		<Label for="savings-goal">Savings Goal</Label>

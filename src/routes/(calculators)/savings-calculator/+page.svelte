@@ -8,6 +8,7 @@
 	import ComparisonTable from './_components/comparison-table.svelte';
 	import DownloadButton from '$lib/components/download-button.svelte';
 	import ScrollableTable from '$ui/scrollable-table.svelte';
+	import CalculatorActions from '$lib/components/calculator-actions.svelte';
 
 	setCalculatorState();
 	let calculator = getCalculatorState();
@@ -40,7 +41,13 @@
 </svelte:head>
 
 <main class="flex flex-col flex-1 container mx-auto">
-	<h1 class="mb-4 calculator-heading">Savings Growth Calculator</h1>
+	<div class="flex justify-between items-center">
+		<h1 class="mb-4 calculator-heading">Future Savings Calculator</h1>
+		<CalculatorActions
+			getCsvData={() => downloadData}
+			filename={isComparing ? 'savings-comparison.csv' : 'savings-calculator.csv'}
+		/>
+	</div>
 
 	<section class="flex flex-col lg:flex-row gap-8">
 		<Inputs bind:isComparing />
@@ -99,7 +106,6 @@
 								<Tabs.Trigger value="table">Table</Tabs.Trigger>
 							</Tabs.List>
 						</Tabs.Root>
-						<DownloadButton filename="growth-data.csv" data={downloadData} />
 					</div>
 				</div>
 

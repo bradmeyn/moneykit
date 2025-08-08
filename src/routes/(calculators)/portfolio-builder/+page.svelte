@@ -8,6 +8,7 @@
 	import * as Tabs from '$lib/components/ui/tabs';
 	import AssetAllocationChart from './_components/allocation-chart.svelte';
 	import AssetAllocationTable from './_components/allocation-table.svelte';
+	import CalculatorActions from '$lib/components/calculator-actions.svelte';
 
 	const calc = setPortfolioState();
 
@@ -25,28 +26,23 @@
 			<div class="md:w-[200px] mb-2">
 				<CurrencyInput id="portfolio-value" bind:value={calc.portfolioValue} />
 			</div>
-			<div class="flex items-center gap-2">
-				<Tabs.Root
-					value={selectedView}
-					onValueChange={(value) => (selectedView = value)}
-					class="w-[200px]"
-				>
-					<Tabs.List class="grid w-full grid-cols-2 bg-ui-950">
-						<Tabs.Trigger class="data-[state=active]:bg-ui-700" value="overview"
-							>Overview</Tabs.Trigger
-						>
-						<Tabs.Trigger class="data-[state=active]:bg-ui-700" value="allocation"
-							>Allocation</Tabs.Trigger
-						>
-					</Tabs.List>
-				</Tabs.Root>
-				<DownloadButton filename="portfolio.csv" data={calc.getAllDataCsv()} />
-			</div>
+			<CalculatorActions getCsvData={() => calc.getAllDataCsv()} filename="portfolio.csv" />
 		</div>
 		<div class="grid grid-cols-1 lg:grid-cols-[3fr_1fr] gap-4">
 			<div class=" w-full card">
-				<div class="flex justify-between items-center mb-4">
+				<div class="flex justify-between items-start mb-4">
 					<AddInvestment />
+
+					<Tabs.Root
+						value={selectedView}
+						onValueChange={(value) => (selectedView = value)}
+						class="w-[200px]"
+					>
+						<Tabs.List>
+							<Tabs.Trigger value="overview">Overview</Tabs.Trigger>
+							<Tabs.Trigger value="allocation">Allocation</Tabs.Trigger>
+						</Tabs.List>
+					</Tabs.Root>
 				</div>
 				{#if selectedView === 'overview'}
 					<table class="w-full rounded-lg overflow-hidden">

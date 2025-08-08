@@ -17,7 +17,7 @@
 			</span>
 		</h1>
 		<p class=" text-2xl max-w-4xl mx-auto text-muted-foreground">
-			Professional-grade financial tools designed to help you make <span class="text-white"
+			Easy to use financial tools designed to help you make <span class="text-white"
 				>smarter decisions</span
 			> with your money.
 		</p>

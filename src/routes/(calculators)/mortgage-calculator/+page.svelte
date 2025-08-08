@@ -54,7 +54,6 @@
 									<Tabs.Trigger value="table">Table</Tabs.Trigger>
 								</Tabs.List>
 							</Tabs.Root>
-							<Button size="icon" variant="outline" class="hover:bg-primary"><Download /></Button>
 						</div>
 					</div>
 

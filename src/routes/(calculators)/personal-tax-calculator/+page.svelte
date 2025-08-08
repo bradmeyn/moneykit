@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Inputs from './_components/tax-inputs.svelte';
 	import TaxRateTable from './_components/rate-table.svelte';
+	import { CURRENT_FINANCIAL_YEAR } from './tax-rates';
 	import { formatAsCurrency, formatAsPercentage } from '$lib/utils/formatters';
 	import TaxBand from './_components/tax-band.svelte';
 	import StackedBar from '$lib/components/charts/stacked-bar.svelte';
@@ -28,7 +29,7 @@
 </svelte:head>
 
 <main class="flex flex-col flex-1 container mx-auto text-white">
-	<h1 class="mb-4 calculator-heading">Personal Tax Calculator</h1>
+	<h1 class="mb-4 calculator-heading">Personal Tax Calculator ({CURRENT_FINANCIAL_YEAR})</h1>
 	<div class="flex flex-col lg:flex-row gap-8 lg:gap-10">
 		<aside class=" min-w-[300px]">
 			<Inputs />

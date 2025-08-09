@@ -18,7 +18,7 @@
 	import { formatAsCurrency } from '$lib/utils/formatters';
 	import { COLOURS } from '$lib/constants/colours';
 	import { TOOLTIP } from '$constants/chart-config';
-	import { getCalculatorState } from '../calculator.svelte';
+	import { getCalculatorState } from '../../calculator.svelte';
 
 	const calculator = getCalculatorState();
 	let chartId: HTMLCanvasElement | undefined = $state();

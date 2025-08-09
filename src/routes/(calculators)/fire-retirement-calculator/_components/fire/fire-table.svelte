@@ -1,9 +1,8 @@
 <script lang="ts">
 	import { formatAsCurrency } from '$lib/utils/formatters';
 	import ScrollArea from '$ui/scroll-area/scroll-area.svelte';
-	import { setCalculatorState, getCalculatorState } from '../calculator.svelte';
+	import { getCalculatorState } from '../../calculator.svelte';
 
-	setCalculatorState();
 	let calc = getCalculatorState();
 </script>
 

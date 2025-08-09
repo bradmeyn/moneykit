@@ -1,32 +1,116 @@
 import { setContext, getContext } from 'svelte';
 import { formatAsCurrency } from '$lib/utils/formatters';
 
-class CalculatorState {
-	ASSUMED_RETURNS = {
-		highGrowth: 0.08,
-		growth: 0.07,
-		balanced: 0.05,
-		conservative: 0.03,
-		cash: 0.03
-	};
+const ASSUMED_RETURNS = {
+	highGrowth: 0.08,
+	growth: 0.07,
+	balanced: 0.05,
+	conservative: 0.03,
+	cash: 0.03
+};
 
-	// Personal details
-	age = $state(55);
+class CalculatorState {
+	mode = $state('fire');
+
+	// --- Shared fields ---
+	age = $state(34); // default for fire, can be changed for traditional
+	inflationRate = $state(0.02);
+
+	// --- FIRE fields ---
+	expenses = $state(40000);
+	currentInvestments = $state(200000);
+	contributions = $state(1000); // monthly
+	growthRate = $state(0.07);
+	withdrawalRate = $state(0.04);
+	secondaryIncome = $state(0);
+
+	fireNumber = $derived((this.expenses - this.secondaryIncome) / this.withdrawalRate);
+
+	yearsToFire = $derived.by(() => {
+		let amount = this.currentInvestments;
+		const yearlyContribution = this.contributions * 12;
+		const realGrowthRate = (1 + this.growthRate) / (1 + this.inflationRate) - 1;
+
+		let years = 0;
+		while (amount < this.fireNumber && years < 100) {
+			amount = amount * (1 + realGrowthRate) + yearlyContribution;
+			years++;
+		}
+		return years;
+	});
+
+	calculationData = $derived.by(() => {
+		const data = [];
+		let amount = this.currentInvestments;
+		const yearlyContribution = this.contributions * 12;
+		const realGrowthRate = (1 + this.growthRate) / (1 + this.inflationRate) - 1;
+		let isWithdrawing = false;
+
+		for (let age = this.age; age <= 67; age++) {
+			const inflationAdjustedExpenses =
+				this.expenses * Math.pow(1 + this.inflationRate, age - this.age);
+			const inflationAdjustedSecondaryIncome =
+				this.secondaryIncome * Math.pow(1 + this.inflationRate, age - this.age);
+
+			// Calculate net withdrawal needed (expenses minus secondary income)
+			const netWithdrawal = isWithdrawing
+				? Math.max(0, inflationAdjustedExpenses - inflationAdjustedSecondaryIncome)
+				: 0;
+
+			data.push({
+				age,
+				investmentValue: Math.max(0, Math.round(amount)),
+				fireTarget: this.fireNumber,
+				withdrawal: isWithdrawing ? Math.round(inflationAdjustedExpenses) : 0,
+				secondaryIncome: isWithdrawing ? Math.round(inflationAdjustedSecondaryIncome) : 0,
+				contribution: !isWithdrawing ? yearlyContribution : 0
+			});
+
+			if (amount >= this.fireNumber) {
+				isWithdrawing = true;
+			}
+
+			if (isWithdrawing) {
+				amount = Math.max(0, amount * (1 + realGrowthRate) - netWithdrawal);
+			} else {
+				amount = amount * (1 + realGrowthRate) + yearlyContribution;
+			}
+		}
+
+		return data;
+	});
+
+	getTableData() {
+		return {
+			columns: [
+				'Age',
+				'Investment Value',
+				'Fire Target',
+				'Withdrawal',
+				'Secondary Income',
+				'Contribution'
+			],
+			rows: this.calculationData.map((row) => [
+				row.age,
+				formatAsCurrency(row.investmentValue),
+				formatAsCurrency(row.fireTarget),
+				formatAsCurrency(row.withdrawal),
+				formatAsCurrency(row.secondaryIncome),
+				formatAsCurrency(row.contribution)
+			])
+		};
+	}
+
+	// --- Traditional/Retirement fields ---
 	retirementAge = $state(67);
 	retirementIncome = $state(52000);
 	currentIncome = $state(85000);
 	sgRate = $state(0.12);
-
-	// Superannuation
 	superannuationBalance = $state(500000);
 	employerContribution = $derived(this.currentIncome * this.sgRate);
 	additionalSuperContribution = $state(1000); // yearly
-
-	// Investment returns
 	accumulationReturn = $state(0.07);
 	retirementReturn = $state(0.05);
-	inflationRate = $state(0.02);
-
 	investments = $state([
 		{
 			id: '1',
@@ -56,10 +140,8 @@ class CalculatorState {
 		this.investments = this.investments.filter((investment) => investment.id !== id);
 	}
 
-	// Home Ownership (pension)
 	isHomeOwner = $state(true);
 
-	// Calculate total value of non-super investments
 	getTotalInvestmentsValue = $derived(
 		this.investments.reduce((total, investment) => total + investment.value, 0)
 	);

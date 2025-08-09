@@ -25,7 +25,7 @@
 			<Accordion.Trigger
 				class="flex justify-between w-full px-4 py-2 text-left font-medium border-b rounded"
 			>
-				Retirement Details
+				Personal Details
 			</Accordion.Trigger>
 			<Accordion.Content class="px-4 pt-2 pb-4">
 				<div class="space-y-4">

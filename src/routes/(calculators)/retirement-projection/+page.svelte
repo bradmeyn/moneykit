@@ -18,7 +18,7 @@
 </script>
 
 <svelte:head>
-	<title>MoneyKit | Retirement Projection</title>
+	<title>Retirement Projection</title>
 </svelte:head>
 
 <main class="container mx-auto text-white">

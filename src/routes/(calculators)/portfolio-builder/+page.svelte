@@ -16,7 +16,7 @@
 </script>
 
 <svelte:head>
-	<title>MoneyKit | Portfolio Builder</title>
+	<title>Portfolio Builder</title>
 </svelte:head>
 
 <main class="flex flex-col flex-1 container text-white">

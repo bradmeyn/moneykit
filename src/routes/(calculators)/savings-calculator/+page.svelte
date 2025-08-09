@@ -18,7 +18,7 @@
 		isComparing ? calculator.getDownloadDataWithComparison() : calculator.getDownloadData()
 	);
 
-	const tableData = $derived.by(() => calculator.getTableData(isComparing));
+	const tableData = $derived(calculator.getTableData(isComparing));
 
 	// Goal status for the main scenario
 	const goalStatus = $derived.by(() => {

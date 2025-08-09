@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/state';
-	import { ChevronDown, X } from 'lucide-svelte';
-	import { calculatorsByCategory, categories } from '$lib/constants/calculators';
+	import { X } from 'lucide-svelte';
+	import { calculators } from '$lib/constants/calculators';
 
 	let activeUrl = $derived(page.url.pathname);
 	let isOpen = $state(false);
@@ -28,10 +28,6 @@
 		if (!isOpen) {
 			expandedCategory = null;
 		}
-	}
-
-	function toggleCategory(category: string) {
-		expandedCategory = expandedCategory === category ? null : category;
 	}
 
 	function closeMenu() {
@@ -85,45 +81,32 @@
 					<X class="size-5 text-muted-foreground" />
 				</button>
 			</div>
-
-			<!-- Categories -->
-			<div class="p-4 space-y-2">
-				{#each categories as category}
-					<div class="border border-border rounded-lg overflow-hidden">
-						<!-- Category Header -->
-						<button
-							onclick={() => toggleCategory(category)}
-							class="w-full p-4 text-left flex items-center justify-between bg-muted/50 hover:bg-muted transition-colors text-muted-foreground"
-							aria-expanded={expandedCategory === category}
-						>
-							<span class="font-semibold text-white text-sm">{category.toUpperCase()}</span>
-							<ChevronDown
-								class="size-4 transition-transform duration-200 {expandedCategory === category
-									? 'rotate-180'
+			<nav class="p-4" aria-label="Main menu">
+				<ul class="space-y-2">
+					{#each calculators as calculator}
+						<li>
+							<a
+								href={calculator.href}
+								class="flex items-center gap-3 rounded-lg px-4 py-2 transition-colors duration-150 text-muted-foreground hover:text-white hover:bg-muted focus:outline-none focus:ring-2 focus:ring-brand {activeUrl ===
+								calculator.href
+									? 'text-white bg-muted'
 									: ''}"
-							/>
-						</button>
-
-						<!-- Category Content -->
-						{#if expandedCategory === category}
-							<div class="p-4 bg-card space-y-3">
-								{#each calculatorsByCategory[category] as calculator}
-									<a
-										href={calculator.href}
-										onclick={closeMenu}
-										class="block py-2 px-3 rounded-md text-sm transition-colors {activeUrl ===
-										calculator.href
-											? 'bg-brand/20 text-brand border-l-2 border-l-brand'
-											: 'text-muted-foreground hover:text-white hover:bg-muted/50'}"
-									>
-										{calculator.name}
-									</a>
-								{/each}
-							</div>
-						{/if}
-					</div>
-				{/each}
-			</div>
+								aria-current={activeUrl === calculator.href ? 'page' : undefined}
+								onclick={closeMenu}
+							>
+								<div
+									class="size-8 rounded-lg bg-brand/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shrink-0"
+								>
+									<svg class="size-4 text-brand" viewBox={calculator.viewBox} fill="currentColor">
+										<path d={calculator.iconPath} />
+									</svg>
+								</div>
+								<span>{calculator.name}</span>
+							</a>
+						</li>
+					{/each}
+				</ul>
+			</nav>
 		</div>
 	{/if}
 </div>

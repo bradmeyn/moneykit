@@ -23,7 +23,7 @@
 </script>
 
 <svelte:head>
-	<title>MoneyKit | FIRE</title>
+	<title>FIRE Calculator</title>
 </svelte:head>
 
 <main class="flex flex-col flex-1 container mx-auto text-white">

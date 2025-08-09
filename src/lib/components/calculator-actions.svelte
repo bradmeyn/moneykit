@@ -20,9 +20,11 @@
 
 <DropdownMenu.Root>
 	<DropdownMenu.Trigger>
-		<Button size="icon" variant="ghost">
-			<EllipsisVertical />
-		</Button>
+		{#snippet children()}
+			<Button size="icon" variant="ghost">
+				<EllipsisVertical />
+			</Button>
+		{/snippet}
 	</DropdownMenu.Trigger>
 	<DropdownMenu.Content align="end">
 		<DropdownMenu.Group>

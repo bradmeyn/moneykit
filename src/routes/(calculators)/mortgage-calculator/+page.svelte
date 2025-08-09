@@ -16,7 +16,7 @@
 </script>
 
 <svelte:head>
-	<title>MoneyKit | Mortgage Repayment Calculator</title>
+	<title>Mortgage Repayment Calculator</title>
 </svelte:head>
 
 <main class="flex flex-col flex-1 container mx-auto text-white">

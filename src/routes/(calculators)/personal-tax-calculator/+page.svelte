@@ -24,7 +24,7 @@
 </script>
 
 <svelte:head>
-	<title>MoneyKit | Tax Calculator</title>
+	<title>Tax Calculator</title>
 	<meta name="twitter:creator" content="@jrib_" />
 </svelte:head>
 

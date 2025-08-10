@@ -13,7 +13,7 @@
 		<ChevronDown class="size-4 inline-block group-hover:rotate-180 transition-all duration-300" />
 	</button>
 	<div class="absolute card shadow-lg overflow-hidden hidden group-hover:block z-20 w-[500px]">
-		<h1 class="font-bold text-lg mb-4">Calculators</h1>
+		<h1 class="font-bold text-sm mb-4">Calculators</h1>
 		<ul class="grid grid-cols-2 gap-4">
 			{#each calculators as calculator}
 				<li class="col-span-1">

@@ -142,7 +142,7 @@
 	}
 
 	.calculator-heading {
-		@apply text-2xl md:text-4xl font-bold;
+		@apply text-xl md:text-2xl font-bold;
 	}
 
 	.card-heading {

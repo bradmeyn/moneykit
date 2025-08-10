@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { getCalculatorState } from '../calculator.svelte';
-	import PercentageInput from '$lib/components/inputs/percentage-input.svelte';
+	import PercentageSlider from '$lib/components/inputs/percentage-slider.svelte';
 	import CurrencyInput from '$lib/components/inputs/currency-input.svelte';
 	import Label from '$ui/label/label.svelte';
 	import * as Select from '$lib/components/ui/select';
@@ -36,15 +36,25 @@
 		<CurrencyInput bind:value={calc.principal} id="principal" />
 	</div>
 
-	<div>
-		<Label for="interest-rate">Interest Rate</Label>
-		<PercentageInput bind:value={calc.interestRate} id="interest-rate" />
-	</div>
+	<PercentageSlider
+		label="Interest Rate"
+		bind:value={calc.interestRate}
+		min={0.01}
+		max={0.15}
+		step={0.0025}
+		id="interest-rate"
+		explainer="Annual interest rate on your mortgage"
+		precision={2}
+	/>
 
 	<div>
 		<Label for="term">Term</Label>
-		<div class="pb-1">{calc.term} {calc.term > 1 ? 'years' : 'year'}</div>
+
 		<Slider type="single" bind:value={calc.term} max={30} min={1} step={1} id="term" />
+		<div class="text-sm text-muted-foreground">
+			{calc.term}
+			{calc.term > 1 ? 'years' : 'year'}
+		</div>
 	</div>
 
 	<hr />
@@ -75,10 +85,16 @@
 	</div>
 
 	{#if calc.loanType === 'Interest Only'}
-		<div>
-			<Label for="io-rate">Interest Only Rate</Label>
-			<PercentageInput bind:value={calc.ioRate} id="io-rate" />
-		</div>
+		<PercentageSlider
+			label="Interest Only Rate"
+			bind:value={calc.ioRate}
+			min={0.01}
+			max={0.15}
+			step={0.0025}
+			id="io-rate"
+			explainer="Interest rate during interest-only period"
+			precision={2}
+		/>
 
 		<div class="space-y-2">
 			<Label for="io-term">Interest Only Period (years)</Label>
@@ -98,9 +114,15 @@
 			<CurrencyInput bind:value={calc.propertyValue} id="property-value" />
 		</div>
 
-		<div>
-			<Label for="property-growth">Property Growth (p.a.)</Label>
-			<PercentageInput bind:value={calc.propertyGrowthRate} id="property-growth" />
-		</div>
+		<PercentageSlider
+			label="Property Growth (p.a.)"
+			bind:value={calc.propertyGrowthRate}
+			min={0.0}
+			max={0.1}
+			step={0.005}
+			id="property-growth"
+			explainer="Expected annual property value growth"
+			precision={1}
+		/>
 	{/if}
 </aside>

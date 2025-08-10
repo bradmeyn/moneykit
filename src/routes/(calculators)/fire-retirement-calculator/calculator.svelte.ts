@@ -23,6 +23,7 @@ class CalculatorState {
 	growthRate = $state(0.07);
 	withdrawalRate = $state(0.04);
 	secondaryIncome = $state(0);
+	fireMultiplier = $state(25);
 
 	fireNumber = $derived((this.expenses - this.secondaryIncome) / this.withdrawalRate);
 
@@ -234,13 +235,13 @@ class CalculatorState {
 				superannuationBalance: Math.round(balance),
 				otherInvestmentsBalance: Math.round(totalInvestmentsValue),
 				totalBalance: Math.round(balance + totalInvestmentsValue),
-				yearsSinceRetirement: isRetired ? ageThisYear - this.retirementAge : null,
+				yearsSinceRetirement: isRetired ? ageThisYear - this.retirementAge : 0,
 				incomeNeeded: isRetired
 					? Math.round(
 							this.retirementIncome *
 								Math.pow(1 + this.inflationRate, ageThisYear - this.retirementAge)
 						)
-					: null,
+					: 0,
 				// Add detailed investments data
 				investmentsBreakdown: this.investments.map((inv, idx) => ({
 					name: inv.name,

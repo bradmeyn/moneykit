@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { getCalculatorState } from '../calculator.svelte';
-	import PercentageInput from '$lib/components/inputs/percentage-input.svelte';
+	import PercentageSlider from '$lib/components/inputs/percentage-slider.svelte';
 	import FrequencySelect from '$lib/components/inputs/frequency-select.svelte';
 	import CurrencyInput from '$lib/components/inputs/currency-input.svelte';
 	import Label from '$ui/label/label.svelte';
@@ -48,14 +48,16 @@
 		</div>
 	</div>
 
-	<div>
-		<Label for="interest-rate">Investment Return (p.a.)</Label>
-		<PercentageInput
-			id="interest-rate"
-			onchange={(value) => calculator.updateBase({ interestRate: value })}
-			value={calculator.baseScenario.interestRate}
-		/>
-	</div>
+	<PercentageSlider
+		label="Investment Return (p.a.)"
+		bind:value={calculator.baseScenario.interestRate}
+		min={0.01}
+		max={0.15}
+		step={0.005}
+		id="interest-rate"
+		explainer="Expected annual return on investments"
+		precision={1}
+	/>
 
 	<div>
 		<Label for="years">Years Invested</Label>
@@ -83,14 +85,16 @@
 	{#if isComparing}
 		<h2 class="card-heading">Comparison</h2>
 
-		<div>
-			<Label for="comparison-interest-rate">Interest Rate</Label>
-			<PercentageInput
-				id="comparison-interest-rate"
-				onchange={(value) => calculator.updateComparison({ interestRate: value })}
-				value={calculator.comparisonScenario.interestRate}
-			/>
-		</div>
+		<PercentageSlider
+			label="Interest Rate"
+			bind:value={calculator.comparisonScenario.interestRate}
+			min={0.01}
+			max={0.15}
+			step={0.005}
+			id="comparison-interest-rate"
+			explainer="Expected annual return for comparison scenario"
+			precision={1}
+		/>
 
 		<div class="grid grid-cols-1 md:grid-cols-2 gap-2">
 			<div>

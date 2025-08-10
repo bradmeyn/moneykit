@@ -1,5 +1,4 @@
 <script lang="ts">
-	import * as colors from 'tailwindcss/colors';
 	import { onMount } from 'svelte';
 	import {
 		Chart,
@@ -101,7 +100,7 @@
 				type: 'bar',
 				label: 'Super Drawdown',
 				data: incomeBreakdown.map((breakdown) =>
-					breakdown.superWithdrawal > 0 ? breakdown.superWithdrawal : null
+					breakdown.superWithdrawal > 0 ? breakdown.superWithdrawal : 0
 				),
 				backgroundColor: `${COLOURS[0]}70`,
 				borderColor: COLOURS[0],
@@ -113,7 +112,7 @@
 			{
 				type: 'line',
 				label: 'Target Income',
-				data: retirementData.map((d) => (d.incomeNeeded > 0 ? d.incomeNeeded : null)),
+				data: retirementData.map((d) => (d.incomeNeeded > 0 ? d.incomeNeeded : 0)),
 				borderColor: COLOURS[2],
 				backgroundColor: 'transparent',
 				borderWidth: 2,
@@ -143,7 +142,7 @@
 				label: `${name} Income`,
 				data: incomeBreakdown.map((breakdown) => {
 					const investmentData = breakdown.investmentWithdrawals.find((inv) => inv.name === name);
-					return investmentData && investmentData.withdrawal > 0 ? investmentData.withdrawal : null;
+					return investmentData && investmentData.withdrawal > 0 ? investmentData.withdrawal : 0;
 				}),
 				backgroundColor: `${COLOURS[colorIndex]}CC`,
 				borderColor: COLOURS[colorIndex],

@@ -1,18 +1,31 @@
 <script lang="ts">
 	import CurrencyInput from '$lib/components/inputs/currency-input.svelte';
-	import { formatAsCurrency, formatAsPercentage } from '$utils/formatters';
-	import AddInvestment from './_components/add-investment.svelte';
-	import InvestmentItem from './_components/investment-item.svelte';
+	import AddInvestment from './_components/overview/add-investment.svelte';
 	import { setPortfolioState } from './calculator.svelte';
-
 	import * as Tabs from '$lib/components/ui/tabs';
-	import AssetAllocationChart from './_components/allocation-chart.svelte';
-	import AssetAllocationTable from './_components/allocation-table.svelte';
+
+	// Overview components
+	import CostTable from './_components/cost-table.svelte';
 	import CalculatorActions from '$lib/components/calculator-actions.svelte';
+	import PortfolioOverviewTable from './_components/overview/overview-table.svelte';
 
-	const calc = setPortfolioState();
+	// Asset allocation components
+	import AssetAllocationChart from './_components/asset-allocation/allocation-chart.svelte';
+	import AssetAllocationTable from './_components/allocation-table.svelte';
 
+	// Comparison components
+	import ComparisonBarChart from './_components/comparison/comparison-bar-chart.svelte';
+	import ComparisonCostTable from './_components/comparison/comparison-cost-table.svelte';
+
+	import ComparisonOverviewTable from './_components/comparison/comparison-overview-table.svelte';
+
+	const portfolio1 = setPortfolioState();
+	const portfolio2 = setPortfolioState();
+
+	let selectedTab = $state<string>('portfolio1');
 	let selectedView = $state<string>('overview');
+
+	let selectedPortfolio = $derived(selectedTab === 'portfolio1' ? portfolio1 : portfolio2);
 </script>
 
 <svelte:head>
@@ -20,78 +33,79 @@
 </svelte:head>
 
 <main class="flex flex-col flex-1 container text-white">
-	<div class=" w-full">
-		<div class="justify-between flex">
-			<h1 class="mb-4 calculator-heading">Portfolio Builder</h1>
-			<CalculatorActions getCsvData={() => calc.getAllDataCsv()} filename="portfolio.csv" />
+	<div class="w-full">
+		<div class="justify-between flex items-center mb-4">
+			<h1 class="calculator-heading">Portfolio Builder</h1>
+			<div class="flex gap-2">
+				<CalculatorActions getCsvData={() => portfolio1.getAllDataCsv()} filename="portfolio.csv" />
+			</div>
 		</div>
-		<div class="grid grid-cols-1 lg:grid-cols-[3fr_1fr] gap-4">
-			<div class=" w-full card">
-				<div class="flex justify-between items-start mb-4">
-					<div class="md:w-[200px] mb-2">
-						<CurrencyInput id="portfolio-value" bind:value={calc.portfolioValue} />
-					</div>
 
-					<Tabs.Root value={selectedView} onValueChange={(value) => (selectedView = value)}>
-						<Tabs.List>
-							<Tabs.Trigger value="overview">Overview</Tabs.Trigger>
-							<Tabs.Trigger value="allocation">Allocation</Tabs.Trigger>
-						</Tabs.List>
-					</Tabs.Root>
+		<Tabs.Root value={selectedTab} onValueChange={(value) => (selectedTab = value)}>
+			<Tabs.List>
+				<Tabs.Trigger value="portfolio1">Portfolio 1</Tabs.Trigger>
+				<Tabs.Trigger value="portfolio2">Portfolio 2</Tabs.Trigger>
+				<Tabs.Trigger value="compare">Compare</Tabs.Trigger>
+			</Tabs.List>
+		</Tabs.Root>
+		{#if selectedTab === 'portfolio1' || selectedTab === 'portfolio2'}
+			{#key selectedTab}
+				<div class="grid grid-cols-1 lg:grid-cols-[3fr_1fr] gap-4 mt-4">
+					<div class="w-full card">
+						<div class="flex justify-between items-start mb-4">
+							<div class="md:w-[200px] mb-2">
+								<label for="portfolio-value" class="block text-xs text-muted-foreground mb-1"
+									>Total Value</label
+								>
+								<CurrencyInput
+									id="portfolio-value"
+									value={selectedTab === 'portfolio1'
+										? portfolio1.portfolioValue
+										: portfolio2.portfolioValue}
+									onchange={(value) => {
+										if (selectedTab === 'portfolio1') portfolio1.portfolioValue = value;
+										else portfolio2.portfolioValue = value;
+									}}
+								/>
+							</div>
+							<Tabs.Root value={selectedView} onValueChange={(value) => (selectedView = value)}>
+								<Tabs.List>
+									<Tabs.Trigger value="overview">Overview</Tabs.Trigger>
+									<Tabs.Trigger value="allocation">Allocation</Tabs.Trigger>
+									<Tabs.Trigger value="costs">Costs</Tabs.Trigger>
+								</Tabs.List>
+							</Tabs.Root>
+						</div>
+						{#if selectedView === 'overview'}
+							<PortfolioOverviewTable portfolio={selectedPortfolio} />
+						{:else if selectedView === 'allocation'}
+							<AssetAllocationTable portfolio={selectedPortfolio} />
+						{:else if selectedView === 'costs'}
+							<CostTable portfolio={selectedPortfolio} />
+						{/if}
+						<div class="flex justify-end mt-4">
+							<AddInvestment portfolio={selectedPortfolio} />
+						</div>
+					</div>
+					<AssetAllocationChart portfolio={selectedPortfolio} />
 				</div>
-				{#if selectedView === 'overview'}
-					<table class="w-full rounded-lg overflow-hidden">
-						<thead>
-							<tr>
-								<th class="text-left border-t-transparent">Investment</th>
-								<th class="text-right border-t-transparent">Value</th>
-								<th class="text-right border-t-transparent">Cost</th>
-								<th class="text-right border-t-transparent">Weight</th>
-								<th class="text-right border-t-transparent"></th>
-							</tr>
-						</thead>
-						<tbody>
-							{#each calc.portfolio as holding}
-								<InvestmentItem {holding} />
-							{/each}
-						</tbody>
-						<tfoot>
-							<tr>
-								<td class=" border-t-transparent">Total</td>
-								<td
-									class="text-right border-t-transparent font-semibold"
-									class:text-red-500={calc.totalWeight > 1}
-								>
-									{formatAsCurrency(calc.totalValue)}
-								</td>
-								<td
-									class="text-right border-t-transparent font-semibold"
-									class:text-red-500={calc.totalWeight > 1}
-								>
-									{`${formatAsCurrency(calc.totalCost)} pa`}
-									<div class="text-xs text-muted-foreground">
-										{`${formatAsPercentage(calc.totalCost / calc.totalAllocated)} pa`}
-									</div>
-								</td>
-								<td
-									class="text-right border-t-transparent font-semibold"
-									class:text-red-500={calc.totalWeight > 1}
-								>
-									{formatAsPercentage(calc.totalWeight)}
-								</td>
-								<td class="text-right border-t-transparent"></td>
-							</tr>
-						</tfoot>
-					</table>
-				{:else}
-					<AssetAllocationTable />
-				{/if}
-				<div class="flex justify-end mt-4">
-					<AddInvestment />
+			{/key}
+		{:else if selectedTab === 'compare'}
+			<div class="mt-4">
+				<h2 class="text-lg font-semibold mb-4">Portfolio Comparison</h2>
+				<div class="mb-8 card">
+					<h3 class="font-bold mb-2">Overview Comparison</h3>
+					<ComparisonOverviewTable {portfolio1} {portfolio2} />
+				</div>
+				<div class="mb-8 card">
+					<h3 class="font-bold mb-2">Asset Allocation Comparison</h3>
+					<ComparisonBarChart {portfolio1} {portfolio2} />
+				</div>
+				<div class="mb-8 card">
+					<h3 class="font-bold mb-2">Cost Comparison</h3>
+					<ComparisonCostTable {portfolio1} {portfolio2} />
 				</div>
 			</div>
-
-			<AssetAllocationChart />
-		</div>
+		{/if}
 	</div>
 </main>

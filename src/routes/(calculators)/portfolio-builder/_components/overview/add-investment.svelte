@@ -3,14 +3,15 @@
 	import { Search } from 'lucide-svelte';
 	import { Input } from '$lib/components/ui/input';
 	import { ScrollArea } from '$lib/components/ui/scroll-area';
-	import { getPortfolioState } from '../calculator.svelte';
-	import { ETF_MAP, getETFList, type ExchangeTradedFund } from '../investments';
+	import { ETF_MAP, getETFList, type ExchangeTradedFund } from '../../investments';
 	import { Button } from '$lib/components/ui/button';
+	import type { PortfolioType as Portfolio } from '../../calculator.svelte';
 
-	const { addInvestment } = getPortfolioState();
-	const calc = getPortfolioState();
-
-	let selectedInvestments = $derived(calc.portfolio.map((h) => h.investment.symbol));
+	let {
+		portfolio
+	}: {
+		portfolio: Portfolio;
+	} = $props();
 
 	let search = $state('');
 	let open = $state(false);
@@ -21,22 +22,24 @@
 			const name = investment.name.toLowerCase();
 			const searchLower = search.toLowerCase();
 			return (
-				(symbol.includes(searchLower) && !selectedInvestments.includes(investment.symbol)) ||
-				(name.includes(searchLower) && !selectedInvestments.includes(investment.symbol))
+				(symbol.includes(searchLower) &&
+					!portfolio.holdings.map((h) => h.investment.symbol).includes(investment.symbol)) ||
+				(name.includes(searchLower) &&
+					!portfolio.holdings.map((h) => h.investment.symbol).includes(investment.symbol))
 			);
 		})
 	);
 
 	function handleAddInvestment(investment: ExchangeTradedFund) {
-		addInvestment({
+		portfolio.addInvestment({
 			investment,
 			value: 0,
 			weight: 0,
 			cost: 0
 		});
-		search = '';
-		open = false;
 	}
+	search = '';
+	open = false;
 </script>
 
 <Dialog.Root bind:open>

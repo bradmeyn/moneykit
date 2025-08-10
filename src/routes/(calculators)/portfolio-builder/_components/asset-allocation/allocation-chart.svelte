@@ -2,55 +2,71 @@
 	import { formatAsPercentage } from '$utils/formatters';
 	import DoughnutChart from '$lib/components/charts/doughnut-chart.svelte';
 	import LegendList from '$lib/components/charts/legend-list.svelte';
-	import { getPortfolioState } from '../calculator.svelte';
-	import { assetLabels } from '../investments';
-	const portfolio = getPortfolioState();
+	import { assetLabels } from '../../investments';
+	import type { PortfolioType as Portfolio } from '../../calculator.svelte';
+
+	let {
+		portfolio
+	}: {
+		portfolio: Portfolio;
+	} = $props();
 
 	// Calculate unallocated value and percentage
 	let unallocatedValue = $derived.by(() => {
+		if (!portfolio) return 0;
 		return Math.max(
 			0,
-			portfolio.portfolioValue -
-				portfolio.portfolio.reduce((acc, holding) => acc + holding.value, 0)
+			(portfolio.portfolioValue ?? 0) -
+				(portfolio.holdings.reduce((acc: number, holding: any) => acc + holding.value, 0) ?? 0)
 		);
 	});
 
 	let unallocatedPercentage = $derived.by(() => {
-		return portfolio.portfolioValue > 0 ? unallocatedValue / portfolio.portfolioValue : 0;
+		if (!portfolio) return 0;
+		return (portfolio.portfolioValue ?? 0) > 0 ? unallocatedValue / portfolio.portfolioValue : 0;
 	});
 
 	// Format asset allocation data for charts with unallocated
 	let assetAllocationChartData = $derived.by(() => {
-		const allocation = portfolio.assetAllocation;
+		if (!portfolio) return [];
+		const allocation = portfolio.assetAllocation ?? {};
 
 		// Start with the regular allocations
 		let chartData = Object.entries(allocation)
-			.filter(([_, value]) => value > 0)
+			.filter(([_, value]) => typeof value === 'number' && value > 0)
 			.map(([key, value]) => ({
 				label: assetLabels[key as keyof typeof assetLabels],
-				value
+				value: value as number
 			}));
 
 		// Add unallocated if present
 		if (unallocatedPercentage > 0) {
 			chartData.push({
 				label: 'Unallocated',
-				value: unallocatedPercentage
+				value: unallocatedPercentage as number
 			});
 		}
 
-		return chartData.sort((a, b) => b.value - a.value);
+		return chartData.sort((a, b) => (b.value as number) - (a.value as number));
 	});
 
 	// Calculate growth vs defensive asset ratios
 	let growthAssets = $derived.by(() => {
-		const allocation = portfolio.assetAllocation;
-		return allocation.ausEquities + allocation.intEquities + allocation.alternatives;
+		if (!portfolio) return 0;
+		const allocation = portfolio.assetAllocation ?? {};
+		return (
+			(allocation.ausEquities ?? 0) + (allocation.intEquities ?? 0) + (allocation.alternatives ?? 0)
+		);
 	});
 
 	let defensiveAssets = $derived.by(() => {
-		const allocation = portfolio.assetAllocation;
-		return allocation.ausFixedInterest + allocation.intFixedInterest + allocation.cash;
+		if (!portfolio) return 0;
+		const allocation = portfolio.assetAllocation ?? {};
+		return (
+			(allocation.ausFixedInterest ?? 0) +
+			(allocation.intFixedInterest ?? 0) +
+			(allocation.cash ?? 0)
+		);
 	});
 
 	// Add growthDefensiveChartData that includes unallocated

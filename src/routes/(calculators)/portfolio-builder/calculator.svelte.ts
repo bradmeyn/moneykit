@@ -4,24 +4,28 @@ import { formatAsPercentage } from '$utils/formatters';
 
 export type PortfolioHolding = {
 	investment: ExchangeTradedFund;
+	weight: number; // This is now the source of truth
+};
+
+// Derived holding with calculated values
+export type CalculatedHolding = PortfolioHolding & {
 	value: number;
-	weight: number;
-	cost: number; // management cost * value
+	cost: number;
 };
 
 class Portfolio {
 	portfolioValue = $state(2000000);
 	investments = $state<PortfolioHolding[]>(defaultPortfolio);
 
-	// Derived values
-	portfolio: PortfolioHolding[] = $derived(this.calculateHoldingDetails());
-	totalAllocated = $derived(this.portfolio?.reduce((acc, holding) => acc + holding.value, 0) || 0);
-	totalValue = $derived(this.portfolio?.reduce((acc, holding) => acc + holding.value, 0) || 0);
-	totalWeight = $derived(this.portfolio?.reduce((acc, holding) => acc + holding.weight, 0) || 0);
+	// Derived values - these will automatically update when portfolioValue changes
+	holdings: CalculatedHolding[] = $derived(this.calculateHoldingDetails());
+	totalAllocated = $derived(this.holdings.reduce((acc, holding) => acc + holding.value, 0));
+	totalValue = $derived(this.holdings.reduce((acc, holding) => acc + holding.value, 0));
+	totalWeight = $derived(this.holdings.reduce((acc, holding) => acc + holding.weight, 0));
 	assetAllocation = $derived(this.calculateAssetAllocation());
-	totalCost = $derived(this.portfolio?.reduce((acc, holding) => acc + holding.cost, 0) || 0);
+	totalCost = $derived(this.holdings.reduce((acc, holding) => acc + holding.cost, 0));
+
 	addInvestment = (investment: PortfolioHolding) => {
-		// Add investment, keep cash account at the end
 		this.investments = [...this.investments.slice(0, -1), investment, cashAccount];
 	};
 
@@ -30,9 +34,7 @@ class Portfolio {
 			if (item.investment.symbol === symbol) {
 				return {
 					...item,
-					weight: newWeight,
-					value: this.portfolioValue * newWeight,
-					cost: item.investment.managementCost * this.portfolioValue * newWeight
+					weight: newWeight
 				};
 			}
 			return item;
@@ -43,38 +45,36 @@ class Portfolio {
 		this.investments = this.investments.filter((i) => i.investment.symbol !== symbol);
 	};
 
-	private calculateHoldingDetails() {
-		// First process all non-cash holdings
+	private calculateHoldingDetails(): CalculatedHolding[] {
 		const nonCashHoldings = this.investments
 			.filter((holding) => holding.investment.symbol !== 'CASH')
 			.map((holding) => {
-				const value = holding.value;
-				const weight = value / this.portfolioValue;
+				// Calculate value based on current portfolioValue and weight
+				const value = this.portfolioValue * holding.weight;
 				const cost = holding.investment.managementCost * value;
 
 				return {
 					...holding,
-					weight,
+					value,
 					cost
 				};
 			});
 
-		// Calculate total value and weight of non-cash holdings
-		const nonCashTotal = nonCashHoldings.reduce((acc, holding) => acc + holding.value, 0);
-		const nonCashWeight = nonCashTotal / this.portfolioValue;
+		// Calculate total weight of non-cash holdings
+		const nonCashWeight = nonCashHoldings.reduce((acc, holding) => acc + holding.weight, 0);
 
 		// Find the cash holding
 		const cashHolding = this.investments.find((h) => h.investment.symbol === 'CASH');
 
 		// Calculate cash values
-		const cashValue = Math.max(0, this.portfolioValue - nonCashTotal);
 		const cashWeight = Math.max(0, 1 - nonCashWeight);
+		const cashValue = this.portfolioValue * cashWeight;
 
 		// Update cash holding
-		const updatedCashHolding = {
+		const updatedCashHolding: CalculatedHolding = {
 			...(cashHolding || cashAccount),
-			value: cashValue,
 			weight: cashWeight,
+			value: cashValue,
 			cost: 0
 		};
 
@@ -92,7 +92,7 @@ class Portfolio {
 			alternatives: 0
 		};
 
-		return this.portfolio.reduce((allocation, holding) => {
+		return this.holdings.reduce((allocation, holding) => {
 			const weight = holding.weight;
 			const asset = holding.investment.assetAllocation;
 
@@ -107,7 +107,6 @@ class Portfolio {
 		}, initialAllocation);
 	}
 
-	// Method to get portfolio overview data as CSV
 	// Method to get portfolio overview data as CSV
 	getPortfolioOverviewCsv() {
 		const headers = [
@@ -125,7 +124,7 @@ class Portfolio {
 			'Alternatives'
 		];
 
-		const rows = this.portfolio.map((holding) => {
+		const rows = this.holdings.map((holding) => {
 			const asset = holding.investment.assetAllocation;
 			return [
 				holding.investment.name,
@@ -250,6 +249,8 @@ class Portfolio {
 	}
 }
 
+export type PortfolioType = InstanceType<typeof Portfolio>;
+
 const PORTFOLIO_KEY = Symbol('portfolio');
 
 export function setPortfolioState() {
@@ -277,37 +278,26 @@ const cashAccount: PortfolioHolding = {
 		benchmark: 'None',
 		domicile: 'Australia'
 	},
-	value: 0,
-	weight: 0,
-	cost: 0
+	weight: 0
 };
 
-// Convert existing investments to use ETF_MAP
+// Convert existing investments to use weights instead of fixed values
 const defaultPortfolio: PortfolioHolding[] = [
 	{
 		investment: ETF_MAP['VAS'],
-		value: 500000,
-		weight: 0.25,
-		cost: 450000
+		weight: 0.25 // 25%
 	},
 	{
 		investment: ETF_MAP['VGS'],
-		value: 700000,
-		weight: 0.35,
-		cost: 650000
+		weight: 0.35 // 35%
 	},
 	{
 		investment: ETF_MAP['VAF'],
-		value: 300000,
-		weight: 0.15,
-		cost: 290000
+		weight: 0.15 // 15%
 	},
-
 	{
 		investment: ETF_MAP['VGB'],
-		value: 200000,
-		weight: 0.1,
-		cost: 190000
+		weight: 0.1 // 10%
 	},
-	cashAccount
+	cashAccount // Cash will auto-calculate to fill remaining 15%
 ];

@@ -4,9 +4,14 @@
 	import Button from '$ui/button/button.svelte';
 	import PercentageInput from '$lib/components/inputs/percentage-input.svelte';
 	import { formatAsPercentage } from '$lib/utils/formatters';
-	import { type PortfolioHolding, getPortfolioState } from '../calculator.svelte';
-	let { holding }: { holding: PortfolioHolding } = $props();
-	const { updateWeight, removeInvestment } = getPortfolioState();
+	import type { PortfolioHolding, PortfolioType } from '../../calculator.svelte';
+	const {
+		holding,
+		portfolio
+	}: {
+		holding: PortfolioHolding;
+		portfolio: PortfolioType;
+	} = $props();
 </script>
 
 <tr>
@@ -19,24 +24,14 @@
 		</div>
 	</td>
 	<td class="text-right">
-		{formatAsCurrency(holding.value)}
+		{formatAsCurrency(holding.weight * portfolio.totalValue)}
 	</td>
-	<td class="text-right">
-		{#if holding.investment.symbol !== 'CASH'}
-			{`${formatAsCurrency(holding.value * holding.investment.managementCost)} pa`}
 
-			<div class="text-xs text-muted-foreground">
-				{holding.investment.managementCost > 0
-					? `${formatAsPercentage(holding.investment.managementCost)} pa`
-					: 'N/A'}
-			</div>
-		{/if}
-	</td>
 	<td class="text-right w-28">
 		{#if holding.investment.symbol !== 'CASH'}
 			<PercentageInput
 				value={holding.weight}
-				onchange={(value) => updateWeight(holding.investment.symbol, value)}
+				onchange={(value) => portfolio.updateWeight(holding.investment.symbol, value)}
 			/>
 		{:else}
 			<div class="">{formatAsPercentage(holding.weight)}</div>
@@ -48,7 +43,7 @@
 				size="icon"
 				variant="ghost"
 				class="text-m hover:text-red-500"
-				onclick={() => removeInvestment(holding.investment.symbol)}
+				onclick={() => portfolio.removeInvestment(holding.investment.symbol)}
 			>
 				<Trash2 class="size-4" />
 			</Button>

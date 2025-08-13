@@ -19,6 +19,9 @@
 
 	import ComparisonOverviewTable from './_components/comparison/comparison-overview-table.svelte';
 
+	import ReturnsTable from './_components/returns/returns-table.svelte';
+	import ReturnsChart from './_components/returns/returns-chart.svelte';
+
 	const portfolio1 = setPortfolioState();
 	const portfolio2 = setPortfolioState();
 
@@ -73,6 +76,7 @@
 									<Tabs.Trigger value="overview">Overview</Tabs.Trigger>
 									<Tabs.Trigger value="allocation">Allocation</Tabs.Trigger>
 									<Tabs.Trigger value="costs">Costs</Tabs.Trigger>
+									<Tabs.Trigger value="returns">Returns</Tabs.Trigger>
 								</Tabs.List>
 							</Tabs.Root>
 						</div>
@@ -82,6 +86,9 @@
 							<AssetAllocationTable portfolio={selectedPortfolio} />
 						{:else if selectedView === 'costs'}
 							<CostTable portfolio={selectedPortfolio} />
+						{:else if selectedView === 'returns'}
+							<ReturnsChart portfolio={selectedPortfolio} />
+							<ReturnsTable portfolio={selectedPortfolio} />
 						{/if}
 						<div class="flex justify-end mt-4">
 							<AddInvestment portfolio={selectedPortfolio} />

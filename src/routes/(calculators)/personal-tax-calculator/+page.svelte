@@ -67,7 +67,7 @@
 						</div>
 
 						<Tabs.Content value="chart" class="mt-4">
-							<StackedBar {data} formatter={formatAsCurrency} />
+							<StackedBar {data} labels={['Total Tax']} formatter={formatAsCurrency} />
 							<LegendList {data} formatter={formatAsCurrency} />
 						</Tabs.Content>
 

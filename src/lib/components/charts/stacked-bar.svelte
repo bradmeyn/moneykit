@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { run } from 'svelte/legacy';
-
 	import { onMount } from 'svelte';
 	import {
 		Chart,
@@ -12,14 +10,15 @@
 		Tooltip
 	} from 'chart.js';
 	import { COLOURS } from '$lib/constants/colours';
-	import colors from 'tailwindcss/colors';
 	import { TOOLTIP } from '$constants/chart-config';
 
 	let {
 		data,
+		labels,
 		formatter
 	}: {
 		data: { label: string; value: number }[];
+		labels: string[];
 		formatter: (value: number) => string;
 	} = $props();
 
@@ -33,7 +32,7 @@
 		chart = new Chart(chartId!, {
 			type: 'bar',
 			data: {
-				labels: ['Total Tax'],
+				labels,
 				datasets: data.map((item, i) => ({
 					label: item.label,
 					data: [item.value],
@@ -114,6 +113,7 @@
 				borderRadius: 5,
 				barThickness: 80
 			}));
+			chart.data.labels = labels || [];
 			chart.update();
 		}
 	});

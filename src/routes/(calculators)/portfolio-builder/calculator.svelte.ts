@@ -4,13 +4,23 @@ import { formatAsPercentage } from '$utils/formatters';
 
 export type PortfolioHolding = {
 	investment: ExchangeTradedFund;
-	weight: number; // This is now the source of truth
+	weight: number;
 };
 
 // Derived holding with calculated values
 export type CalculatedHolding = PortfolioHolding & {
 	value: number;
 	cost: number;
+};
+
+export type YearlyReturns = {
+	growth: number;
+	distribution: number;
+	total: number;
+};
+
+export type PortfolioReturns = {
+	byYear: Record<number, YearlyReturns>;
 };
 
 class Portfolio {
@@ -24,6 +34,57 @@ class Portfolio {
 	totalWeight = $derived(this.holdings.reduce((acc, holding) => acc + holding.weight, 0));
 	assetAllocation = $derived(this.calculateAssetAllocation());
 	totalCost = $derived(this.holdings.reduce((acc, holding) => acc + holding.cost, 0));
+
+	// Derived value for portfolio returns (example: weighted average return)
+	returns = $derived(this.calculateReturns());
+
+	private calculateReturns(): PortfolioReturns {
+		// Get all available years from the portfolio holdings
+		const availableYears = new Set<number>();
+
+		for (const holding of this.holdings) {
+			if (holding.investment.returns?.annual) {
+				const years = Object.keys(holding.investment.returns.annual).map(Number);
+				years.forEach((year) => availableYears.add(year));
+			}
+		}
+
+		// Sort years in descending order (most recent first)
+		const sortedYears = Array.from(availableYears).sort((a, b) => b - a);
+
+		const byYear: Record<number, YearlyReturns> = {};
+
+		for (const year of sortedYears) {
+			let weightedGrowth = 0;
+			let weightedDistribution = 0;
+			let weightedTotal = 0;
+			let totalWeight = 0;
+
+			// Only include non-cash holdings in returns calculation
+			const nonCashHoldings = this.holdings.filter((h) => h.investment.symbol !== 'CASH');
+
+			for (const holding of nonCashHoldings) {
+				const yearData = holding.investment.returns?.annual?.[year];
+				if (yearData) {
+					const weight = holding.weight;
+					weightedGrowth += yearData.growth * weight;
+					weightedDistribution += yearData.distribution * weight;
+					weightedTotal += yearData.total * weight;
+					totalWeight += weight;
+				}
+			}
+
+			if (totalWeight > 0) {
+				byYear[year] = {
+					growth: weightedGrowth,
+					distribution: weightedDistribution,
+					total: weightedTotal
+				};
+			}
+		}
+
+		return { byYear };
+	}
 
 	addInvestment = (investment: PortfolioHolding) => {
 		this.investments = [...this.investments.slice(0, -1), investment, cashAccount];
@@ -296,7 +357,7 @@ const defaultPortfolio: PortfolioHolding[] = [
 		weight: 0.15 // 15%
 	},
 	{
-		investment: ETF_MAP['VGB'],
+		investment: ETF_MAP['VIF'],
 		weight: 0.1 // 10%
 	},
 	cashAccount // Cash will auto-calculate to fill remaining 15%

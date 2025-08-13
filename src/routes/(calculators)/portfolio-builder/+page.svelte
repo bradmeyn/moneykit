@@ -5,18 +5,17 @@
 	import * as Tabs from '$lib/components/ui/tabs';
 
 	// Overview components
-	import CostTable from './_components/cost-table.svelte';
+	import CostTable from './_components/costs/cost-table.svelte';
 	import CalculatorActions from '$lib/components/calculator-actions.svelte';
 	import PortfolioOverviewTable from './_components/overview/overview-table.svelte';
 
 	// Asset allocation components
 	import AssetAllocationChart from './_components/asset-allocation/allocation-chart.svelte';
-	import AssetAllocationTable from './_components/allocation-table.svelte';
+	import AssetAllocationTable from './_components/asset-allocation/allocation-table.svelte';
 
 	// Comparison components
 	import ComparisonBarChart from './_components/comparison/comparison-bar-chart.svelte';
 	import ComparisonCostTable from './_components/comparison/comparison-cost-table.svelte';
-
 	import ComparisonOverviewTable from './_components/comparison/comparison-overview-table.svelte';
 
 	import ReturnsTable from './_components/returns/returns-table.svelte';

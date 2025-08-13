@@ -1,7 +1,12 @@
 <script lang="ts">
 	import { formatAsPercentage, formatAsCurrency } from '$utils/formatters';
-	const { portfolioInstance } = $props();
-	let portfolio = portfolioInstance;
+	import type { PortfolioType } from '../../calculator.svelte';
+
+	let {
+		portfolio
+	}: {
+		portfolio: PortfolioType;
+	} = $props();
 </script>
 
 <div>
@@ -20,7 +25,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				{#each portfolio.portfolio as holding}
+				{#each portfolio.holdings as holding}
 					<tr>
 						<td>
 							<div>

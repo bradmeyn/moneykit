@@ -119,6 +119,9 @@
 						mode: 'index',
 						intersect: false,
 						...TOOLTIP,
+						footerFont: {
+							size: 14
+						},
 						callbacks: {
 							title: (context) => `${context[0].label}`,
 							label: function (context) {
@@ -132,13 +135,13 @@
 					},
 					legend: {
 						display: true,
-						position: 'top',
 						labels: {
-							color: '#ffffff',
-							font: {
-								size: 12,
-								family: 'sans-serif'
-							}
+							color: '#fff',
+							font: { size: 13, family: 'sans-serif' },
+							usePointStyle: true,
+							pointStyle: 'circle',
+							boxHeight: 8,
+							boxWidth: 8
 						}
 					}
 				}

@@ -54,7 +54,19 @@
 			{#key selectedTab}
 				<div class="grid grid-cols-1 lg:grid-cols-[3fr_1fr] gap-4 mt-4">
 					<div class="w-full card">
-						<div class="flex justify-between items-start mb-4">
+						<div class="flex justify-between items-start">
+							<h2 class="card-heading">Asset Allocation</h2>
+
+							<Tabs.Root value={selectedView} onValueChange={(value) => (selectedView = value)}>
+								<Tabs.List>
+									<Tabs.Trigger value="overview">Overview</Tabs.Trigger>
+									<Tabs.Trigger value="allocation">Allocation</Tabs.Trigger>
+									<Tabs.Trigger value="costs">Costs</Tabs.Trigger>
+									<Tabs.Trigger value="returns">Returns</Tabs.Trigger>
+								</Tabs.List>
+							</Tabs.Root>
+						</div>
+						{#if selectedView === 'overview'}
 							<div class="md:w-[200px] mb-2">
 								<label for="portfolio-value" class="block text-xs text-muted-foreground mb-1"
 									>Total Value</label
@@ -70,16 +82,6 @@
 									}}
 								/>
 							</div>
-							<Tabs.Root value={selectedView} onValueChange={(value) => (selectedView = value)}>
-								<Tabs.List>
-									<Tabs.Trigger value="overview">Overview</Tabs.Trigger>
-									<Tabs.Trigger value="allocation">Allocation</Tabs.Trigger>
-									<Tabs.Trigger value="costs">Costs</Tabs.Trigger>
-									<Tabs.Trigger value="returns">Returns</Tabs.Trigger>
-								</Tabs.List>
-							</Tabs.Root>
-						</div>
-						{#if selectedView === 'overview'}
 							<PortfolioOverviewTable portfolio={selectedPortfolio} />
 						{:else if selectedView === 'allocation'}
 							<AssetAllocationTable portfolio={selectedPortfolio} />

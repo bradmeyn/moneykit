@@ -5,8 +5,8 @@
 </script>
 
 <!-- Annual Returns Table -->
-<div class="mb-8">
-	<h3 class="text-lg font-semibold text-white mb-4">Annual Returns</h3>
+<div class="card">
+	<h3 class="text-lg font-semibold text-white mb-4">Historical Return by Year</h3>
 	<table class="w-full text-white text-sm">
 		<thead>
 			<tr>

@@ -99,7 +99,7 @@
 </script>
 
 <div class="card">
-	<h2 class="text-lg font-medium mb-3">Asset Allocation</h2>
+	<h2 class="card-heading">Asset Allocation</h2>
 	<div class="flex flex-col items-center">
 		<DoughnutChart data={assetAllocationChartData} formatter={formatAsPercentage} />
 		<div class="mt-4 w-full">

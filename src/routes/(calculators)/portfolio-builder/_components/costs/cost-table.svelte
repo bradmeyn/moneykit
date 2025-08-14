@@ -24,8 +24,8 @@
 					<div class="font-semibold">{holding.investment.symbol}</div>
 					<div class="text-sm text-muted-foreground">{holding.investment.name}</div>
 				</td>
-				<td class="text-right align-top">
-					<div>{formatAsCurrency(holding.value)}</div>
+				<td class="text-right">
+					<div class="text-base">{formatAsCurrency(holding.value)}</div>
 				</td>
 				<td class="text-right align-top">
 					<div>{formatAsCurrency(holding.cost)} pa</div>

@@ -10,9 +10,16 @@
 		Tooltip
 	} from 'chart.js';
 	import { assetLabels } from '../../investments';
+	import { COLOURS } from '$lib/constants/colours';
+	import type { PortfolioType } from '../../calculator.svelte';
 
-	export let portfolio1;
-	export let portfolio2;
+	let {
+		portfolio1,
+		portfolio2
+	}: {
+		portfolio1: PortfolioType;
+		portfolio2: PortfolioType;
+	} = $props();
 
 	const assetKeys = [
 		'ausEquities',
@@ -42,14 +49,14 @@
 					{
 						label: 'Portfolio 1',
 						data: data1,
-						backgroundColor: '#FF7043',
+						backgroundColor: COLOURS[0],
 						borderRadius: 5,
 						borderWidth: 0
 					},
 					{
 						label: 'Portfolio 2',
 						data: data2,
-						backgroundColor: '#42A5F5',
+						backgroundColor: COLOURS[1],
 						borderRadius: 5,
 						borderWidth: 0
 					}
@@ -63,9 +70,11 @@
 						display: true,
 						labels: {
 							color: '#fff',
-							font: { size: 14, family: 'sans-serif' },
+							font: { size: 13, family: 'sans-serif' },
 							usePointStyle: true,
-							pointStyle: 'circle'
+							pointStyle: 'circle',
+							boxHeight: 8,
+							boxWidth: 8
 						}
 					},
 					tooltip: {

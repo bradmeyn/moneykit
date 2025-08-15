@@ -39,7 +39,7 @@
 	<title>Savings Growth Calculator</title>
 </svelte:head>
 
-<main class="flex flex-col flex-1 container mx-auto">
+<main class="container">
 	<div class="flex justify-between items-center">
 		<h1 class="mb-4 calculator-heading">Future Savings Calculator</h1>
 		<CalculatorActions

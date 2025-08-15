@@ -8,7 +8,7 @@
 	<meta name="description" content="Professional-grade personal finance toolkit." />
 </svelte:head>
 
-<main class="flex-1 container mx-auto px-4">
+<main class="flex-1 container">
 	<div class="text-center max-w-4xl mx-auto py-6 mt-4 mb-8">
 		<h1 class="text-4xl md:text-8xl mb-6 text-white leading-none">
 			Your personal finance

@@ -11,7 +11,7 @@
 	<title>Retirement Projection</title>
 </svelte:head>
 
-<main class="container mx-auto text-white">
+<main class="container">
 	<h1 class="mb-4 calculator-heading">Retirement Calculator</h1>
 	<Tabs.Root value={calc.mode} onValueChange={(value) => (calc.mode = value)}>
 		<Tabs.List class="mb-4 grid grid-cols-2 gap-2">

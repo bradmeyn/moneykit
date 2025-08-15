@@ -26,11 +26,12 @@
 	let chart: Chart | undefined = $state();
 
 	// Register the BarController and BarElement
-	Chart.register(BarController, BarElement, CategoryScale, LinearScale, Legend, Tooltip);
+	Chart.register(BarController, BarElement, CategoryScale, LinearScale, Tooltip);
 
 	onMount(() => {
 		chart = new Chart(chartId!, {
 			type: 'bar',
+
 			data: {
 				labels,
 				datasets: data.map((item, i) => ({
@@ -84,16 +85,7 @@
 				},
 				plugins: {
 					tooltip: {
-						position: 'average',
-						mode: 'index',
-						intersect: false,
-						...TOOLTIP,
-						callbacks: {
-							title: (context) => context[0].dataset.label,
-							label: function (context) {
-								return formatter(context.parsed.y);
-							}
-						}
+						enabled: false
 					},
 					legend: {
 						display: false

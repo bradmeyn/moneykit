@@ -39,7 +39,7 @@
 <!-- Load budget alert - now positioned absolutely to avoid layout shift -->
 <LoadBudgetAlert />
 
-<main class="flex flex-col flex-1 container text-white max-w-[1200px]">
+<main class="flex flex-col flex-1 container max-w-[1200px]">
 	<div class="flex justify-between items-center mb-2">
 		<h1 class="calculator-heading">Budget Builder</h1>
 		<div class="flex items-center gap-6">

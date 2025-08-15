@@ -28,7 +28,7 @@
 	<meta name="twitter:creator" content="@jrib_" />
 </svelte:head>
 
-<main class="flex flex-col flex-1 container mx-auto text-white">
+<main class="flex-1 container">
 	<h1 class="mb-4 calculator-heading">Personal Tax Calculator ({CURRENT_FINANCIAL_YEAR})</h1>
 	<div class="flex flex-col lg:flex-row gap-8 lg:gap-10">
 		<aside class=" min-w-[300px]">

@@ -19,7 +19,7 @@
 	<title>Mortgage Repayment Calculator</title>
 </svelte:head>
 
-<main class="flex flex-col flex-1 container mx-auto text-white">
+<main class="flex flex-col flex-1 container">
 	<h1 class="mb-4 calculator-heading">Mortgage Repayment Calculator</h1>
 
 	<section class="flex flex-col lg:flex-row gap-8">

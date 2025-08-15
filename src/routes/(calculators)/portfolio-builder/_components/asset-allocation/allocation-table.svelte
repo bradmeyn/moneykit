@@ -15,7 +15,6 @@
 			<thead>
 				<tr>
 					<th class="text-left">Investment</th>
-					<th class="text-right">Value</th>
 					<th class="text-right">Aus Eq</th>
 					<th class="text-right">Int Eq</th>
 					<th class="text-right">Aus FI</th>
@@ -35,14 +34,7 @@
 								{holding.investment.name}
 							</div>
 						</td>
-						<td class="text-right"
-							><div>
-								{formatAsCurrency(holding.value)}
-							</div>
-							<div class="text-xs text-muted-foreground">
-								{formatAsPercentage(holding.weight)}
-							</div>
-						</td>
+
 						<td class="text-right">
 							<div>
 								{formatAsCurrency(holding.value * holding.investment.assetAllocation.ausEquities)}
@@ -101,7 +93,6 @@
 				<!-- Totals Row -->
 				<tr class="border-t border-gray-300 font-semibold">
 					<td class="py-3">Totals</td>
-					<td class="text-right py-3">{formatAsCurrency(portfolio.totalValue)}</td>
 					<td class="text-right py-3">
 						<div>
 							{formatAsCurrency(portfolio.totalValue * portfolio.assetAllocation.ausEquities)}

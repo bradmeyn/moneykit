@@ -11,6 +11,10 @@
 	import ComparisonTab from './_components/comparison/comparison-tab.svelte';
 	import ReturnsTab from './_components/returns/returns-tab.svelte';
 	import AllocationTab from './_components/asset-allocation/allocation-tab.svelte';
+	import ComparisonOverview from './_components/comparison/comparison-overview.svelte';
+	import ComparisonAllocation from './_components/comparison/comparison-allocation.svelte';
+	import ComparisonCost from './_components/comparison/comparison-cost.svelte';
+	import ComparisonReturn from './_components/comparison/comparison-return.svelte';
 
 	const portfolio1 = setPortfolioState();
 	const portfolio2 = setPortfolioState();
@@ -63,7 +67,15 @@
 				<ReturnsTab portfolio={selectedPortfolio} />
 			{/if}
 		{:else if selectedTab === 'compare'}
-			<ComparisonTab {portfolio1} {portfolio2} />
+			{#if selectedView === 'overview'}
+				<ComparisonOverview {portfolio1} {portfolio2} />
+			{:else if selectedView === 'allocation'}
+				<ComparisonAllocation {portfolio1} {portfolio2} />
+			{:else if selectedView === 'costs'}
+				<ComparisonCost {portfolio1} {portfolio2} />
+			{:else if selectedView === 'returns'}
+				<ComparisonReturn {portfolio1} {portfolio2} />
+			{/if}
 		{/if}
 	</div>
 </main>

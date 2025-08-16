@@ -4,7 +4,6 @@
 	import { formatAsCurrency, formatAsPercentage } from '$lib/utils/formatters';
 	import { setBudgetState } from './budget.svelte';
 	import BarChart from '$lib/components/charts/bar-chart.svelte';
-	import FrequencySelect from '$lib/components/inputs/frequency-select.svelte';
 	import BudgetCard from './_components/budget-card.svelte';
 	const budget = setBudgetState();
 	import ActionsMenu from './_components/actions-menu.svelte';

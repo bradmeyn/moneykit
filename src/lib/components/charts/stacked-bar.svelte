@@ -14,33 +14,66 @@
 
 	let {
 		data,
+		datasets,
 		labels,
-		formatter
+		formatter,
+		showLegend = false,
+		enableTooltip = false
 	}: {
-		data: { label: string; value: number }[];
+		// Original single dataset format for backward compatibility
+		data?: { label: string; value: number }[];
+		// New multiple datasets format
+		datasets?: {
+			label: string;
+			data: number[];
+			backgroundColor?: string | string[];
+			borderColor?: string | string[];
+			borderWidth?: number;
+			borderRadius?: number;
+		}[];
 		labels: string[];
 		formatter: (value: number) => string;
+		showLegend?: boolean;
+		enableTooltip?: boolean;
 	} = $props();
+
+	let chartDatasets = $derived.by(() => {
+		if (datasets) {
+			return datasets.map((dataset, index) => ({
+				label: dataset.label,
+				data: dataset.data,
+				backgroundColor: dataset.backgroundColor || COLOURS[index % COLOURS.length],
+				borderColor:
+					dataset.borderColor || dataset.backgroundColor || COLOURS[index % COLOURS.length],
+				borderWidth: dataset.borderWidth || 0,
+				borderRadius: dataset.borderRadius || 5,
+				barThickness: 80
+			}));
+		} else if (data) {
+			// Original format - each item becomes its own dataset with single value
+			return data.map((item, i) => ({
+				label: item.label,
+				data: [item.value],
+				backgroundColor: COLOURS[i % COLOURS.length],
+				borderWidth: 0,
+				borderRadius: 5,
+				barThickness: 80
+			}));
+		}
+		return [];
+	});
 
 	let chartId: HTMLCanvasElement | undefined = $state();
 	let chart: Chart | undefined = $state();
 
-	// Register the BarController and BarElement
-	Chart.register(BarController, BarElement, CategoryScale, LinearScale, Tooltip);
+	Chart.register(BarController, BarElement, CategoryScale, LinearScale, Legend, Tooltip);
 
 	onMount(() => {
 		chart = new Chart(chartId!, {
 			type: 'bar',
-
 			data: {
 				labels,
-				datasets: data.map((item, i) => ({
-					label: item.label,
-					data: [item.value],
-					backgroundColor: COLOURS[i],
-					borderWidth: 0,
-					borderRadius: 5
-				}))
+				datasets: chartDatasets
 			},
 			options: {
 				maintainAspectRatio: false,
@@ -85,10 +118,26 @@
 				},
 				plugins: {
 					tooltip: {
-						enabled: false
+						enabled: enableTooltip,
+						...TOOLTIP,
+						callbacks: {
+							label: function (context) {
+								const label = context.dataset.label || '';
+								const value = formatter(context.parsed.y);
+								return label ? `${label}: ${value}` : value;
+							}
+						}
 					},
 					legend: {
-						display: false
+						display: showLegend,
+						labels: {
+							color: '#fff',
+							font: { size: 13, family: 'sans-serif' },
+							usePointStyle: true,
+							pointStyle: 'circle',
+							boxHeight: 8,
+							boxWidth: 8
+						}
 					}
 				}
 			}
@@ -97,14 +146,7 @@
 
 	$effect(() => {
 		if (chart) {
-			chart.data.datasets = data.map((item, i) => ({
-				label: item.label,
-				data: [item.value],
-				backgroundColor: COLOURS[i],
-				borderWidth: 0,
-				borderRadius: 5,
-				barThickness: 80
-			}));
+			chart.data.datasets = chartDatasets;
 			chart.data.labels = labels || [];
 			chart.update();
 		}

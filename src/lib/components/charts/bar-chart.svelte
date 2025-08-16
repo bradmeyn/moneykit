@@ -14,19 +14,55 @@
 
 	let {
 		data,
-		formatter
+		datasets,
+		formatter,
+		showLegend = false
 	}: {
-		data: { label: string; value: number }[];
+		data?: { label: string; value: number }[];
+		datasets?: {
+			label: string;
+			data: number[];
+			backgroundColor?: string | string[];
+			borderColor?: string | string[];
+			borderWidth?: number;
+			borderRadius?: number;
+		}[];
 		formatter: (value: number) => string;
+		showLegend?: boolean;
 	} = $props();
 
-	let labels = $derived(data.map((item) => item.label));
-	let values = $derived(data.map((item) => item.value));
+	// For backward compatibility with single dataset
+	let labels = $derived(
+		data ? data.map((item) => item.label) : datasets?.[0]?.data.map((_, i) => `Item ${i + 1}`) || []
+	);
+
+	let chartDatasets = $derived.by(() => {
+		if (datasets) {
+			return datasets.map((dataset, index) => ({
+				label: dataset.label,
+				data: dataset.data,
+				backgroundColor: dataset.backgroundColor || COLOURS[index % COLOURS.length],
+				borderColor:
+					dataset.borderColor || dataset.backgroundColor || COLOURS[index % COLOURS.length],
+				borderWidth: dataset.borderWidth || 0,
+				borderRadius: dataset.borderRadius || 5
+			}));
+		} else if (data) {
+			return [
+				{
+					data: data.map((item) => item.value),
+					backgroundColor: COLOURS.slice(0, data.length),
+					borderWidth: 0,
+					borderRadius: 5
+				}
+			];
+		}
+		return [];
+	});
 
 	let chartId: HTMLCanvasElement | undefined = $state();
 	let chart: Chart | undefined = $state();
 
-	// Register the BarController and BarElement
 	Chart.register(BarController, BarElement, CategoryScale, LinearScale, Legend, Tooltip);
 
 	onMount(() => {
@@ -34,14 +70,7 @@
 			type: 'bar',
 			data: {
 				labels,
-				datasets: [
-					{
-						data: data.map((item) => item.value),
-						backgroundColor: [COLOURS[0], COLOURS[1], COLOURS[2], COLOURS[3], COLOURS[4]],
-						borderWidth: 0,
-						borderRadius: 5
-					}
-				]
+				datasets: chartDatasets
 			},
 			options: {
 				maintainAspectRatio: false,
@@ -72,7 +101,7 @@
 							display: true,
 							color: '#333333'
 						},
-						stacked: true,
+						stacked: false,
 						beginAtZero: true,
 						ticks: {
 							callback: (value) => formatter(+value),
@@ -94,12 +123,22 @@
 						...TOOLTIP,
 						callbacks: {
 							label: function (context) {
-								return formatter(context.parsed.y);
+								const label = context.dataset.label || '';
+								const value = formatter(context.parsed.y);
+								return label ? `${label}: ${value}` : value;
 							}
 						}
 					},
 					legend: {
-						display: false
+						display: showLegend,
+						labels: {
+							color: '#fff',
+							font: { size: 13, family: 'sans-serif' },
+							usePointStyle: true,
+							pointStyle: 'circle',
+							boxHeight: 8,
+							boxWidth: 8
+						}
 					}
 				}
 			}
@@ -109,7 +148,7 @@
 	$effect(() => {
 		if (chart) {
 			chart.data.labels = labels;
-			chart.data.datasets[0].data = values;
+			chart.data.datasets = chartDatasets;
 			chart.update();
 		}
 	});

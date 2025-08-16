@@ -8,7 +8,6 @@
 	// Tabs
 	import OverviewTab from './_components/overview/overview-tab.svelte';
 	import CostsTab from './_components/costs/costs-tab.svelte';
-	import ComparisonTab from './_components/comparison/comparison-tab.svelte';
 	import ReturnsTab from './_components/returns/returns-tab.svelte';
 	import AllocationTab from './_components/asset-allocation/allocation-tab.svelte';
 	import ComparisonOverview from './_components/comparison/comparison-overview.svelte';
@@ -38,7 +37,7 @@
 			</div>
 		</div>
 
-		<div class="flex justify-between">
+		<div class="flex justify-between mb-4">
 			<Tabs.Root value={selectedTab} onValueChange={(value) => (selectedTab = value)}>
 				<Tabs.List>
 					<Tabs.Trigger value="portfolio1">Portfolio 1</Tabs.Trigger>

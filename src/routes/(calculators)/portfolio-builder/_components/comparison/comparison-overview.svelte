@@ -10,7 +10,7 @@
 	} = $props();
 </script>
 
-<div class="card">
+<div class="card ">
 	<h2 class="card-heading">Portfolio Comparison</h2>
 
 	<ComparisonOverviewTable {portfolio1} {portfolio2} />

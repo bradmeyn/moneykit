@@ -32,9 +32,6 @@
 		});
 	});
 
-	const labels = ['Portfolio 1', 'Portfolio 2'];
-	const formatter = (value: number) => formatAsCurrency(value);
-
 	// Table data for comparison
 	const rows = [
 		{
@@ -58,35 +55,38 @@
 	];
 </script>
 
-<div class="card">
-	<h2 class="card-heading">Portfolio Cost Comparison</h2>
-
-	<!-- Stacked Bar Chart showing cost breakdown -->
-	<div class="mb-6">
-		<h3 class="text-lg font-semibold mb-4">Cost Breakdown by Holdings</h3>
-		<StackedBarChart {datasets} {labels} {formatter} showLegend={true} enableTooltip={true} />
+<div class="grid grid-cols-2 gap-4">
+	<div class="card">
+		<div class="mt-6">
+			<table class="w-full rounded-lg overflow-hidden">
+				<thead>
+					<tr>
+						<th class="text-left">Cost Metric</th>
+						<th class="text-right">Portfolio 1</th>
+						<th class="text-right">Portfolio 2</th>
+					</tr>
+				</thead>
+				<tbody>
+					{#each rows as row}
+						<tr>
+							<td>{row.label}</td>
+							<td class="text-right">{row.format(row.p1)}</td>
+							<td class="text-right">{row.format(row.p2)}</td>
+						</tr>
+					{/each}
+				</tbody>
+			</table>
+		</div>
 	</div>
 
-	<!-- Summary table -->
-	<div class="mt-6">
-		<h3 class="text-lg font-semibold mb-4">Cost Summary</h3>
-		<table class="w-full rounded-lg overflow-hidden">
-			<thead>
-				<tr>
-					<th class="text-left">Cost Metric</th>
-					<th class="text-right">Portfolio 1</th>
-					<th class="text-right">Portfolio 2</th>
-				</tr>
-			</thead>
-			<tbody>
-				{#each rows as row}
-					<tr>
-						<td>{row.label}</td>
-						<td class="text-right">{row.format(row.p1)}</td>
-						<td class="text-right">{row.format(row.p2)}</td>
-					</tr>
-				{/each}
-			</tbody>
-		</table>
+	<div class="card">
+		<h2 class="card-heading">Cost Comparison</h2>
+		<StackedBarChart
+			{datasets}
+			labels={['Portfolio 1', 'Portfolio 2']}
+			formatter={formatAsCurrency}
+			showLegend={true}
+			enableTooltip={true}
+		/>
 	</div>
 </div>

@@ -37,24 +37,26 @@
 	</thead>
 	<tbody>
 		{#each allSymbols as symbol}
+			{@const row1 = rows1.find((r) => r.symbol === symbol)}
+			{@const row2 = rows2.find((r) => r.symbol === symbol)}
 			<tr>
-				<td
-					>{rows1.find((r) => r.symbol === symbol)?.name ||
-						rows2.find((r) => r.symbol === symbol)?.name}</td
-				>
+				<td>
+					<div>{symbol}</div>
+					<div class="text-xs text-muted-foreground">{row1?.name || row2?.name}</div>
+				</td>
 				<td class="text-right">
-					{#if rows1.find((r) => r.symbol === symbol)}
-						{formatAsCurrency(rows1.find((r) => r.symbol === symbol).value)}
+					{#if row1}
+						{formatAsCurrency(row1.value)}
 						<div class="text-xs text-muted-foreground">
-							{formatAsPercentage(rows1.find((r) => r.symbol === symbol).percent)}
+							{formatAsPercentage(row1.percent)}
 						</div>
 					{/if}
 				</td>
 				<td class="text-right">
-					{#if rows2.find((r) => r.symbol === symbol)}
-						{formatAsCurrency(rows2.find((r) => r.symbol === symbol).value)}
+					{#if row2}
+						{formatAsCurrency(row2.value)}
 						<div class="text-xs text-muted-foreground">
-							{formatAsPercentage(rows2.find((r) => r.symbol === symbol).percent)}
+							{formatAsPercentage(row2.percent)}
 						</div>
 					{/if}
 				</td>

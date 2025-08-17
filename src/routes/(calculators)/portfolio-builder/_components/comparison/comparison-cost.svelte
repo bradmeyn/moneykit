@@ -32,48 +32,87 @@
 		});
 	});
 
-	// Table data for comparison
-	const rows = [
-		{
-			label: 'Total Cost',
-			p1: portfolio1?.totalCost ?? 0,
-			p2: portfolio2?.totalCost ?? 0,
-			format: formatAsCurrency
-		},
-		{
-			label: 'Weighted Avg. Fee',
-			p1:
-				portfolio1 && portfolio1.totalAllocated
-					? portfolio1.totalCost / portfolio1.totalAllocated
-					: 0,
-			p2:
-				portfolio2 && portfolio2.totalAllocated
-					? portfolio2.totalCost / portfolio2.totalAllocated
-					: 0,
-			format: formatAsPercentage
-		}
-	];
+	// Get unique investments for the cost table
+	function getCostRows(portfolio: Portfolio) {
+		return (portfolio.holdings ?? []).map((h) => ({
+			symbol: h.investment.symbol,
+			name: h.investment.name,
+			cost: h.cost,
+			managementCost: h.investment.managementCost
+		}));
+	}
+
+	const costRows1 = getCostRows(portfolio1);
+	const costRows2 = getCostRows(portfolio2);
+	const allSymbols = Array.from(
+		new Set([...costRows1.map((r) => r.symbol), ...costRows2.map((r) => r.symbol)])
+	);
+
+	// Calculate weighted average fees
+	const weightedAvgFee1 =
+		portfolio1 && portfolio1.totalAllocated > 0
+			? portfolio1.totalCost / portfolio1.totalAllocated
+			: 0;
+	const weightedAvgFee2 =
+		portfolio2 && portfolio2.totalAllocated > 0
+			? portfolio2.totalCost / portfolio2.totalAllocated
+			: 0;
 </script>
 
 <div class="grid grid-cols-2 gap-4">
 	<div class="card">
+		<h2 class="card-heading">Investment Costs</h2>
 		<div class="mt-6">
-			<table class="w-full rounded-lg overflow-hidden">
+			<table class="w-full text-sm">
 				<thead>
 					<tr>
-						<th class="text-left">Cost Metric</th>
+						<th class="text-left">Investment</th>
 						<th class="text-right">Portfolio 1</th>
 						<th class="text-right">Portfolio 2</th>
 					</tr>
 				</thead>
 				<tbody>
-					{#each rows as row}
+					{#each allSymbols as symbol}
+						{@const row1 = costRows1.find((r) => r.symbol === symbol)}
+						{@const row2 = costRows2.find((r) => r.symbol === symbol)}
 						<tr>
-							<td>{row.label}</td>
-							<td class="text-right">{row.format(row.p1)}</td>
-							<td class="text-right">{row.format(row.p2)}</td>
+							<td>
+								<div>{symbol}</div>
+								<div class="text-xs text-muted-foreground">{row1?.name || row2?.name}</div>
+							</td>
+							<td class="text-right">
+								{#if row1}
+									<div>{formatAsCurrency(row1.cost)}</div>
+									<div class="text-xs text-muted-foreground">
+										{formatAsPercentage(row1.managementCost)} pa
+									</div>
+								{/if}
+							</td>
+							<td class="text-right">
+								{#if row2}
+									<div>{formatAsCurrency(row2.cost)}</div>
+									<div class="text-xs text-muted-foreground">
+										{formatAsPercentage(row2.managementCost)} pa
+									</div>
+								{/if}
+							</td>
 						</tr>
 					{/each}
+					<tr class="font-semibold border-t">
+						<td>Total Cost</td>
+						<td class="text-right">
+							<div>{formatAsCurrency(portfolio1?.totalCost ?? 0)}</div>
+							<div class="text-xs text-muted-foreground font-normal">
+								{formatAsPercentage(weightedAvgFee1)} weighted avg
+							</div>
+						</td>
+						<td class="text-right">
+							<div>{formatAsCurrency(portfolio2?.totalCost ?? 0)}</div>
+							<div class="text-xs text-muted-foreground font-normal">
+								{formatAsPercentage(weightedAvgFee2)} weighted avg
+							</div>
+						</td>
+					</tr>
 				</tbody>
 			</table>
 		</div>

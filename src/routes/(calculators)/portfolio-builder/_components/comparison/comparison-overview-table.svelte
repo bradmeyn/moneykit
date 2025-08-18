@@ -42,12 +42,12 @@
 			<tr>
 				<td>
 					<div>{symbol}</div>
-					<div class="text-xs text-muted-foreground">{row1?.name || row2?.name}</div>
+					<div class="text-muted-foreground">{row1?.name || row2?.name}</div>
 				</td>
 				<td class="text-right">
 					{#if row1}
 						{formatAsCurrency(row1.value)}
-						<div class="text-xs text-muted-foreground">
+						<div class="text-sm text-muted-foreground">
 							{formatAsPercentage(row1.percent)}
 						</div>
 					{/if}
@@ -55,7 +55,7 @@
 				<td class="text-right">
 					{#if row2}
 						{formatAsCurrency(row2.value)}
-						<div class="text-xs text-muted-foreground">
+						<div class="text-sm text-muted-foreground">
 							{formatAsPercentage(row2.percent)}
 						</div>
 					{/if}

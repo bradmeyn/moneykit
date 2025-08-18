@@ -24,12 +24,18 @@
 
 <div class="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-4 mt-4">
 	<div class="w-full card">
-		<h2 class="card-heading">Costs</h2>
+		<h2 class="card-heading">Investment Costs</h2>
 		<CostTable {portfolio} />
 	</div>
 
 	<div class="card">
-		<StackedBar {data} labels={['Total Cost']} formatter={formatAsCurrency} />
-		<LegendList {data} formatter={formatAsCurrency} />
+		<h2 class="card-heading">Cost Breakdown</h2>
+		<StackedBar
+			enableTooltip
+			showLegend
+			{data}
+			labels={['Total Cost']}
+			formatter={formatAsCurrency}
+		/>
 	</div>
 </div>

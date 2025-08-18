@@ -3,6 +3,7 @@
 	import type { PortfolioType as Portfolio } from '../../calculator.svelte';
 	import { formatAsCurrency, formatAsPercentage } from '$utils/formatters';
 	import { COLOURS } from '$lib/constants/colours';
+	import ComparisonTable from './comparison-table.svelte';
 
 	let {
 		portfolio1,
@@ -59,62 +60,11 @@
 			: 0;
 </script>
 
-<div class="grid grid-cols-2 gap-4">
+<div class="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-4">
 	<div class="card">
 		<h2 class="card-heading">Investment Costs</h2>
 		<div class="mt-6">
-			<table class="w-full text-sm">
-				<thead>
-					<tr>
-						<th class="text-left">Investment</th>
-						<th class="text-right">Portfolio 1</th>
-						<th class="text-right">Portfolio 2</th>
-					</tr>
-				</thead>
-				<tbody>
-					{#each allSymbols as symbol}
-						{@const row1 = costRows1.find((r) => r.symbol === symbol)}
-						{@const row2 = costRows2.find((r) => r.symbol === symbol)}
-						<tr>
-							<td>
-								<div>{symbol}</div>
-								<div class="text-xs text-muted-foreground">{row1?.name || row2?.name}</div>
-							</td>
-							<td class="text-right">
-								{#if row1}
-									<div>{formatAsCurrency(row1.cost)}</div>
-									<div class="text-xs text-muted-foreground">
-										{formatAsPercentage(row1.managementCost)} pa
-									</div>
-								{/if}
-							</td>
-							<td class="text-right">
-								{#if row2}
-									<div>{formatAsCurrency(row2.cost)}</div>
-									<div class="text-xs text-muted-foreground">
-										{formatAsPercentage(row2.managementCost)} pa
-									</div>
-								{/if}
-							</td>
-						</tr>
-					{/each}
-					<tr class="font-semibold border-t">
-						<td>Total Cost</td>
-						<td class="text-right">
-							<div>{formatAsCurrency(portfolio1?.totalCost ?? 0)}</div>
-							<div class="text-xs text-muted-foreground font-normal">
-								{formatAsPercentage(weightedAvgFee1)} weighted avg
-							</div>
-						</td>
-						<td class="text-right">
-							<div>{formatAsCurrency(portfolio2?.totalCost ?? 0)}</div>
-							<div class="text-xs text-muted-foreground font-normal">
-								{formatAsPercentage(weightedAvgFee2)} weighted avg
-							</div>
-						</td>
-					</tr>
-				</tbody>
-			</table>
+			<ComparisonTable {portfolio1} {portfolio2} view="cost" />
 		</div>
 	</div>
 

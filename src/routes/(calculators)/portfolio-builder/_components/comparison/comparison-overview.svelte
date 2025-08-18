@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { PortfolioType as Portfolio } from '../../calculator.svelte';
 	import ComparisonOverviewTable from './comparison-overview-table.svelte';
+	import ComparisonTable from './comparison-table.svelte';
 	let {
 		portfolio1,
 		portfolio2
@@ -10,8 +11,7 @@
 	} = $props();
 </script>
 
-<div class="card ">
+<div class="card">
 	<h2 class="card-heading">Portfolio Comparison</h2>
-
-	<ComparisonOverviewTable {portfolio1} {portfolio2} />
+	<ComparisonTable {portfolio1} {portfolio2} view="value" />
 </div>

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { formatAsPercentage } from '$utils/formatters';
 	import type { PortfolioType } from '../../calculator.svelte';
 
 	let { portfolio }: { portfolio: PortfolioType } = $props();
@@ -23,9 +24,9 @@
 			{@const yearData = portfolio.returns.byYear[year]}
 			<tr>
 				<td>{year}</td>
-				<td class="text-right">{(yearData.growth * 100).toFixed(2)}%</td>
-				<td class="text-right">{(yearData.distribution * 100).toFixed(2)}%</td>
-				<td class="text-right font-bold">{(yearData.total * 100).toFixed(2)}%</td>
+				<td class="text-right">{formatAsPercentage(yearData.growth)}</td>
+				<td class="text-right">{formatAsPercentage(yearData.distribution)}</td>
+				<td class="text-right font-bold">{formatAsPercentage(yearData.total)}</td>
 			</tr>
 		{/each}
 	</tbody>

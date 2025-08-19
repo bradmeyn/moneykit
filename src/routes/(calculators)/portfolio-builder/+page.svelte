@@ -15,7 +15,7 @@
 	import ComparisonCost from './_components/comparison/comparison-cost.svelte';
 	import ComparisonReturn from './_components/comparison/comparison-return.svelte';
 
-	const portfolio1 = setPortfolioState();
+	const portfolio1 = setPortfolioState(1);
 	const portfolio2 = setPortfolioState();
 
 	let selectedTab = $state<string>('portfolio1');

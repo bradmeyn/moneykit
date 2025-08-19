@@ -24,8 +24,14 @@ export type PortfolioReturns = {
 };
 
 class Portfolio {
+	constructor(portfolio: number) {
+		// Initialize with default values
+		this.portfolioValue = 2000000; // Default portfolio value
+		this.investments = portfolio === 1 ? defaultPortfolio : defaultPortfolioTwo;
+	}
+
 	portfolioValue = $state(2000000);
-	investments = $state<PortfolioHolding[]>(defaultPortfolio);
+	investments = $state<PortfolioHolding[]>();
 
 	// Derived values - these will automatically update when portfolioValue changes
 	holdings: CalculatedHolding[] = $derived(this.calculateHoldingDetails());
@@ -314,8 +320,8 @@ export type PortfolioType = InstanceType<typeof Portfolio>;
 
 const PORTFOLIO_KEY = Symbol('portfolio');
 
-export function setPortfolioState() {
-	return setContext(PORTFOLIO_KEY, new Portfolio());
+export function setPortfolioState(portfolio: number) {
+	return setContext(PORTFOLIO_KEY, new Portfolio(portfolio));
 }
 
 export function getPortfolioState() {
@@ -360,5 +366,18 @@ const defaultPortfolio: PortfolioHolding[] = [
 		investment: ETF_MAP['VIF'],
 		weight: 0.1 // 10%
 	},
+	cashAccount // Cash will auto-calculate to fill remaining 15%
+];
+
+const defaultPortfolioTwo: PortfolioHolding[] = [
+	{
+		investment: ETF_MAP['VGS'],
+		weight: 0.7 // 25%
+	},
+	{
+		investment: ETF_MAP['VAS'],
+		weight: 0.3 // 35%
+	},
+
 	cashAccount // Cash will auto-calculate to fill remaining 15%
 ];

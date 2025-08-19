@@ -131,9 +131,10 @@
 					},
 					legend: {
 						display: showLegend,
+
 						labels: {
 							color: '#fff',
-							font: { size: 13, family: 'sans-serif' },
+							font: { size: 16, family: 'sans-serif' },
 							usePointStyle: true,
 							pointStyle: 'circle',
 							boxHeight: 8,
@@ -155,5 +156,5 @@
 </script>
 
 <div class="min-h-[400px] md:min-h-[500px] min-w-[200px] relative">
-	<canvas class="w-full absolute min-h-full p-1" bind:this={chartId}></canvas>
+	<canvas class="w-full absolute min-h-full" bind:this={chartId}></canvas>
 </div>

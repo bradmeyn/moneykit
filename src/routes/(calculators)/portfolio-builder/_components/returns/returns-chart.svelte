@@ -137,7 +137,7 @@
 						display: true,
 						labels: {
 							color: '#fff',
-							font: { size: 13, family: 'sans-serif' },
+							font: { size: 16, family: 'sans-serif' },
 							usePointStyle: true,
 							pointStyle: 'circle',
 							boxHeight: 8,
@@ -159,6 +159,6 @@
 	});
 </script>
 
-<div class="min-h-[400px] relative">
+<div class="min-h-[400px] relative h-full">
 	<canvas class="w-full absolute min-h-full p-1" bind:this={chartId}></canvas>
 </div>

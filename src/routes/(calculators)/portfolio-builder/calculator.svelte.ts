@@ -25,13 +25,11 @@ export type PortfolioReturns = {
 
 class Portfolio {
 	constructor(portfolio: number) {
-		// Initialize with default values
-		this.portfolioValue = 2000000; // Default portfolio value
 		this.investments = portfolio === 1 ? defaultPortfolio : defaultPortfolioTwo;
 	}
 
 	portfolioValue = $state(2000000);
-	investments = $state<PortfolioHolding[]>();
+	investments = $state<PortfolioHolding[]>(defaultPortfolio);
 
 	// Derived values - these will automatically update when portfolioValue changes
 	holdings: CalculatedHolding[] = $derived(this.calculateHoldingDetails());

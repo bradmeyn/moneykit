@@ -54,9 +54,9 @@
 					<!-- Difference -->
 					<td
 						class="text-right py-2 font-semibold {row.difference > 0
-							? 'text-green-300'
+							? 'text-emerald-400'
 							: row.difference < 0
-								? 'text-red-300'
+								? 'text-rose-400'
 								: ''}"
 					>
 						{row.formatted.difference}

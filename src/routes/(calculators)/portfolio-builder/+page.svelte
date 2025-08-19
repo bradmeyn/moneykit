@@ -16,7 +16,7 @@
 	import ComparisonReturn from './_components/comparison/comparison-return.svelte';
 
 	const portfolio1 = setPortfolioState(1);
-	const portfolio2 = setPortfolioState();
+	const portfolio2 = setPortfolioState(2);
 
 	let selectedTab = $state<string>('portfolio1');
 	let selectedView = $state<string>('overview');

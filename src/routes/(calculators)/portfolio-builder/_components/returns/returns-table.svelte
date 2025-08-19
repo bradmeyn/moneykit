@@ -26,7 +26,11 @@
 				<td>{year}</td>
 				<td class="text-right">{formatAsPercentage(yearData.growth)}</td>
 				<td class="text-right">{formatAsPercentage(yearData.distribution)}</td>
-				<td class="text-right font-bold">{formatAsPercentage(yearData.total)}</td>
+				<td
+					class="text-right font-bold"
+					class:text-emerald-400={yearData.total >= 0}
+					class:text-rose-400={yearData.total < 0}>{formatAsPercentage(yearData.total)}</td
+				>
 			</tr>
 		{/each}
 	</tbody>

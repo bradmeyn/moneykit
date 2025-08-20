@@ -83,7 +83,7 @@
 						},
 						ticks: {
 							font: {
-								size: 12,
+								size: 14,
 								family: 'sans-serif'
 							},
 							color: '#ffffff'
@@ -107,7 +107,7 @@
 						ticks: {
 							callback: (value) => formatAsPercentage(+value),
 							font: {
-								size: 12,
+								size: 16,
 								family: 'sans-serif'
 							},
 							color: '#ffffff'
@@ -120,7 +120,7 @@
 						intersect: false,
 						...TOOLTIP,
 						footerFont: {
-							size: 14
+							size: 16
 						},
 						callbacks: {
 							title: (context) => `${context[0].label}`,
@@ -160,5 +160,5 @@
 </script>
 
 <div class="min-h-[400px] relative h-full">
-	<canvas class="w-full absolute min-h-full p-1" bind:this={chartId}></canvas>
+	<canvas class="w-full absolute min-h-full p-2" bind:this={chartId}></canvas>
 </div>

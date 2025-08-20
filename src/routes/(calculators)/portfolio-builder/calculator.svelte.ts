@@ -42,6 +42,9 @@ class Portfolio {
 	// Derived value for portfolio returns (example: weighted average return)
 	returns = $derived(this.calculateReturns());
 
+	// Derived value for summary statistics
+	summaryStats = $derived(this.calculateSummaryStats());
+
 	private calculateReturns(): PortfolioReturns {
 		// Get all available years from the portfolio holdings
 		const availableYears = new Set<number>();
@@ -88,6 +91,51 @@ class Portfolio {
 		}
 
 		return { byYear };
+	}
+
+	private calculateSummaryStats() {
+		const yearReturns = Object.entries(this.returns.byYear)
+			.map(([year, yearData]) => ({ year, total: yearData.total }))
+			.filter(({ total }) => total !== undefined);
+
+		const returns = yearReturns.map(({ total }) => total);
+
+		const calcAverage = (arr: number[]) =>
+			arr.length > 0 ? arr.reduce((a, b) => a + b, 0) / arr.length : 0;
+		const calcVolatility = (arr: number[]) => {
+			if (arr.length <= 1) return 0;
+			const avg = calcAverage(arr);
+			const variance = arr.reduce((sum, val) => sum + Math.pow(val - avg, 2), 0) / (arr.length - 1);
+			return Math.sqrt(variance);
+		};
+
+		const bestObj =
+			returns.length > 0
+				? yearReturns.reduce(
+						(best, curr) => (curr.total > best.total ? curr : best),
+						yearReturns[0]
+					)
+				: { year: '', total: 0 };
+
+		const worstObj =
+			returns.length > 0
+				? yearReturns.reduce(
+						(worst, curr) => (curr.total < worst.total ? curr : worst),
+						yearReturns[0]
+					)
+				: { year: '', total: 0 };
+
+		return {
+			average: calcAverage(returns),
+			volatility: calcVolatility(returns),
+			best: bestObj.total,
+			bestYear: bestObj.year,
+			worst: worstObj.total,
+			worstYear: worstObj.year,
+			totalReturn: returns.reduce((a, b) => a + b, 0),
+			annualisedReturn:
+				(Math.pow(1 + returns.reduce((a, b) => a + b, 0) / 100, 1 / returns.length) - 1) * 100
+		};
 	}
 
 	addInvestment = (investment: PortfolioHolding) => {

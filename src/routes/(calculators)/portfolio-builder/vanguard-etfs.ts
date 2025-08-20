@@ -87,41 +87,6 @@ export const VANGUARD_ETFS: Record<string, ExchangeTradedFund> = {
 					total: 0.0265,
 					grossReturn: 0.028,
 					benchmark: 0.028
-				},
-				2014: {
-					growth: 0.0104,
-					distribution: 0.0415,
-					total: 0.0519,
-					grossReturn: 0.0535,
-					benchmark: 0.053
-				},
-				2013: {
-					growth: 0.1443,
-					distribution: 0.0507,
-					total: 0.195,
-					grossReturn: 0.1967,
-					benchmark: 0.1968
-				},
-				2012: {
-					growth: 0.1401,
-					distribution: 0.0556,
-					total: 0.1956,
-					grossReturn: 0.1974,
-					benchmark: 0.1974
-				},
-				2011: {
-					growth: -0.15,
-					distribution: 0.0393,
-					total: -0.1107,
-					grossReturn: -0.109,
-					benchmark: -0.1098
-				},
-				2010: {
-					growth: -0.0289,
-					distribution: 0.045,
-					total: 0.0161,
-					grossReturn: 0.0189,
-					benchmark: 0.019
 				}
 			},
 			monthly: {
@@ -689,13 +654,6 @@ export const VANGUARD_ETFS: Record<string, ExchangeTradedFund> = {
 					total: -0.0596,
 					grossReturn: -0.055,
 					benchmark: -0.0485
-				},
-				2014: {
-					growth: 0.0638,
-					distribution: 0.0223,
-					total: 0.0862,
-					grossReturn: 0.0914,
-					benchmark: 0.1064
 				}
 			},
 			monthly: {
@@ -955,20 +913,6 @@ export const VANGUARD_ETFS: Record<string, ExchangeTradedFund> = {
 					total: 0.0241,
 					grossReturn: 0.0262,
 					benchmark: 0.0259
-				},
-				2014: {
-					growth: 0.0493,
-					distribution: 0.047,
-					total: 0.0963,
-					grossReturn: 0.0985,
-					benchmark: 0.0981
-				},
-				2013: {
-					growth: -0.0381,
-					distribution: 0.0565,
-					total: 0.0184,
-					grossReturn: 0.0204,
-					benchmark: 0.0199
 				}
 			},
 			monthly: {

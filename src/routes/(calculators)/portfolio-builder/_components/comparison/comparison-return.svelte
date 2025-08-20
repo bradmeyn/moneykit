@@ -19,7 +19,6 @@
 		const years1 = Object.keys(portfolio1.returns.byYear).map(Number);
 		const years2 = Object.keys(portfolio2.returns.byYear).map(Number);
 		const allYears = Array.from(new Set([...years1, ...years2])).sort((a, b) => a - b);
-		const allYearsDesc = [...allYears].sort((a, b) => b - a); // For table (most recent first)
 
 		// Format data for both chart and table
 		const yearlyData = allYears.map((year) => {
@@ -46,28 +45,16 @@
 			};
 		});
 
-		// Calculate summary statistics
-		const p1Returns = yearlyData.filter((d) => d.p1.hasData).map((d) => d.p1.total);
-		const p2Returns = yearlyData.filter((d) => d.p2.hasData).map((d) => d.p2.total);
-
-		const calcAverage = (arr: number[]) =>
-			arr.length > 0 ? arr.reduce((a, b) => a + b, 0) / arr.length : 0;
-		const calcVolatility = (arr: number[]) => {
-			if (arr.length <= 1) return 0;
-			const avg = calcAverage(arr);
-			const variance = arr.reduce((sum, val) => sum + Math.pow(val - avg, 2), 0) / (arr.length - 1);
-			return Math.sqrt(variance);
-		};
-
+		// Use summaryStats from each portfolio
 		const summaryStats = {
-			p1Avg: calcAverage(p1Returns),
-			p2Avg: calcAverage(p2Returns),
-			p1Vol: calcVolatility(p1Returns),
-			p2Vol: calcVolatility(p2Returns),
-			p1Best: p1Returns.length > 0 ? Math.max(...p1Returns) : 0,
-			p2Best: p2Returns.length > 0 ? Math.max(...p2Returns) : 0,
-			p1Worst: p1Returns.length > 0 ? Math.min(...p1Returns) : 0,
-			p2Worst: p2Returns.length > 0 ? Math.min(...p2Returns) : 0
+			p1Avg: portfolio1.summaryStats.average,
+			p2Avg: portfolio2.summaryStats.average,
+			p1Vol: portfolio1.summaryStats.volatility,
+			p2Vol: portfolio2.summaryStats.volatility,
+			p1Best: portfolio1.summaryStats.best,
+			p2Best: portfolio2.summaryStats.best,
+			p1Worst: portfolio1.summaryStats.worst,
+			p2Worst: portfolio2.summaryStats.worst
 		};
 
 		// Chart data
@@ -93,19 +80,37 @@
 		const tableData = yearlyData
 			.sort((a, b) => b.year - a.year)
 			.map((d) => ({
-				...d,
-				formatted: {
-					p1Growth: d.p1.hasData ? formatAsPercentage(d.p1.growth) : '-',
-					p1Distribution: d.p1.hasData ? formatAsPercentage(d.p1.distribution) : '-',
-					p1Total: d.p1.hasData ? formatAsPercentage(d.p1.total) : '-',
-					p2Growth: d.p2.hasData ? formatAsPercentage(d.p2.growth) : '-',
-					p2Distribution: d.p2.hasData ? formatAsPercentage(d.p2.distribution) : '-',
-					p2Total: d.p2.hasData ? formatAsPercentage(d.p2.total) : '-',
-					difference: d.hasBothData
-						? `${d.difference > 0 ? '+' : ''}${formatAsPercentage(d.difference)}`
-						: '-'
-				}
+				year: d.year,
+				p1Growth: d.p1.hasData ? d.p1.growth : 0,
+				p1Distribution: d.p1.hasData ? d.p1.distribution : 0,
+				p1Total: d.p1.hasData ? d.p1.total : 0,
+				p2Growth: d.p2.hasData ? d.p2.growth : 0,
+				p2Distribution: d.p2.hasData ? d.p2.distribution : 0,
+				p2Total: d.p2.hasData ? d.p2.total : 0,
+				difference: d.hasBothData ? d.difference : 0,
+				hasBothData: d.hasBothData
 			}));
+
+		// Calculate average growth and distribution for each portfolio
+		const avg = (arr: number[]) =>
+			arr.length > 0 ? arr.reduce((a, b) => a + b, 0) / arr.length : 0;
+		const p1GrowthArr = yearlyData.filter((d) => d.p1.hasData).map((d) => d.p1.growth);
+		const p1DistArr = yearlyData.filter((d) => d.p1.hasData).map((d) => d.p1.distribution);
+		const p2GrowthArr = yearlyData.filter((d) => d.p2.hasData).map((d) => d.p2.growth);
+		const p2DistArr = yearlyData.filter((d) => d.p2.hasData).map((d) => d.p2.distribution);
+
+		const avgRow = {
+			year: -1, // Use -1 to represent the average row
+			p1Growth: avg(p1GrowthArr),
+			p1Distribution: avg(p1DistArr),
+			p1Total: summaryStats.p1Avg,
+			p2Growth: avg(p2GrowthArr),
+			p2Distribution: avg(p2DistArr),
+			p2Total: summaryStats.p2Avg,
+			difference: summaryStats.p1Avg - summaryStats.p2Avg,
+			hasBothData: true
+		};
+		tableData.push(avgRow);
 
 		return { yearlyData, summaryStats, chartData, tableData };
 	});
@@ -146,7 +151,7 @@
 
 		<div class="card">
 			<div class=" text-muted-foreground mb-2">Worst Year</div>
-			<div class="space-y-1 text-lg  text-red-300">
+			<div class="space-y-1 text-lg text-red-300">
 				<div>
 					<span class="text-white">Portfolio 1:</span>
 					{formatAsPercentage(processedData.summaryStats.p1Worst)}
@@ -166,9 +171,9 @@
 		</div>
 
 		<BarChart
-			data={processedData.chartData.labels.map((label, index) => ({
+			data={processedData.chartData.labels.map((label, i) => ({
 				label,
-				value: processedData.chartData.datasets[0].data[index]
+				value: processedData.chartData.datasets[0].data[i]
 			}))}
 			datasets={processedData.chartData.datasets}
 			formatter={formatAsPercentage}

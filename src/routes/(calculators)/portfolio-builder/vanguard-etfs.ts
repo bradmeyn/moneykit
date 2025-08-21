@@ -1,6 +1,188 @@
 import type { ExchangeTradedFund } from './investments';
 
 export const VANGUARD_ETFS: Record<string, ExchangeTradedFund> = {
+	VEU: {
+		symbol: 'VEU',
+		name: 'Vanguard All-World ex-US Shares Index ETF',
+		assetAllocation: {
+			ausEquities: 0,
+			intEquities: 1.0,
+			ausFixedInterest: 0,
+			intFixedInterest: 0,
+			cash: 0,
+			alternatives: 0
+		},
+		managementCost: 0.0008, // 0.08%
+		provider: 'Vanguard',
+		benchmark: 'FTSE All-World ex US Index',
+		domicile: 'Australia',
+		returns: {
+			annual: {
+				2024: {
+					growth: 0.1258,
+					distribution: 0.0364,
+					total: 0.1623,
+					grossReturn: 0.1632,
+					benchmark: 0.166
+				},
+				2023: {
+					growth: 0.1107,
+					distribution: 0.0386,
+					total: 0.1493,
+					grossReturn: 0.1501,
+					benchmark: 0.1511
+				},
+				2022: {
+					growth: -0.1214,
+					distribution: 0.0278,
+					total: -0.0937,
+					grossReturn: -0.093,
+					benchmark: -0.094
+				},
+				2021: {
+					growth: 0.1131,
+					distribution: 0.0348,
+					total: 0.1479,
+					grossReturn: 0.1487,
+					benchmark: 0.1501
+				},
+				2020: {
+					growth: -0.0085,
+					distribution: 0.0232,
+					total: 0.0147,
+					grossReturn: 0.0155,
+					benchmark: 0.0132
+				},
+				2019: {
+					growth: 0.1791,
+					distribution: 0.0391,
+					total: 0.2181,
+					grossReturn: 0.2191,
+					benchmark: 0.22
+				},
+				2018: {
+					growth: -0.0722,
+					distribution: 0.028,
+					total: -0.0442,
+					grossReturn: -0.0434,
+					benchmark: -0.0459
+				},
+				2017: {
+					growth: 0.1452,
+					distribution: 0.0327,
+					total: 0.178,
+					grossReturn: 0.1792,
+					benchmark: 0.1767
+				},
+				2016: {
+					growth: 0.0214,
+					distribution: 0.0315,
+					total: 0.0529,
+					grossReturn: 0.0541,
+					benchmark: 0.053
+				},
+				2015: {
+					growth: 0.0432,
+					distribution: 0.0291,
+					total: 0.0722,
+					grossReturn: 0.0736,
+					benchmark: 0.0718
+				}
+			},
+			monthly: {}
+		}
+	},
+	VTS: {
+		symbol: 'VTS',
+		name: 'Vanguard U.S. Total Market Shares Index ETF',
+		assetAllocation: {
+			ausEquities: 0,
+			intEquities: 1.0,
+			ausFixedInterest: 0,
+			intFixedInterest: 0,
+			cash: 0,
+			alternatives: 0
+		},
+		managementCost: 0.0003, // 0.03%
+		provider: 'Vanguard',
+		benchmark: 'CRSP US Total Market Index',
+		domicile: 'Australia',
+		returns: {
+			annual: {
+				2024: {
+					growth: 0.3457,
+					distribution: 0.0181,
+					total: 0.3638,
+					grossReturn: 0.3642,
+					benchmark: 0.3641
+				},
+				2023: {
+					growth: 0.2329,
+					distribution: 0.0196,
+					total: 0.2525,
+					grossReturn: 0.2529,
+					benchmark: 0.252
+				},
+				2022: {
+					growth: -0.1509,
+					distribution: 0.0139,
+					total: -0.137,
+					grossReturn: -0.1367,
+					benchmark: -0.1369
+				},
+				2021: {
+					growth: 0.317,
+					distribution: 0.0173,
+					total: 0.3343,
+					grossReturn: 0.3347,
+					benchmark: 0.3344
+				},
+				2020: {
+					growth: 0.083,
+					distribution: 0.0188,
+					total: 0.1018,
+					grossReturn: 0.1021,
+					benchmark: 0.1022
+				},
+				2019: {
+					growth: 0.2852,
+					distribution: 0.0248,
+					total: 0.31,
+					grossReturn: 0.3104,
+					benchmark: 0.3103
+				},
+				2018: {
+					growth: 0.034,
+					distribution: 0.02,
+					total: 0.054,
+					grossReturn: 0.0543,
+					benchmark: 0.0536
+				},
+				2017: {
+					growth: 0.1014,
+					distribution: 0.0203,
+					total: 0.1217,
+					grossReturn: 0.1221,
+					benchmark: 0.1219
+				},
+				2016: {
+					growth: 0.1094,
+					distribution: 0.0227,
+					total: 0.1321,
+					grossReturn: 0.1326,
+					benchmark: 0.1321
+				},
+				2015: {
+					growth: 0.1072,
+					distribution: 0.0221,
+					total: 0.1293,
+					grossReturn: 0.1298,
+					benchmark: 0.1293
+				}
+			},
+			monthly: {}
+		}
+	},
 	VAS: {
 		symbol: 'VAS',
 		name: 'Vanguard Australian Shares Index ETF',
@@ -1180,6 +1362,13 @@ export const VANGUARD_ETFS: Record<string, ExchangeTradedFund> = {
 					total: 0.0494,
 					grossReturn: 0.0515,
 					benchmark: 0.0518
+				},
+				2015: {
+					growth: 0.0151,
+					distribution: 0.0189,
+					total: 0.0339,
+					grossReturn: 0.0366,
+					benchmark: 0.0377
 				}
 			},
 			monthly: {
@@ -1380,6 +1569,34 @@ export const VANGUARD_ETFS: Record<string, ExchangeTradedFund> = {
 					total: 0.2632,
 					grossReturn: 0.2672,
 					benchmark: 0.2653
+				},
+				2018: {
+					growth: -0.0944,
+					distribution: 0.0522,
+					total: -0.0422,
+					grossReturn: -0.0384,
+					benchmark: -0.042
+				},
+				2017: {
+					growth: 0.0521,
+					distribution: 0.0811,
+					total: 0.1332,
+					grossReturn: 0.1376,
+					benchmark: 0.1343
+				},
+				2016: {
+					growth: 0.0601,
+					distribution: 0.0701,
+					total: 0.1302,
+					grossReturn: 0.1346,
+					benchmark: 0.1319
+				},
+				2015: {
+					growth: 0.0368,
+					distribution: 0.0834,
+					total: 0.1201,
+					grossReturn: 0.1245,
+					benchmark: 0.123
 				}
 			},
 			monthly: {

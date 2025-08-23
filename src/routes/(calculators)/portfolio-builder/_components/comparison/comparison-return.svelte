@@ -4,6 +4,7 @@
 	import ComparisonReturnsTable from './comparison-returns-table.svelte';
 	import { formatAsPercentage } from '$lib/utils/formatters';
 	import { COLOURS } from '$constants/colours';
+	import * as Tabs from '$lib/components/ui/tabs';
 
 	let {
 		portfolio1,
@@ -13,8 +14,10 @@
 		portfolio2: PortfolioType;
 	} = $props();
 
+	let view = $state('chart');
+
 	// Centralized data processing - used by both chart and table
-	let processedData = $derived.by(() => {
+	const processedData = $derived.by(() => {
 		// Get all years from both portfolios
 		const years1 = Object.keys(portfolio1.returns.byYear).map(Number);
 		const years2 = Object.keys(portfolio2.returns.byYear).map(Number);
@@ -119,76 +122,71 @@
 <div class="grid grid-cols-1 gap-6">
 	<!-- Summary Statistics Cards -->
 	<div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
-		<div class="card">
-			<div class=" text-muted-foreground mb-2">Average Annual Return</div>
-			<div class="space-y-1 text-lg font-semibold">
-				<div>Portfolio 1: {formatAsPercentage(processedData.summaryStats.p1Avg)}</div>
-				<div>Portfolio 2: {formatAsPercentage(processedData.summaryStats.p2Avg)}</div>
-			</div>
-		</div>
-
-		<div class="card">
-			<div class=" text-muted-foreground mb-2">Volatility</div>
-			<div class="space-y-1 text-lg font-semibold">
-				<div>Portfolio 1: {formatAsPercentage(processedData.summaryStats.p1Vol)}</div>
-				<div>Portfolio 2: {formatAsPercentage(processedData.summaryStats.p2Vol)}</div>
-			</div>
-		</div>
-
-		<div class="card">
-			<div class=" text-muted-foreground mb-2">Best Year</div>
-			<div class="space-y-1 text-lg font-semibold text-green-300">
-				<div>
-					<span class="text-white">Portfolio 1:</span>
-					{formatAsPercentage(processedData.summaryStats.p1Best)}
-				</div>
-				<div>
-					<span class="text-white">Portfolio 2:</span>
-					{formatAsPercentage(processedData.summaryStats.p2Best)}
-				</div>
-			</div>
-		</div>
-
-		<div class="card">
-			<div class=" text-muted-foreground mb-2">Worst Year</div>
-			<div class="space-y-1 text-lg text-red-300">
-				<div>
-					<span class="text-white">Portfolio 1:</span>
-					{formatAsPercentage(processedData.summaryStats.p1Worst)}
-				</div>
-				<div>
-					<span class="text-white">Portfolio 2:</span>
-					{formatAsPercentage(processedData.summaryStats.p2Worst)}
-				</div>
-			</div>
-		</div>
+		{@render card(
+			'Average Annual Return',
+			processedData.summaryStats.p1Avg,
+			processedData.summaryStats.p2Avg
+		)}
+		{@render card('Volatility', processedData.summaryStats.p1Vol, processedData.summaryStats.p2Vol)}
+		{@render card(
+			'Best Year',
+			processedData.summaryStats.p1Best,
+			processedData.summaryStats.p2Best
+		)}
+		{@render card(
+			'Worst Year',
+			processedData.summaryStats.p1Worst,
+			processedData.summaryStats.p2Worst
+		)}
 	</div>
 
 	<!-- Returns Chart -->
 	<div class="card">
-		<div class="mb-6">
+		<div class="mb-6 flex items-start justify-between">
 			<h3 class="text-lg font-semibold">Returns Comparison</h3>
+			<Tabs.Root value={view} onValueChange={(value) => (view = value)} class="w-[200px]">
+				<Tabs.List class="grid w-full grid-cols-2">
+					<Tabs.Trigger value="chart">Chart</Tabs.Trigger>
+					<Tabs.Trigger value="table">Table</Tabs.Trigger>
+				</Tabs.List>
+			</Tabs.Root>
 		</div>
 
-		<BarChart
-			data={processedData.chartData.labels.map((label, i) => ({
-				label,
-				value: processedData.chartData.datasets[0].data[i]
-			}))}
-			datasets={processedData.chartData.datasets}
-			formatter={formatAsPercentage}
-			showLegend={true}
-		/>
-	</div>
-
-	<!-- Returns Table -->
-	<div class="card">
-		<div class="flex items-center justify-between mb-6">
-			<h3 class="text-lg font-semibold">Historical Returns by Year</h3>
-		</div>
-
-		<div class="overflow-x-auto">
-			<ComparisonReturnsTable tableData={processedData.tableData} />
-		</div>
+		<Tabs.Root value={view} class="mt-4">
+			<Tabs.Content value="chart" class="m-0">
+				<BarChart
+					data={processedData.chartData.labels.map((label, i) => ({
+						label,
+						value: processedData.chartData.datasets[0].data[i]
+					}))}
+					datasets={processedData.chartData.datasets}
+					formatter={formatAsPercentage}
+					showLegend={true}
+				/>
+			</Tabs.Content>
+			<Tabs.Content value="table" class="m-0">
+				<ComparisonReturnsTable tableData={processedData.tableData} />
+			</Tabs.Content>
+		</Tabs.Root>
 	</div>
 </div>
+
+{#snippet card(title: string, p1: number, p2: number)}
+	<div class="card">
+		<div class=" text-muted-foreground mb-2">{title}</div>
+		<div class="space-y-1 text-lg">
+			<div>
+				<span>P1:</span>
+				<span class="font-semibold" class:text-emerald-300={p1 > 0} class:text-rose-300={p1 < 0}
+					>{formatAsPercentage(p1)}</span
+				>
+			</div>
+			<div>
+				<span>P2:</span>
+				<span class="font-semibold" class:text-emerald-300={p2 > 0} class:text-rose-300={p2 < 0}
+					>{formatAsPercentage(p2)}</span
+				>
+			</div>
+		</div>
+	</div>
+{/snippet}

@@ -64,59 +64,61 @@
 	<h2 class="card-heading">{title}</h2>
 {/if}
 
-<table class="w-full text-sm">
-	<thead>
-		<tr>
-			<th class="text-left">Investment</th>
-			<th class="text-right">Portfolio 1</th>
-			<th class="text-right">Portfolio 2</th>
-		</tr>
-	</thead>
-	<tbody>
-		{#each allSymbols as symbol}
-			{@const row1 = rows1.find((r) => r.symbol === symbol)}
-			{@const row2 = rows2.find((r) => r.symbol === symbol)}
+<div class="overflow-x-auto">
+	<table class="w-full">
+		<thead>
 			<tr>
-				<td>
-					<div>{symbol}</div>
-					<div class="text-muted-foreground">{row1?.name || row2?.name}</div>
-				</td>
+				<th class="text-left">Investment</th>
+				<th class="text-right">Portfolio 1</th>
+				<th class="text-right">Portfolio 2</th>
+			</tr>
+		</thead>
+		<tbody>
+			{#each allSymbols as symbol}
+				{@const row1 = rows1.find((r) => r.symbol === symbol)}
+				{@const row2 = rows2.find((r) => r.symbol === symbol)}
+				<tr>
+					<td>
+						<div>{symbol}</div>
+						<div class="text-muted-foreground hidden md:block">{row1?.name || row2?.name}</div>
+					</td>
+					<td class="text-right">
+						{#if row1}
+							<div>{formatAsCurrency(row1.primaryValue)}</div>
+							<div class="text-sm text-muted-foreground">
+								{row1.secondaryLabel}
+							</div>
+						{/if}
+					</td>
+					<td class="text-right">
+						{#if row2}
+							<div>{formatAsCurrency(row2.primaryValue)}</div>
+							<div class="text-sm text-muted-foreground">
+								{row2.secondaryLabel}
+							</div>
+						{/if}
+					</td>
+				</tr>
+			{/each}
+			<tr class="font-semibold border-t">
+				<td>{totalLabel}</td>
 				<td class="text-right">
-					{#if row1}
-						<div>{formatAsCurrency(row1.primaryValue)}</div>
-						<div class="text-sm text-muted-foreground">
-							{row1.secondaryLabel}
+					<div>{formatAsCurrency(total1)}</div>
+					{#if view === 'cost'}
+						<div class="text-sm text-muted-foreground font-normal">
+							{formatAsPercentage(weightedAvgFee1)} pa
 						</div>
 					{/if}
 				</td>
 				<td class="text-right">
-					{#if row2}
-						<div>{formatAsCurrency(row2.primaryValue)}</div>
-						<div class="text-sm text-muted-foreground">
-							{row2.secondaryLabel}
+					<div>{formatAsCurrency(total2)}</div>
+					{#if view === 'cost'}
+						<div class="text-sm text-muted-foreground font-normal">
+							{formatAsPercentage(weightedAvgFee2)} pa
 						</div>
 					{/if}
 				</td>
 			</tr>
-		{/each}
-		<tr class="font-semibold border-t">
-			<td>{totalLabel}</td>
-			<td class="text-right">
-				<div>{formatAsCurrency(total1)}</div>
-				{#if view === 'cost'}
-					<div class="text-sm text-muted-foreground font-normal">
-						{formatAsPercentage(weightedAvgFee1)} pa
-					</div>
-				{/if}
-			</td>
-			<td class="text-right">
-				<div>{formatAsCurrency(total2)}</div>
-				{#if view === 'cost'}
-					<div class="text-sm text-muted-foreground font-normal">
-						{formatAsPercentage(weightedAvgFee2)} pa
-					</div>
-				{/if}
-			</td>
-		</tr>
-	</tbody>
-</table>
+		</tbody>
+	</table>
+</div>

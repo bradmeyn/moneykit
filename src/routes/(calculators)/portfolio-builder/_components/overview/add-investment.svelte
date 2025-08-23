@@ -33,9 +33,7 @@
 	function handleAddInvestment(investment: ExchangeTradedFund) {
 		portfolio.addInvestment({
 			investment,
-			value: 0,
-			weight: 0,
-			cost: 0
+			weight: 0
 		});
 	}
 	search = '';
@@ -43,7 +41,7 @@
 </script>
 
 <Dialog.Root bind:open>
-	<Dialog.Trigger class="mb-2">
+	<Dialog.Trigger class="mb-2 w-full md:w-fit">
 		<Button size="sm" class="w-full">Add Investment</Button>
 	</Dialog.Trigger>
 

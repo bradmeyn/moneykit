@@ -93,7 +93,7 @@
 						},
 						ticks: {
 							font: {
-								size: 16,
+								size: 14,
 								family: 'sans-serif'
 							},
 							color: '#ffffff'
@@ -109,7 +109,7 @@
 						ticks: {
 							callback: (value) => formatter(+value),
 							font: {
-								size: 16,
+								size: 14,
 								family: 'sans-serif'
 							},
 							color: '#ffffff'

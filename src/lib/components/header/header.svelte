@@ -5,7 +5,7 @@
 
 <header class="h-16 relative">
 	<div class="container relative">
-		<div class="flex items-center gap-8 w-full">
+		<div class="flex items-center gap-8 w-full py-4">
 			<a href="/" class="flex items-center gap-2">
 				<span class="text-white text-xl"
 					>Money<span class="text-transparent bg-clip-text bg-linear-to-b from-brand to-brand"

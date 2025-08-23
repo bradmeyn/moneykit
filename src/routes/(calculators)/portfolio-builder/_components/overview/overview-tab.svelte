@@ -24,6 +24,7 @@
 <div class="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-4 mt-4">
 	<div class="w-full card">
 		<h2 class="card-heading">Portfolio Overview</h2>
+
 		<div class="md:w-[200px] mb-2">
 			<label for="portfolio-value" class="block text-xs text-muted-foreground mb-1"
 				>Total Value</label
@@ -35,12 +36,12 @@
 			/>
 		</div>
 		<PortfolioOverviewTable {portfolio} />
-		<div class="flex justify-end mt-4">
+		<div class="mt-4 flex justify-end">
 			<AddInvestment {portfolio} />
 		</div>
 	</div>
 	<div class="card">
-		<h2 class="card-heading">Portfolio</h2>
+		<h2 class="card-heading">Holding Weights</h2>
 		<div class="flex flex-col items-center">
 			<DoughnutChart {data} formatter={formatAsPercentage} />
 			<div class="mt-4 w-full">

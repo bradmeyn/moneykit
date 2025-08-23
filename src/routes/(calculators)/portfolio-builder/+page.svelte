@@ -10,6 +10,8 @@
 	import CostsTab from './_components/costs/costs-tab.svelte';
 	import ReturnsTab from './_components/returns/returns-tab.svelte';
 	import AllocationTab from './_components/asset-allocation/allocation-tab.svelte';
+
+	// Comparison
 	import ComparisonOverview from './_components/comparison/comparison-overview.svelte';
 	import ComparisonAllocation from './_components/comparison/comparison-allocation.svelte';
 	import ComparisonCost from './_components/comparison/comparison-cost.svelte';
@@ -21,7 +23,7 @@
 	let selectedTab = $state<string>('portfolio1');
 	let selectedView = $state<string>('overview');
 
-	let selectedPortfolio = $derived(selectedTab === 'portfolio1' ? portfolio1 : portfolio2);
+	const selectedPortfolio = $derived(selectedTab === 'portfolio1' ? portfolio1 : portfolio2);
 </script>
 
 <svelte:head>
@@ -37,7 +39,7 @@
 			</div>
 		</div>
 
-		<div class="flex justify-between mb-4">
+		<div class="flex flex-col md:flex-row gap-2 justify-between mb-4">
 			<Tabs.Root value={selectedTab} onValueChange={(value) => (selectedTab = value)}>
 				<Tabs.List>
 					<Tabs.Trigger value="portfolio1">Portfolio 1</Tabs.Trigger>

@@ -53,62 +53,61 @@
 
 		<div class="w-full space-y-4">
 			<div class="card">
-				<div class="flex flex-col-reverse md:flex-row gap-4 justify-between mb-3 items-start">
-					<div class="space-y-4">
+				<div class="flex gap-2 flex-col md:flex-row md:justify-between w-full mb-2">
+					<h2 class="card-heading">Outcome</h2>
+					<Tabs.Root
+						value={selectedView}
+						onValueChange={(value) => (selectedView = value)}
+						class="w-full md:w-fit"
+					>
+						<Tabs.List class="w-full min-w-48">
+							<Tabs.Trigger value="chart">Chart</Tabs.Trigger>
+							<Tabs.Trigger value="table">Table</Tabs.Trigger>
+						</Tabs.List>
+					</Tabs.Root>
+				</div>
+
+				<div class="space-y-4">
+					<div>
+						<h2 class="text-muted-foreground">Value after {calculator.years} Years</h2>
+						<p class="font-semibold text-2xl md:text-3xl">
+							{formatAsCurrency(calculator.baseResult.totalValue)}
+						</p>
+					</div>
+					<div class="flex gap-8 flex-wrap">
 						<div>
-							<h2 class="text-muted-foreground">Value after {calculator.years} Years</h2>
-							<p class="font-semibold text-2xl md:text-3xl">
-								{formatAsCurrency(calculator.baseResult.totalValue)}
+							<p class="text-muted-foreground">Total Contributions</p>
+							<p class="text-xl font-semibold">
+								{formatAsCurrency(calculator.baseResult.totalContributions)}
 							</p>
 						</div>
-						<div class="flex gap-8 flex-wrap">
-							<div>
-								<p class="text-muted-foreground">Total Contributions</p>
-								<p class="text-xl font-semibold">
-									{formatAsCurrency(calculator.baseResult.totalContributions)}
-								</p>
-							</div>
 
-							<div>
-								<p class="text-muted-foreground">Total Interest</p>
-								<p class="text-xl font-semibold">
-									{formatAsCurrency(calculator.baseResult.totalInterest)}
-								</p>
-							</div>
-
-							{#if goalStatus}
-								<div>
-									<p class="text-muted-foreground">Goal Status</p>
-									<div class="flex items-center gap-2">
-										{#if goalStatus.achieved}
-											<CheckCircle class="w-5 h-5 text-emerald-500" />
-										{:else}
-											<XCircle class="w-5 h-5 text-red-500" />
-										{/if}
-										<p class="text-xl font-semibold">
-											{goalStatus.text}
-										</p>
-									</div>
-								</div>
-							{/if}
+						<div>
+							<p class="text-muted-foreground">Total Interest</p>
+							<p class="text-xl font-semibold">
+								{formatAsCurrency(calculator.baseResult.totalInterest)}
+							</p>
 						</div>
-					</div>
 
-					<div class="flex items-center gap-2">
-						<Tabs.Root
-							value={selectedView}
-							onValueChange={(value) => (selectedView = value)}
-							class="w-[200px]"
-						>
-							<Tabs.List class="grid w-full grid-cols-2">
-								<Tabs.Trigger value="chart">Chart</Tabs.Trigger>
-								<Tabs.Trigger value="table">Table</Tabs.Trigger>
-							</Tabs.List>
-						</Tabs.Root>
+						{#if goalStatus}
+							<div>
+								<p class="text-muted-foreground">Goal Status</p>
+								<div class="flex items-center gap-2">
+									{#if goalStatus.achieved}
+										<CheckCircle class="w-5 h-5 text-emerald-500" />
+									{:else}
+										<XCircle class="w-5 h-5 text-red-500" />
+									{/if}
+									<p class="text-xl font-semibold">
+										{goalStatus.text}
+									</p>
+								</div>
+							</div>
+						{/if}
 					</div>
 				</div>
 
-				<Tabs.Root value={selectedView} class="mt-4">
+				<Tabs.Root value={selectedView} class="my-4">
 					<Tabs.Content value="chart" class="m-0">
 						<GrowthChart
 							baseData={calculator.baseResult.annualData}

@@ -72,7 +72,7 @@
 							text={`all ${category} items`}
 						>
 							{#snippet trigger()}
-								<Button variant="secondary" size="sm">Delete Items</Button>
+								<Button variant="secondary" size="sm">Delete All</Button>
 							{/snippet}
 						</ClearAllDialog>
 					{:else}

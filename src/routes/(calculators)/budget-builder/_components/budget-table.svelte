@@ -13,10 +13,10 @@
 			<tr>
 				<th class="text-left text-sm text-card-foreground p-2 border-t-transparent">Item</th>
 				<th class="text-left text-sm text-card-foreground p-2 border-t-transparent">Amount</th>
-				<th class="text-left text-sm text-card-foreground p-2 border-t-transparent">Frequency</th>
-				<th class="text-right text-sm text-card-foreground p-2 border-t-transparent"
-					>{FREQUENCIES[budget.frequency].label} Total</th
+				<th class="text-left text-sm text-card-foreground p-2 border-t-transparent hidden md:block"
+					>Frequency</th
 				>
+				<th class="text-right text-sm text-card-foreground p-2 border-t-transparent">Total</th>
 				<th class="text-right text-sm text-card-foreground p-2 border-t-transparent"> </th>
 			</tr>
 		</thead>

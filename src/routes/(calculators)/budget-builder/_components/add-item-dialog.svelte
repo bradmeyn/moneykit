@@ -6,8 +6,6 @@
 	import FrequencyInput from '$lib/components/inputs/frequency-select.svelte';
 	import type { BudgetItem as BudgetItemType } from '../budget.svelte';
 	import Input from '$ui/input/input.svelte';
-	import { formatAsCurrency } from '$lib/utils/formatters';
-	import { FREQUENCIES } from '$constants/frequencies';
 	import { v4 as uuidv4 } from 'uuid';
 	import { getBudgetState } from '../budget.svelte';
 	import type { Snippet } from 'svelte';
@@ -115,7 +113,7 @@
 		{/snippet}
 	</Dialog.Trigger>
 	<Dialog.Content class="sm:max-w-[500px]">
-		<Dialog.Header>
+		<Dialog.Header class="text-start">
 			<Dialog.Title
 				>Add New {type === 'income' ? 'Income' : type === 'expense' ? 'Expense' : 'Savings'} Item</Dialog.Title
 			>
@@ -188,13 +186,6 @@
 					{/if}
 				</div>
 			{/if}
-
-			<!-- <div class="rounded-md bg-muted p-3">
-				<div class="text-sm text-muted-foreground">Monthly equivalent:</div>
-				<div class="text-lg font-semibold">
-					{formatAsCurrency(newItem.amount * FREQUENCIES[newItem.frequency].value, false)}
-				</div>
-			</div> -->
 		</div>
 
 		<Dialog.Footer>

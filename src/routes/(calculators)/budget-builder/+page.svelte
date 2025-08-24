@@ -5,11 +5,14 @@
 	import { setBudgetState } from './budget.svelte';
 	import BarChart from '$lib/components/charts/bar-chart.svelte';
 	import BudgetCard from './_components/budget-card.svelte';
-	const budget = setBudgetState();
+
 	import ActionsMenu from './_components/actions-menu.svelte';
 	import LoadBudgetAlert from './_components/load-budget-alert.svelte';
 	import Switch from '$ui/switch/switch.svelte';
 	import Label from '$ui/label/label.svelte';
+	import { onMount } from 'svelte';
+
+	const budget = setBudgetState();
 
 	let chartData = $derived.by(() => {
 		const total = budget.totalExpenses + budget.totalSavings;
@@ -29,6 +32,10 @@
 		}
 		return items;
 	});
+
+	onMount(() => {
+		budget.loadBudget();
+	});
 </script>
 
 <svelte:head>
@@ -36,9 +43,9 @@
 </svelte:head>
 
 <!-- Load budget alert - now positioned absolutely to avoid layout shift -->
-<LoadBudgetAlert />
+<!-- <LoadBudgetAlert /> -->
 
-<main class="flex flex-col flex-1 container max-w-[1200px]">
+<main class="flex flex-col flex-1 mx-auto w-full max-w-[1100px] px-4 md:px-6">
 	<div class="flex justify-between items-center mb-2">
 		<h1 class="calculator-heading">Budget Builder</h1>
 		<div class="flex items-center gap-6">

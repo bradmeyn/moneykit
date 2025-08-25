@@ -9,6 +9,7 @@
 	import ScrollableTable from '$ui/scrollable-table.svelte';
 	import CalculatorActions from '$lib/components/calculator-actions.svelte';
 
+	
 	setCalculatorState();
 	let calculator = getCalculatorState();
 	let selectedView = $state('chart');
@@ -49,6 +50,7 @@
 	</div>
 
 	<section class="flex flex-col lg:flex-row gap-8">
+		
 		<Inputs bind:isComparing />
 
 		<div class="w-full space-y-4">

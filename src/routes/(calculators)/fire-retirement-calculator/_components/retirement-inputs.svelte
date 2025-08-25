@@ -22,12 +22,8 @@
 	<Accordion.Root type="multiple" class="w-full" value={['retirement-details']}>
 		<!-- Personal Details Section -->
 		<Accordion.Item value="retirement-details">
-			<Accordion.Trigger
-				class="flex justify-between w-full px-4 py-2 text-left font-medium border-b rounded"
-			>
-				Personal Details
-			</Accordion.Trigger>
-			<Accordion.Content class="px-4 pt-2 pb-4">
+			<Accordion.Trigger class="border-b">Personal Details</Accordion.Trigger>
+			<Accordion.Content class="">
 				<div class="space-y-4">
 					<div class="space-y-2">
 						<Label for="age">Current Age</Label>
@@ -72,12 +68,8 @@
 
 		<!-- Financial Details Section -->
 		<Accordion.Item value="financial-details">
-			<Accordion.Trigger
-				class="flex justify-between w-full px-4 py-2 text-left font-medium border-b rounded"
-			>
-				Other Assets
-			</Accordion.Trigger>
-			<Accordion.Content class="px-4 pt-2 pb-4">
+			<Accordion.Trigger class="border-b">Other Assets</Accordion.Trigger>
+			<Accordion.Content class="">
 				<div>
 					{#each calc.investments as investment}
 						<div class=" border-b py-2 flex items-center justify-between">
@@ -104,12 +96,8 @@
 
 		<!-- Market Assumptions Section -->
 		<Accordion.Item value="market-assumptions">
-			<Accordion.Trigger
-				class="flex justify-between w-full px-4 py-2 text-left font-medium border-b rounded"
-			>
-				Assumptions
-			</Accordion.Trigger>
-			<Accordion.Content class="px-4 pt-2 pb-4">
+			<Accordion.Trigger class="border-b">Assumptions</Accordion.Trigger>
+			<Accordion.Content class="">
 				<div class="space-y-4">
 					<div>
 						<Label for="growth-rate">Pre-Retirement Return (p.a.)</Label>

@@ -14,16 +14,15 @@
 </script>
 
 <div class="card w-full h-full">
-	<div class="flex justify-between items-center">
-		<h2 class="card-heading mb-1">{title}</h2>
-		<div class="flex items-center gap-2">
-			<Tabs.Root value={view} onValueChange={(value) => (view = value)} class="w-[200px]">
-				<Tabs.List class="grid w-full grid-cols-2">
-					<Tabs.Trigger value="chart">Chart</Tabs.Trigger>
-					<Tabs.Trigger value="table">Table</Tabs.Trigger>
-				</Tabs.List>
-			</Tabs.Root>
-		</div>
+	<div class="flex justify-between flex-col md:flex-row gap-2">
+		<h2 class="card-heading">{title}</h2>
+
+		<Tabs.Root value={view} onValueChange={(value) => (view = value)} class="">
+			<Tabs.List class="w-full md:w-fit min-w-[200px]">
+				<Tabs.Trigger value="chart">Chart</Tabs.Trigger>
+				<Tabs.Trigger value="table">Table</Tabs.Trigger>
+			</Tabs.List>
+		</Tabs.Root>
 	</div>
 
 	<Tabs.Root value={view} onValueChange={(value) => (view = value)}>

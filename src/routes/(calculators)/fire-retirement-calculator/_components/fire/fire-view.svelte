@@ -17,28 +17,28 @@
 	<div class="card w-full">
 		<div class="flex flex-col-reverse md:flex-row gap-4 justify-between items-start mb-3">
 			<div class="grid grid-cols-2 gap-16">
-				<div class="col-span-2 md:col-span-1">
+				<div class="col-span-1">
 					<h3 class="text-muted-foreground">FIRE Number</h3>
 					<div class="text-2xl font-semibold">
 						{formatAsCurrency(calc.fireNumber)}
 					</div>
-					<div class="text-sm">25x Annual Expenses</div>
 				</div>
-				<div class="col-span-2 md:col-span-1">
+				<div class="col-span-1">
 					<h3 class="text-muted-foreground">FIRE Age</h3>
 					<div class="text-2xl font-semibold">
 						<span>{calc.yearsToFire + calc.age}</span>
+						<span class="text-muted-foreground text-sm">({calc.yearsToFire} years)</span>
 					</div>
-					<div class="text-sm">{calc.yearsToFire} years</div>
 				</div>
 			</div>
-			<div class="flex items-center gap-2">
+			<div class="flex gap-2 flex-col md:flex-row md:justify-between w-full mb-2">
+				<h2 class="card-heading">Outcome</h2>
 				<Tabs.Root
 					value={outcomeView}
 					onValueChange={(value) => (outcomeView = value)}
-					class="w-[200px]"
+					class="w-full md:w-fit"
 				>
-					<Tabs.List class="grid w-full grid-cols-2">
+					<Tabs.List class="w-full min-w-48">
 						<Tabs.Trigger value="chart">Chart</Tabs.Trigger>
 						<Tabs.Trigger value="table">Table</Tabs.Trigger>
 					</Tabs.List>

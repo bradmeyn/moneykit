@@ -18,13 +18,13 @@
 
 <Accordion.Root type="single" class="w-full">
 	<Accordion.Item value={category}>
-		<Accordion.Trigger class="flex justify-between  py-2 w-full border-b rounded-none">
+		<Accordion.Trigger class="flex justify-between py-2 w-full border-b rounded-none">
 			<div class="text-left">
 				<h3 class="text-sm text-muted-foreground">{category}</h3>
 				<p class="text-lg">{formatAsCurrency(categoryTotal, false)}</p>
 			</div>
 		</Accordion.Trigger>
-		<Accordion.Content class="p-2">
+		<Accordion.Content>
 			{@render children()}
 		</Accordion.Content>
 	</Accordion.Item>

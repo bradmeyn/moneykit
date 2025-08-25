@@ -17,7 +17,7 @@
 	};
 </script>
 
-<ScrollArea class="h-[{height}] w-full">
+<ScrollArea class="h-[{height}] w-full overflow-x-auto">
 	<table class="w-full">
 		<thead class="sticky top-0">
 			<tr>

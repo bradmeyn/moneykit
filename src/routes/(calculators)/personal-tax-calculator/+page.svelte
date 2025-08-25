@@ -36,34 +36,43 @@
 		</aside>
 
 		<section class="space-y-4 w-full">
-			<div class="card">
-				<div class="mb-2">
-					<p class="text-muted-foreground">Taxable Income</p>
-					<p class="font-semibold text-2xl md:text-2xl">
-						{formatAsCurrency(calculator.result.taxableIncome)}
+			<div class="grid gap-4">
+				<div class="card">
+					<div class="mb-2">
+						<p class="text-muted-foreground">Taxable Income</p>
+						<p class="font-semibold text-2xl md:text-2xl">
+							{formatAsCurrency(calculator.result.taxableIncome)}
+						</p>
+					</div>
+					<TaxBand taxableIncome={calculator.result.income - calculator.result.deductions} />
+				</div>
+				<div class="card md:hidden">
+					<h2 class="text-muted-foreground">Estimated Total Tax</h2>
+					<p class="font-semibold text-2xl">
+						{formatAsCurrency(calculator.result.totalTax)}
+						<span class="text-muted-foreground text-base"
+							>({formatAsPercentage(
+								calculator.result.totalTax / calculator.result.taxableIncome
+							)})</span
+						>
 					</p>
 				</div>
-				<TaxBand taxableIncome={calculator.result.income - calculator.result.deductions} />
 			</div>
 			<div class="flex gap-4 flex-col md:flex-row">
 				<div class="flex-1 card">
 					<Tabs.Root value={selectedView} onValueChange={(value) => (selectedView = value)}>
-						<div class="flex justify-between">
-							<div>
-								<h2 class="text-muted-foreground">Tax</h2>
-								<p class="font-semibold text-2xl">
-									{formatAsCurrency(calculator.result.totalTax)}
-								</p>
-								<p class=" text-muted-foreground">
-									({formatAsPercentage(
-										calculator.result.totalTax / calculator.result.taxableIncome
-									)})
-								</p>
-							</div>
-							<Tabs.List class="grid grid-cols-2 w-[200px]">
-								<Tabs.Trigger value="chart">Chart</Tabs.Trigger>
-								<Tabs.Trigger value="table">Table</Tabs.Trigger>
-							</Tabs.List>
+						<div class="flex gap-2 flex-col md:flex-row md:justify-between w-full mb-2">
+							<h2 class="card-heading">Outcome</h2>
+							<Tabs.Root
+								value={selectedView}
+								onValueChange={(value) => (selectedView = value)}
+								class="w-full md:w-fit"
+							>
+								<Tabs.List class="w-full min-w-48">
+									<Tabs.Trigger value="chart">Chart</Tabs.Trigger>
+									<Tabs.Trigger value="table">Table</Tabs.Trigger>
+								</Tabs.List>
+							</Tabs.Root>
 						</div>
 
 						<Tabs.Content value="chart" class="mt-4">

@@ -139,7 +139,7 @@
 
 	.container {
 		max-width: 1400px !important;
-		@apply mx-auto px-6;
+		@apply mx-auto px-4 md:px-6;
 	}
 
 	.calculator-heading {
@@ -172,7 +172,7 @@
 
 @layer components {
 	.card {
-		@apply rounded-xl border p-6 dark:bg-card shadow-sm;
+		@apply rounded-xl border p-4 md:p-6 dark:bg-card shadow-sm;
 	}
 
 	.tab-trigger {

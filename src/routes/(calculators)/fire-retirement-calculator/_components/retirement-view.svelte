@@ -15,13 +15,13 @@
 	const incomeData = calc.getIncomeTableData();
 </script>
 
-<section class="flex gap-8">
+<section class="flex gap-8 flex-col md:flex-row">
 	<div class="max-w-[1000px] min-w-[300px]">
 		<Inputs />
 	</div>
 	<div class="flex-1 flex flex-col gap-2 w-full">
 		<div class="grid grid-cols-3 gap-2">
-			<div class="card h-fit">
+			<div class="card h-fit col-span-3 md:col-span-1">
 				<h3 class="text-muted-foreground">
 					Balance at Retirement (Age {calc.retirementAge})
 				</h3>
@@ -29,13 +29,13 @@
 					{formatAsCurrency(calc.outcome.balanceAtRetirement)}
 				</div>
 			</div>
-			<div class="card h-fit">
+			<div class="card h-fit col-span-3 md:col-span-1">
 				<h3 class="text-muted-foreground">Superannuation Longevity</h3>
 				<div class="text-2xl font-semibold">
 					{calc.outcome.superLongevity} Years
 				</div>
 			</div>
-			<div class="card h-fit">
+			<div class="card h-fit col-span-3 md:col-span-1">
 				<h3 class="text-muted-foreground">Retirement Goal</h3>
 				<div class="text-2xl font-semibold flex items-center">
 					{#if calc.outcome.sufficientFunding}
@@ -53,7 +53,7 @@
 			</div>
 		</div>
 		<Tabs.Root value={outcomeView} onValueChange={(value) => (outcomeView = value)}>
-			<Tabs.List class="min-w-[200px] ">
+			<Tabs.List class="min-w-[200px] w-full md:w-fit">
 				<Tabs.Trigger value="assets">Assets</Tabs.Trigger>
 				<Tabs.Trigger value="income">Income</Tabs.Trigger>
 			</Tabs.List>

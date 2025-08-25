@@ -54,7 +54,7 @@
 	);
 </script>
 
-<div class="space-y-2">
+<div class="space-y-2 hidden md:block">
 	<div class="h-full rounded flex items-end">
 		{#each bands as { min, max, rate, widthPercent }, i}
 			<div

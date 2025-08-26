@@ -20,7 +20,7 @@
 </script>
 
 <tr class="hidden md:table-row">
-	<td class="text-sm w-50">{budgetItem.name}</td>
+	<td class="text-sm w-50 font-semibold">{budgetItem.name}</td>
 	<td class="w-50">
 		<CurrencyInput
 			onchange={(value) =>

@@ -79,7 +79,7 @@
 				{@const row2 = rows2.find((r) => r.symbol === symbol)}
 				<tr>
 					<td>
-						<div>{symbol}</div>
+						<div class="font-semibold">{symbol}</div>
 						<div class="text-muted-foreground hidden md:block">{row1?.name || row2?.name}</div>
 					</td>
 					<td class="text-right">

@@ -27,10 +27,10 @@
 				{#each portfolio.holdings as holding}
 					<tr>
 						<td>
-							<div>
+							<div class="font-semibold">
 								{holding.investment.symbol}
 							</div>
-							<div class=" text-muted-foreground">
+							<div class=" text-muted-foreground hidden md:block">
 								{holding.investment.name}
 							</div>
 						</td>

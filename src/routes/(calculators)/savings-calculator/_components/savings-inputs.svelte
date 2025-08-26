@@ -19,12 +19,16 @@
 		calculator.toggleComparison(isComparing);
 		isComparing = !isComparing;
 	}
+
+	function refreshVolatility() {
+		calculator.recalculate();
+	}
 </script>
 
 <aside class="max-w-[1000px] min-w-[300px]">
 	<Accordion.Root type="single" class="w-full" value="inputs">
 		<Accordion.Item value="inputs">
-			<Accordion.Trigger class="border-b ">
+			<Accordion.Trigger class="border-b">
 				<h2 class="card-heading">Inputs</h2>
 			</Accordion.Trigger>
 			<Accordion.Content class="space-y-4 py-2">
@@ -81,8 +85,36 @@
 					<CurrencyInput bind:value={calculator.savingsGoal} id="savings-goal" />
 				</div>
 
+				<Button
+					class="w-full"
+					variant="secondary"
+					size="sm"
+					onclick={() => (calculator.useVolatility = !calculator.useVolatility)}
+				>
+					{calculator.useVolatility ? 'Hide' : 'Add'} Volatility
+				</Button>
+
+				{#if calculator.useVolatility}
+					<h2 class="card-heading">Market Volatility</h2>
+
+					<PercentageSlider
+						label="Volatility (Standard Deviation)"
+						bind:value={calculator.baseScenario.volatility}
+						min={0.05}
+						max={0.4}
+						step={0.01}
+						id="volatility"
+						explainer="Higher values create more realistic but unpredictable returns. Stock markets typically have 15-20% volatility."
+						precision={0}
+					/>
+
+					<Button variant="outline" size="sm" onclick={refreshVolatility} class="w-full">
+						🎲 Generate New Random Returns
+					</Button>
+				{/if}
+
 				<Button class="w-full" variant="secondary" size="sm" onclick={toggleComparison}>
-					{isComparing ? 'Hide' : 'Compare'}
+					{isComparing ? 'Hide' : 'Add'} Comparison
 				</Button>
 
 				{#if isComparing}
@@ -98,6 +130,19 @@
 						explainer="Expected annual return for comparison scenario"
 						precision={1}
 					/>
+
+					{#if calculator.useVolatility}
+						<PercentageSlider
+							label="Volatility"
+							bind:value={calculator.comparisonScenario.volatility}
+							min={0.05}
+							max={0.4}
+							step={0.01}
+							id="comparison-volatility"
+							explainer="Volatility for comparison scenario"
+							precision={0}
+						/>
+					{/if}
 
 					<div class="grid grid-cols-1 md:grid-cols-2 gap-2">
 						<div>

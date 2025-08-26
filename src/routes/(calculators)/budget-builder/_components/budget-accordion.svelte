@@ -1,11 +1,10 @@
 <script lang="ts">
 	import * as Accordion from '$lib/components/ui/accordion';
 	import { formatAsCurrency } from '$lib/utils/formatters';
-	import { type BudgetItem, getBudgetState } from '../budget.svelte';
+	import { type BudgetItem } from '../budget.svelte';
 
 	let {
 		category = '',
-		type,
 		categoryTotal = 0,
 		children
 	}: {

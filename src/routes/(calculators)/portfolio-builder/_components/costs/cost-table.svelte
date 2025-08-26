@@ -9,7 +9,7 @@
 	} = $props();
 </script>
 
-<table class="w-full rounded-lg overflow-hidden text-sm">
+<table class="w-full rounded-lg overflow-hidden">
 	<thead>
 		<tr>
 			<th class="text-left">Investment</th>
@@ -22,7 +22,7 @@
 			<tr>
 				<td>
 					<div class="font-semibold">{holding.investment.symbol}</div>
-					<div class="text-sm text-muted-foreground">{holding.investment.name}</div>
+					<div class="text-sm text-muted-foreground hidden md:block">{holding.investment.name}</div>
 				</td>
 				<td class="text-right">
 					<div class="text-base">{formatAsCurrency(holding.value)}</div>

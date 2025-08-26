@@ -19,7 +19,7 @@
 	<meta name="og:description" content={description} />
 </svelte:head>
 
-<div class="antialiased min-h-screen flex flex-col bg-gray-950 text-white">
+<div class="antialiased min-h-screen flex flex-col dark:bg-background text-white">
 	<Header />
 	{@render children()}
 	<footer class=" mt-auto items-center p-4 text-muted-foreground justify-center">

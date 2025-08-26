@@ -73,10 +73,10 @@ export const ETF_MAP: Record<string, ExchangeTradedFund> = {
 	},
 
 	// Vanguard ETFs (with comprehensive returns data)
-	...VANGUARD_ETFS,
+	...VANGUARD_ETFS
 
 	// BetaShares ETFs (popular options)
-	...BETASHARES_ETFS
+	// ...BETASHARES_ETFS
 };
 
 // Helper functions

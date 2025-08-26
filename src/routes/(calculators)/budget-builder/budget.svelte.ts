@@ -36,7 +36,7 @@ export function calculateCategoryTotal(
 class Budget {
 	hasSavedBudget = $state<boolean>(false);
 	showLoadPrompt = $state<boolean>(false);
-	autoSaveEnabled = $state<boolean>(true);
+	autoSaveEnabled = $state<boolean>(false);
 
 	constructor() {
 		this.checkForSavedData();

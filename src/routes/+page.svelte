@@ -23,8 +23,13 @@
 		</p>
 	</div>
 
+	<!-- Alternative: If you want larger cards on bigger screens -->
 	<div
-		class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 max-w-6xl mx-auto pb-24"
+		class="grid grid-cols-3 gap-3 mx-auto max-w-7xl px-4
+	sm:gap-4
+	md:gap-6
+	 lg:gap-8 lg:max-w-6xl
+	xl:max-w-5xl"
 	>
 		{#each calculators as calculator}
 			<CalculatorCard {...calculator} />

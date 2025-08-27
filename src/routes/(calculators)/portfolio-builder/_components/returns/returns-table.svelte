@@ -7,7 +7,6 @@
 
 <!-- Annual Returns Table -->
 
-<h3 class="text-lg font-semibold text-white mb-4">Return by Year</h3>
 <table class="w-full text-white text-sm">
 	<thead>
 		<tr>

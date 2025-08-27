@@ -27,7 +27,7 @@
 
 		<div class="md:w-[200px] mb-2">
 			<label for="portfolio-value" class="block text-xs text-muted-foreground mb-1"
-				>Total Value</label
+				>Total Invested</label
 			>
 			<CurrencyInput
 				id="portfolio-value"

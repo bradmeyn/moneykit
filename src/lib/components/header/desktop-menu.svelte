@@ -7,7 +7,7 @@
 
 <div class="relative group md:relative hidden md:block w-fit">
 	<button
-		class="py-4 block text-lg md:text-sm text-left text-muted-foreground hover:text-white border-b-transparent w-fit"
+		class="block text-lg md:text-sm text-left text-muted-foreground hover:text-white border-b-transparent w-fit"
 	>
 		<span>Calculators</span>
 		<ChevronDown class="size-4 inline-block group-hover:rotate-180 transition-all duration-300" />
@@ -31,3 +31,17 @@
 		</ul>
 	</div>
 </div>
+
+<!-- <nav class="hidden md:flex gap-8">
+	{#each calculators as calculator}
+		<a
+			href={calculator.href}
+			class="block text-left border-b-2 w-fit text-sm text-muted-foreground {activeUrl ===
+			calculator.href
+				? 'text-white border-b-2 border-b-brand'
+				: 'text-card-foreground  hover:text-white border-b-transparent'}"
+		>
+			{calculator.name}
+		</a>
+	{/each}
+</nav> -->

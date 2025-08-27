@@ -39,7 +39,35 @@
 </script>
 
 <svelte:head>
-	<title>Budget Builder</title>
+	<title>Budget Planner | Free Budget Planner & Calculator</title>
+
+	<!-- Primary Meta Tags -->
+	<meta
+		name="description"
+		content="Create and manage your personal budget with our free budget planner. Track income, expenses, and savings goals with an easy-to-use budget calculator."
+	/>
+	<meta
+		name="keywords"
+		content="budget planner, budget calculator, personal budget, free budget tool, expense tracker, financial planning"
+	/>
+	<meta name="author" content="Your Site Name" />
+
+	<!-- Open Graph / Facebook -->
+	<meta property="og:type" content="website" />
+	<meta
+		property="og:title"
+		content="Free Budget Planner & Calculator - Build Your Personal Budget"
+	/>
+	<meta
+		property="og:description"
+		content="Create and manage your personal budget with our free budget planner. Track income, expenses, and savings goals."
+	/>
+	<meta property="og:url" content="https://moneykit.au/budget-planner" />
+	<meta property="og:image" content="https://moneykit.au/budget-preview.jpg" />
+
+	<!-- Additional SEO -->
+	<meta name="robots" content="index, follow" />
+	<link rel="canonical" href="https://moneykit.au/budget-planner" />
 </svelte:head>
 
 <!-- Load budget alert - now positioned absolutely to avoid layout shift -->
@@ -47,7 +75,7 @@
 
 <main class="flex flex-col flex-1 mx-auto w-full container px-4 md:px-6">
 	<div class="flex justify-between items-center mb-2">
-		<h1 class="calculator-heading">Budget Builder</h1>
+		<h1 class="calculator-heading">Budget Planner</h1>
 		<div class="flex items-center gap-6">
 			<div class="text-center">
 				<Label for="auto-save" class="text-xs mb-1">Auto Save</Label>

@@ -11,7 +11,7 @@
 		"strict": true
 	},
 
-	"include": ["src/**/*", "src/node_modules", ".svelte-kit/ambient.d.ts"] // see last element
+	"include": ["src/**/*", "src/node_modules", ".svelte-kit/ambient.d.ts", "static/+page.svelte"] // see last element
 
 	// Path aliases are handled by https://kit.svelte.dev/docs/configuration#alias
 	//

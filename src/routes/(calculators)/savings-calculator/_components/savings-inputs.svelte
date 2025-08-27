@@ -37,7 +37,7 @@
 					<CurrencyInput bind:value={calculator.principal} id="principal" />
 				</div>
 
-				<div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+				<div class="grid grid-cols-2 gap-2">
 					<div>
 						<Label for="contributions">Contributions</Label>
 						<CurrencyInput
@@ -144,7 +144,7 @@
 						/>
 					{/if}
 
-					<div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+					<div class="grid grid-cols-2 gap-2">
 						<div>
 							<Label for="comparison-contributions">Contributions</Label>
 							<CurrencyInput

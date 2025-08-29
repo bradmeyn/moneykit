@@ -9,7 +9,8 @@ export type BudgetItem = {
 	amount: number;
 	category: string;
 	frequency: FrequencyType;
-	type: 'income' | 'expense' | 'savings';
+	type: 'income' | 'expense';
+	owner: string;
 };
 
 export function convertToFrequency(
@@ -37,6 +38,8 @@ class Budget {
 	hasSavedBudget = $state<boolean>(false);
 	showLoadPrompt = $state<boolean>(false);
 	autoSaveEnabled = $state<boolean>(false);
+	isJointBudget = $state<boolean>(false);
+	owners = $state<string[]>(['User 1', 'User 2', 'Joint']);
 
 	constructor() {
 		this.checkForSavedData();
@@ -74,13 +77,11 @@ class Budget {
 	// Items by type
 	income = $derived<BudgetItem[]>(this.budgetItems.filter((i) => i.type === 'income'));
 	expenses = $derived<BudgetItem[]>(this.budgetItems.filter((i) => i.type === 'expense'));
-	savings = $derived<BudgetItem[]>(this.budgetItems.filter((i) => i.type === 'savings'));
 
 	// Categories
 	categories = $state({
 		income: defaultCategories.income,
-		expense: defaultCategories.expense,
-		savings: defaultCategories.savings
+		expense: defaultCategories.expense
 	});
 
 	addCategory(type: BudgetItem['type'], category: string) {
@@ -132,12 +133,6 @@ class Budget {
 			amount: convertToFrequency(item.amount, item.frequency, this.frequency)
 		}))
 	);
-	adjustedsavings = $derived<BudgetItem[]>(
-		this.savings.map((item) => ({
-			...item,
-			amount: convertToFrequency(item.amount, item.frequency, this.frequency)
-		}))
-	);
 
 	expenseByCategory = $derived<{ category: string; total: number }[]>(
 		this.categories.expense.map((category) => {
@@ -150,8 +145,7 @@ class Budget {
 	// Calculate totals for current frequency
 	totalIncome = $derived<number>(this.adjustedincome.reduce((acc, i) => acc + i.amount, 0));
 	totalExpenses = $derived<number>(this.adjustedexpenses.reduce((acc, i) => acc + i.amount, 0));
-	totalSavings = $derived<number>(this.adjustedsavings.reduce((acc, i) => acc + i.amount, 0));
-	unallocated = $derived<number>(this.totalIncome - this.totalExpenses - this.totalSavings);
+	unallocated = $derived<number>(this.totalIncome - this.totalExpenses);
 
 	addItem(item: BudgetItem) {
 		this.budgetItems.push(item);
@@ -187,8 +181,7 @@ class Budget {
 		this.budgetItems = [];
 		this.categories = {
 			income: [],
-			expense: [],
-			savings: []
+			expense: []
 		};
 		if (this.autoSaveEnabled) this.saveToStorage();
 	}
@@ -202,7 +195,6 @@ class Budget {
 		// Sort items by type
 		const income = this.budgetItems.filter((item) => item.type === 'income');
 		const expenses = this.budgetItems.filter((item) => item.type === 'expense');
-		const savings = this.budgetItems.filter((item) => item.type === 'savings');
 
 		const headers = [
 			'Type',
@@ -260,7 +252,6 @@ class Budget {
 		// Add all item types
 		addItemsToRows(income, 'income');
 		addItemsToRows(expenses, 'expenses');
-		addItemsToRows(savings, 'savings');
 
 		// Calculate unallocated funds
 		const monthlyincome = income.reduce(
@@ -271,11 +262,8 @@ class Budget {
 			(acc, item) => acc + convertToFrequency(item.amount, item.frequency, 'monthly'),
 			0
 		);
-		const monthlysavings = savings.reduce(
-			(acc, item) => acc + convertToFrequency(item.amount, item.frequency, 'monthly'),
-			0
-		);
-		const monthlyUnallocated = monthlyincome - (monthlyexpenses + monthlysavings);
+
+		const monthlyUnallocated = monthlyincome - monthlyexpenses;
 
 		const annualincome = income.reduce(
 			(acc, item) => acc + convertToFrequency(item.amount, item.frequency, 'annually'),
@@ -285,11 +273,8 @@ class Budget {
 			(acc, item) => acc + convertToFrequency(item.amount, item.frequency, 'annually'),
 			0
 		);
-		const annualsavings = savings.reduce(
-			(acc, item) => acc + convertToFrequency(item.amount, item.frequency, 'annually'),
-			0
-		);
-		const annualUnallocated = annualincome - (annualexpenses + annualsavings);
+
+		const annualUnallocated = annualincome - annualexpenses;
 
 		rows.push([
 			'Unallocated',

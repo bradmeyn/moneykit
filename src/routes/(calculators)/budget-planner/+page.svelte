@@ -3,19 +3,17 @@
 	import LegendList from '$lib/components/charts/legend-list.svelte';
 	import { formatAsCurrency, formatAsPercentage } from '$lib/utils/formatters';
 	import { setBudgetState } from './budget.svelte';
-	import BarChart from '$lib/components/charts/bar-chart.svelte';
 	import BudgetCard from './_components/budget-card.svelte';
-
 	import ActionsMenu from './_components/actions-menu.svelte';
 	import LoadBudgetAlert from './_components/load-budget-alert.svelte';
-	import Switch from '$ui/switch/switch.svelte';
-	import Label from '$ui/label/label.svelte';
-	import { onMount } from 'svelte';
+
+	import Button from '$ui/button/button.svelte';
+	import { Save, User, Users } from 'lucide-svelte';
 
 	const budget = setBudgetState();
 
 	let chartData = $derived.by(() => {
-		const total = budget.totalExpenses + budget.totalSavings;
+		const total = budget.totalExpenses;
 		let items = budget.expenseByCategory
 			.map((item) => ({
 				label: item.category,
@@ -23,18 +21,7 @@
 			}))
 			.filter((item) => item.value !== 0);
 
-		const savingsValue = budget.totalSavings / total;
-		if (savingsValue !== 0) {
-			items.push({
-				label: 'Savings',
-				value: savingsValue
-			});
-		}
 		return items;
-	});
-
-	onMount(() => {
-		budget.loadBudget();
 	});
 </script>
 
@@ -74,12 +61,36 @@
 <!-- <LoadBudgetAlert /> -->
 
 <main class="flex flex-col flex-1 mx-auto w-full container px-4 md:px-6">
+	<LoadBudgetAlert />
 	<div class="flex justify-between items-center mb-2">
 		<h1 class="calculator-heading">Budget Planner</h1>
-		<div class="flex items-center gap-6">
+		<div class="flex items-center gap-4">
+			<Button
+				size="sm"
+				class="rounded-full"
+				variant={budget.isJointBudget ? 'secondary' : 'outline'}
+				onclick={() => (budget.isJointBudget = !budget.isJointBudget)}
+			>
+				{#if budget.isJointBudget}
+					<Users /> <span>Joint</span>
+				{:else}
+					<User />
+					<div>Personal</div>
+				{/if}
+			</Button>
 			<div class="text-center">
-				<Label for="auto-save" class="text-xs mb-1">Auto Save</Label>
-				<Switch id="auto-save" name="auto-save" bind:checked={budget.autoSaveEnabled} />
+				<Button
+					size="sm"
+					class="rounded-full"
+					variant={budget.autoSaveEnabled ? 'secondary' : 'outline'}
+					onclick={() => (budget.autoSaveEnabled = !budget.autoSaveEnabled)}
+					aria-label="Toggle Auto Save"
+				>
+					<Save class={budget.autoSaveEnabled ? 'text-brand' : 'text-muted-foreground'} />
+					<span class={budget.autoSaveEnabled ? 'text-white' : 'text-muted-foreground'}
+						>Auto Save</span
+					>
+				</Button>
 			</div>
 			<ActionsMenu />
 		</div>
@@ -99,40 +110,13 @@
 				total={budget.totalExpenses}
 				items={budget.expenses}
 			/>
-			<BudgetCard
-				type="savings"
-				categories={budget.categories['savings']}
-				total={budget.totalSavings}
-				items={budget.savings}
-			/>
 		</div>
-		{#if budget.totalExpenses + budget.totalSavings > 0}
+		{#if budget.totalExpenses > 0}
 			<div class="flex flex-row lg:flex-col flex-wrap gap-4 min-w-[300px] h-fit">
 				<div class="card flex-1">
 					<h2 class="card-heading">Spending Breakdown</h2>
 					<DoughnutChart data={chartData} formatter={formatAsPercentage} />
 					<LegendList data={chartData} formatter={formatAsPercentage} />
-				</div>
-
-				<div class="flex-1 card">
-					<h2 class="card-heading">Overview</h2>
-					<BarChart
-						data={[
-							{
-								label: 'Income',
-								value: budget.totalIncome
-							},
-							{
-								label: 'Expenses',
-								value: budget.totalExpenses
-							},
-							{
-								label: 'Savings',
-								value: budget.totalSavings
-							}
-						]}
-						formatter={formatAsCurrency}
-					/>
 				</div>
 			</div>
 		{/if}

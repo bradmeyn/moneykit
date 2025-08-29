@@ -19,10 +19,10 @@
 <!-- Desktop row -->
 <tr class="hidden md:table-row">
 	<td>
-		<div class="font-semibold">{holding.investment.symbol}</div>
+		<div class="font-semibold text-base">{holding.investment.symbol}</div>
 		<div class="text-muted-foreground">{holding.investment.name}</div>
 	</td>
-	<td class="text-right">
+	<td class="text-right text-base">
 		{formatAsCurrency(holding.weight * portfolio.totalValue)}
 	</td>
 	<td class="text-right w-28">

@@ -29,8 +29,14 @@
 		amount: 0,
 		frequency: 'monthly',
 		category: category === 'uncategorised' ? '' : category,
-		type
+		type,
+		owner: budget.owners[0]
 	});
+
+	const title: Record<BudgetItemType['type'], string> = {
+		income: 'Income',
+		expense: 'Expense'
+	};
 
 	const addingNewCategory = $derived(newItem.category === 'New Category');
 	let newCategoryName = $state('');
@@ -96,19 +102,20 @@
 			amount: 0,
 			frequency: 'monthly',
 			category: category === 'uncategorised' ? '' : category,
-			type
+			type,
+			owner: budget.owners[0]
 		};
 		newCategoryName = '';
 	}
 </script>
 
 <Dialog.Root bind:open>
-	<Dialog.Trigger>
+	<Dialog.Trigger class="w-full md:w-fit">
 		{#snippet children()}
 			{#if trigger}
 				{@render trigger()}
 			{:else}
-				<Button size="sm">Add Item</Button>
+				<Button class="w-full md:w-fit">Add {title[type]}</Button>
 			{/if}
 		{/snippet}
 	</Dialog.Trigger>
@@ -144,6 +151,31 @@
 					<label for="item-frequency" class="text-sm font-medium">Frequency</label>
 					<FrequencyInput bind:value={newItem.frequency} id="item-frequency" />
 				</div>
+				{#if budget.isJointBudget}
+					<div class="space-y-2 col-span-2">
+						<Label for="item-owner" class="text-sm font-medium">Owner</Label>
+						<Select.Root
+							type="single"
+							bind:value={newItem.owner}
+							onValueChange={(value) => (newItem.owner = value)}
+						>
+							<Select.Trigger class="w-full">
+								{#if !newItem.owner}
+									<span>Select owner</span>
+								{:else}
+									<span>{newItem.owner}</span>
+								{/if}
+							</Select.Trigger>
+							<Select.Content>
+								<Select.Group>
+									{#each budget.owners as owner}
+										<Select.Item value={owner} />
+									{/each}
+								</Select.Group>
+							</Select.Content>
+						</Select.Root>
+					</div>
+				{/if}
 			</div>
 
 			<div>

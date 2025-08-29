@@ -10,7 +10,7 @@
 
 {#if budget.showLoadPrompt}
 	<div
-		class="fixed top-6 right-[10%] z-50 max-w-sm w-full"
+		class="fixed top-6 right-6 z-50 max-w-sm w-full"
 		transition:slide={{ duration: 300, axis: 'x' }}
 	>
 		<div class="card rounded-lg p-4 shadow-lg backdrop-blur-sm">

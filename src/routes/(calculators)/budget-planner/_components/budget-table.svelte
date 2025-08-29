@@ -11,13 +11,12 @@
 	<table class="w-full">
 		<thead>
 			<tr>
-				<th class="text-left text-sm text-card-foreground p-2 border-t-transparent">Item</th>
-				<th class="text-left text-sm text-card-foreground p-2 border-t-transparent">Amount</th>
-				<th class="text-left text-sm text-card-foreground p-2 border-t-transparent hidden md:block"
-					>Frequency</th
-				>
-				<th class="text-right text-sm text-card-foreground p-2 border-t-transparent">Total</th>
-				<th class="text-right text-sm text-card-foreground p-2 border-t-transparent"> </th>
+				<th>Item</th>
+				<th>Amount</th>
+				<th class=" hidden md:block">Frequency</th>
+				<th class:hidden={!budget.isJointBudget}>Owner</th>
+				<th class="text-right">Total</th>
+				<th class="text-right"> </th>
 			</tr>
 		</thead>
 		<tbody>

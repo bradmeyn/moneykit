@@ -17,11 +17,22 @@
 	} = $props();
 
 	const budget = getBudgetState();
+
+	// Owner options for joint budget
+
+	function cycleOwner() {
+		const currentIdx = budget.owners.indexOf(budgetItem.owner);
+		const nextIdx = (currentIdx + 1) % budget.owners.length;
+		budget.updateItem({
+			...budgetItem,
+			owner: budget.owners[nextIdx]
+		});
+	}
 </script>
 
 <tr class="hidden md:table-row">
 	<td class="text-sm w-50 font-semibold">{budgetItem.name}</td>
-	<td class="w-50">
+	<td class="w-40">
 		<CurrencyInput
 			onchange={(value) =>
 				budget.updateItem({
@@ -43,7 +54,14 @@
 			name={budgetItem.name + '-frequency'}
 		/>
 	</td>
-	<td class="text-right min-w-[80px] relative">
+	{#if budget.isJointBudget}
+		<td>
+			<Button size="sm" variant="outline" onclick={cycleOwner}>
+				{budgetItem.owner}
+			</Button>
+		</td>
+	{/if}
+	<td class="text-right min-w-[80px] relative font-semibold">
 		<span
 			>{formatAsCurrency(
 				convertToFrequency(budgetItem.amount, budgetItem.frequency, budget.frequency)
@@ -62,8 +80,11 @@
 	<td class="w-40">
 		{formatAsCurrency(budgetItem.amount)} / {FREQUENCIES[budgetItem.frequency].singular}
 	</td>
+	<td class="text-center" class:hidden={!budget.isJointBudget}>
+		{budget.isJointBudget ? budgetItem.owner : ''}
+	</td>
 
-	<td class="text-right min-w-[80px] relative">
+	<td class="text-right min-w-[80px] relative font-semibold">
 		<span
 			>{formatAsCurrency(
 				convertToFrequency(budgetItem.amount, budgetItem.frequency, budget.frequency)

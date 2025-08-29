@@ -7,6 +7,7 @@
 	import Input from '$ui/input/input.svelte';
 	import { Button } from '$lib/components/ui/button';
 	import * as Accordion from '$lib/components/ui/accordion';
+	import Explainer from '$ui/explainer.svelte';
 
 	let calculator = getCalculatorState();
 	let {
@@ -23,6 +24,8 @@
 	function refreshVolatility() {
 		calculator.recalculate();
 	}
+
+	let fireMode = $state(false);
 </script>
 
 <aside class="max-w-[1000px] min-w-[300px]">
@@ -165,6 +168,15 @@
 						</div>
 					</div>
 				{/if}
+
+				<!-- <Button class="w-full" variant="secondary" size="sm" {onclick}>
+					<div class="flex items-center gap-2">
+						<span>{fireMode ? 'Savings Goal' : 'FIRE Mode'}</span>
+						{#if !fireMode}
+							<Explainer text="Incorporates a secondary income to supplement withdrawals" />
+						{/if}
+					</div>
+				</Button> -->
 			</Accordion.Content>
 		</Accordion.Item>
 	</Accordion.Root>

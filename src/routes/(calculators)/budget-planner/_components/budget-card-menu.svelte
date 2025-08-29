@@ -21,16 +21,6 @@
 	<DropdownMenu.Content>
 		<DropdownMenu.Group>
 			<DropdownMenu.Item onSelect={(e) => e.preventDefault()}>
-				<AddItemDialog {type}>
-					{#snippet trigger()}
-						<div class="flex items-center gap-2">
-							<Plus />
-							<span> Add Item</span>
-						</div>
-					{/snippet}
-				</AddItemDialog>
-			</DropdownMenu.Item>
-			<DropdownMenu.Item onSelect={(e) => e.preventDefault()}>
 				<CategoryManager {type} categories={budget.categories[type]}>
 					{#snippet trigger()}
 						<div class="flex items-center gap-2">

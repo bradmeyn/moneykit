@@ -33,8 +33,7 @@
 
 	const title: Record<BudgetItem['type'], string> = {
 		income: 'Income',
-		expense: 'Expenses',
-		savings: 'Savings'
+		expense: 'Expenses'
 	};
 </script>
 
@@ -64,26 +63,10 @@
 				categoryTotal={calculateCategoryTotal(items, category, budget.frequency)}
 			>
 				<BudgetTable items={categoryItems} />
-				<div class="flex items-center gap-2 justify-end mt-2">
-					<AddItemDialog {category} {type} />
-					{#if categoryItems.length > 0}
-						<ClearAllDialog
-							onDelete={() => budget.deleteItemsByCategory(type, category)}
-							text={`all ${category} items`}
-						>
-							{#snippet trigger()}
-								<Button variant="secondary" size="sm">Delete All</Button>
-							{/snippet}
-						</ClearAllDialog>
-					{:else}
-						<Button
-							variant="secondary"
-							size="sm"
-							onclick={() => budget.deleteCategory(type, category)}>Delete Category</Button
-						>
-					{/if}
-				</div>
 			</BudgetAccordion>
 		{/each}
+	</div>
+	<div class="mt-2 flex justify-end">
+		<AddItemDialog {type} />
 	</div>
 </div>

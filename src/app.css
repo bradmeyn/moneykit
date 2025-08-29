@@ -163,7 +163,7 @@
 		@apply border-b p-4 py-2 text-left dark:bg-card;
 	}
 	th {
-		@apply text-left text-sm border-t-transparent;
+		@apply text-left text-xs border-t-transparent text-muted-foreground;
 	}
 	td {
 		@apply dark:text-foreground;

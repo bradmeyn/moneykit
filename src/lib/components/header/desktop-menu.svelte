@@ -5,7 +5,7 @@
 	let activeUrl = $derived(page.url.pathname);
 </script>
 
-<div class="relative group md:relative hidden md:block w-fit">
+<!-- <div class="relative group md:relative hidden md:block w-fit">
 	<button
 		class="block text-lg md:text-sm text-left text-muted-foreground hover:text-white border-b-transparent w-fit"
 	>
@@ -30,18 +30,17 @@
 			{/each}
 		</ul>
 	</div>
-</div>
+</div> -->
 
-<!-- <nav class="hidden md:flex gap-8">
+<nav class="hidden md:flex gap-8 ml-10">
 	{#each calculators as calculator}
 		<a
 			href={calculator.href}
-			class="block text-left border-b-2 w-fit text-sm text-muted-foreground {activeUrl ===
-			calculator.href
+			class="block text-left border-b-2 w-fit text-muted-foreground {activeUrl === calculator.href
 				? 'text-white border-b-2 border-b-brand'
 				: 'text-card-foreground  hover:text-white border-b-transparent'}"
 		>
 			{calculator.name}
 		</a>
 	{/each}
-</nav> -->
+</nav>

@@ -9,7 +9,6 @@
 	import ScrollableTable from '$ui/scrollable-table.svelte';
 	import CalculatorActions from '$lib/components/calculator-actions.svelte';
 
-	
 	setCalculatorState();
 	let calculator = getCalculatorState();
 	let selectedView = $state('chart');
@@ -38,11 +37,13 @@
 
 <svelte:head>
 	<title>Savings Growth Calculator</title>
+
+	<meta name="description" content="Estimate your future savings and time to reach your goal" />
 </svelte:head>
 
 <main class="container">
 	<div class="flex justify-between items-center">
-		<h1 class="mb-4 calculator-heading">Future Savings Calculator</h1>
+		<h1 class="mb-4 calculator-heading">Savings Growth Calculator</h1>
 		<CalculatorActions
 			getCsvData={() => downloadData}
 			filename={isComparing ? 'savings-comparison.csv' : 'savings-calculator.csv'}
@@ -50,7 +51,6 @@
 	</div>
 
 	<section class="flex flex-col lg:flex-row gap-8">
-		
 		<Inputs bind:isComparing />
 
 		<div class="w-full space-y-4">

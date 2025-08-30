@@ -43,7 +43,7 @@
 			<td class="text-right">
 				<div>{formatAsCurrency(portfolio.totalCost)} pa</div>
 				<div class="text-sm text-muted-foreground">
-					{formatAsPercentage(portfolio.totalCost / portfolio.totalAllocated)} pa
+					{formatAsPercentage(portfolio.totalCostPercentage)} pa
 				</div>
 			</td>
 		</tr>

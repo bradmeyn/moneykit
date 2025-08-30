@@ -200,6 +200,7 @@ class Budget {
 			'Type',
 			'Name',
 			'Category',
+			'Owner',
 			'Amount',
 			'Frequency',
 			'Monthly Total',
@@ -210,17 +211,21 @@ class Budget {
 		// Helper function to add items of a specific type
 		function addItemsToRows(items: BudgetItem[], type: string) {
 			if (items.length > 0) {
-				rows.push([type]); // Add type header
+				// Section label (not header)
+				const sectionLabel =
+					type === 'expense' ? 'Expenses' : type.charAt(0).toUpperCase() + type.slice(1);
+				rows.push([sectionLabel]);
 
 				items.forEach((item) => {
 					const monthlyAmount = convertToFrequency(item.amount, item.frequency, 'monthly');
 					const annualAmount = convertToFrequency(item.amount, item.frequency, 'annually');
 
 					rows.push([
-						'', // Empty cell for indentation
+						type === 'expenses' ? 'expense' : type,
 						item.name,
 						item.category,
-						item.amount,
+						item.owner,
+						Number(item.amount.toFixed(2)),
 						item.frequency,
 						Number(monthlyAmount.toFixed(2)),
 						Number(annualAmount.toFixed(2))
@@ -237,7 +242,8 @@ class Budget {
 					0
 				);
 				rows.push([
-					`${type} Total`,
+					`${type.charAt(0).toUpperCase() + type.slice(1)} Total`,
+					'',
 					'',
 					'',
 					'',
@@ -245,13 +251,14 @@ class Budget {
 					Number(monthlyTotal.toFixed(2)),
 					Number(annualTotal.toFixed(2))
 				]);
-				rows.push([]); // Add empty line between sections
+				// Blank line after section
+				rows.push([]);
 			}
 		}
 
 		// Add all item types
 		addItemsToRows(income, 'income');
-		addItemsToRows(expenses, 'expenses');
+		addItemsToRows(expenses, 'expense');
 
 		// Calculate unallocated funds
 		const monthlyincome = income.reduce(
@@ -276,8 +283,10 @@ class Budget {
 
 		const annualUnallocated = annualincome - annualexpenses;
 
+		// Add summary row
 		rows.push([
-			'Unallocated',
+			'Unallocated Funds',
+			'',
 			'',
 			'',
 			'',
@@ -300,7 +309,6 @@ class Budget {
 			categories: this.categories
 		};
 		localStorage.setItem('budget-data', JSON.stringify(data));
-		console.log('Budget data saved to localStorage', data);
 	}
 
 	clearStorage() {

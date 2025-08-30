@@ -2,19 +2,51 @@
 	import type { PortfolioType } from '../../calculator.svelte';
 	import BarChart from '$lib/components/charts/bar-chart.svelte';
 	import ComparisonReturnsTable from './comparison-returns-table.svelte';
-	import { formatAsPercentage } from '$lib/utils/formatters';
+	import { formatAsPercentage, formatAsCurrency } from '$lib/utils/formatters';
 	import { COLOURS } from '$constants/colours';
 	import * as Tabs from '$lib/components/ui/tabs';
+	import LineChart from '$lib/components/charts/line-chart.svelte';
 
-	let {
-		portfolio1,
-		portfolio2
-	}: {
-		portfolio1: PortfolioType;
-		portfolio2: PortfolioType;
-	} = $props();
+	let { portfolio1, portfolio2 }: { portfolio1: PortfolioType; portfolio2: PortfolioType } =
+		$props();
 
 	let view = $state('chart');
+
+	// Calculate portfolio value growth over last 10 years for both portfolios
+	const years = Array.from(
+		new Set([
+			...Object.keys(portfolio1.returns.byYear).map(Number),
+			...Object.keys(portfolio2.returns.byYear).map(Number)
+		])
+	).sort((a, b) => a - b);
+
+	const p1StartValue = portfolio1.totalValue;
+	const p2StartValue = portfolio2.totalValue;
+
+	const p1Values = [p1StartValue];
+	const p2Values = [p2StartValue];
+	for (let i = 0; i < years.length; i++) {
+		const prev1 = p1Values[i];
+		const prev2 = p2Values[i];
+		const ret1 = portfolio1.returns.byYear[years[i]]?.total ?? 0;
+		const ret2 = portfolio2.returns.byYear[years[i]]?.total ?? 0;
+		p1Values.push(prev1 * (1 + ret1));
+		p2Values.push(prev2 * (1 + ret2));
+	}
+	const valueDatasets = [
+		{
+			label: 'Portfolio 1',
+			data: p1Values.slice(1),
+			borderColor: COLOURS[0],
+			backgroundColor: COLOURS[0]
+		},
+		{
+			label: 'Portfolio 2',
+			data: p2Values.slice(1),
+			borderColor: COLOURS[1],
+			backgroundColor: COLOURS[1]
+		}
+	];
 
 	// Centralized data processing - used by both chart and table
 	const processedData = $derived.by(() => {
@@ -144,8 +176,8 @@
 	<div class="card">
 		<div class="mb-6 flex items-start justify-between">
 			<h3 class="text-lg font-semibold">Returns Comparison</h3>
-			<Tabs.Root value={view} onValueChange={(value) => (view = value)} class="w-[200px]">
-				<Tabs.List class="grid w-full grid-cols-2">
+			<Tabs.Root value={view} onValueChange={(value) => (view = value)} class="">
+				<Tabs.List class="w-full md:w-[200px]">
 					<Tabs.Trigger value="chart">Chart</Tabs.Trigger>
 					<Tabs.Trigger value="table">Table</Tabs.Trigger>
 				</Tabs.List>
@@ -169,6 +201,29 @@
 			</Tabs.Content>
 		</Tabs.Root>
 	</div>
+</div>
+
+<!-- Portfolio Value Growth Comparison -->
+<div class="card mt-4">
+	<h2 class="card-heading">If Invested 10 Years Ago</h2>
+	<LineChart
+		datasets={valueDatasets}
+		labels={years.map(String)}
+		formatter={formatAsCurrency}
+		showLegend={true}
+		enableTooltip
+	/>
+</div>
+
+<div class="space-y-2">
+	<p class="text-muted-foreground text-sm mt-8">
+		Returns assume reinvestment of all income distributions. Past performance is not an indication
+		of future performance.
+	</p>
+	<p class="text-muted-foreground text-sm">
+		* Where return data is unavailable for a given year, it has been substituted with a managed fund
+		equivalent.
+	</p>
 </div>
 
 {#snippet card(title: string, p1: number, p2: number)}

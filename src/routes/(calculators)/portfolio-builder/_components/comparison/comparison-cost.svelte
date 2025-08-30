@@ -1,7 +1,9 @@
 <script lang="ts">
+	import LineChart from '$lib/components/charts/line-chart.svelte';
+
 	import StackedBarChart from '$lib/components/charts/stacked-bar.svelte';
 	import type { PortfolioType as Portfolio } from '../../calculator.svelte';
-	import { formatAsCurrency, formatAsPercentage } from '$utils/formatters';
+	import { formatAsCurrency } from '$utils/formatters';
 	import { COLOURS } from '$lib/constants/colours';
 	import ComparisonTable from './comparison-table.svelte';
 
@@ -32,32 +34,6 @@
 			};
 		});
 	});
-
-	// Get unique investments for the cost table
-	function getCostRows(portfolio: Portfolio) {
-		return (portfolio.holdings ?? []).map((h) => ({
-			symbol: h.investment.symbol,
-			name: h.investment.name,
-			cost: h.cost,
-			managementCost: h.investment.managementCost
-		}));
-	}
-
-	const costRows1 = getCostRows(portfolio1);
-	const costRows2 = getCostRows(portfolio2);
-	const allSymbols = Array.from(
-		new Set([...costRows1.map((r) => r.symbol), ...costRows2.map((r) => r.symbol)])
-	);
-
-	// Calculate weighted average fees
-	const weightedAvgFee1 =
-		portfolio1 && portfolio1.totalAllocated > 0
-			? portfolio1.totalCost / portfolio1.totalAllocated
-			: 0;
-	const weightedAvgFee2 =
-		portfolio2 && portfolio2.totalAllocated > 0
-			? portfolio2.totalCost / portfolio2.totalAllocated
-			: 0;
 </script>
 
 <div class="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-4">

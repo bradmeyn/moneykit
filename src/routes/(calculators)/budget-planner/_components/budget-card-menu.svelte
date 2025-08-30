@@ -5,7 +5,6 @@
 	import Button from '$ui/button/button.svelte';
 	import ClearAllDialog from './clear-all-dialog.svelte';
 	import CategoryManager from './category-manager.svelte';
-	import AddItemDialog from './add-item-dialog.svelte';
 
 	let { type }: { type: BudgetItem['type'] } = $props();
 	const budget = getBudgetState();

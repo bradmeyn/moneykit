@@ -38,6 +38,7 @@ class Portfolio {
 	totalWeight = $derived(this.holdings.reduce((acc, holding) => acc + holding.weight, 0));
 	assetAllocation = $derived(this.calculateAssetAllocation());
 	totalCost = $derived(this.holdings.reduce((acc, holding) => acc + holding.cost, 0));
+	totalCostPercentage = $derived(this.totalCost / this.portfolioValue);
 
 	// Derived value for portfolio returns (example: weighted average return)
 	returns = $derived(this.calculateReturns());

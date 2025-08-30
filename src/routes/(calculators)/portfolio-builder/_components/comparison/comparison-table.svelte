@@ -79,12 +79,12 @@
 				{@const row2 = rows2.find((r) => r.symbol === symbol)}
 				<tr>
 					<td>
-						<div class="font-semibold">{symbol}</div>
+						<div class="font-semibold text-base">{symbol}</div>
 						<div class="text-muted-foreground hidden md:block">{row1?.name || row2?.name}</div>
 					</td>
 					<td class="text-right">
 						{#if row1}
-							<div>{formatAsCurrency(row1.primaryValue)}</div>
+							<div class="text-base">{formatAsCurrency(row1.primaryValue)}</div>
 							<div class="text-sm text-muted-foreground">
 								{row1.secondaryLabel}
 							</div>
@@ -92,7 +92,7 @@
 					</td>
 					<td class="text-right">
 						{#if row2}
-							<div>{formatAsCurrency(row2.primaryValue)}</div>
+							<div class="text-base">{formatAsCurrency(row2.primaryValue)}</div>
 							<div class="text-sm text-muted-foreground">
 								{row2.secondaryLabel}
 							</div>

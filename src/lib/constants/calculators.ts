@@ -25,8 +25,8 @@ export const calculators: Calculator[] = [
 	},
 
 	{
-		name: 'Future Savings Projector',
-		href: '/savings-calculator',
+		name: 'Savings Growth Calculator',
+		href: '/savings-growth-calculator',
 		viewBox: '0 0 576 512',
 		description: 'Estimate your future savings and time to reach your goal',
 		iconPath:

@@ -1,6 +1,4 @@
 <script lang="ts">
-	import LineChart from '$lib/components/charts/line-chart.svelte';
-
 	import StackedBarChart from '$lib/components/charts/stacked-bar.svelte';
 	import type { PortfolioType as Portfolio } from '../../calculator.svelte';
 	import { formatAsCurrency } from '$utils/formatters';

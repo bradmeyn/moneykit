@@ -16,10 +16,10 @@
 
 	// Goal status for the main scenario
 	const goalStatus = $derived.by(() => {
-		if (calculator.savingsGoal <= 0) return null;
+		if (calculator.savingsGoal && !calculator.fireMode) return null;
 
 		const yearReached = calculator.result.annualData.findIndex(
-			(data) => data.endingValue >= calculator.savingsGoal
+			(data) => data.endingValue >= calculator.target
 		);
 
 		return {
@@ -27,8 +27,6 @@
 			achieved: yearReached !== -1
 		};
 	});
-
-	let fireMode = $state(false);
 </script>
 
 <svelte:head>
@@ -43,7 +41,7 @@
 	</div>
 
 	<section class="flex flex-col lg:flex-row gap-8">
-		<Inputs bind:fireMode />
+		<Inputs />
 
 		<div class="w-full space-y-4">
 			<div class="card">
@@ -85,7 +83,9 @@
 
 						{#if goalStatus}
 							<div>
-								<p class="text-muted-foreground">Goal Status</p>
+								<p class="text-muted-foreground">
+									{calculator.fireMode ? 'FIRE' : 'Savings Goal'} Status
+								</p>
 								<div class="flex items-center gap-2">
 									{#if goalStatus.achieved}
 										<CheckCircle class="w-5 h-5 text-emerald-500" />
@@ -105,7 +105,7 @@
 					<Tabs.Content value="chart" class="m-0">
 						<GrowthChart
 							annualData={calculator.result.annualData}
-							savingsGoal={fireMode ? calculator.fireNumber : calculator.savingsGoal}
+							savingsGoal={calculator.target}
 						/>
 					</Tabs.Content>
 

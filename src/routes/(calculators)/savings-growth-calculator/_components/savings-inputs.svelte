@@ -11,11 +11,6 @@
 	import Slider from '$ui/slider/slider.svelte';
 
 	let calculator = getCalculatorState();
-	let {
-		fireMode = $bindable(false)
-	}: {
-		fireMode: boolean;
-	} = $props();
 </script>
 
 <aside class="max-w-[1000px] min-w-[300px]">
@@ -68,14 +63,19 @@
 					/>
 				</div>
 
-				<Button class="w-full" variant="secondary" size="sm" onclick={() => (fireMode = !fireMode)}>
-					{fireMode ? 'Savings Goal' : 'FIRE Mode'}
+				<Button
+					class="w-full"
+					variant="secondary"
+					size="sm"
+					onclick={() => (calculator.fireMode = !calculator.fireMode)}
+				>
+					{calculator.fireMode ? 'Savings Goal' : 'FIRE Mode'}
 					<Explainer
 						text={'FIRE (Financial Independence, Retire Early) is typically based on a multiple of your annual expenses by 25 assuming a 4% withdrawal rate.'}
 					/>
 				</Button>
 
-				{#if fireMode}
+				{#if calculator.fireMode}
 					<div class="space-y-2">
 						<div>
 							<Label for="annual-expenses">Annual Expenses</Label>

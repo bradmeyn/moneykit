@@ -47,6 +47,7 @@ class GrowthCalculatorState {
 	volatility = $state(0.15);
 
 	// FIRE inputs
+	fireMode = $state(false);
 	annualExpenses = $state(40000);
 	withdrawalRate = $state(0.04);
 	secondaryIncome = $state(0);
@@ -66,6 +67,8 @@ class GrowthCalculatorState {
 		return years;
 	});
 
+	target = $derived(this.fireMode ? this.fireNumber : this.savingsGoal);
+
 	// Derived calculation results
 	result = $derived(
 		this.calculateCompoundInterest(
@@ -78,14 +81,10 @@ class GrowthCalculatorState {
 		)
 	);
 
-	isGoalAchieved = $derived(
-		this.result.annualData.some((data) => data.endingValue >= this.savingsGoal)
-	);
+	isGoalAchieved = $derived(this.result.annualData.some((data) => data.endingValue >= this.target));
 
 	yearsToGoal = $derived.by(() => {
-		const yearReached = this.result.annualData.findIndex(
-			(data) => data.endingValue >= this.savingsGoal
-		);
+		const yearReached = this.result.annualData.findIndex((data) => data.endingValue >= this.target);
 		return yearReached === -1 ? null : yearReached + 1;
 	});
 

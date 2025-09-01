@@ -5,7 +5,7 @@
 
 <header class="h-16 relative">
 	<div class="container relative">
-		<div class="flex items-center gap-8 w-full py-4">
+		<div class="flex items-center gap-8 w-full py-4 justify-between">
 			<a href="/" class="flex items-center">
 				<span class="text-white text-xl"
 					>Money<span class="text-transparent bg-clip-text bg-linear-to-b from-brand to-brand"
@@ -13,10 +13,9 @@
 					></span
 				>
 			</a>
-			<nav class=" items-center justify-between w-full">
-				<DesktopMenu />
-				<MobileMenu />
-			</nav>
+
+			<DesktopMenu />
+			<MobileMenu />
 		</div>
 	</div>
 </header>

@@ -37,7 +37,6 @@
 
 <svelte:head>
 	<title>Savings Growth Calculator</title>
-
 	<meta name="description" content="Estimate your future savings and time to reach your goal" />
 </svelte:head>
 

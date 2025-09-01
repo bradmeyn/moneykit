@@ -23,7 +23,6 @@
 		</p>
 	</div>
 
-	<!-- Alternative: If you want larger cards on bigger screens -->
 	<div
 		class="grid grid-cols-3 gap-3 mx-auto max-w-7xl px-4
 	sm:gap-4

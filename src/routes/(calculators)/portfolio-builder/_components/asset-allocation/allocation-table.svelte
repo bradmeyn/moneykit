@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { formatAsPercentage, formatAsCurrency } from '$utils/formatters';
-	import type { PortfolioType } from '../../calculator.svelte';
+	import type { PortfolioType } from '../../portfolio.svelte';
 
 	let {
 		portfolio

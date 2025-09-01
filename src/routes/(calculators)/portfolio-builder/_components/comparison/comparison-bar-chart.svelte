@@ -11,7 +11,7 @@
 	} from 'chart.js';
 	import { assetLabels } from '../../investments';
 	import { COLOURS } from '$lib/constants/colours';
-	import type { PortfolioType } from '../../calculator.svelte';
+	import type { PortfolioType } from '../../portfolio.svelte';
 
 	let {
 		portfolio1,

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { formatAsCurrency } from '$lib/utils/formatters';
-	import { getCalculatorState } from '../calculator.svelte';
+	import { getCalculatorState } from '../../calculator.svelte';
 	import { CheckCircle, XCircle } from 'lucide-svelte';
 
 	let calculator = getCalculatorState();

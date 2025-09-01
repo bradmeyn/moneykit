@@ -6,7 +6,7 @@
 	import { formatAsPercentage } from '$lib/utils/formatters';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
 	import EditInvestmentDialog from './edit-investment-dialog.svelte';
-	import type { PortfolioHolding, PortfolioType } from '../../calculator.svelte';
+	import type { PortfolioHolding, PortfolioType } from '../../portfolio.svelte';
 	const {
 		holding,
 		portfolio

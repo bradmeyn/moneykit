@@ -1,7 +1,7 @@
 // Enhanced calculator.svelte with volatility support
 import { FREQUENCIES, type FrequencyType } from '$lib/constants/frequencies';
-import { formatAsCurrency, formatAsPercentage } from '$utils/formatters';
 import { setContext, getContext } from 'svelte';
+import { formatAsCurrency, formatAsPercentage } from '$utils/formatters';
 
 export type GrowthScenario = {
 	contributionAmount: number;
@@ -33,63 +33,57 @@ class GrowthCalculatorState {
 	principal = $state(10000);
 	savingsGoal = $state(100000);
 	years = $state(10);
-	useVolatility = $state(false); // Toggle for volatility simulation
 
-	// Scenario state
-	baseScenario = $state<GrowthScenario>({
-		contributionAmount: 1000,
-		interestRate: 0.07,
-		contributionFrequency: 'monthly',
-		volatility: 0.15 // Default 15% volatility
+	contributionAmount = $state(1000);
+	contributionFrequency = $state<FrequencyType>('monthly');
+	annualContributions = $derived.by(() => {
+		return this.contributionAmount * FREQUENCIES[this.contributionFrequency].value;
 	});
 
-	comparisonScenario = $state<GrowthScenario>({
-		contributionAmount: 0,
-		interestRate: 0.0,
-		contributionFrequency: 'monthly',
-		volatility: 0.15
+	returnRate = $state(0.0);
+	inflationRate = $state(0.02);
+
+	useVolatility = $state(false);
+	volatility = $state(0.15);
+
+	// FIRE inputs
+	annualExpenses = $state(40000);
+	withdrawalRate = $state(0.04);
+	secondaryIncome = $state(0);
+	fireMultiplier = $state(25);
+
+	fireNumber = $derived((this.annualExpenses - this.secondaryIncome) / this.withdrawalRate);
+	yearsToFire = $derived.by(() => {
+		let amount = this.principal;
+
+		const realGrowthRate = (1 + this.returnRate) / (1 + this.inflationRate) - 1;
+
+		let years = 0;
+		while (amount < this.fireNumber && years < 100) {
+			amount = amount * (1 + realGrowthRate) + this.annualContributions;
+			years++;
+		}
+		return years;
 	});
 
 	// Derived calculation results
-	baseResult = $derived(
+	result = $derived(
 		this.calculateCompoundInterest(
 			this.principal,
-			this.baseScenario.interestRate,
+			this.returnRate,
 			this.years,
-			this.baseScenario.contributionAmount,
-			FREQUENCIES[this.baseScenario.contributionFrequency].value,
-			this.useVolatility ? this.baseScenario.volatility : 0
+			this.contributionAmount,
+			FREQUENCIES[this.contributionFrequency].value,
+			this.useVolatility ? this.volatility : 0
 		)
 	);
 
-	comparisonResult = $derived(
-		this.calculateCompoundInterest(
-			this.principal,
-			this.comparisonScenario.interestRate,
-			this.years,
-			this.comparisonScenario.contributionAmount,
-			FREQUENCIES[this.comparisonScenario.contributionFrequency].value,
-			this.useVolatility ? this.comparisonScenario.volatility : 0
-		)
+	isGoalAchieved = $derived(
+		this.result.annualData.some((data) => data.endingValue >= this.savingsGoal)
 	);
 
-	baseGoalAchieved = $derived(
-		this.baseResult.annualData.some((data) => data.endingValue >= this.savingsGoal)
-	);
-
-	baseYearsToGoal = $derived.by(() => {
-		const yearReached = this.baseResult.annualData.findIndex(
-			(data) => data.endingValue >= this.savingsGoal
-		);
-		return yearReached === -1 ? null : yearReached + 1;
-	});
-
-	comparisonGoalAchieved = $derived(
-		this.comparisonResult.annualData.some((data) => data.endingValue >= this.savingsGoal)
-	);
-
-	comparisonYearsToGoal = $derived.by(() => {
-		const yearReached = this.comparisonResult.annualData.findIndex(
+	yearsToGoal = $derived.by(() => {
+		const yearReached = this.result.annualData.findIndex(
 			(data) => data.endingValue >= this.savingsGoal
 		);
 		return yearReached === -1 ? null : yearReached + 1;
@@ -111,7 +105,7 @@ class GrowthCalculatorState {
 		if (volatility === 0) return expectedReturn;
 
 		const randomNormal = this.generateNormalRandom();
-		return expectedReturn + randomNormal * volatility;
+		return expectedReturn + randomNormal * this.volatility;
 	}
 
 	calculateCompoundInterest(
@@ -182,121 +176,7 @@ class GrowthCalculatorState {
 		};
 	}
 
-	updateBase(updates: Partial<GrowthScenario>) {
-		this.baseScenario = { ...this.baseScenario, ...updates };
-	}
-
-	updateComparison(updates: Partial<GrowthScenario>) {
-		this.comparisonScenario = { ...this.comparisonScenario, ...updates };
-	}
-
-	toggleComparison(showComparison: boolean) {
-		if (showComparison) {
-			this.comparisonScenario = {
-				...this.baseScenario
-			};
-		} else {
-			this.comparisonScenario = {
-				contributionAmount: 1000,
-				interestRate: 0.05,
-				contributionFrequency: 'monthly',
-				volatility: 0.15
-			};
-		}
-	}
-
-	// Method to recalculate with new volatility (useful for "refresh" button)
-	recalculate() {
-		// Force recalculation by creating new scenario objects
-		this.baseScenario = { ...this.baseScenario };
-		this.comparisonScenario = { ...this.comparisonScenario };
-	}
-
-	getDownloadData() {
-		const headers = this.useVolatility
-			? [
-					'Year',
-					'Starting Value',
-					'Actual Return %',
-					'Interest Earned',
-					'Contribution',
-					'Total Value'
-				]
-			: ['Year', 'Starting Value', 'Interest Earned', 'Contribution', 'Total Value'];
-
-		const rows = this.baseResult.annualData.map((data) => {
-			const baseRow = [
-				data.year,
-				data.startingValue,
-				data.yearlyInterest,
-				data.yearlyContribution,
-				data.endingValue
-			];
-
-			if (this.useVolatility) {
-				baseRow.splice(2, 0, `${(data.actualReturn * 100).toFixed(2)}%`);
-			}
-
-			return baseRow;
-		});
-
-		return { headers, rows };
-	}
-
-	getTableData(isComparing: boolean = false) {
-		if (isComparing) {
-			const columns = this.useVolatility
-				? [
-						'Year',
-						'Starting',
-						'Return %',
-						'Interest',
-						'Contribution',
-						'Total',
-						'Comp Starting',
-						'Comp Return %',
-						'Comp Interest',
-						'Comp Contribution',
-						'Comp Total'
-					]
-				: [
-						'Year',
-						'Starting',
-						'Interest',
-						'Contribution',
-						'Total',
-						'Comp Starting',
-						'Comp Interest',
-						'Comp Contribution',
-						'Comp Total'
-					];
-
-			return {
-				columns,
-				rows: this.baseResult.annualData.map((data, index) => {
-					const compData = this.comparisonResult.annualData[index];
-					const baseRow = [
-						data.year,
-						formatAsCurrency(data.startingValue),
-						formatAsCurrency(data.yearlyInterest),
-						formatAsCurrency(data.yearlyContribution),
-						formatAsCurrency(data.endingValue),
-						formatAsCurrency(compData?.startingValue || 0),
-						formatAsCurrency(compData?.yearlyInterest || 0),
-						formatAsCurrency(compData?.yearlyContribution || 0),
-						formatAsCurrency(compData?.endingValue || 0)
-					];
-
-					if (this.useVolatility) {
-						baseRow.splice(2, 0, `${(data.actualReturn * 100).toFixed(1)}%`);
-						baseRow.splice(7, 0, `${((compData?.actualReturn || 0) * 100).toFixed(1)}%`);
-					}
-
-					return baseRow;
-				})
-			};
-		}
-
+	getTableData() {
 		// Default single scenario table
 		const columns = this.useVolatility
 			? [
@@ -304,14 +184,14 @@ class GrowthCalculatorState {
 					'Starting Value',
 					'Actual Return %',
 					'Interest Earned',
-					'Contribution',
+					'Annual Contribution',
 					'Total Value'
 				]
-			: ['Year', 'Starting Value', 'Interest Earned', 'Contribution', 'Total Value'];
+			: ['Year', 'Starting Value', 'Interest Earned', 'AnnualContribution', 'Total Value'];
 
 		return {
 			columns,
-			rows: this.baseResult.annualData.map((data) => {
+			rows: this.result.annualData.map((data) => {
 				const row = [
 					data.year,
 					formatAsCurrency(data.startingValue),
@@ -327,58 +207,6 @@ class GrowthCalculatorState {
 				return row;
 			})
 		};
-	}
-
-	getDownloadDataWithComparison() {
-		const headers = this.useVolatility
-			? [
-					'Year',
-					'Starting Value',
-					'Actual Return %',
-					'Interest Earned',
-					'Contribution',
-					'Total Value',
-					'Comparison Starting Value',
-					'Comparison Return %',
-					'Comparison Interest',
-					'Comparison Contribution',
-					'Comparison Total'
-				]
-			: [
-					'Year',
-					'Starting Value',
-					'Interest Earned',
-					'Contribution',
-					'Total Value',
-					'Comparison Starting Value',
-					'Comparison Interest',
-					'Comparison Contribution',
-					'Comparison Total'
-				];
-
-		const rows = this.baseResult.annualData.map((data, index) => {
-			const compData = this.comparisonResult.annualData[index];
-			const baseRow = [
-				data.year,
-				data.startingValue,
-				data.yearlyInterest,
-				data.yearlyContribution,
-				data.endingValue,
-				compData?.startingValue || 0,
-				compData?.yearlyInterest || 0,
-				compData?.yearlyContribution || 0,
-				compData?.endingValue || 0
-			];
-
-			if (this.useVolatility) {
-				baseRow.splice(2, 0, formatAsPercentage(data.actualReturn));
-				baseRow.splice(8, 0, formatAsPercentage(compData.actualReturn || 0));
-			}
-
-			return baseRow;
-		});
-
-		return { headers, rows };
 	}
 }
 

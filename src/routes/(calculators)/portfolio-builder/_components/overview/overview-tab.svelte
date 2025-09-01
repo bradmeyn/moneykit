@@ -5,7 +5,7 @@
 	import AddInvestment from './add-investment.svelte';
 	import DoughnutChart from '$lib/components/charts/doughnut-chart.svelte';
 	import LegendList from '$lib/components/charts/legend-list.svelte';
-	import type { PortfolioType } from '../../calculator.svelte';
+	import type { PortfolioType } from '../../portfolio.svelte';
 
 	let {
 		portfolio

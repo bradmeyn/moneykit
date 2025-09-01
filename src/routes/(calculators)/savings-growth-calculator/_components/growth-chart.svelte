@@ -17,18 +17,14 @@
 	import { TOOLTIP } from '$constants/chart-config';
 
 	let {
-		baseData = [],
-		comparisonData = [],
-		savingsGoal,
-		isComparing
+		annualData = [],
+		savingsGoal
 	}: {
-		baseData: AnnualData[];
-		comparisonData: AnnualData[];
+		annualData: AnnualData[];
 		savingsGoal: number;
-		isComparing: boolean;
 	} = $props();
 
-	let years = $derived(baseData.map((item) => item.year));
+	let years = $derived(annualData.map((i) => i.year));
 	let chartId: HTMLCanvasElement | undefined = $state();
 	let chart: Chart | undefined = $state();
 
@@ -80,9 +76,8 @@
 			data: {
 				labels: years,
 				datasets: [
-					createDataset(baseData, COLOURS[0], 'Value'),
-					...(isComparing ? [createDataset(comparisonData, COLOURS[1], 'Comparison')] : []),
-					...(savingsGoal ? [createGoalDataset(savingsGoal, COLOURS[2])] : [])
+					createDataset(annualData, COLOURS[0], 'Value'),
+					...(savingsGoal ? [createGoalDataset(savingsGoal, COLOURS[1])] : [])
 				]
 			},
 			options: {
@@ -165,12 +160,7 @@
 	$effect(() => {
 		if (chart) {
 			// Always start with base dataset
-			chart.data.datasets = [createDataset(baseData, COLOURS[0], 'Value')];
-
-			// Add comparison if active
-			if (isComparing) {
-				chart.data.datasets.push(createDataset(comparisonData, COLOURS[1], 'Comparison'));
-			}
+			chart.data.datasets = [createDataset(annualData, COLOURS[0], 'Value')];
 
 			// Add goal if exists
 			if (savingsGoal) {

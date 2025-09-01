@@ -5,7 +5,7 @@
 	import { ScrollArea } from '$lib/components/ui/scroll-area';
 	import { ETF_MAP, getETFList, type ExchangeTradedFund } from '../../investments';
 	import { Button } from '$lib/components/ui/button';
-	import type { PortfolioType as Portfolio } from '../../calculator.svelte';
+	import type { PortfolioType as Portfolio } from '../../portfolio.svelte';
 
 	let {
 		portfolio

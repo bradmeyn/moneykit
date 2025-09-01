@@ -2,12 +2,13 @@
 	import ScrollArea from '$ui/scroll-area/scroll-area.svelte';
 
 	let {
-		columns,
-		rows = [],
+		data,
 		height = '600px'
 	}: {
-		columns: string[];
-		rows: any[][]; // Array of arrays
+		data: {
+			columns: string[];
+			rows: any[][];
+		};
 		height?: string;
 	} = $props();
 
@@ -21,13 +22,13 @@
 	<table class="w-full">
 		<thead class="sticky top-0">
 			<tr>
-				{#each columns as column, i}
+				{#each data.columns as column, i}
 					<th class="{getAlignment(i)} p-2">{column}</th>
 				{/each}
 			</tr>
 		</thead>
 		<tbody>
-			{#each rows as row}
+			{#each data.rows as row}
 				<tr>
 					{#each row as cell, i}
 						<td class="p-2 {getAlignment(i)}">

@@ -8,24 +8,14 @@
 	import { Button } from '$lib/components/ui/button';
 	import * as Accordion from '$lib/components/ui/accordion';
 	import Explainer from '$ui/explainer.svelte';
+	import Slider from '$ui/slider/slider.svelte';
 
 	let calculator = getCalculatorState();
 	let {
-		isComparing = $bindable(false)
+		fireMode = $bindable(false)
 	}: {
-		isComparing: boolean;
+		fireMode: boolean;
 	} = $props();
-
-	function toggleComparison() {
-		calculator.toggleComparison(isComparing);
-		isComparing = !isComparing;
-	}
-
-	function refreshVolatility() {
-		calculator.recalculate();
-	}
-
-	let fireMode = $state(false);
 </script>
 
 <aside class="max-w-[1000px] min-w-[300px]">
@@ -43,17 +33,12 @@
 				<div class="grid grid-cols-2 gap-2">
 					<div>
 						<Label for="contributions">Contributions</Label>
-						<CurrencyInput
-							id="contributions"
-							onchange={(value) => calculator.updateBase({ contributionAmount: value })}
-							value={calculator.baseScenario.contributionAmount}
-						/>
+						<CurrencyInput id="contributions" bind:value={calculator.contributionAmount} />
 					</div>
 					<div>
 						<Label for="frequency">Frequency</Label>
 						<FrequencySelect
-							value={calculator.baseScenario.contributionFrequency}
-							onchange={(value) => calculator.updateBase({ contributionFrequency: value })}
+							bind:value={calculator.contributionFrequency}
 							id="frequency"
 							name="frequency"
 						/>
@@ -62,7 +47,7 @@
 
 				<PercentageSlider
 					label="Investment Return (p.a.)"
-					bind:value={calculator.baseScenario.interestRate}
+					bind:value={calculator.returnRate}
 					min={0.01}
 					max={0.15}
 					step={0.005}
@@ -83,10 +68,72 @@
 					/>
 				</div>
 
-				<div>
-					<Label for="savings-goal">Savings Goal</Label>
-					<CurrencyInput bind:value={calculator.savingsGoal} id="savings-goal" />
-				</div>
+				<Button class="w-full" variant="secondary" size="sm" onclick={() => (fireMode = !fireMode)}>
+					{fireMode ? 'Savings Goal' : 'FIRE Mode'}
+					<Explainer
+						text={'FIRE (Financial Independence, Retire Early) is typically based on a multiple of your annual expenses by 25 assuming a 4% withdrawal rate.'}
+					/>
+				</Button>
+
+				{#if fireMode}
+					<div class="space-y-2">
+						<div>
+							<Label for="annual-expenses">Annual Expenses</Label>
+							<CurrencyInput bind:value={calculator.annualExpenses} id="annual-expenses" />
+						</div>
+						<div>
+							<Label for="withdrawal-rate">Withdrawal Rate</Label>
+							<PercentageSlider
+								label="Withdrawal Rate"
+								bind:value={calculator.withdrawalRate}
+								min={0.02}
+								max={0.1}
+								step={0.001}
+								id="withdrawal-rate"
+								explainer="Safe withdrawal rate for FIRE (usually 4%)"
+								precision={2}
+							/>
+						</div>
+						<div>
+							<Label for="fire-multiplier">FIRE Multiplier</Label>
+							<Input
+								id="fire-multiplier"
+								name="fire-multiplier"
+								type="number"
+								min="0"
+								bind:value={calculator.fireMultiplier}
+							/>
+
+							<div>
+								<div class="flex gap-2 mb-2 items-center">
+									<Label class="mb-0" id="expense-multiple">Expense Multiple</Label>
+
+									<Explainer
+										text="The FIRE multiplier is used to estimate the total amount needed to retire based on your annual expenses."
+									/>
+								</div>
+
+								<Slider
+									type="single"
+									bind:value={calculator.fireMultiplier}
+									min={1}
+									max={100}
+									step={1}
+									id="fire-multiplier"
+								/>
+
+								<div class="text-sm text-muted-foreground mt-1 flex justify-between">
+									<span>{calculator.fireMultiplier}</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				{:else}
+					<div>
+						<Label for="savings-goal">Savings Goal</Label>
+						<CurrencyInput bind:value={calculator.savingsGoal} id="savings-goal" />
+					</div>
+				{/if}
 
 				<Button
 					class="w-full"
@@ -102,7 +149,7 @@
 
 					<PercentageSlider
 						label="Volatility (Standard Deviation)"
-						bind:value={calculator.baseScenario.volatility}
+						bind:value={calculator.volatility}
 						min={0.05}
 						max={0.4}
 						step={0.01}
@@ -111,72 +158,8 @@
 						precision={0}
 					/>
 
-					<Button variant="outline" size="sm" onclick={refreshVolatility} class="w-full">
-						🎲 Generate New Random Returns
-					</Button>
+					<!-- <Button variant="outline" size="sm" class="w-full">🎲 Generate New Random Returns</Button> -->
 				{/if}
-
-				<Button class="w-full" variant="secondary" size="sm" onclick={toggleComparison}>
-					{isComparing ? 'Hide' : 'Add'} Comparison
-				</Button>
-
-				{#if isComparing}
-					<h2 class="card-heading">Comparison</h2>
-
-					<PercentageSlider
-						label="Interest Rate"
-						bind:value={calculator.comparisonScenario.interestRate}
-						min={0.01}
-						max={0.15}
-						step={0.005}
-						id="comparison-interest-rate"
-						explainer="Expected annual return for comparison scenario"
-						precision={1}
-					/>
-
-					{#if calculator.useVolatility}
-						<PercentageSlider
-							label="Volatility"
-							bind:value={calculator.comparisonScenario.volatility}
-							min={0.05}
-							max={0.4}
-							step={0.01}
-							id="comparison-volatility"
-							explainer="Volatility for comparison scenario"
-							precision={0}
-						/>
-					{/if}
-
-					<div class="grid grid-cols-2 gap-2">
-						<div>
-							<Label for="comparison-contributions">Contributions</Label>
-							<CurrencyInput
-								id="comparison-contributions"
-								onchange={(value) => calculator.updateComparison({ contributionAmount: value })}
-								value={calculator.comparisonScenario.contributionAmount}
-							/>
-						</div>
-
-						<div>
-							<Label for="comparison-frequency">Frequency</Label>
-							<FrequencySelect
-								value={calculator.comparisonScenario.contributionFrequency}
-								onchange={(value) => calculator.updateComparison({ contributionFrequency: value })}
-								id="comparison-frequency"
-								name="frequency"
-							/>
-						</div>
-					</div>
-				{/if}
-
-				<!-- <Button class="w-full" variant="secondary" size="sm" {onclick}>
-					<div class="flex items-center gap-2">
-						<span>{fireMode ? 'Savings Goal' : 'FIRE Mode'}</span>
-						{#if !fireMode}
-							<Explainer text="Incorporates a secondary income to supplement withdrawals" />
-						{/if}
-					</div>
-				</Button> -->
 			</Accordion.Content>
 		</Accordion.Item>
 	</Accordion.Root>

@@ -12,7 +12,7 @@
 	import { COLOURS } from '$lib/constants/colours';
 	import { TOOLTIP } from '$constants/chart-config';
 	import { formatAsPercentage } from '$lib/utils/formatters';
-	import type { PortfolioType } from '../../calculator.svelte';
+	import type { PortfolioType } from '../../portfolio.svelte';
 
 	let {
 		portfolio

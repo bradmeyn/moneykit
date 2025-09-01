@@ -1,7 +1,7 @@
 <script lang="ts">
 	import ReturnsTable from './returns-table.svelte';
 	import ReturnsChart from './returns-chart.svelte';
-	import type { PortfolioType } from '../../calculator.svelte';
+	import type { PortfolioType } from '../../portfolio.svelte';
 	import { formatAsPercentage, formatAsCurrency } from '$lib/utils/formatters';
 	import LineChart from '$lib/components/charts/line-chart.svelte';
 

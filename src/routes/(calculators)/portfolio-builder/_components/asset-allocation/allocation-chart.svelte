@@ -3,7 +3,7 @@
 	import DoughnutChart from '$lib/components/charts/doughnut-chart.svelte';
 	import LegendList from '$lib/components/charts/legend-list.svelte';
 	import { assetLabels } from '../../investments';
-	import type { PortfolioType as Portfolio } from '../../calculator.svelte';
+	import type { PortfolioType as Portfolio } from '../../portfolio.svelte';
 
 	let {
 		portfolio

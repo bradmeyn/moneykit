@@ -2,7 +2,7 @@
 	import { Button } from '$lib/components/ui/button';
 	import * as Dialog from '$lib/components/ui/dialog';
 	import PercentageInput from '$lib/components/inputs/percentage-input.svelte';
-	import type { PortfolioHolding, PortfolioType } from '../../calculator.svelte';
+	import type { PortfolioHolding, PortfolioType } from '../../portfolio.svelte';
 	import { formatAsCurrency } from '$lib/utils/formatters';
 	import { Pencil } from 'lucide-svelte';
 

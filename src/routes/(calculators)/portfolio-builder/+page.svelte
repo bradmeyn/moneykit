@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { setPortfolioState } from './calculator.svelte';
+	import { setPortfolioState } from './portfolio.svelte';
 	import * as Tabs from '$lib/components/ui/tabs';
 
 	// Overview components

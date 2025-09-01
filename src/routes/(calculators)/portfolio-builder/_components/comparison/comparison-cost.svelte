@@ -1,6 +1,6 @@
 <script lang="ts">
 	import StackedBarChart from '$lib/components/charts/stacked-bar.svelte';
-	import type { PortfolioType as Portfolio } from '../../calculator.svelte';
+	import type { PortfolioType as Portfolio } from '../../portfolio.svelte';
 	import { formatAsCurrency } from '$utils/formatters';
 	import { COLOURS } from '$lib/constants/colours';
 	import ComparisonTable from './comparison-table.svelte';

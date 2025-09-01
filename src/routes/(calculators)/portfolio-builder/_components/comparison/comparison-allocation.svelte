@@ -1,6 +1,6 @@
 <script lang="ts">
 	import BarChart from '$lib/components/charts/bar-chart.svelte';
-	import type { PortfolioType as Portfolio } from '../../calculator.svelte';
+	import type { PortfolioType as Portfolio } from '../../portfolio.svelte';
 	import { assetLabels } from '../../investments';
 	import { COLOURS } from '$lib/constants/colours';
 	import { formatAsPercentage } from '$utils/formatters';

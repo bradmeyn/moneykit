@@ -1,7 +1,7 @@
 <script lang="ts">
 	import AssetAllocationChart from './allocation-chart.svelte';
 	import AssetAllocationTable from './allocation-table.svelte';
-	import type { PortfolioType } from '../../calculator.svelte';
+	import type { PortfolioType } from '../../portfolio.svelte';
 
 	let {
 		portfolio

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { PortfolioType as Portfolio } from '../../calculator.svelte';
+	import type { PortfolioType as Portfolio } from '../../portfolio.svelte';
 	import ComparisonTable from './comparison-table.svelte';
 	import StackedBarChart from '$lib/components/charts/stacked-bar.svelte';
 	import { formatAsPercentage } from '$utils/formatters';

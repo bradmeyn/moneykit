@@ -223,7 +223,7 @@ class Portfolio {
 
 	// Method to get portfolio overview data as CSV
 	getPortfolioOverviewCsv() {
-		const headers = [
+		const columns = [
 			'Investment',
 			'Symbol',
 			'Value',
@@ -273,12 +273,12 @@ class Portfolio {
 			formatAsPercentage(totalAllocation.alternatives)
 		]);
 
-		return { headers, rows };
+		return { columns, rows };
 	}
 
 	// Method to get asset class summary data as CSV
 	getAssetClassSummaryCsv() {
-		const headers = ['Asset Class', 'Value', 'Weight'];
+		const columns = ['Asset Class', 'Value', 'Weight'];
 
 		// Calculate values for each asset class
 		const totalAllocation = this.assetAllocation;
@@ -340,7 +340,7 @@ class Portfolio {
 			]
 		];
 
-		return { headers, rows };
+		return { columns, rows };
 	}
 
 	// Method to get combined data for all tables
@@ -349,17 +349,17 @@ class Portfolio {
 		const assetClassSummary = this.getAssetClassSummaryCsv();
 
 		// Combine with blank row separators
-		const headers = overviewData.headers;
+		const columns = overviewData.columns;
 		const rows = [
 			...overviewData.rows,
-			Array(headers.length).fill(''), // Empty row as separator
+			Array(columns.length).fill(''), // Empty row as separator
 			['ASSET CLASS SUMMARY'], // Title for the next section
-			Array(headers.length).fill(''), // Empty row as separator
-			assetClassSummary.headers,
+			Array(columns.length).fill(''), // Empty row as separator
+			assetClassSummary.columns,
 			...assetClassSummary.rows
 		];
 
-		return { headers, rows };
+		return { columns, rows };
 	}
 }
 

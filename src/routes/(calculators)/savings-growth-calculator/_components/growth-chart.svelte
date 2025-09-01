@@ -138,7 +138,7 @@
 					},
 					legend: {
 						position: 'top',
-						align: 'end',
+
 						labels: {
 							usePointStyle: true,
 							pointStyle: 'circle',
@@ -164,7 +164,7 @@
 
 			// Add goal if exists
 			if (savingsGoal) {
-				chart.data.datasets.push(createGoalDataset(savingsGoal, COLOURS[2]));
+				chart.data.datasets.push(createGoalDataset(savingsGoal, COLOURS[1]));
 			}
 
 			// Update labels

@@ -4,7 +4,6 @@
 	import FrequencySelect from '$lib/components/inputs/frequency-select.svelte';
 	import CurrencyInput from '$lib/components/inputs/currency-input.svelte';
 	import Label from '$ui/label/label.svelte';
-	import Input from '$ui/input/input.svelte';
 	import { Button } from '$lib/components/ui/button';
 	import * as Accordion from '$lib/components/ui/accordion';
 	import Explainer from '$ui/explainer.svelte';
@@ -52,15 +51,24 @@
 				/>
 
 				<div>
-					<Label for="years">Years Invested</Label>
-					<Input
-						id="years"
-						name="years"
-						type="number"
-						min="0"
+					<div class="flex gap-2 mb-2 items-center">
+						<Label class="mb-0" id="years-invested">Years Invested</Label>
+
+						<Explainer text="The number of years you plan to invest before reaching your goal." />
+					</div>
+
+					<Slider
+						type="single"
 						bind:value={calculator.years}
-						onfocus={(e) => e.currentTarget.select()}
+						min={1}
+						max={100}
+						step={1}
+						id="years-invested"
 					/>
+
+					<div class="text-sm text-muted-foreground mt-1 flex justify-between">
+						<span>{calculator.years}</span>
+					</div>
 				</div>
 
 				<Button
@@ -70,62 +78,32 @@
 					onclick={() => (calculator.fireMode = !calculator.fireMode)}
 				>
 					{calculator.fireMode ? 'Savings Goal' : 'FIRE Mode'}
-					<Explainer
-						text={'FIRE (Financial Independence, Retire Early) is typically based on a multiple of your annual expenses by 25 assuming a 4% withdrawal rate.'}
-					/>
+					{#if calculator.fireMode}
+						<Explainer
+							text="Calculate how much you need to retire early based on your annual expenses and safe withdrawal rate."
+						/>
+					{:else}
+						<Explainer text="Calculate how long it will take to reach your savings goal." />
+					{/if}
 				</Button>
 
 				{#if calculator.fireMode}
-					<div class="space-y-2">
+					<div class="space-y-4">
 						<div>
 							<Label for="annual-expenses">Annual Expenses</Label>
 							<CurrencyInput bind:value={calculator.annualExpenses} id="annual-expenses" />
 						</div>
 						<div>
-							<Label for="withdrawal-rate">Withdrawal Rate</Label>
 							<PercentageSlider
 								label="Withdrawal Rate"
 								bind:value={calculator.withdrawalRate}
 								min={0.02}
 								max={0.1}
-								step={0.001}
+								step={0.005}
 								id="withdrawal-rate"
 								explainer="Safe withdrawal rate for FIRE (usually 4%)"
 								precision={2}
 							/>
-						</div>
-						<div>
-							<Label for="fire-multiplier">FIRE Multiplier</Label>
-							<Input
-								id="fire-multiplier"
-								name="fire-multiplier"
-								type="number"
-								min="0"
-								bind:value={calculator.fireMultiplier}
-							/>
-
-							<div>
-								<div class="flex gap-2 mb-2 items-center">
-									<Label class="mb-0" id="expense-multiple">Expense Multiple</Label>
-
-									<Explainer
-										text="The FIRE multiplier is used to estimate the total amount needed to retire based on your annual expenses."
-									/>
-								</div>
-
-								<Slider
-									type="single"
-									bind:value={calculator.fireMultiplier}
-									min={1}
-									max={100}
-									step={1}
-									id="fire-multiplier"
-								/>
-
-								<div class="text-sm text-muted-foreground mt-1 flex justify-between">
-									<span>{calculator.fireMultiplier}</span>
-								</div>
-							</div>
 						</div>
 					</div>
 				{:else}
@@ -142,6 +120,9 @@
 					onclick={() => (calculator.useVolatility = !calculator.useVolatility)}
 				>
 					{calculator.useVolatility ? 'Hide' : 'Add'} Volatility
+					<Explainer
+						text="Include market volatility in the calculations for more realistic returns."
+					/>
 				</Button>
 
 				{#if calculator.useVolatility}

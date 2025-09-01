@@ -7,7 +7,7 @@
 	}: {
 		data: {
 			columns: string[];
-			rows: any[][];
+			rows: (string | number)[][];
 		};
 		height?: string;
 	} = $props();

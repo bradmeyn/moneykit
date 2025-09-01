@@ -40,7 +40,7 @@ class GrowthCalculatorState {
 		return this.contributionAmount * FREQUENCIES[this.contributionFrequency].value;
 	});
 
-	returnRate = $state(0.0);
+	returnRate = $state(0.07);
 	inflationRate = $state(0.02);
 
 	useVolatility = $state(false);
@@ -51,7 +51,6 @@ class GrowthCalculatorState {
 	annualExpenses = $state(40000);
 	withdrawalRate = $state(0.04);
 	secondaryIncome = $state(0);
-	fireMultiplier = $state(25);
 
 	fireNumber = $derived((this.annualExpenses - this.secondaryIncome) / this.withdrawalRate);
 	yearsToFire = $derived.by(() => {

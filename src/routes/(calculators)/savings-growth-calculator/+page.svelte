@@ -2,7 +2,7 @@
 	import { setCalculatorState, getCalculatorState } from './calculator.svelte';
 	import * as Tabs from '$lib/components/ui/tabs';
 	import { formatAsCurrency } from '$lib/utils/formatters';
-	import { CheckCircle, XCircle } from 'lucide-svelte';
+	import { CheckCircle, Flame, XCircle } from 'lucide-svelte';
 	import Inputs from './_components/savings-inputs.svelte';
 	import GrowthChart from './_components/growth-chart.svelte';
 
@@ -12,12 +12,9 @@
 	setCalculatorState();
 	let calculator = getCalculatorState();
 	let selectedView = $state('chart');
-	let isComparing = $state(false);
 
 	// Goal status for the main scenario
 	const goalStatus = $derived.by(() => {
-		if (calculator.savingsGoal && !calculator.fireMode) return null;
-
 		const yearReached = calculator.result.annualData.findIndex(
 			(data) => data.endingValue >= calculator.target
 		);
@@ -37,7 +34,10 @@
 <main class="container">
 	<div class="flex justify-between items-center">
 		<h1 class="mb-4 calculator-heading">Savings Growth Calculator</h1>
-		<!-- <CalculatorActions filename={'savings-calculator.csv'} /> -->
+		<CalculatorActions
+			filename={'savings-calculator.csv'}
+			getCsvData={() => calculator.getTableData()}
+		/>
 	</div>
 
 	<section class="flex flex-col lg:flex-row gap-8">
@@ -60,43 +60,34 @@
 				</div>
 
 				<div class="space-y-4">
-					<div>
-						<h2 class="text-muted-foreground">Value after {calculator.years} Years</h2>
-						<p class="font-semibold text-2xl md:text-3xl">
-							{formatAsCurrency(calculator.result.totalValue)}
-						</p>
+					<div class="flex gap-8 flex-wrap">
+						{@render metric(
+							'Value after ' + calculator.years + ' Years',
+							calculator.result.totalValue
+						)}
+						{@render metric('Total Contributions', calculator.result.totalContributions)}
+						{@render metric('Total Interest', calculator.result.totalInterest)}
 					</div>
 					<div class="flex gap-8 flex-wrap">
 						<div>
-							<p class="text-muted-foreground">Total Contributions</p>
-							<p class="text-xl font-semibold">
-								{formatAsCurrency(calculator.result.totalContributions)}
+							<p class="text-muted-foreground">
+								{calculator.fireMode ? 'FIRE' : 'Savings Goal'} Status
 							</p>
-						</div>
-
-						<div>
-							<p class="text-muted-foreground">Total Interest</p>
-							<p class="text-xl font-semibold">
-								{formatAsCurrency(calculator.result.totalInterest)}
-							</p>
-						</div>
-
-						{#if goalStatus}
-							<div>
-								<p class="text-muted-foreground">
-									{calculator.fireMode ? 'FIRE' : 'Savings Goal'} Status
+							<div class="flex items-center gap-2">
+								{#if goalStatus.achieved && calculator.fireMode}
+									<Flame class="size-5 text-emerald-500" />
+								{:else if goalStatus.achieved}
+									<CheckCircle class="size-5 text-emerald-500" />
+								{:else}
+									<XCircle class="size-5 text-rose-500" />
+								{/if}
+								<p class="text-xl md:text-2xl font-semibold">
+									{goalStatus.text}
 								</p>
-								<div class="flex items-center gap-2">
-									{#if goalStatus.achieved}
-										<CheckCircle class="w-5 h-5 text-emerald-500" />
-									{:else}
-										<XCircle class="w-5 h-5 text-rose-500" />
-									{/if}
-									<p class="text-xl font-semibold">
-										{goalStatus.text}
-									</p>
-								</div>
 							</div>
+						</div>
+						{#if calculator.fireMode}
+							{@render metric('FIRE Target', calculator.fireNumber)}
 						{/if}
 					</div>
 				</div>
@@ -117,3 +108,12 @@
 		</div>
 	</section>
 </main>
+
+{#snippet metric(label: string, value: number)}
+	<div>
+		<h2 class="text-muted-foreground">{label}</h2>
+		<p class="font-semibold text-xl md:text-2xl">
+			{formatAsCurrency(value)}
+		</p>
+	</div>
+{/snippet}

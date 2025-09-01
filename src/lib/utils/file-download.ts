@@ -1,10 +1,10 @@
 export interface CsvData {
-	headers: string[];
+	columns: string[];
 	rows: (string | number)[][];
 }
 
 export function downloadCsv(data: CsvData, filename = 'moneykit.csv') {
-	const csvContent = [data.headers, ...data.rows]
+	const csvContent = [data.columns, ...data.rows]
 		.map((row) =>
 			row
 				.map((cell: string | number) =>

@@ -10,7 +10,14 @@
 		getCsvData,
 		items,
 		filename
-	}: { getCsvData: () => CsvData; items?: Snippet; filename: string } = $props();
+	}: {
+		getCsvData: () => {
+			columns: string[];
+			rows: (string | number)[][];
+		};
+		items?: Snippet;
+		filename: string;
+	} = $props();
 
 	function downloadData(e: Event) {
 		e.preventDefault();

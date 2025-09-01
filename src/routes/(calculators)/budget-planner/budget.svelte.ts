@@ -196,7 +196,7 @@ class Budget {
 		const income = this.budgetItems.filter((item) => item.type === 'income');
 		const expenses = this.budgetItems.filter((item) => item.type === 'expense');
 
-		const headers = [
+		const columns = [
 			'Type',
 			'Name',
 			'Category',
@@ -296,7 +296,7 @@ class Budget {
 		]);
 
 		return {
-			headers,
+			columns,
 			rows,
 			filename: `budget-${new Date().toLocaleDateString('en-AU').split('/').join('-')}.csv`
 		};

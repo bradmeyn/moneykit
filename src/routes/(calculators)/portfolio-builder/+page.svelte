@@ -51,9 +51,9 @@
 			<Tabs.Root value={selectedView} onValueChange={(value) => (selectedView = value)}>
 				<Tabs.List>
 					<Tabs.Trigger value="overview">Overview</Tabs.Trigger>
+					<Tabs.Trigger value="returns">Returns</Tabs.Trigger>
 					<Tabs.Trigger value="allocation">Allocation</Tabs.Trigger>
 					<Tabs.Trigger value="costs">Costs</Tabs.Trigger>
-					<Tabs.Trigger value="returns">Returns</Tabs.Trigger>
 				</Tabs.List>
 			</Tabs.Root>
 		</div>

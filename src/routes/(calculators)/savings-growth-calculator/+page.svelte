@@ -69,9 +69,14 @@
 						{@render metric('Total Interest', calculator.result.totalInterest)}
 					</div>
 					<div class="flex gap-8 flex-wrap">
+						{#if calculator.fireMode}
+							{@render metric('FIRE Target', calculator.fireNumber)}
+						{:else}
+							{@render metric('Savings Goal', calculator.target)}
+						{/if}
 						<div>
 							<p class="text-muted-foreground">
-								{calculator.fireMode ? 'FIRE' : 'Savings Goal'} Status
+								{calculator.fireMode ? 'FIRE' : 'Savings Goal'} Result
 							</p>
 							<div class="flex items-center gap-2">
 								{#if goalStatus.achieved && calculator.fireMode}
@@ -86,9 +91,6 @@
 								</p>
 							</div>
 						</div>
-						{#if calculator.fireMode}
-							{@render metric('FIRE Target', calculator.fireNumber)}
-						{/if}
 					</div>
 				</div>
 

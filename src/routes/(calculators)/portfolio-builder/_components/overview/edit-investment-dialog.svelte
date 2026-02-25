@@ -28,11 +28,11 @@
 </script>
 
 <Dialog.Root bind:open>
-	<Dialog.Trigger>
-		<button class="flex items-center gap-2 w-full">
-			<Pencil />
-			<span>Edit</span>
-		</button>
+	<Dialog.Trigger
+		class="flex items-center gap-2 w-full inline-flex shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium outline-none transition-all focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 bg-primary text-primary-foreground shadow-xs hover:bg-primary/90"
+	>
+		<Pencil />
+		<span>Edit</span>
 	</Dialog.Trigger>
 	<Dialog.Content class="sm:max-w-[400px]">
 		<Dialog.Header>
@@ -44,11 +44,11 @@
 		</Dialog.Header>
 		<div class="space-y-4 py-4">
 			<div>
-				<label class="text-sm font-medium">Current Value</label>
+				<p class="text-sm font-medium">Current Value</p>
 				<div>{formatAsCurrency(holding.weight * portfolio.totalValue)}</div>
 			</div>
 			<div>
-				<label class="text-sm font-medium">Allocation (%)</label>
+				<p class="text-sm font-medium">Allocation (%)</p>
 				<PercentageInput bind:value={editedWeight} />
 			</div>
 		</div>

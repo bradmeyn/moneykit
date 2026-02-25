@@ -40,9 +40,9 @@
 }
 
 .dark {
-	--background: oklch(15.554% 0.04454 264.325);
+	--background: #1b1d21;
 	--foreground: oklch(0.985 0.002 247.839);
-	--card: oklch(0.21 0.034 264.665);
+	--card: #1b1d21;
 	--card-foreground: oklch(0.985 0.002 247.839);
 	--popover: oklch(0.21 0.034 264.665);
 	--popover-foreground: oklch(0.985 0.002 247.839);
@@ -115,18 +115,6 @@
 	--color-primary-light: var(--primary-light);
 	--color-primary-dark: var(--primary-dark);
 	--color-brand: var(--brand);
-
-	--color-ui-50: #f8fafc;
-	--color-ui-100: #f1f5f9;
-	--color-ui-200: #e2e8f0;
-	--color-ui-300: #cbd5e1;
-	--color-ui-400: #94a3b8;
-	--color-ui-500: #64748b;
-	--color-ui-600: #475569;
-	--color-ui-700: #334155;
-	--color-ui-800: #1e293b;
-	--color-ui-900: #0f172a;
-	--color-ui-950: #020617;
 }
 
 @layer base {
@@ -172,7 +160,7 @@
 
 @layer components {
 	.card {
-		@apply rounded-xl border p-4 md:p-6 dark:bg-card shadow-sm;
+		@apply rounded-xl border-2 p-4 md:p-6 dark:bg-card shadow-sm;
 	}
 
 	.tab-trigger {

@@ -110,14 +110,14 @@
 </script>
 
 <Dialog.Root bind:open>
-	<Dialog.Trigger class="w-full md:w-fit">
-		{#snippet children()}
-			{#if trigger}
-				{@render trigger()}
-			{:else}
-				<Button class="w-full md:w-fit">Add {title[type]}</Button>
-			{/if}
-		{/snippet}
+	<Dialog.Trigger
+		class="w-full md:w-fit inline-flex shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium outline-none transition-all focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 bg-primary text-primary-foreground shadow-xs hover:bg-primary/90"
+	>
+		{#if trigger}
+			{@render trigger()}
+		{:else}
+			Add {title[type]}
+		{/if}
 	</Dialog.Trigger>
 	<Dialog.Content class="sm:max-w-[500px]">
 		<Dialog.Header class="text-start">

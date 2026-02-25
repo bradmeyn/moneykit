@@ -41,8 +41,10 @@
 </script>
 
 <Dialog.Root bind:open>
-	<Dialog.Trigger class="mb-2 w-full md:w-fit">
-		<Button size="sm" class="w-full">Add Investment</Button>
+	<Dialog.Trigger
+		class="mb-2 w-full md:w-fit inline-flex shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium outline-none transition-all focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 bg-primary text-primary-foreground shadow-xs hover:bg-primary/90"
+	>
+		Add Investment
 	</Dialog.Trigger>
 
 	<Dialog.Content class="bg-card">

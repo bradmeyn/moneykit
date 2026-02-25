@@ -39,7 +39,7 @@
 	<a
 		href={calculator.href}
 		class="block card
-		hover:border-brand hover:shadow-lg
+		hover:border-primary hover:shadow-lg
 		transition-all duration-300 ease-out
 		group w-full hover:-translate-y-2 h-full
 		bg-card border border-border rounded-lg p-4 md:p-6

@@ -53,13 +53,11 @@
 </script>
 
 <Dialog.Root bind:open>
-	<Dialog.Trigger>
-		{#snippet children()}
-			<button class="flex items-center gap-2">
-				<Pencil />
-				<span> Edit Item </span>
-			</button>
-		{/snippet}
+	<Dialog.Trigger
+		class="flex items-center gap-2 inline-flex shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium outline-none transition-all focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 bg-primary text-primary-foreground shadow-xs hover:bg-primary/90"
+	>
+		<Pencil />
+		<span> Edit Item </span>
 	</Dialog.Trigger>
 	<Dialog.Content class="sm:max-w-[500px] ">
 		<Dialog.Header class="text-start">

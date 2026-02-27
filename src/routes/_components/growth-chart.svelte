@@ -1,20 +1,20 @@
 <script lang="ts">
 	import { LineChart } from 'layerchart';
 	import { formatAsCurrency } from '$lib/utils/formatters';
-	import type { AnnualData } from '../../calculator.svelte';
+	import type { AnnualData } from '../calculator.svelte';
 	import { COLOURS } from '$lib/constants/colours';
 	import { LC_TOOLTIP_PROPS, LC_AXIS_PROPS, LC_GRID } from '$constants/chart-config';
 
 	let {
-		baseData = [],
-		savingsGoal = 0
+		annualData = [],
+		savingsGoal
 	}: {
-		baseData: AnnualData[];
-		savingsGoal?: number;
+		annualData: AnnualData[];
+		savingsGoal: number;
 	} = $props();
 
 	let chartData = $derived(
-		baseData.map((item) => ({
+		annualData.map((item) => ({
 			...item,
 			goal: savingsGoal || null
 		}))
@@ -52,15 +52,16 @@
 	});
 </script>
 
-<div class="h-[400px] lg:h-[500px] relative lc-chart">
+<div class="h-[400px] lg:h-[500px] growth-layerchart lc-chart">
 	<LineChart
 		data={chartData}
 		x="year"
 		y="endingValue"
 		{series}
 		grid={LC_GRID}
-		points={false}
 		legend={{ placement: 'top', variant: 'swatches' }}
+		points={false}
+		padding={{ top: 4, left: 80, bottom: 20, right: 4 }}
 		props={{
 			xAxis: {
 				...LC_AXIS_PROPS,
@@ -80,7 +81,7 @@
 </div>
 
 <style>
-	.lc-chart :global(svg) {
+	.growth-layerchart :global(svg) {
 		font-family: var(--font-ui);
 	}
 </style>

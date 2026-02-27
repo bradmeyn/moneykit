@@ -8,8 +8,6 @@
 	import FrequencyInput from '$lib/components/inputs/frequency-select.svelte';
 	import type { BudgetItem as BudgetItemType } from '../budget.svelte';
 	import Input from '$ui/input/input.svelte';
-	import { formatAsCurrency } from '$lib/utils/formatters';
-	import { FREQUENCIES } from '$constants/frequencies';
 
 	import { getBudgetState } from '../budget.svelte';
 
@@ -30,12 +28,10 @@
 		amount: budgetItem.amount,
 		frequency: budgetItem.frequency,
 		category: budgetItem.category,
-		type: budgetItem.type,
-		owner: budgetItem.owner
+		type: budgetItem.type
 	});
 
 	const isValid = $derived(editedItem.name.trim().length > 0 && editedItem.amount > 0);
-	let categoryError = $state('');
 
 	function handleSubmit() {
 		if (isValid) {
@@ -55,9 +51,7 @@
 </script>
 
 <Dialog.Root bind:open>
-	<Dialog.Trigger
-		class={cn(buttonVariants({ variant: 'default', size: 'default' }))}
-	>
+	<Dialog.Trigger class={cn(buttonVariants({ variant: 'default', size: 'default' }))}>
 		<Pencil />
 		<span> Edit Item </span>
 	</Dialog.Trigger>
@@ -95,31 +89,6 @@
 					<label for="item-frequency" class="text-sm font-medium">Frequency</label>
 					<FrequencyInput bind:value={editedItem.frequency} id="item-frequency" />
 				</div>
-				{#if budget.isJointBudget}
-					<div class="space-y-2 col-span-2">
-						<Label for="item-owner" class="text-sm font-medium">Owner</Label>
-						<Select.Root
-							type="single"
-							bind:value={editedItem.owner}
-							onValueChange={(value) => (editedItem.owner = value)}
-						>
-							<Select.Trigger class="w-full">
-								{#if !editedItem.owner}
-									<span>Select owner</span>
-								{:else}
-									<span>{editedItem.owner}</span>
-								{/if}
-							</Select.Trigger>
-							<Select.Content>
-								<Select.Group>
-									{#each budget.owners as owner}
-										<Select.Item value={owner} />
-									{/each}
-								</Select.Group>
-							</Select.Content>
-						</Select.Root>
-					</div>
-				{/if}
 			</div>
 
 			<div>

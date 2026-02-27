@@ -6,11 +6,16 @@
 	import BudgetCard from './_components/budget-card.svelte';
 	import ActionsMenu from './_components/actions-menu.svelte';
 	import LoadBudgetAlert from './_components/load-budget-alert.svelte';
-
-	import Button from '$ui/button/button.svelte';
-	import { User, Users } from 'lucide-svelte';
+	import TabSelect from '$lib/components/inputs/tab-select.svelte';
 
 	const budget = setBudgetState();
+
+	let viewMode = $state<'category' | 'simple'>('simple');
+
+	const viewOptions = [
+		{ value: 'category', label: 'Category' },
+		{ value: 'simple', label: 'Simple' }
+	];
 
 	let chartData = $derived.by(() => {
 		const total = budget.totalExpenses;
@@ -62,21 +67,12 @@
 	<div class="flex justify-between items-center mb-2">
 		<h1 class="calculator-heading">Budget Planner</h1>
 		<div class="flex items-center gap-4">
-			<Button
-				size="sm"
-				class="rounded-full"
-				variant={budget.isJointBudget ? 'secondary' : 'outline'}
-				onclick={() => (budget.isJointBudget = !budget.isJointBudget)}
-			>
-				{#if budget.isJointBudget}
-					<Users /> <span>Joint</span>
-				{:else}
-					<User />
-					<div>Personal</div>
-				{/if}
-			</Button>
 			<ActionsMenu />
 		</div>
+	</div>
+
+	<div class="mb-4 max-w-[240px]">
+		<TabSelect bind:value={viewMode} name="budget-view" options={viewOptions} />
 	</div>
 
 	<div class="flex flex-col lg:flex-row gap-4 w-full">
@@ -86,12 +82,14 @@
 				categories={budget.categories['income']}
 				total={budget.totalIncome}
 				items={budget.income}
+				{viewMode}
 			/>
 			<BudgetCard
 				type="expense"
 				categories={budget.categories['expense']}
 				total={budget.totalExpenses}
 				items={budget.expenses}
+				{viewMode}
 			/>
 		</div>
 		{#if budget.totalExpenses > 0}

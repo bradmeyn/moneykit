@@ -5,21 +5,21 @@
 	import { getBudgetState, calculateCategoryTotal, type BudgetItem } from '../budget.svelte';
 	import BudgetTable from './budget-table.svelte';
 	import BudgetAccordion from './budget-accordion.svelte';
-	import Button from '$ui/button/button.svelte';
 	import AddItemDialog from './add-item-dialog.svelte';
-	import { Trash } from 'lucide-svelte';
-	import ClearAllDialog from './clear-all-dialog.svelte';
+	import BudgetFlatTable from './budget-flat-table.svelte';
 
 	let {
 		type,
 		total,
 		categories,
-		items
+		items,
+		viewMode = 'category'
 	}: {
 		categories: string[];
 		type: BudgetItem['type'];
 		total: number;
 		items: BudgetItem[];
+		viewMode?: 'category' | 'simple';
 	} = $props();
 
 	const budget = getBudgetState();
@@ -45,7 +45,7 @@
 				<p class={`text-2xl font-semibold  ${total < 0 ? 'text-red-400' : ''}`}>
 					{formatAsCurrency(total)}
 				</p>
-				<button class=" text-muted-foreground hover:cursor-pointer" onclick={changeFrequency}>
+				<button class="text-muted-foreground hover:text-foreground transition-colors duration-150" onclick={changeFrequency}>
 					/ {FREQUENCIES[budget.frequency].singular}
 				</button>
 			</div>
@@ -54,19 +54,23 @@
 	</div>
 
 	<div class="mt-2">
-		{#each categories as category}
-			{@const categoryItems = items.filter((i) => i.category === category && i.type === type)}
+		{#if viewMode === 'simple'}
+			<BudgetFlatTable {items} {type} {categories} />
+		{:else}
+			{#each categories as category}
+				{@const categoryItems = items.filter((i) => i.category === category && i.type === type)}
 
-			<BudgetAccordion
-				{type}
-				{category}
-				categoryTotal={calculateCategoryTotal(items, category, budget.frequency)}
-			>
-				<BudgetTable items={categoryItems} />
-			</BudgetAccordion>
-		{/each}
-	</div>
-	<div class="mt-2 flex justify-end">
-		<AddItemDialog {type} />
+				<BudgetAccordion
+					{type}
+					{category}
+					categoryTotal={calculateCategoryTotal(items, category, budget.frequency)}
+				>
+					<BudgetTable items={categoryItems} />
+				</BudgetAccordion>
+			{/each}
+			<div class="mt-2 flex justify-end">
+				<AddItemDialog {type} />
+			</div>
+		{/if}
 	</div>
 </div>

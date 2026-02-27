@@ -10,7 +10,6 @@ export type BudgetItem = {
 	category: string;
 	frequency: FrequencyType;
 	type: 'income' | 'expense';
-	owner: string;
 };
 
 export function convertToFrequency(
@@ -37,8 +36,6 @@ export function calculateCategoryTotal(
 class Budget {
 	hasSavedBudget = $state<boolean>(false);
 	showLoadPrompt = $state<boolean>(false);
-	isJointBudget = $state<boolean>(false);
-	owners = $state<string[]>(['User 1', 'User 2', 'Joint']);
 
 	constructor() {
 		this.checkForSavedData();
@@ -201,7 +198,6 @@ class Budget {
 			'Type',
 			'Name',
 			'Category',
-			'Owner',
 			'Amount',
 			'Frequency',
 			'Monthly Total',
@@ -225,7 +221,6 @@ class Budget {
 						type === 'expenses' ? 'expense' : type,
 						item.name,
 						item.category,
-						item.owner,
 						Number(item.amount.toFixed(2)),
 						item.frequency,
 						Number(monthlyAmount.toFixed(2)),
@@ -244,7 +239,6 @@ class Budget {
 				);
 				rows.push([
 					`${type.charAt(0).toUpperCase() + type.slice(1)} Total`,
-					'',
 					'',
 					'',
 					'',
@@ -287,7 +281,6 @@ class Budget {
 		// Add summary row
 		rows.push([
 			'Unallocated Funds',
-			'',
 			'',
 			'',
 			'',

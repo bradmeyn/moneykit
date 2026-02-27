@@ -53,10 +53,8 @@
 				<div>
 					<div class="flex gap-2 mb-2 items-center">
 						<Label class="mb-0" id="years-invested">Years Invested</Label>
-
 						<Explainer text="The number of years you plan to invest before reaching your goal." />
 					</div>
-
 					<Slider
 						type="single"
 						bind:value={calculator.years}
@@ -65,8 +63,7 @@
 						step={1}
 						id="years-invested"
 					/>
-
-					<div class="text-sm text-muted-foreground mt-1 flex justify-between">
+					<div class="text-sm text-muted-foreground mt-1">
 						<span>{calculator.years}</span>
 					</div>
 				</div>
@@ -77,14 +74,12 @@
 					size="sm"
 					onclick={() => (calculator.fireMode = !calculator.fireMode)}
 				>
-					{calculator.fireMode ? 'Savings Goal' : 'FIRE Mode'}
-					{#if calculator.fireMode}
-						<Explainer
-							text="Calculate how much you need to retire early based on your annual expenses and safe withdrawal rate."
-						/>
-					{:else}
-						<Explainer text="Calculate how long it will take to reach your savings goal." />
-					{/if}
+					{calculator.fireMode ? 'Switch to Savings Goal' : 'Switch to FIRE Mode'}
+					<Explainer
+						text={calculator.fireMode
+							? 'Calculate how long it will take to reach your savings goal.'
+							: 'Calculate how much you need to retire early based on your annual expenses and safe withdrawal rate.'}
+					/>
 				</Button>
 
 				{#if calculator.fireMode}
@@ -93,17 +88,19 @@
 							<Label for="annual-expenses">Annual Expenses</Label>
 							<CurrencyInput bind:value={calculator.annualExpenses} id="annual-expenses" />
 						</div>
+						<PercentageSlider
+							label="Withdrawal Rate"
+							bind:value={calculator.withdrawalRate}
+							min={0.02}
+							max={0.1}
+							step={0.005}
+							id="withdrawal-rate"
+							explainer="Safe withdrawal rate for FIRE (usually 4%)"
+							precision={2}
+						/>
 						<div>
-							<PercentageSlider
-								label="Withdrawal Rate"
-								bind:value={calculator.withdrawalRate}
-								min={0.02}
-								max={0.1}
-								step={0.005}
-								id="withdrawal-rate"
-								explainer="Safe withdrawal rate for FIRE (usually 4%)"
-								precision={2}
-							/>
+							<Label for="secondary-income">Secondary Income (optional)</Label>
+							<CurrencyInput bind:value={calculator.secondaryIncome} id="secondary-income" />
 						</div>
 					</div>
 				{:else}
@@ -119,15 +116,13 @@
 					size="sm"
 					onclick={() => (calculator.useVolatility = !calculator.useVolatility)}
 				>
-					{calculator.useVolatility ? 'Hide' : 'Add'} Volatility
+					{calculator.useVolatility ? 'Hide Volatility' : 'Add Volatility'}
 					<Explainer
 						text="Include market volatility in the calculations for more realistic returns."
 					/>
 				</Button>
 
 				{#if calculator.useVolatility}
-					<h2 class="card-heading">Market Volatility</h2>
-
 					<PercentageSlider
 						label="Volatility (Standard Deviation)"
 						bind:value={calculator.volatility}
@@ -138,8 +133,6 @@
 						explainer="Higher values create more realistic but unpredictable returns. Stock markets typically have 15-20% volatility."
 						precision={0}
 					/>
-
-					<!-- <Button variant="outline" size="sm" class="w-full">🎲 Generate New Random Returns</Button> -->
 				{/if}
 			</Accordion.Content>
 		</Accordion.Item>

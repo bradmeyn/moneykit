@@ -1,14 +1,6 @@
-// Enhanced calculator.svelte with volatility support
 import { FREQUENCIES, type FrequencyType } from '$lib/constants/frequencies';
 import { setContext, getContext } from 'svelte';
 import { formatAsCurrency, formatAsPercentage } from '$utils/formatters';
-
-export type GrowthScenario = {
-	contributionAmount: number;
-	interestRate: number;
-	contributionFrequency: FrequencyType;
-	volatility: number; // Standard deviation of annual returns
-};
 
 export type GrowthResult = {
 	totalValue: number;
@@ -21,7 +13,7 @@ export type AnnualData = {
 	year: number;
 	startingValue: number;
 	yearlyInterest: number;
-	actualReturn: number; // The actual return used (with volatility)
+	actualReturn: number;
 	totalInterest: number;
 	yearlyContribution: number;
 	totalContributions: number;
@@ -29,7 +21,6 @@ export type AnnualData = {
 };
 
 class GrowthCalculatorState {
-	// Input state
 	principal = $state(10000);
 	savingsGoal = $state(100000);
 	years = $state(10);
@@ -46,29 +37,16 @@ class GrowthCalculatorState {
 	useVolatility = $state(false);
 	volatility = $state(0.15);
 
-	// FIRE inputs
-	fireMode = $state(false);
+	// FIRE mode
+	fireMode = $state(true);
 	annualExpenses = $state(40000);
 	withdrawalRate = $state(0.04);
 	secondaryIncome = $state(0);
 
 	fireNumber = $derived((this.annualExpenses - this.secondaryIncome) / this.withdrawalRate);
-	yearsToFire = $derived.by(() => {
-		let amount = this.principal;
-
-		const realGrowthRate = (1 + this.returnRate) / (1 + this.inflationRate) - 1;
-
-		let years = 0;
-		while (amount < this.fireNumber && years < 100) {
-			amount = amount * (1 + realGrowthRate) + this.annualContributions;
-			years++;
-		}
-		return years;
-	});
 
 	target = $derived(this.fireMode ? this.fireNumber : this.savingsGoal);
 
-	// Derived calculation results
 	result = $derived(
 		this.calculateCompoundInterest(
 			this.principal,
@@ -80,30 +58,23 @@ class GrowthCalculatorState {
 		)
 	);
 
-	isGoalAchieved = $derived(this.result.annualData.some((data) => data.endingValue >= this.target));
+	isGoalAchieved = $derived(this.result.annualData.some((d) => d.endingValue >= this.target));
 
 	yearsToGoal = $derived.by(() => {
-		const yearReached = this.result.annualData.findIndex((data) => data.endingValue >= this.target);
+		const yearReached = this.result.annualData.findIndex((d) => d.endingValue >= this.target);
 		return yearReached === -1 ? null : yearReached + 1;
 	});
 
-	// Simple Box-Muller transform for generating normal distribution
 	private generateNormalRandom(): number {
 		let u1 = 0,
 			u2 = 0;
-		while (u1 === 0) u1 = Math.random(); // Converting [0,1) to (0,1)
+		while (u1 === 0) u1 = Math.random();
 		while (u2 === 0) u2 = Math.random();
-
-		const z0 = Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
-		return z0;
+		return Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
 	}
 
-	// Generate a random return based on expected return and volatility
-	private generateRandomReturn(expectedReturn: number, volatility: number): number {
-		if (volatility === 0) return expectedReturn;
-
-		const randomNormal = this.generateNormalRandom();
-		return expectedReturn + randomNormal * this.volatility;
+	private generateRandomReturn(expectedReturn: number): number {
+		return expectedReturn + this.generateNormalRandom() * this.volatility;
 	}
 
 	calculateCompoundInterest(
@@ -114,19 +85,8 @@ class GrowthCalculatorState {
 		contributionFrequency: number = 0,
 		volatility: number = 0
 	): GrowthResult {
-		if (
-			principal <= 0 ||
-			interestRate <= 0 ||
-			years <= 0 ||
-			contributionAmount < 0 ||
-			contributionFrequency < 0
-		) {
-			return {
-				totalValue: 0,
-				totalInterest: 0,
-				totalContributions: 0,
-				annualData: []
-			};
+		if (principal <= 0 || interestRate <= 0 || years <= 0 || contributionFrequency < 0) {
+			return { totalValue: 0, totalInterest: 0, totalContributions: 0, annualData: [] };
 		}
 
 		let totalValue = principal;
@@ -136,23 +96,14 @@ class GrowthCalculatorState {
 
 		for (let i = 0; i < years; i++) {
 			const startingValue = parseFloat(totalValue.toFixed(2));
-
-			// Generate actual return for this year (with or without volatility)
 			const actualReturn =
-				volatility > 0 ? this.generateRandomReturn(interestRate, volatility) : interestRate;
-
-			// Ensure return doesn't go below -100% (total loss)
+				volatility > 0 ? this.generateRandomReturn(interestRate) : interestRate;
 			const clampedReturn = Math.max(actualReturn, -1);
-
 			const yearlyInterest = totalValue * clampedReturn;
 			totalInterest += yearlyInterest;
-
 			const yearlyContribution = contributionAmount * contributionFrequency;
 			totalContributions += yearlyContribution;
-			totalValue += yearlyInterest + yearlyContribution;
-
-			// Ensure total value doesn't go below 0
-			totalValue = Math.max(totalValue, 0);
+			totalValue = Math.max(totalValue + yearlyInterest + yearlyContribution, 0);
 
 			annualData.push({
 				year: i + 1,
@@ -166,26 +117,13 @@ class GrowthCalculatorState {
 			});
 		}
 
-		return {
-			totalValue,
-			totalInterest,
-			totalContributions,
-			annualData
-		};
+		return { totalValue, totalInterest, totalContributions, annualData };
 	}
 
 	getTableData() {
-		// Default single scenario table
 		const columns = this.useVolatility
-			? [
-					'Year',
-					'Starting Value',
-					'Actual Return %',
-					'Interest Earned',
-					'Annual Contribution',
-					'Total Value'
-				]
-			: ['Year', 'Starting Value', 'Interest Earned', 'AnnualContribution', 'Total Value'];
+			? ['Year', 'Starting Value', 'Actual Return %', 'Interest Earned', 'Annual Contribution', 'Total Value']
+			: ['Year', 'Starting Value', 'Interest Earned', 'Annual Contribution', 'Total Value'];
 
 		return {
 			columns,
@@ -197,11 +135,7 @@ class GrowthCalculatorState {
 					formatAsCurrency(data.yearlyContribution),
 					formatAsCurrency(data.endingValue)
 				];
-
-				if (this.useVolatility) {
-					row.splice(2, 0, formatAsPercentage(data.actualReturn));
-				}
-
+				if (this.useVolatility) row.splice(2, 0, formatAsPercentage(data.actualReturn));
 				return row;
 			})
 		};

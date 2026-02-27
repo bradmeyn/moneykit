@@ -17,17 +17,6 @@
 	} = $props();
 
 	const budget = getBudgetState();
-
-	// Owner options for joint budget
-
-	function cycleOwner() {
-		const currentIdx = budget.owners.indexOf(budgetItem.owner);
-		const nextIdx = (currentIdx + 1) % budget.owners.length;
-		budget.updateItem({
-			...budgetItem,
-			owner: budget.owners[nextIdx]
-		});
-	}
 </script>
 
 <tr class="hidden md:table-row">
@@ -54,13 +43,6 @@
 			name={budgetItem.name + '-frequency'}
 		/>
 	</td>
-	{#if budget.isJointBudget}
-		<td>
-			<Button size="sm" variant="outline" onclick={cycleOwner}>
-				{budgetItem.owner}
-			</Button>
-		</td>
-	{/if}
 	<td class="text-right min-w-[80px] relative font-semibold">
 		<span
 			>{formatAsCurrency(
@@ -80,10 +62,6 @@
 	<td class="w-40">
 		{formatAsCurrency(budgetItem.amount)} / {FREQUENCIES[budgetItem.frequency].singular}
 	</td>
-	<td class="text-center" class:hidden={!budget.isJointBudget}>
-		{budget.isJointBudget ? budgetItem.owner : ''}
-	</td>
-
 	<td class="text-right min-w-[80px] relative font-semibold">
 		<span
 			>{formatAsCurrency(

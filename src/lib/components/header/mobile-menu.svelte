@@ -46,7 +46,7 @@
 	<!-- Menu Button -->
 	<button
 		onclick={toggleMenu}
-		class=" flex items-center justify-center text-muted-foreground hover:text-white transition-colors ml-auto hover:bg-muted rounded-lg size-5 p-5"
+		class="flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors ml-auto hover:bg-muted rounded-lg size-5 p-5"
 		aria-expanded={isOpen}
 		aria-haspopup="true"
 		aria-label="Toggle menu"
@@ -65,11 +65,11 @@
 	<!-- Mobile Menu Overlay -->
 	{#if isOpen}
 		<!-- Menu Content -->
-		<div class="fixed top-0 left-0 right-0 bg-card shadow-lg z-50 max-h-screen overflow-y-auto">
+		<div class="fixed top-0 left-0 right-0 bg-card shadow-lg z-50 max-h-screen overflow-y-auto border-b border-border">
 			<!-- Header -->
 			<div class="flex items-center justify-between p-4 border-b border-border">
-				<span class="text-white text-xl"
-					>Money<span class="text-transparent bg-clip-text bg-linear-to-b from-brand to-brand"
+				<span class="text-foreground text-xl font-medium tracking-tight"
+					>Money<span class="text-transparent bg-clip-text bg-linear-to-b from-primary to-brand"
 						>Kit</span
 					></span
 				>
@@ -87,9 +87,9 @@
 						<li>
 							<a
 								href={calculator.href}
-								class="flex items-center gap-3 rounded-lg px-4 py-2 transition-colors duration-150 text-muted-foreground hover:text-white hover:bg-muted focus:outline-none focus:ring-2 focus:ring-brand {activeUrl ===
+								class="flex items-center gap-3 rounded-lg px-4 py-2 transition-colors duration-150 text-muted-foreground hover:text-foreground hover:bg-muted focus:outline-none focus:ring-2 focus:ring-brand {activeUrl ===
 								calculator.href
-									? 'text-white bg-muted'
+									? 'text-foreground bg-muted'
 									: ''}"
 								aria-current={activeUrl === calculator.href ? 'page' : undefined}
 								onclick={closeMenu}

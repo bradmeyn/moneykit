@@ -1,16 +1,7 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-	import {
-		Chart,
-		BarController,
-		BarElement,
-		CategoryScale,
-		LinearScale,
-		Legend,
-		Tooltip
-	} from 'chart.js';
-	import { TOOLTIP } from '$constants/chart-config';
-	import { COLOURS } from '$constants/colours';
+	import { BarChart } from 'layerchart';
+	import { COLOURS } from '$lib/constants/colours';
+	import { LC_TOOLTIP_PROPS, LC_AXIS_PROPS, LC_GRID } from '$constants/chart-config';
 
 	let {
 		data,
@@ -23,138 +14,77 @@
 			label: string;
 			data: number[];
 			backgroundColor?: string | string[];
-			borderColor?: string | string[];
-			borderWidth?: number;
-			borderRadius?: number;
 		}[];
 		formatter: (value: number) => string;
 		showLegend?: boolean;
 	} = $props();
 
-	// For backward compatibility with single dataset
-	let labels = $derived(
-		data ? data.map((item) => item.label) : datasets?.[0]?.data.map((_, i) => `Item ${i + 1}`) || []
-	);
-
-	let chartDatasets = $derived.by(() => {
+	let chartData = $derived.by(() => {
 		if (datasets) {
-			return datasets.map((dataset, index) => ({
-				label: dataset.label,
-				data: dataset.data,
-				backgroundColor: dataset.backgroundColor || COLOURS[index % COLOURS.length],
-				borderColor:
-					dataset.borderColor || dataset.backgroundColor || COLOURS[index % COLOURS.length],
-				borderWidth: dataset.borderWidth || 0,
-				borderRadius: dataset.borderRadius || 5
-			}));
-		} else if (data) {
-			return [
-				{
-					data: data.map((item) => item.value),
-					backgroundColor: COLOURS.slice(0, data.length),
-					borderWidth: 0,
-					borderRadius: 5
-				}
-			];
+			const labels =
+				data?.map((d) => d.label) ?? datasets[0]?.data.map((_, i) => `Item ${i + 1}`) ?? [];
+			return labels.map((label, i) => {
+				const row: Record<string, unknown> = { x: label };
+				datasets.forEach((ds) => {
+					row[ds.label] = ds.data[i] ?? 0;
+				});
+				return row;
+			});
+		}
+		if (data) {
+			return data.map((d) => ({ x: d.label, value: d.value }));
 		}
 		return [];
 	});
 
-	let chartId: HTMLCanvasElement | undefined = $state();
-	let chart: Chart | undefined = $state();
-
-	Chart.register(BarController, BarElement, CategoryScale, LinearScale, Legend, Tooltip);
-
-	onMount(() => {
-		chart = new Chart(chartId!, {
-			type: 'bar',
-			data: {
-				labels,
-				datasets: chartDatasets
-			},
-			options: {
-				maintainAspectRatio: false,
-				responsive: true,
-				scales: {
-					x: {
-						stacked: false,
-						grid: {
-							display: false
-						},
-						title: {
-							font: {
-								size: 14,
-								family: 'sans-serif'
-							},
-							color: '#ffffff'
-						},
-						ticks: {
-							font: {
-								size: 14,
-								family: 'sans-serif'
-							},
-							color: '#ffffff'
-						}
-					},
-					y: {
-						grid: {
-							display: true,
-							color: '#333333'
-						},
-						stacked: false,
-						beginAtZero: true,
-						ticks: {
-							callback: (value) => formatter(+value),
-							font: {
-								size: 14,
-								family: 'sans-serif'
-							},
-							color: '#ffffff'
-						}
-					}
-				},
-				plugins: {
-					tooltip: {
-						enabled: true,
-						position: 'average',
-						mode: 'index',
-						intersect: false,
-						bodyAlign: 'right',
-						...TOOLTIP,
-						callbacks: {
-							label: function (context) {
-								const label = context.dataset.label || '';
-								const value = formatter(context.parsed.y);
-								return label ? `${label}: ${value}` : value;
-							}
-						}
-					},
-					legend: {
-						display: showLegend,
-
-						labels: {
-							color: '#fff',
-							font: { size: 16, family: 'sans-serif' },
-							usePointStyle: true,
-							pointStyle: 'circle',
-							boxHeight: 8,
-							boxWidth: 8
-						}
-					}
-				}
-			}
-		});
-	});
-
-	$effect(() => {
-		if (chart) {
-			chart.data.labels = labels;
-			chart.data.datasets = chartDatasets;
-			chart.update();
+	let series = $derived.by(() => {
+		if (datasets) {
+			return datasets.map((ds, i) => {
+				const color =
+					(typeof ds.backgroundColor === 'string'
+						? ds.backgroundColor
+						: ds.backgroundColor?.[0]) ?? COLOURS[i % COLOURS.length];
+				return {
+					key: ds.label,
+					label: ds.label,
+					color,
+					props: { style: `fill: ${color}` }
+				};
+			});
 		}
+		if (data) {
+			const color = COLOURS[0];
+			return [{ key: 'value', label: '', color, props: { style: `fill: ${color}` } }];
+		}
+		return undefined;
 	});
 </script>
 
-<div class="min-h-[400px] md:min-h-[500px] min-w-[200px] relative">
-	<canvas class="w-full absolute min-h-full" bind:this={chartId}></canvas>
+<div class="h-[400px] md:h-[500px] min-w-[200px] lc-chart">
+	<BarChart
+		data={chartData}
+		x="x"
+		{series}
+		seriesLayout="group"
+		grid={LC_GRID}
+		legend={showLegend ? { placement: 'top', variant: 'swatches' } : false}
+		props={{
+			bars: { radius: 3, strokeWidth: 0, class: 'stroke-transparent' },
+			highlight: {
+				area: { fill: 'transparent', class: 'pointer-events-none' }
+			},
+			xAxis: { ...LC_AXIS_PROPS, format: 'none' },
+			yAxis: { ...LC_AXIS_PROPS, format: (v: unknown) => formatter(Number(v)) },
+			tooltip: LC_TOOLTIP_PROPS,
+			legend: {
+				classes: { label: 'text-foreground text-sm', swatch: 'size-2.5' }
+			}
+		}}
+	/>
 </div>
+
+<style>
+	.lc-chart :global(svg) {
+		font-family: var(--font-ui);
+	}
+</style>

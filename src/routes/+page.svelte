@@ -1,89 +1,109 @@
 <script lang="ts">
-	import { calculators, type Calculator } from '$lib/constants/calculators';
+	import { setCalculatorState, getCalculatorState } from './calculator.svelte';
+	import * as Tabs from '$lib/components/ui/tabs';
+	import { formatAsCurrency } from '$lib/utils/formatters';
+	import { CheckCircle, Flame, XCircle } from 'lucide-svelte';
+	import Inputs from './_components/savings-inputs.svelte';
+	import GrowthChart from './_components/growth-chart.svelte';
+	import ScrollableTable from '$ui/scrollable-table.svelte';
+	import CalculatorActions from '$lib/components/calculator-actions.svelte';
+
+	setCalculatorState();
+	let calculator = getCalculatorState();
+	let selectedView = $state('chart');
 </script>
 
 <svelte:head>
-	<title>MoneyKit</title>
-	<meta name="description" content="Professional-grade personal finance toolkit." />
+	<title>Savings & FIRE Calculator | MoneyKit</title>
+	<meta
+		name="description"
+		content="Calculate your savings growth, reach your financial goals, or plan your path to FIRE — Financial Independence, Retire Early."
+	/>
 </svelte:head>
 
-<main class="flex-1 container">
-	<div class="text-center max-w-4xl mx-auto py-6 mt-4 mb-8">
-		<h1 class="text-5xl md:text-8xl mb-6 text-white leading-none">
-			Your personal finance
-			<span class="relative">
-				<span class="text-brand">toolkit</span>
-			</span>
-		</h1>
-		<p class="text-xl md:text-2xl max-w-4xl mx-auto text-muted-foreground">
-			Easy to use financial tools designed to help you make <span class="text-white"
-				>smarter decisions</span
-			> with your money.
-		</p>
+<main class="container">
+	<div class="flex justify-end items-center mb-4">
+		<CalculatorActions
+			filename={'savings-calculator.csv'}
+			getCsvData={() => calculator.getTableData()}
+		/>
 	</div>
 
-	<div
-		class="grid grid-cols-3 gap-3 mx-auto max-w-7xl px-4
-	sm:gap-4
-	md:gap-6
-	 lg:gap-8 lg:max-w-6xl
-	xl:max-w-5xl"
-	>
-		{#each calculators as calculator}
-			{@render CalculatorCard(calculator)}
-		{/each}
-	</div>
-</main>
+	<section class="flex flex-col lg:flex-row gap-8">
+		<Inputs />
 
-{#snippet CalculatorCard(calculator: Calculator)}
-	<a
-		href={calculator.href}
-		class="block card
-		hover:border-brand hover:shadow-lg
-		transition-all duration-300 ease-out
-		group w-full hover:-translate-y-2 h-full
-		bg-card border border-border rounded-lg p-4 md:p-6
-		hover:bg-card/80
-		col-span-3 md:col-span-1
-		relative overflow-hidden"
-	>
-		<div class="relative z-10">
-			<!-- Responsive layout: horizontal on mobile, vertical on desktop -->
-			<div
-				class="flex md:flex-col items-start md:items-center md:text-center space-x-3 md:space-x-0 md:space-y-4"
-			>
-				<!-- Enhanced icon container -->
-				<div
-					class="size-12 md:size-16 rounded-lg md:rounded-xl bg-gradient-to-br from-brand/20 to-brand/10
-					flex items-center justify-center shrink-0
-					group-hover:scale-110 group-hover:rotate-3
-					transition-all duration-300 ease-out
-					border border-brand/20 group-hover:border-brand/30
-					shadow-sm group-hover:shadow-md group-hover:shadow-brand/20"
-				>
-					<svg
-						class="size-5 md:size-7 text-brand group-hover:text-brand/90 transition-colors duration-300"
-						viewBox={calculator.viewBox}
-						fill="currentColor"
+		<div class="w-full min-w-0 space-y-4">
+			<div class="card">
+				<div class="flex gap-2 flex-col md:flex-row md:justify-between w-full mb-4">
+					<h2 class="card-heading">Outcome</h2>
+					<Tabs.Root
+						value={selectedView}
+						onValueChange={(value) => (selectedView = value)}
+						class="w-full md:w-fit"
 					>
-						<path d={calculator.iconPath} />
-					</svg>
+						<Tabs.List class="w-full min-w-48">
+							<Tabs.Trigger value="chart">Chart</Tabs.Trigger>
+							<Tabs.Trigger value="table">Table</Tabs.Trigger>
+						</Tabs.List>
+					</Tabs.Root>
 				</div>
 
-				<!-- Content -->
-				<div class="space-y-1 md:space-y-2 min-w-0 flex-1">
-					<h3
-						class="text-base md:text-lg font-semibold text-white group-hover:text-brand transition-colors duration-300"
-					>
-						{calculator.name}
-					</h3>
-					<p
-						class="text-muted-foreground text-xs md:text-sm leading-relaxed group-hover:text-muted-foreground/80 transition-colors duration-300"
-					>
-						{calculator.description}
-					</p>
+				<div class="space-y-4 mb-4">
+					<div class="flex gap-8 flex-wrap">
+						{@render metric(
+							'Value after ' + calculator.years + ' years',
+							calculator.result.totalValue
+						)}
+						{@render metric('Total Contributions', calculator.result.totalContributions)}
+						{@render metric('Total Interest', calculator.result.totalInterest)}
+					</div>
+
+					<div class="flex gap-8 flex-wrap items-start">
+						{#if calculator.fireMode}
+							{@render metric('FIRE Number', calculator.fireNumber)}
+						{:else}
+							{@render metric('Savings Goal', calculator.savingsGoal)}
+						{/if}
+
+						<div>
+							<p class="text-muted-foreground">{calculator.fireMode ? 'FIRE' : 'Goal'} Status</p>
+							<div class="flex items-center gap-2 mt-0.5">
+								{#if calculator.isGoalAchieved && calculator.fireMode}
+									<Flame class="size-5 text-emerald-500 shrink-0" />
+								{:else if calculator.isGoalAchieved}
+									<CheckCircle class="size-5 text-emerald-500 shrink-0" />
+								{:else}
+									<XCircle class="size-5 text-rose-500 shrink-0" />
+								{/if}
+								<p class="text-xl md:text-2xl font-semibold">
+									{calculator.yearsToGoal !== null
+										? `Achieved in ${calculator.yearsToGoal} years`
+										: 'Not achieved'}
+								</p>
+							</div>
+						</div>
+					</div>
 				</div>
+
+				<Tabs.Root value={selectedView}>
+					<Tabs.Content value="chart" class="m-0">
+						<GrowthChart
+							annualData={calculator.result.annualData}
+							savingsGoal={calculator.target}
+						/>
+					</Tabs.Content>
+					<Tabs.Content value="table" class="m-0">
+						<ScrollableTable data={calculator.getTableData()} />
+					</Tabs.Content>
+				</Tabs.Root>
 			</div>
 		</div>
-	</a>
+	</section>
+</main>
+
+{#snippet metric(label: string, value: number)}
+	<div>
+		<p class="text-muted-foreground">{label}</p>
+		<p class="font-semibold text-xl md:text-2xl">{formatAsCurrency(value)}</p>
+	</div>
 {/snippet}

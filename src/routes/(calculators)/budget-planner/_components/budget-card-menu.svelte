@@ -12,10 +12,10 @@
 </script>
 
 <DropdownMenu.Root>
-	<DropdownMenu.Trigger>
-		<Button size="icon" variant="ghost">
-			<EllipsisVertical />
-		</Button>
+	<DropdownMenu.Trigger
+		class="inline-flex shrink-0 items-center justify-center gap-2 rounded-md text-sm font-medium outline-none transition-all disabled:pointer-events-none disabled:opacity-50 h-9 w-9 hover:bg-accent hover:text-accent-foreground"
+	>
+		<EllipsisVertical class="size-4" />
 	</DropdownMenu.Trigger>
 	<DropdownMenu.Content>
 		<DropdownMenu.Group>

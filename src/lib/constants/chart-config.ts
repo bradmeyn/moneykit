@@ -1,21 +1,40 @@
-import colors from 'tailwindcss/colors';
+/** Shared LayerChart tooltip props for consistent theming */
+export const LC_TOOLTIP_PROPS = {
+	root: {
+		class: 'z-[60]',
+		classes: {
+			container:
+				'border border-border bg-card/95 text-foreground shadow-md backdrop-blur-sm rounded-lg'
+		}
+	},
+	header: {
+		classes: {
+			root: 'border-border text-foreground font-semibold'
+		}
+	},
+	item: {
+		classes: {
+			label: 'text-muted-foreground text-sm',
+			value: 'text-foreground font-medium text-sm'
+		}
+	}
+};
 
-export const TOOLTIP = {
-	padding: 10,
-	titleFont: {
-		size: 14,
-		family: "'Inter', sans-serif"
+/** Shared LayerChart axis props */
+export const LC_AXIS_PROPS = {
+	tickLabelProps: {
+		style: 'font-size: 12px;'
 	},
-	bodyFont: {
-		size: 14,
-		family: "'Inter', sans-serif"
+	rule: {
+		style: 'stroke: var(--color-border); stroke-opacity: 0.8;'
 	},
-	bodyColor: 'white',
-	borderWidth: 1,
-	borderColor: colors.gray[600],
-	backgroundColor: colors.gray[950],
-	boxPadding: 4,
-	caretSize: 0,
-	usePointStyle: true,
-	multiKeyBackground: 'transparent'
+	labelProps: {
+		style: 'font-size: 12px; font-weight: 600;'
+	}
+};
+
+/** Shared LayerChart grid config */
+export const LC_GRID = {
+	x: false,
+	y: { style: ' stroke-opacity: 0.5;' }
 };

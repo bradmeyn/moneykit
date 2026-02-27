@@ -3,12 +3,12 @@
 	import MobileMenu from './mobile-menu.svelte';
 </script>
 
-<header class="h-16 relative">
+<header class="relative">
 	<div class="container relative">
-		<div class="flex items-center gap-8 w-full py-4 justify-between">
+		<div class="flex items-center gap-8 w-full py-5 justify-between">
 			<a href="/" class="flex items-center">
-				<span class="text-white text-xl"
-					>Money<span class="text-transparent bg-clip-text bg-linear-to-b from-brand to-brand"
+				<span class="text-foreground text-xl font-medium tracking-tight"
+					>Money<span class="text-transparent bg-clip-text bg-linear-to-b from-primary to-brand"
 						>Kit</span
 					></span
 				>

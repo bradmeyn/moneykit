@@ -37,10 +37,11 @@
 		</AlertDialog.Header>
 		<AlertDialog.Footer>
 			<AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
-			<AlertDialog.Action>
-				{#snippet child()}
-					<Button variant="destructive" onclick={handleDelete}>Delete all</Button>
-				{/snippet}
+			<AlertDialog.Action
+				onclick={handleDelete}
+				class="bg-destructive text-white hover:bg-destructive/90"
+			>
+				Delete all
 			</AlertDialog.Action>
 		</AlertDialog.Footer>
 	</AlertDialog.Content>

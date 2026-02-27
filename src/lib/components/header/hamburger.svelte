@@ -10,7 +10,7 @@
 </script>
 
 <button
-	class="block md:hidden text-white p-1 hover:text-primary"
+	class="block md:hidden text-foreground p-1 hover:text-primary"
 	onclick={() => {
 		isOpen = !isOpen;
 	}}

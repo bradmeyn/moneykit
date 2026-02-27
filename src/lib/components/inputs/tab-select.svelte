@@ -31,8 +31,8 @@
 			/>
 			<div
 				class="flex focus-visible:ring-ring/50 h-[calc(100%-1px)] items-center data-[state=checked]:shadow-sm focus-visible:border-ring border border-transparent justify-center px-2 whitespace-nowrap py-1 text-sm font-medium rounded-md transition-all gap-1.5
-					data-[state=checked]:bg-background dark:data-[state=checked]:text-foreground dark:data-[state=checked]:border-input
-					data-[state=unchecked]:text-muted-foreground dark:data-[state=checked]:bg-input/30 dark:text-muted-foreground"
+					data-[state=checked]:bg-background data-[state=checked]:text-foreground data-[state=checked]:border-input
+					data-[state=unchecked]:text-muted-foreground"
 				data-state={value == option.value ? 'checked' : 'unchecked'}
 			>
 				{option.label}

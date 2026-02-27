@@ -44,6 +44,8 @@
 			formatter={formatAsPercentage}
 			showLegend={true}
 			enableTooltip={true}
+			legendPlacement="bottom"
+			hideTooltipTotal={true}
 		/>
 	</div>
 </div>

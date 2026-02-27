@@ -8,10 +8,10 @@
 	{#each calculators as calculator}
 		<a
 			href={calculator.href}
-			class="block text-left border-b-2 w-fit text-muted-foreground text-base {activeUrl ===
+			class="block text-left border-b-2 w-fit text-muted-foreground text-base transition-colors duration-200 {activeUrl ===
 			calculator.href
-				? 'text-white border-b-2 border-b-brand'
-				: 'text-card-foreground  hover:text-white border-b-transparent'}"
+				? 'text-foreground border-b-2 border-b-brand'
+				: 'text-muted-foreground  hover:text-foreground border-b-transparent'}"
 		>
 			{calculator.name}
 		</a>

@@ -7,7 +7,7 @@
 
 <!-- Annual Returns Table -->
 
-<table class="w-full text-white text-sm">
+<table class="w-full text-foreground text-sm">
 	<thead>
 		<tr>
 			<th class="text-left">Year</th>

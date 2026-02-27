@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { Button } from '$lib/components/ui/button';
+	import { buttonVariants } from '$lib/components/ui/button/button.svelte';
+	import { cn } from '$lib/utils/tailwind';
 	import * as Dialog from '$lib/components/ui/dialog';
 	import PercentageInput from '$lib/components/inputs/percentage-input.svelte';
 	import type { PortfolioHolding, PortfolioType } from '../../portfolio.svelte';
@@ -29,7 +31,7 @@
 
 <Dialog.Root bind:open>
 	<Dialog.Trigger
-		class="flex items-center gap-2 w-full inline-flex shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium outline-none transition-all focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 bg-primary text-primary-foreground shadow-xs hover:bg-primary/90"
+		class={cn(buttonVariants({ variant: 'default', size: 'default' }), 'w-full')}
 	>
 		<Pencil />
 		<span>Edit</span>

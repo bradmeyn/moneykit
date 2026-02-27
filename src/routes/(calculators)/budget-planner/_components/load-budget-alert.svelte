@@ -19,8 +19,8 @@
 					<FileText class="w-5 h-5 text-blue-400" />
 				</div>
 				<div class="flex-1">
-					<h3 class="font-semibold text-white text-sm">Saved Budget Found</h3>
-					<p class="text-xs text-gray-300 mt-1 mb-3">
+					<h3 class="font-semibold text-foreground text-sm">Saved Budget Found</h3>
+					<p class="text-xs text-muted-foreground mt-1 mb-3">
 						Would you like to load your previously saved budget?
 					</p>
 					<div class="flex gap-2">
@@ -34,7 +34,7 @@
 						<Button
 							size="sm"
 							variant="ghost"
-							class="text-xs px-3 py-1.5 h-auto text-gray-400 hover:text-white"
+							class="text-xs px-3 py-1.5 h-auto text-muted-foreground hover:text-foreground"
 							onclick={() => (budget.showLoadPrompt = false)}
 						>
 							Dismiss
@@ -45,7 +45,7 @@
 					onclick={() => (budget.showLoadPrompt = false)}
 					variant="ghost"
 					size="icon"
-					class="flex-shrink-0 w-6 h-6 -mt-1 -mr-1 text-gray-400 hover:text-white"
+					class="flex-shrink-0 w-6 h-6 -mt-1 -mr-1 text-muted-foreground hover:text-foreground"
 				>
 					<X class="w-4 h-4" />
 				</Button>

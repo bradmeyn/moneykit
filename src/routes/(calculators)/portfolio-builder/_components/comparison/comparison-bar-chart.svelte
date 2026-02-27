@@ -1,16 +1,8 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-	import {
-		Chart,
-		BarController,
-		BarElement,
-		CategoryScale,
-		LinearScale,
-		Legend,
-		Tooltip
-	} from 'chart.js';
+	import { BarChart } from 'layerchart';
 	import { assetLabels } from '../../investments';
 	import { COLOURS } from '$lib/constants/colours';
+	import { LC_TOOLTIP_PROPS, LC_AXIS_PROPS, LC_GRID } from '$constants/chart-config';
 	import type { PortfolioType } from '../../portfolio.svelte';
 
 	let {
@@ -28,84 +20,57 @@
 		'intFixedInterest',
 		'cash',
 		'alternatives'
+	] as const;
+
+	let chartData = $derived(
+		assetKeys.map((key) => ({
+			asset: assetLabels[key],
+			p1: portfolio1?.assetAllocation?.[key] ?? 0,
+			p2: portfolio2?.assetAllocation?.[key] ?? 0
+		}))
+	);
+
+	const series = [
+		{
+			key: 'p1',
+			label: 'Portfolio 1',
+			color: COLOURS[0],
+			props: { style: `fill: ${COLOURS[0]}` }
+		},
+		{
+			key: 'p2',
+			label: 'Portfolio 2',
+			color: COLOURS[1],
+			props: { style: `fill: ${COLOURS[1]}` }
+		}
 	];
-
-	let chartId;
-	let chart;
-
-	onMount(() => {
-		if (chart) chart.destroy();
-		Chart.register(BarController, BarElement, CategoryScale, LinearScale, Legend, Tooltip);
-
-		const labels = assetKeys.map((key) => assetLabels[key]);
-		const data1 = assetKeys.map((key) => portfolio1?.assetAllocation?.[key] ?? 0);
-		const data2 = assetKeys.map((key) => portfolio2?.assetAllocation?.[key] ?? 0);
-
-		chart = new Chart(chartId, {
-			type: 'bar',
-			data: {
-				labels,
-				datasets: [
-					{
-						label: 'Portfolio 1',
-						data: data1,
-						backgroundColor: COLOURS[0],
-						borderRadius: 5,
-						borderWidth: 0
-					},
-					{
-						label: 'Portfolio 2',
-						data: data2,
-						backgroundColor: COLOURS[1],
-						borderRadius: 5,
-						borderWidth: 0
-					}
-				]
-			},
-			options: {
-				maintainAspectRatio: false,
-				responsive: true,
-				plugins: {
-					legend: {
-						display: true,
-						labels: {
-							color: '#fff',
-							font: { size: 13, family: 'sans-serif' },
-							usePointStyle: true,
-							pointStyle: 'circle',
-							boxHeight: 8,
-							boxWidth: 8
-						}
-					},
-					tooltip: {
-						enabled: true,
-						callbacks: {
-							label: function (context) {
-								return `${context.dataset.label}: ${(context.parsed.y * 100).toFixed(1)}%`;
-							}
-						}
-					}
-				},
-				scales: {
-					x: {
-						grid: { display: false },
-						ticks: { color: '#fff', font: { size: 14, family: 'sans-serif' } }
-					},
-					y: {
-						beginAtZero: true,
-						grid: { color: '#333' },
-						ticks: {
-							color: '#fff',
-							font: { size: 14, family: 'sans-serif' },
-							callback: (v) => `${(Number(v) * 100).toFixed(0)}%`
-						}
-					}
-				}
-			}
-		});
-	});
 </script>
 
-<div class="min-h-[400px] md:min-h-[500px] min-w-[200px] relative">
-	<canvas class="w-full absolute min-h-full" bind:this={chartId}></canvas>
+<div class="h-[400px] md:h-[500px] min-w-[200px] lc-chart">
+	<BarChart
+		data={chartData}
+		x="asset"
+		{series}
+		seriesLayout="group"
+		grid={LC_GRID}
+		legend={{ placement: 'top', variant: 'swatches' }}
+		props={{
+			bars: { radius: 3, strokeWidth: 0, class: 'stroke-transparent' },
+			highlight: {
+				area: { fill: 'transparent', class: 'pointer-events-none' }
+			},
+			xAxis: { ...LC_AXIS_PROPS, format: 'none' },
+			yAxis: { ...LC_AXIS_PROPS, format: (v: unknown) => `${(Number(v) * 100).toFixed(0)}%` },
+			tooltip: LC_TOOLTIP_PROPS,
+			legend: {
+				classes: { label: 'text-foreground text-sm', swatch: 'size-2.5' }
+			}
+		}}
+	/>
 </div>
+
+<style>
+	.lc-chart :global(svg) {
+		font-family: var(--font-ui);
+	}
+</style>

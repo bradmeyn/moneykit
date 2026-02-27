@@ -19,10 +19,10 @@
 	<meta name="og:description" content={description} />
 </svelte:head>
 
-<div class="antialiased min-h-screen flex flex-col dark:bg-background text-white">
+<div class="antialiased min-h-screen flex flex-col bg-background text-foreground app-shell">
 	<Header />
 	{@render children()}
-	<footer class=" mt-auto items-center py-4 text-muted-foreground justify-center container">
+	<footer class="mt-auto items-center py-6 text-muted-foreground justify-center container">
 		<div class="container text-sm mb-8 space-y-2">
 			<p class="text-xs text-center mt-2">
 				Copyright © {year} - All right reserved

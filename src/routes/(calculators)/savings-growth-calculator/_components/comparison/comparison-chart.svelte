@@ -1,161 +1,86 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-	import {
-		Chart,
-		LineController,
-		LineElement,
-		PointElement,
-		CategoryScale,
-		LinearScale
-	} from 'chart.js';
+	import { LineChart } from 'layerchart';
 	import { formatAsCurrency } from '$lib/utils/formatters';
-	import type { AnnualData } from '../calculator.svelte';
+	import type { AnnualData } from '../../calculator.svelte';
 	import { COLOURS } from '$lib/constants/colours';
-	import { TOOLTIP } from '$constants/chart-config';
+	import { LC_TOOLTIP_PROPS, LC_AXIS_PROPS, LC_GRID } from '$constants/chart-config';
 
 	let {
-		comparisonData
+		baseData = [],
+		savingsGoal = 0
 	}: {
-		comparisonData: {};
+		baseData: AnnualData[];
+		savingsGoal?: number;
 	} = $props();
 
-	let years = $derived(baseData.map((item) => item.year));
-	let chartId: HTMLCanvasElement | undefined = $state();
-	let chart: Chart | undefined = $state();
+	let chartData = $derived(
+		baseData.map((item) => ({
+			...item,
+			goal: savingsGoal || null
+		}))
+	);
 
-	Chart.register(LineController, LineElement, PointElement, CategoryScale, LinearScale);
+	let series = $derived.by(() => {
+		const baseColor = COLOURS[0];
+		const goalColor = COLOURS[1];
 
-	// Helper function to create dataset
-	function createDataset(data: AnnualData[], color: string, label: string, options = {}) {
-		return {
-			label,
-			data: Array.from({ length: years.length }, (_, i) => data[i].endingValue),
-			borderColor: color,
-			backgroundColor: color + '40',
-			fill: true,
-			borderWidth: 2,
-			pointRadius: 0,
-			pointHoverRadius: 4,
-			pointBackgroundColor: color,
-			...options
-		};
-	}
-
-	function createGoalDataset(value: number, color: string) {
-		return {
-			label: 'Goal',
-			data: Array.from({ length: years.length }, () => value),
-			borderColor: color,
-			backgroundColor: 'transparent',
-			fill: false,
-			borderWidth: 2,
-			borderDash: [5, 5],
-			pointRadius: 0,
-			pointHoverRadius: 4,
-			pointBackgroundColor: color
-		};
-	}
-
-	onMount(() => {
-		chart = new Chart(chartId!, {
-			type: 'line',
-			data: {
-				labels: years,
-				datasets: [
-					createDataset(baseData, COLOURS[0], 'Value'),
-					...(savingsGoal ? [createGoalDataset(savingsGoal, COLOURS[2])] : [])
-				]
-			},
-			options: {
-				maintainAspectRatio: false,
-				responsive: true,
-				scales: {
-					x: {
-						grid: { display: false },
-						title: {
-							display: true,
-							text: 'Year',
-							font: { size: 16, family: 'sans-serif' },
-							color: '#FFFFFF'
-						},
-						ticks: {
-							font: { size: 14, family: 'sans-serif' },
-							color: '#FFFFFF'
-						}
-					},
-					y: {
-						type: 'linear',
-						display: true,
-						stacked: false,
-						position: 'left',
-						grid: {
-							display: true,
-							color: '#333333'
-						},
-						beginAtZero: true,
-						ticks: {
-							callback: (value) => formatAsCurrency(+value, false),
-							font: { size: 14, family: 'sans-serif' },
-							color: '#FFFFFF'
-						},
-						title: {
-							display: false,
-							text: 'Balance',
-							font: { size: 16, family: 'sans-serif' },
-							color: '#FFFFFF'
-						}
-					}
-				},
-				plugins: {
-					tooltip: {
-						position: 'average',
-						mode: 'index',
-						bodyAlign: 'right',
-						intersect: false,
-						...TOOLTIP,
-						callbacks: {
-							title: (tooltip) => `Year ${tooltip[0].label}`,
-							label: (context) => {
-								const label = context.dataset.label || '';
-								const value = context.parsed.y || 0;
-								return `${label}: ${formatAsCurrency(value)}`;
-							}
-						}
-					},
-					legend: {
-						position: 'top',
-						align: 'end',
-						labels: {
-							usePointStyle: true,
-							pointStyle: 'circle',
-							boxWidth: 8,
-							boxHeight: 8,
-							padding: 20,
-							color: '#FFFFFF',
-							font: {
-								size: 14,
-								family: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif"
-							}
-						}
-					}
+		const result = [
+			{
+				key: 'endingValue',
+				label: 'Value',
+				color: baseColor,
+				props: {
+					style: `stroke: ${baseColor}; fill: none; stroke-linecap: round; stroke-linejoin: round;`,
+					strokeWidth: 3
 				}
 			}
-		});
-	});
+		];
 
-	$effect(() => {
-		if (chart) {
-			// Always start with base dataset
-			chart.data.datasets = [createDataset(baseData, COLOURS[0], 'Value')];
-
-			// Update labels
-			chart.data.labels = years;
-
-			chart.update();
+		if (savingsGoal) {
+			result.push({
+				key: 'goal',
+				label: 'Goal',
+				color: goalColor,
+				props: {
+					style: `stroke: ${goalColor}; fill: none; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 7 6;`,
+					strokeWidth: 2
+				}
+			});
 		}
+
+		return result;
 	});
 </script>
 
-<div class="min-h-[400px] lg:min-h-[500px] relative">
-	<canvas class="w-full absolute min-h-full p-1" bind:this={chartId}></canvas>
+<div class="h-[400px] lg:h-[500px] relative lc-chart">
+	<LineChart
+		data={chartData}
+		x="year"
+		y="endingValue"
+		{series}
+		grid={LC_GRID}
+		points={false}
+		legend={{ placement: 'top', variant: 'swatches' }}
+		props={{
+			xAxis: {
+				...LC_AXIS_PROPS,
+				label: 'Year',
+				format: (value: unknown) => String(Math.round(Number(value)))
+			},
+			yAxis: {
+				...LC_AXIS_PROPS,
+				format: (value: unknown) => formatAsCurrency(Number(value), false)
+			},
+			tooltip: LC_TOOLTIP_PROPS,
+			legend: {
+				classes: { label: 'text-foreground text-sm', swatch: 'size-2.5' }
+			}
+		}}
+	/>
 </div>
+
+<style>
+	.lc-chart :global(svg) {
+		font-family: var(--font-ui);
+	}
+</style>

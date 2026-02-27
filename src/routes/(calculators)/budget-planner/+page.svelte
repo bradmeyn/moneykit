@@ -8,7 +8,7 @@
 	import LoadBudgetAlert from './_components/load-budget-alert.svelte';
 
 	import Button from '$ui/button/button.svelte';
-	import { Save, User, Users } from 'lucide-svelte';
+	import { User, Users } from 'lucide-svelte';
 
 	const budget = setBudgetState();
 
@@ -75,20 +75,6 @@
 					<div>Personal</div>
 				{/if}
 			</Button>
-			<div class="text-center">
-				<Button
-					size="sm"
-					class="rounded-full"
-					variant={budget.autoSaveEnabled ? 'secondary' : 'outline'}
-					onclick={() => (budget.autoSaveEnabled = !budget.autoSaveEnabled)}
-					aria-label="Toggle Auto Save"
-				>
-					<Save class={budget.autoSaveEnabled ? 'text-brand' : 'text-muted-foreground'} />
-					<span class={budget.autoSaveEnabled ? 'text-white' : 'text-muted-foreground'}
-						>Auto Save</span
-					>
-				</Button>
-			</div>
 			<ActionsMenu />
 		</div>
 	</div>

@@ -1,17 +1,7 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-	import {
-		Chart,
-		LineController,
-		LineElement,
-		PointElement,
-		CategoryScale,
-		LinearScale,
-		Legend,
-		Tooltip
-	} from 'chart.js';
+	import { LineChart } from 'layerchart';
 	import { COLOURS } from '$lib/constants/colours';
-	import { TOOLTIP } from '$constants/chart-config';
+	import { LC_TOOLTIP_PROPS, LC_AXIS_PROPS, LC_GRID } from '$constants/chart-config';
 
 	let {
 		datasets,
@@ -26,8 +16,6 @@
 			borderColor?: string;
 			backgroundColor?: string;
 			borderWidth?: number;
-			pointRadius?: number;
-			fill?: boolean;
 		}[];
 		labels: string[];
 		formatter: (value: number) => string;
@@ -35,100 +23,53 @@
 		enableTooltip?: boolean;
 	} = $props();
 
-	let chartId: HTMLCanvasElement | undefined = $state();
-	let chart: Chart | undefined = $state();
-
-	Chart.register(
-		LineController,
-		LineElement,
-		PointElement,
-		CategoryScale,
-		LinearScale,
-		Legend,
-		Tooltip
+	let chartData = $derived(
+		labels.map((label, i) => {
+			const row: Record<string, unknown> = { x: label };
+			datasets.forEach((ds) => {
+				row[ds.label] = ds.data[i] ?? 0;
+			});
+			return row;
+		})
 	);
 
-	function getLineDatasets() {
-		return datasets.map((dataset, index) => ({
-			label: dataset.label,
-			data: dataset.data,
-			borderColor: dataset.borderColor || COLOURS[index % COLOURS.length],
-			backgroundColor: dataset.backgroundColor || COLOURS[index % COLOURS.length],
-			borderWidth: dataset.borderWidth || 2,
-			pointRadius: dataset.pointRadius ?? 3,
-			fill: dataset.fill ?? false
-		}));
-	}
-
-	onMount(() => {
-		chart = new Chart(chartId!, {
-			type: 'line',
-			data: {
-				labels,
-				datasets: getLineDatasets()
-			},
-			options: {
-				maintainAspectRatio: false,
-				responsive: true,
-				scales: {
-					x: {
-						grid: { display: false },
-						title: {
-							font: { size: 16, family: 'sans-serif' },
-							color: '#ffffff'
-						},
-						ticks: {
-							font: { size: 14, family: 'sans-serif' },
-							color: '#ffffff'
-						}
-					},
-					y: {
-						grid: { display: true, color: '#333333' },
-						beginAtZero: true,
-						ticks: {
-							callback: (value) => formatter(+value),
-							font: { size: 14, family: 'sans-serif' },
-							color: '#ffffff'
-						}
-					}
-				},
-				plugins: {
-					tooltip: {
-						enabled: enableTooltip,
-						...TOOLTIP,
-						callbacks: {
-							label: function (context) {
-								const label = context.dataset.label || '';
-								const value = formatter(context.parsed.y);
-								return label ? `${label}: ${value}` : value;
-							}
-						}
-					},
-					legend: {
-						display: showLegend,
-						labels: {
-							color: '#fff',
-							font: { size: 13, family: 'sans-serif' },
-							usePointStyle: true,
-							pointStyle: 'circle',
-							boxHeight: 8,
-							boxWidth: 8
-						}
-					}
+	let series = $derived(
+		datasets.map((ds, i) => {
+			const color = ds.borderColor ?? ds.backgroundColor ?? COLOURS[i % COLOURS.length];
+			return {
+				key: ds.label,
+				label: ds.label,
+				color,
+				props: {
+					style: `stroke: ${color}; fill: none; stroke-linecap: round; stroke-linejoin: round;`,
+					strokeWidth: ds.borderWidth ?? 2
 				}
-			}
-		});
-	});
-
-	$effect(() => {
-		if (chart) {
-			chart.data.datasets = getLineDatasets();
-			chart.data.labels = labels || [];
-			chart.update();
-		}
-	});
+			};
+		})
+	);
 </script>
 
-<div class="min-h-[400px] relative">
-	<canvas class="w-full absolute min-h-full p-1" bind:this={chartId}></canvas>
+<div class="h-[400px] relative lc-chart">
+	<LineChart
+		data={chartData}
+		x="x"
+		{series}
+		grid={LC_GRID}
+		points={false}
+		legend={showLegend ? { placement: 'top', variant: 'swatches' } : false}
+		props={{
+			xAxis: { ...LC_AXIS_PROPS, format: 'none' },
+			yAxis: { ...LC_AXIS_PROPS, format: (v: unknown) => formatter(Number(v)) },
+			tooltip: enableTooltip ? LC_TOOLTIP_PROPS : { root: { class: 'hidden' } },
+			legend: {
+				classes: { label: 'text-foreground text-sm', swatch: 'size-2.5' }
+			}
+		}}
+	/>
 </div>
+
+<style>
+	.lc-chart :global(svg) {
+		font-family: var(--font-ui);
+	}
+</style>

@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { Button } from '$lib/components/ui/button';
+	import { buttonVariants } from '$lib/components/ui/button/button.svelte';
+	import { cn } from '$lib/utils/tailwind';
 	import * as Dialog from '$lib/components/ui/dialog';
 	import * as Select from '$lib/components/ui/select';
 	import CurrencyInput from '$lib/components/inputs/currency-input.svelte';
@@ -54,7 +56,7 @@
 
 <Dialog.Root bind:open>
 	<Dialog.Trigger
-		class="flex items-center gap-2 inline-flex shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium outline-none transition-all focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 bg-primary text-primary-foreground shadow-xs hover:bg-primary/90"
+		class={cn(buttonVariants({ variant: 'default', size: 'default' }))}
 	>
 		<Pencil />
 		<span> Edit Item </span>

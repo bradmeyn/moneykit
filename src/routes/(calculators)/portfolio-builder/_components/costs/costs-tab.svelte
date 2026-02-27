@@ -3,7 +3,6 @@
 	import { formatAsCurrency } from '$utils/formatters';
 	import CostTable from './cost-table.svelte';
 	import StackedBar from '$lib/components/charts/stacked-bar.svelte';
-	import LineChart from '$lib/components/charts/line-chart.svelte';
 
 	let {
 		portfolio

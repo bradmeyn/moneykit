@@ -37,7 +37,6 @@ export function calculateCategoryTotal(
 class Budget {
 	hasSavedBudget = $state<boolean>(false);
 	showLoadPrompt = $state<boolean>(false);
-	autoSaveEnabled = $state<boolean>(false);
 	isJointBudget = $state<boolean>(false);
 	owners = $state<string[]>(['User 1', 'User 2', 'Joint']);
 
@@ -86,7 +85,7 @@ class Budget {
 
 	addCategory(type: BudgetItem['type'], category: string) {
 		this.categories[type].push(category);
-		if (this.autoSaveEnabled) this.saveToStorage();
+		this.saveToStorage();
 	}
 	deleteCategory(type: BudgetItem['type'], category: string) {
 		// Remove items with this category
@@ -98,7 +97,7 @@ class Budget {
 		if (index !== -1) {
 			this.categories[type].splice(index, 1);
 		}
-		if (this.autoSaveEnabled) this.saveToStorage();
+		this.saveToStorage();
 	}
 	updateCategory(type: BudgetItem['type'], oldCategory: string, newCategory: string) {
 		const index = this.categories[type].indexOf(oldCategory);
@@ -111,13 +110,13 @@ class Budget {
 				}
 			});
 		}
-		if (this.autoSaveEnabled) this.saveToStorage();
+		this.saveToStorage();
 	}
 	deleteItemsByCategory(type: BudgetItem['type'], category: string) {
 		this.budgetItems = this.budgetItems.filter(
 			(item) => !(item.type === type && item.category === category)
 		);
-		if (this.autoSaveEnabled) this.saveToStorage();
+		this.saveToStorage();
 	}
 
 	// Frequency-adjusted items
@@ -149,7 +148,7 @@ class Budget {
 
 	addItem(item: BudgetItem) {
 		this.budgetItems.push(item);
-		if (this.autoSaveEnabled) this.saveToStorage();
+		this.saveToStorage();
 	}
 
 	removeItem(id: string) {
@@ -157,7 +156,7 @@ class Budget {
 		if (index !== -1) {
 			this.budgetItems.splice(index, 1);
 		}
-		if (this.autoSaveEnabled) this.saveToStorage();
+		this.saveToStorage();
 	}
 
 	updateItem(item: BudgetItem) {
@@ -165,16 +164,17 @@ class Budget {
 		if (index !== -1) {
 			this.budgetItems[index] = item;
 		}
-		if (this.autoSaveEnabled) this.saveToStorage();
+		this.saveToStorage();
 	}
 
 	deleteItemsByType(type: BudgetItem['type'] | null = null) {
 		if (!type) {
 			this.budgetItems = [];
+			this.saveToStorage();
 			return;
 		}
 		this.budgetItems = this.budgetItems.filter((item) => item.type !== type);
-		if (this.autoSaveEnabled) this.saveToStorage();
+		this.saveToStorage();
 	}
 
 	clearBudget() {
@@ -183,12 +183,13 @@ class Budget {
 			income: [],
 			expense: []
 		};
-		if (this.autoSaveEnabled) this.saveToStorage();
+		this.saveToStorage();
 	}
 
 	resetBudget() {
 		this.budgetItems = defaultBudgetItems;
 		this.categories = defaultCategories;
+		this.saveToStorage();
 	}
 
 	getDownloadData() {

@@ -5,6 +5,8 @@
 	import { ScrollArea } from '$lib/components/ui/scroll-area';
 	import { ETF_MAP, getETFList, type ExchangeTradedFund } from '../../investments';
 	import { Button } from '$lib/components/ui/button';
+	import { buttonVariants } from '$lib/components/ui/button/button.svelte';
+	import { cn } from '$lib/utils/tailwind';
 	import type { PortfolioType as Portfolio } from '../../portfolio.svelte';
 
 	let {
@@ -42,7 +44,7 @@
 
 <Dialog.Root bind:open>
 	<Dialog.Trigger
-		class="mb-2 w-full md:w-fit inline-flex shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium outline-none transition-all focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 bg-primary text-primary-foreground shadow-xs hover:bg-primary/90"
+		class={cn(buttonVariants({ variant: 'default', size: 'default' }), 'mb-2 w-full md:w-fit')}
 	>
 		Add Investment
 	</Dialog.Trigger>
@@ -69,7 +71,7 @@
 							onclick={() => handleAddInvestment(investment)}
 						>
 							<li class="text-start text-sm">
-								<div class="text-white font-semibold">{investment.symbol}</div>
+								<div class="text-foreground font-semibold">{investment.symbol}</div>
 								<div class="text-muted-foreground">{investment.name}</div>
 							</li>
 						</button>

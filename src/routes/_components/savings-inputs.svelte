@@ -68,19 +68,21 @@
 					</div>
 				</div>
 
-				<Button
-					class="w-full"
-					variant="secondary"
-					size="sm"
-					onclick={() => (calculator.fireMode = !calculator.fireMode)}
-				>
-					{calculator.fireMode ? 'Switch to Savings Goal' : 'Switch to FIRE Mode'}
+				<div class="flex items-center gap-2">
+					<Button
+						class="w-full"
+						variant="secondary"
+						size="sm"
+						onclick={() => (calculator.fireMode = !calculator.fireMode)}
+					>
+						{calculator.fireMode ? 'Switch to Savings Goal' : 'Switch to FIRE Mode'}
+					</Button>
 					<Explainer
 						text={calculator.fireMode
 							? 'Calculate how long it will take to reach your savings goal.'
 							: 'Calculate how much you need to retire early based on your annual expenses and safe withdrawal rate.'}
 					/>
-				</Button>
+				</div>
 
 				{#if calculator.fireMode}
 					<div class="space-y-4">
@@ -110,17 +112,19 @@
 					</div>
 				{/if}
 
-				<Button
-					class="w-full"
-					variant="secondary"
-					size="sm"
-					onclick={() => (calculator.useVolatility = !calculator.useVolatility)}
-				>
-					{calculator.useVolatility ? 'Hide Volatility' : 'Add Volatility'}
+				<div class="flex items-center gap-2">
+					<Button
+						class="w-full"
+						variant="secondary"
+						size="sm"
+						onclick={() => (calculator.useVolatility = !calculator.useVolatility)}
+					>
+						{calculator.useVolatility ? 'Hide Volatility' : 'Add Volatility'}
+					</Button>
 					<Explainer
 						text="Include market volatility in the calculations for more realistic returns."
 					/>
-				</Button>
+				</div>
 
 				{#if calculator.useVolatility}
 					<PercentageSlider

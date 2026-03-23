@@ -32,8 +32,8 @@
 				return budget.income;
 			case 'expense':
 				return budget.expenses;
-			case 'savings':
-				return budget.savings;
+			default:
+				return [] as import('../budget.svelte').BudgetItem[];
 		}
 	});
 

@@ -2,7 +2,6 @@
 	import { BarChart } from 'layerchart';
 	import { COLOURS } from '$lib/constants/colours';
 	import { LC_TOOLTIP_PROPS, LC_AXIS_PROPS, LC_GRID } from '$constants/chart-config';
-	import { browser } from '$app/environment';
 
 	let {
 		data,
@@ -92,7 +91,6 @@
 	});
 </script>
 
-{#if browser}
 <div class="h-[400px] relative lc-chart">
 	<BarChart
 		data={chartData}
@@ -118,4 +116,3 @@
 		}}
 	/>
 </div>
-{/if}

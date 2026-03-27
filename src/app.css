@@ -1,26 +1,25 @@
-/* @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700&display=swap'); */
 @import 'tailwindcss';
 @import 'tw-animate-css';
 
 :root {
 	--radius: 0.625rem;
-	--background: oklch(97.8% 0.007 85);
-	--foreground: oklch(28% 0.02 70);
-	--card: oklch(99.6% 0.004 85);
-	--card-foreground: oklch(30% 0.018 70);
-	--popover: oklch(1 0 0);
-	--popover-foreground: oklch(30% 0.018 70);
+	--background: oklch(98.5% 0.002 240);
+	--foreground: oklch(20% 0.01 260);
+	--card: oklch(100% 0 0);
+	--card-foreground: oklch(22% 0.01 260);
+	--popover: oklch(100% 0 0);
+	--popover-foreground: oklch(22% 0.01 260);
 	--primary: oklch(53% 0.12 52);
 	--primary-foreground: oklch(98% 0 0);
-	--secondary: oklch(95.4% 0.007 86);
-	--secondary-foreground: oklch(36% 0.02 72);
-	--muted: oklch(94.5% 0.006 82);
-	--muted-foreground: oklch(52% 0.012 70);
-	--accent: oklch(93.5% 0.016 74);
-	--accent-foreground: oklch(33% 0.024 68);
+	--secondary: oklch(95% 0.003 240);
+	--secondary-foreground: oklch(30% 0.01 260);
+	--muted: oklch(93% 0.003 240);
+	--muted-foreground: oklch(52% 0.008 240);
+	--accent: oklch(94% 0.005 240);
+	--accent-foreground: oklch(25% 0.01 260);
 	--destructive: oklch(0.577 0.245 27.325);
-	--border: oklch(90% 0.01 78);
-	--input: oklch(90% 0.01 78);
+	--border: oklch(91% 0.004 240);
+	--input: oklch(91% 0.004 240);
 	--ring: oklch(67% 0.07 58);
 	--chart-1: oklch(0.646 0.222 41.116);
 	--chart-2: oklch(0.6 0.118 184.704);
@@ -32,11 +31,11 @@
 	--chart-8: oklch(0.55 0.15 260);
 	--chart-9: oklch(0.7 0.2 25);
 	--chart-10: oklch(0.75 0.1 200);
-	--surface-100: oklch(99.6% 0.004 85);
-	--surface-200: oklch(94.5% 0.006 82);
-	--surface-300: oklch(90% 0.01 78);
+	--surface-100: oklch(100% 0 0);
+	--surface-200: oklch(93% 0.003 240);
+	--surface-300: oklch(91% 0.004 240);
 	--surface-content: oklch(28% 0.02 70);
-	--sidebar: oklch(98.7% 0.003 84);
+	--sidebar: oklch(99% 0.002 240);
 	--sidebar-foreground: oklch(30% 0.018 70);
 	--sidebar-primary: oklch(53% 0.12 52);
 	--sidebar-primary-foreground: oklch(98% 0 0);
@@ -111,9 +110,6 @@
 	body {
 		@apply bg-background text-foreground;
 		font-family: var(--font-ui);
-		background-image:
-			radial-gradient(circle at 10% -20%, oklch(93% 0.04 84 / 0.75), transparent 35%),
-			radial-gradient(circle at 95% 0%, oklch(95% 0.02 54 / 0.55), transparent 30%);
 		background-attachment: fixed;
 	}
 
@@ -178,7 +174,7 @@
 }
 
 .app-shell {
-	background: linear-gradient(160deg, oklch(98.6% 0.008 84) 0%, oklch(97.5% 0.007 82) 100%);
+	background: oklch(98.5% 0.002 240);
 }
 
 /* For Webkit (Chrome, Safari, Edge) */

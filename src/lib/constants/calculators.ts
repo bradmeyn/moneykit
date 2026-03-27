@@ -8,6 +8,14 @@ export type Calculator = {
 
 export const calculators: Calculator[] = [
 	{
+		name: 'Savings & FIRE',
+		href: '/savings-calculator',
+		viewBox: '0 0 512 512',
+		description: 'Project your savings growth and plan your path to financial independence',
+		iconPath:
+			'M320 96a96 96 0 1 1 -192 0 96 96 0 1 1 192 0zm-96-32a32 32 0 1 0 0 64 32 32 0 1 0 0-64zm96 160c0 17.7-14.3 32-32 32H224c-17.7 0-32-14.3-32-32s14.3-32 32-32h64c17.7 0 32 14.3 32 32zm-160 64H288c53 0 96 43 96 96v32c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32v-32c0-53 43-96 96-96z'
+	},
+	{
 		name: 'Budget Planner',
 		href: '/budget-planner',
 		viewBox: '0 0 576 512',

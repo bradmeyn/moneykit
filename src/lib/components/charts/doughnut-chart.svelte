@@ -2,6 +2,7 @@
 	import { PieChart } from 'layerchart';
 	import { COLOURS } from '$lib/constants/colours';
 	import { LC_TOOLTIP_PROPS } from '$constants/chart-config';
+	import { browser } from '$app/environment';
 
 	let {
 		data,
@@ -14,6 +15,7 @@
 	let cRange = $derived(data.map((_, i) => COLOURS[i % COLOURS.length]));
 </script>
 
+{#if browser}
 <div class="w-full relative h-[220px] md:h-[260px] min-w-[200px] lc-chart">
 	<PieChart
 		{data}
@@ -34,6 +36,7 @@
 		}}
 	/>
 </div>
+{/if}
 
 <style>
 	.lc-chart :global(svg) {

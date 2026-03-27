@@ -6,5 +6,8 @@ export default defineConfig({
 	plugins: [sveltekit(), tailwindcss()],
 	ssr: {
 		noExternal: ['layerchart']
+	},
+	build: {
+		cssCodeSplit: false
 	}
 });

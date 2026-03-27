@@ -13,6 +13,7 @@
 
 	import Label from '$ui/label/label.svelte';
 	import { Pencil } from 'lucide-svelte';
+	import { untrack } from 'svelte';
 
 	const {
 		budgetItem
@@ -23,12 +24,18 @@
 	const budget = getBudgetState();
 	let open = $state(false);
 	let editedItem = $state<BudgetItemType>({
-		id: budgetItem.id,
-		name: budgetItem.name,
-		amount: budgetItem.amount,
-		frequency: budgetItem.frequency,
-		category: budgetItem.category,
-		type: budgetItem.type
+		id: '',
+		name: '',
+		amount: 0,
+		frequency: 'monthly',
+		category: '',
+		type: 'income'
+	});
+
+	$effect(() => {
+		if (open) {
+			editedItem = untrack(() => ({ ...budgetItem }));
+		}
 	});
 
 	const isValid = $derived(editedItem.name.trim().length > 0 && editedItem.amount > 0);

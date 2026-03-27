@@ -79,9 +79,3 @@
 		}}
 	/>
 </div>
-
-<style>
-	.growth-layerchart :global(svg) {
-		font-family: var(--font-ui);
-	}
-</style>

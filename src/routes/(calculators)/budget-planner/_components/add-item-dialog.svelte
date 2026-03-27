@@ -12,6 +12,7 @@
 	import { getBudgetState } from '../budget.svelte';
 	import type { Snippet } from 'svelte';
 	import Label from '$ui/label/label.svelte';
+	import { untrack } from 'svelte';
 
 	const {
 		category = 'uncategorised',
@@ -30,8 +31,15 @@
 		name: '',
 		amount: 0,
 		frequency: 'monthly',
-		category: category === 'uncategorised' ? '' : category,
-		type
+		category: '',
+		type: 'income'
+	});
+
+	$effect(() => {
+		untrack(() => {
+			newItem.category = category === 'uncategorised' ? '' : category;
+			newItem.type = type;
+		});
 	});
 
 	const title: Record<BudgetItemType['type'], string> = {

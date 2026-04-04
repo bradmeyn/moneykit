@@ -2,11 +2,8 @@ import { FREQUENCIES, type FrequencyType } from '$lib/constants/frequencies';
 import { setContext, getContext } from 'svelte';
 import { calculateCompoundInterest, calculateBandData, buildTableData } from '$lib/utils/growth-calculations';
 
-export type { GrowthResult, AnnualData } from '$lib/utils/growth-calculations';
-
-class SavingsCalculatorState {
+class FireCalculatorState {
 	principal = $state(10000);
-	savingsGoal = $state(100000);
 	years = $state(10);
 
 	contributionAmount = $state(1000);
@@ -15,6 +12,12 @@ class SavingsCalculatorState {
 	returnRate = $state(0.07);
 	useVolatility = $state(false);
 	volatility = $state(0.15);
+
+	annualExpenses = $state(60000);
+	withdrawalRate = $state(0.04);
+	secondaryIncome = $state(0);
+
+	fireNumber = $derived((this.annualExpenses - this.secondaryIncome) / this.withdrawalRate);
 
 	result = $derived(
 		calculateCompoundInterest(
@@ -27,8 +30,8 @@ class SavingsCalculatorState {
 		)
 	);
 
-	yearsToGoal = $derived.by(() => {
-		const i = this.result.annualData.findIndex((d) => d.endingValue >= this.savingsGoal);
+	yearsToFire = $derived.by(() => {
+		const i = this.result.annualData.findIndex((d) => d.endingValue >= this.fireNumber);
 		return i === -1 ? null : i + 1;
 	});
 
@@ -50,12 +53,12 @@ class SavingsCalculatorState {
 	}
 }
 
-const KEY = Symbol('savings-calculator');
+const KEY = Symbol('fire-calculator');
 
 export function setCalculatorState() {
-	return setContext(KEY, new SavingsCalculatorState());
+	return setContext(KEY, new FireCalculatorState());
 }
 
 export function getCalculatorState() {
-	return getContext<SavingsCalculatorState>(KEY);
+	return getContext<FireCalculatorState>(KEY);
 }

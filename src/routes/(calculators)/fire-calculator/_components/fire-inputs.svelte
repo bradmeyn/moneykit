@@ -10,8 +10,8 @@
 
 	let calculator = getCalculatorState();
 
-	const goalError = $derived(
-		calculator.savingsGoal <= 0 ? 'Savings goal must be greater than 0.' : ''
+	const expensesError = $derived(
+		calculator.annualExpenses <= 0 ? 'Annual expenses must be greater than 0.' : ''
 	);
 </script>
 
@@ -52,7 +52,7 @@
 	<div>
 		<div class="flex gap-2 mb-2 items-center">
 			<Label class="mb-0" id="years-invested">Years Invested</Label>
-			<Explainer text="The number of years you plan to invest before reaching your goal." />
+			<Explainer text="The number of years you plan to invest." />
 		</div>
 		<Slider
 			type="single"
@@ -65,11 +65,31 @@
 		<div class="text-sm text-muted-foreground mt-1">{calculator.years}</div>
 	</div>
 
+	<hr class="border-border" />
+
 	<div>
-		<Label for="savings-goal">Savings Goal</Label>
-		<CurrencyInput bind:value={calculator.savingsGoal} id="savings-goal" />
-		{#if goalError}<p class="text-destructive text-xs mt-1">{goalError}</p>{/if}
+		<Label for="annual-expenses">Annual Expenses</Label>
+		<CurrencyInput bind:value={calculator.annualExpenses} id="annual-expenses" />
+		{#if expensesError}<p class="text-destructive text-xs mt-1">{expensesError}</p>{/if}
 	</div>
+
+	<PercentageSlider
+		label="Withdrawal Rate"
+		bind:value={calculator.withdrawalRate}
+		min={0.02}
+		max={0.1}
+		step={0.005}
+		id="withdrawal-rate"
+		explainer="Safe withdrawal rate for FIRE (usually 4%)"
+		precision={2}
+	/>
+
+	<div>
+		<Label for="secondary-income">Secondary Income (optional)</Label>
+		<CurrencyInput bind:value={calculator.secondaryIncome} id="secondary-income" />
+	</div>
+
+	<hr class="border-border" />
 
 	<div class="flex items-center gap-2">
 		<Button

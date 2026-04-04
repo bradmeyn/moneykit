@@ -3,7 +3,7 @@
 	import { formatAsCurrency } from '$lib/utils/formatters';
 	import { convertToFrequency, type BudgetItem } from '../budget.svelte';
 	import FrequencyInput from '$lib/components/inputs/frequency-select.svelte';
-	import { EllipsisVertical, Trash } from 'lucide-svelte';
+	import { EllipsisVertical, Pencil, Trash } from 'lucide-svelte';
 	import { getBudgetState } from '../budget.svelte';
 	import Button from '$ui/button/button.svelte';
 	import { FREQUENCIES } from '$constants/frequencies';
@@ -50,8 +50,13 @@
 			)}</span
 		>
 	</td>
-	<td class="text-right px-0">
-		<Button size="icon" variant="ghost" onclick={() => budget.removeItem(budgetItem.id)}>
+	<td class="text-right px-0 flex items-center justify-end gap-0">
+		<EditItemDialog {budgetItem}>
+			{#snippet trigger()}
+				<Pencil class="size-4" />
+			{/snippet}
+		</EditItemDialog>
+		<Button size="icon" variant="ghost" onclick={() => budget.removeItem(budgetItem.id)} aria-label="Delete {budgetItem.name}">
 			<Trash />
 		</Button>
 	</td>
@@ -72,7 +77,7 @@
 	<td class="text-right px-0">
 		<DropdownMenu.Root>
 			<DropdownMenu.Trigger>
-				<Button size="icon" variant="ghost">
+				<Button size="icon" variant="ghost" aria-label="More options for {budgetItem.name}">
 					<EllipsisVertical />
 				</Button>
 			</DropdownMenu.Trigger>

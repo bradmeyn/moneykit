@@ -13,12 +13,14 @@
 
 	import Label from '$ui/label/label.svelte';
 	import { Pencil } from 'lucide-svelte';
-	import { untrack } from 'svelte';
+	import { untrack, type Snippet } from 'svelte';
 
 	const {
-		budgetItem
+		budgetItem,
+		trigger
 	}: {
 		budgetItem: BudgetItemType;
+		trigger?: Snippet;
 	} = $props();
 
 	const budget = getBudgetState();
@@ -39,6 +41,10 @@
 	});
 
 	const isValid = $derived(editedItem.name.trim().length > 0 && editedItem.amount > 0);
+	let nameTouched = $state(false);
+	let amountTouched = $state(false);
+	const nameError = $derived(nameTouched && editedItem.name.trim().length === 0 ? 'Name is required.' : '');
+	const amountError = $derived(amountTouched && editedItem.amount <= 0 ? 'Amount must be greater than 0.' : '');
 
 	function handleSubmit() {
 		if (isValid) {
@@ -53,15 +59,28 @@
 	}
 
 	function handleCancel() {
+		nameTouched = false;
+		amountTouched = false;
 		open = false;
 	}
 </script>
 
 <Dialog.Root bind:open>
-	<Dialog.Trigger class={cn(buttonVariants({ variant: 'default', size: 'default' }))}>
-		<Pencil />
-		<span> Edit Item </span>
-	</Dialog.Trigger>
+	{#if trigger}
+		<button
+			type="button"
+			onclick={() => (open = true)}
+			class={cn(buttonVariants({ variant: 'ghost', size: 'icon' }))}
+			aria-label="Edit {budgetItem.name}"
+		>
+			{@render trigger()}
+		</button>
+	{:else}
+		<Dialog.Trigger class={cn(buttonVariants({ variant: 'default', size: 'default' }))}>
+			<Pencil />
+			<span> Edit Item </span>
+		</Dialog.Trigger>
+	{/if}
 	<Dialog.Content class="sm:max-w-[500px] ">
 		<Dialog.Header class="text-start">
 			<Dialog.Title
@@ -83,13 +102,15 @@
 		<div class="space-y-4 py-4">
 			<div class="space-y-2">
 				<label for="item-name" class="text-sm font-medium">Name</label>
-				<Input bind:value={editedItem.name} id="item-name" placeholder="Enter item name" />
+				<Input bind:value={editedItem.name} id="item-name" placeholder="Enter item name" onblur={() => (nameTouched = true)} />
+				{#if nameError}<p class="text-destructive text-xs mt-1">{nameError}</p>{/if}
 			</div>
 
 			<div class="grid grid-cols-2 gap-4">
 				<div class="space-y-2">
 					<Label for="item-amount" class="text-sm font-medium">Amount</Label>
-					<CurrencyInput id="item-amount" bind:value={editedItem.amount} />
+					<CurrencyInput id="item-amount" bind:value={editedItem.amount} onchange={() => (amountTouched = true)} />
+					{#if amountError}<p class="text-destructive text-xs mt-1">{amountError}</p>{/if}
 				</div>
 
 				<div class="space-y-2">

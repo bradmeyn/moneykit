@@ -14,7 +14,7 @@
 	let cRange = $derived(data.map((_, i) => COLOURS[i % COLOURS.length]));
 </script>
 
-<div class="w-full relative h-[220px] md:h-[260px] min-w-[200px] lc-chart">
+<div class="w-full relative h-55 md:h-60 min-w-50">
 	<PieChart
 		{data}
 		key="label"
@@ -34,9 +34,3 @@
 		}}
 	/>
 </div>
-
-<style>
-	.lc-chart :global(svg) {
-		font-family: var(--font-ui);
-	}
-</style>

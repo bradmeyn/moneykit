@@ -65,11 +65,13 @@
 	<!-- Mobile Menu Overlay -->
 	{#if isOpen}
 		<!-- Menu Content -->
-		<div class="fixed top-0 left-0 right-0 bg-card shadow-lg z-50 max-h-screen overflow-y-auto border-b border-border">
+		<div
+			class="fixed top-0 left-0 right-0 bg-card shadow-lg z-50 max-h-screen overflow-y-auto border-b border-border"
+		>
 			<!-- Header -->
 			<div class="flex items-center justify-between p-4 border-b border-border">
 				<span class="text-foreground text-xl font-medium tracking-tight"
-					>Money<span class="text-transparent bg-clip-text bg-linear-to-b from-primary to-brand"
+					>Budget<span class="text-transparent bg-clip-text bg-linear-to-b from-primary to-brand"
 						>Kit</span
 					></span
 				>
@@ -94,12 +96,11 @@
 								aria-current={activeUrl === calculator.href ? 'page' : undefined}
 								onclick={closeMenu}
 							>
+								{@const Icon = calculator.icon}
 								<div
 									class="size-8 rounded-lg bg-brand/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shrink-0"
 								>
-									<svg class="size-4 text-brand" viewBox={calculator.viewBox} fill="currentColor">
-										<path d={calculator.iconPath} />
-									</svg>
+									<Icon class="size-4 text-brand" />
 								</div>
 								<span>{calculator.name}</span>
 							</a>

@@ -7,6 +7,7 @@
 	import { Trash } from 'lucide-svelte';
 	import Button from '$ui/button/button.svelte';
 	import AddItemDialog from './add-item-dialog.svelte';
+	import * as Select from '$lib/components/ui/select';
 
 	let {
 		items,
@@ -52,16 +53,20 @@
 							/>
 						</td>
 						<td class="py-1.5 pr-2">
-							<select
+							<Select.Root
+								type="single"
 								value={item.category}
-								onchange={(e) =>
-									budget.updateItem({ ...item, category: e.currentTarget.value })}
-								class="w-full bg-background border border-border rounded-md px-2 py-1 text-sm focus:outline-none focus:ring-1 focus:ring-ring cursor-pointer min-w-[120px]"
+								onValueChange={(value) => budget.updateItem({ ...item, category: value })}
 							>
-								{#each categories as cat}
-									<option value={cat}>{cat}</option>
-								{/each}
-							</select>
+								<Select.Trigger class="min-w-[120px]">
+									{item.category || 'Select category'}
+								</Select.Trigger>
+								<Select.Content>
+									{#each categories as cat (cat)}
+										<Select.Item value={cat}>{cat}</Select.Item>
+									{/each}
+								</Select.Content>
+							</Select.Root>
 						</td>
 						<td class="py-1.5 pr-2 w-36">
 							<CurrencyInput
@@ -81,7 +86,7 @@
 							{formatAsCurrency(convertToFrequency(item.amount, item.frequency, budget.frequency))}
 						</td>
 						<td class="py-1.5 px-0">
-							<Button size="icon" variant="ghost" onclick={() => budget.removeItem(item.id)}>
+							<Button size="icon" variant="ghost" onclick={() => budget.removeItem(item.id)} aria-label="Delete {item.name}">
 								<Trash class="size-4" />
 							</Button>
 						</td>

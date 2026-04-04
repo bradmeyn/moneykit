@@ -2,9 +2,9 @@
 	import { setCalculatorState, getCalculatorState } from './calculator.svelte';
 	import * as Tabs from '$lib/components/ui/tabs';
 	import { formatAsCurrency } from '$lib/utils/formatters';
-	import { CheckCircle, XCircle } from 'lucide-svelte';
-	import Inputs from './_components/savings-inputs.svelte';
-	import GrowthChart from './_components/growth-chart.svelte';
+	import { Flame, XCircle } from 'lucide-svelte';
+	import Inputs from './_components/fire-inputs.svelte';
+	import GrowthChart from '../savings-calculator/_components/growth-chart.svelte';
 	import ScrollableTable from '$ui/scrollable-table.svelte';
 	import CalculatorActions from '$lib/components/calculator-actions.svelte';
 
@@ -14,17 +14,17 @@
 </script>
 
 <svelte:head>
-	<title>Savings Calculator | BudgetKit</title>
+	<title>FIRE Calculator | BudgetKit</title>
 	<meta
 		name="description"
-		content="Calculate your savings growth and track progress towards your savings goal."
+		content="Calculate how much you need to retire early based on your annual expenses and safe withdrawal rate."
 	/>
 </svelte:head>
 
 <main class="container">
 	<div class="flex justify-end items-center mb-4">
 		<CalculatorActions
-			filename={'savings-calculator.csv'}
+			filename={'fire-calculator.csv'}
 			getCsvData={() => calculator.getTableData()}
 		/>
 	</div>
@@ -59,19 +59,19 @@
 					</div>
 
 					<div class="flex gap-8 flex-wrap items-start">
-						{@render metric('Savings Goal', calculator.savingsGoal)}
+						{@render metric('FIRE Number', calculator.fireNumber)}
 
 						<div>
-							<p class="text-muted-foreground mb-1">Time to Goal</p>
-							{#if calculator.yearsToGoal !== null}
+							<p class="text-muted-foreground mb-1">Time to FIRE</p>
+							{#if calculator.yearsToFire !== null}
 								<div class="flex items-center gap-2">
-									<CheckCircle class="size-6 text-emerald-500 shrink-0" />
+									<Flame class="size-6 text-emerald-500 shrink-0" />
 									<div>
 										<p class="text-3xl md:text-4xl font-bold leading-none">
-											{calculator.yearsToGoal} <span class="text-xl font-semibold text-muted-foreground">yrs</span>
+											{calculator.yearsToFire} <span class="text-xl font-semibold text-muted-foreground">yrs</span>
 										</p>
 										<p class="text-sm text-muted-foreground mt-0.5">
-											Reach goal in {new Date().getFullYear() + calculator.yearsToGoal}
+											Retire in {new Date().getFullYear() + calculator.yearsToFire}
 										</p>
 									</div>
 								</div>
@@ -89,7 +89,7 @@
 					<Tabs.Content value="chart" class="m-0">
 						<GrowthChart
 							annualData={calculator.result.annualData}
-							savingsGoal={calculator.savingsGoal}
+							savingsGoal={calculator.fireNumber}
 							bandData={calculator.bandData}
 						/>
 					</Tabs.Content>

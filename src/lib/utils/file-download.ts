@@ -3,7 +3,7 @@ export interface CsvData {
 	rows: (string | number)[][];
 }
 
-export function downloadCsv(data: CsvData, filename = 'moneykit.csv') {
+export function downloadCsv(data: CsvData, filename = 'budgetkit.csv') {
 	const csvContent = [data.columns, ...data.rows]
 		.map((row) =>
 			row

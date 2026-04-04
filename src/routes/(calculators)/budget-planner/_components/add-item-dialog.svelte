@@ -56,6 +56,10 @@
 			(category !== 'uncategorised' || newItem.category.trim().length > 0)
 	);
 	let categoryError = $state('');
+	let nameTouched = $state(false);
+	let amountTouched = $state(false);
+	const nameError = $derived(nameTouched && newItem.name.trim().length === 0 ? 'Name is required.' : '');
+	const amountError = $derived(amountTouched && newItem.amount <= 0 ? 'Amount must be greater than 0.' : '');
 
 	function validateCategory() {
 		if (addingNewCategory) {
@@ -114,6 +118,8 @@
 			type
 		};
 		newCategoryName = '';
+		nameTouched = false;
+		amountTouched = false;
 	}
 </script>
 
@@ -146,13 +152,15 @@
 		<div class="space-y-4 py-4">
 			<div class="space-y-2">
 				<label for="item-name" class="text-sm font-medium">Name</label>
-				<Input bind:value={newItem.name} id="item-name" placeholder="Enter item name" />
+				<Input bind:value={newItem.name} id="item-name" placeholder="Enter item name" onblur={() => (nameTouched = true)} />
+				{#if nameError}<p class="text-destructive text-xs mt-1">{nameError}</p>{/if}
 			</div>
 
 			<div class="grid grid-cols-2 gap-4">
 				<div class="space-y-2">
 					<Label for="item-amount" class="text-sm font-medium">Amount</Label>
-					<CurrencyInput id="item-amount" bind:value={newItem.amount} />
+					<CurrencyInput id="item-amount" bind:value={newItem.amount} onchange={() => (amountTouched = true)} />
+					{#if amountError}<p class="text-destructive text-xs mt-1">{amountError}</p>{/if}
 				</div>
 
 				<div class="space-y-2">

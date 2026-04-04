@@ -1,7 +1,7 @@
 <script lang="ts">
 	import DoughnutChart from '$lib/components/charts/doughnut-chart.svelte';
 	import LegendList from '$lib/components/charts/legend-list.svelte';
-	import { formatAsCurrency, formatAsPercentage } from '$lib/utils/formatters';
+	import { formatAsPercentage } from '$lib/utils/formatters';
 	import { setBudgetState } from './budget.svelte';
 	import BudgetCard from './_components/budget-card.svelte';
 	import ActionsMenu from './_components/actions-menu.svelte';
@@ -62,7 +62,7 @@
 	<link rel="canonical" href="https://moneykit.au/budget-planner" />
 </svelte:head>
 
-<main class="flex flex-col flex-1 mx-auto w-full px-4 md:px-6 max-w-[1200px]">
+<main class="flex flex-col flex-1 mx-auto w-full px-4 md:px-6 max-w-300">
 	<LoadBudgetAlert />
 	<div class="flex justify-between items-center mb-2">
 		<h1 class="calculator-heading">Budget Planner</h1>
@@ -71,7 +71,7 @@
 		</div>
 	</div>
 
-	<div class="mb-4 max-w-[240px]">
+	<div class="mb-4 max-w-60">
 		<TabSelect bind:value={viewMode} name="budget-view" options={viewOptions} />
 	</div>
 
@@ -93,7 +93,7 @@
 			/>
 		</div>
 		{#if budget.totalExpenses > 0}
-			<div class="flex flex-row lg:flex-col flex-wrap gap-4 min-w-[300px] h-fit">
+			<div class="flex flex-row lg:flex-col flex-wrap gap-4 min-w-75 h-fit">
 				<div class="card flex-1">
 					<h2 class="card-heading">Spending Breakdown</h2>
 					<DoughnutChart data={chartData} formatter={formatAsPercentage} />

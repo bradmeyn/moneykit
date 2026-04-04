@@ -86,7 +86,12 @@
 							{formatAsCurrency(convertToFrequency(item.amount, item.frequency, budget.frequency))}
 						</td>
 						<td class="py-1.5 px-0">
-							<Button size="icon" variant="ghost" onclick={() => budget.removeItem(item.id)} aria-label="Delete {item.name}">
+							<Button
+								size="icon"
+								variant="ghost"
+								onclick={() => budget.removeItem(item.id)}
+								aria-label="Delete {item.name}"
+							>
 								<Trash class="size-4" />
 							</Button>
 						</td>

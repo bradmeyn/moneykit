@@ -16,10 +16,11 @@
 	</p>
 	<div class="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-xl">
 		{#each calculators as calculator}
-			{@const Icon = calculator.icon}
 			<a href={calculator.href} class="card group hover:border-primary/50 hover:shadow-md transition-all text-left flex items-center gap-4">
 				<div class="size-10 rounded-xl bg-primary/10 flex items-center justify-center shrink-0 group-hover:bg-primary/15 transition-colors">
-					<Icon class="size-5 text-primary" />
+					<svg xmlns="http://www.w3.org/2000/svg" viewBox={calculator.viewBox} class="size-5 fill-primary">
+						{#each calculator.paths as d}<path {d} />{/each}
+					</svg>
 				</div>
 				<div>
 					<p class="font-semibold group-hover:text-primary transition-colors">{calculator.name}</p>

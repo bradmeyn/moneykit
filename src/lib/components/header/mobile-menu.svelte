@@ -96,11 +96,12 @@
 								aria-current={activeUrl === calculator.href ? 'page' : undefined}
 								onclick={closeMenu}
 							>
-								{@const Icon = calculator.icon}
 								<div
 									class="size-8 rounded-lg bg-brand/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shrink-0"
 								>
-									<Icon class="size-4 text-brand" />
+									<svg xmlns="http://www.w3.org/2000/svg" viewBox={calculator.viewBox} class="size-4 fill-brand">
+										{#each calculator.paths as d}<path {d} />{/each}
+									</svg>
 								</div>
 								<span>{calculator.name}</span>
 							</a>

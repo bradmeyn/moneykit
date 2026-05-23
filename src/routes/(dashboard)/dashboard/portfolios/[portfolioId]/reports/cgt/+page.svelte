@@ -6,7 +6,7 @@
 	import Input from '$ui/input/input.svelte';
 	import Button from '$ui/button/button.svelte';
 	import { formatCurrency, downloadCSV } from '$lib/utils';
-	import { ArrowLeft, Check, Download, Minus } from '@lucide/svelte';
+	import { Check, Download, Minus } from '@lucide/svelte';
 
 	const portfolioId = page.params.portfolioId!;
 	const taxSummary = $derived(await getPortfolioTaxSummary(portfolioId));
@@ -183,24 +183,39 @@
 	}
 </script>
 
-<div class="mb-6">
-	<a
-		href="/portfolios/{portfolioId}"
-		class="mb-4 inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
+<div class="mb-4 flex items-center gap-3">
+	<a href="/dashboard/portfolios" class="text-sm text-muted-foreground hover:text-foreground"
+		>← Portfolios</a
 	>
-		<ArrowLeft class="size-4" />
-		Back to Portfolio
-	</a>
-	<div class="flex items-center justify-between">
-		<h1 class="text-3xl font-semibold">Tax Summary - {taxSummary.currentFY.label}</h1>
+	<span class="text-muted-foreground">/</span>
+	<a
+		href="/dashboard/portfolios/{portfolioId}"
+		class="text-sm text-muted-foreground hover:text-foreground"
+	>Holdings</a>
+</div>
 
-		<div class="flex gap-2">
-			<Button onclick={generateCGTReport}>
-				<Download class="size-4" />
-				<span>Download CGT Report</span>
-			</Button>
-		</div>
+<div class="mb-6 flex items-center justify-between">
+	<div class="flex gap-1 border-b flex-1 mr-4">
+		<a
+			href="/dashboard/portfolios/{portfolioId}"
+			class="border-b-2 border-transparent px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground"
+			>Holdings</a
+		>
+		<a
+			href="/dashboard/portfolios/{portfolioId}/reports/unrealised-gains"
+			class="border-b-2 border-transparent px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground"
+			>Unrealised Gains</a
+		>
+		<a
+			href="/dashboard/portfolios/{portfolioId}/reports/cgt"
+			class="border-b-2 border-primary px-3 py-2 text-sm font-medium text-primary"
+			>CGT Report</a
+		>
 	</div>
+	<Button onclick={generateCGTReport}>
+		<Download class="size-4" />
+		<span>Download</span>
+	</Button>
 </div>
 
 <!-- Short-Term Gains Table -->

@@ -15,7 +15,7 @@ export async function handle({ event, resolve }) {
 	}
 
 	// Define protected routes
-	const protectedRoutes = ['/portfolios'];
+	const protectedRoutes = ['/dashboard'];
 
 	// Check if current path is protected
 	const isProtectedRoute = protectedRoutes.some((route) => event.url.pathname.startsWith(route));

@@ -20,7 +20,7 @@ export const registerUser = form(
 			};
 		}
 
-		redirect(302, '/portfolios');
+		redirect(302, '/dashboard/portfolios');
 	}
 );
 
@@ -39,7 +39,7 @@ export const loginUser = form(loginSchema, async ({ email, password }) => {
 		};
 	}
 
-	redirect(302, '/portfolios');
+	redirect(302, '/dashboard/portfolios');
 });
 
 export const logoutUser = form(async () => {

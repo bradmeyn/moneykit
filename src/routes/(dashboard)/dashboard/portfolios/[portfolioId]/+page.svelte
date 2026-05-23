@@ -12,11 +12,31 @@
 	let addHoldingOpen = $state(false);
 </script>
 
-<div class="mb-6 flex items-center justify-between">
-	<h1 class="text-3xl font-semibold">{portfolio.name}</h1>
-	<div>
-		<AddHoldingDialog {portfolioId} bind:open={addHoldingOpen} />
+<div class="mb-4 flex items-center justify-between">
+	<div class="flex items-center gap-3">
+		<a
+			href="/dashboard/portfolios"
+			class="text-sm text-muted-foreground hover:text-foreground"
+		>← Portfolios</a>
+		<span class="text-muted-foreground">/</span>
+		<h1 class="text-xl font-semibold">{portfolio.name}</h1>
 	</div>
+	<AddHoldingDialog {portfolioId} bind:open={addHoldingOpen} />
+</div>
+
+<div class="mb-6 flex gap-1 border-b">
+	<a
+		href="/dashboard/portfolios/{portfolioId}"
+		class="border-b-2 border-primary px-3 py-2 text-sm font-medium text-primary"
+	>Holdings</a>
+	<a
+		href="/dashboard/portfolios/{portfolioId}/reports/unrealised-gains"
+		class="border-b-2 border-transparent px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground"
+	>Unrealised Gains</a>
+	<a
+		href="/dashboard/portfolios/{portfolioId}/reports/cgt"
+		class="border-b-2 border-transparent px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground"
+	>CGT Report</a>
 </div>
 
 {#if portfolio.holdings.length > 0}
@@ -52,7 +72,7 @@
 		</div>
 	</div>
 	<div class="card">
-		<Table.Root class="bg-white">
+		<Table.Root>
 			<Table.Header>
 				<Table.Row>
 					<Table.Head>Name</Table.Head>
@@ -81,7 +101,7 @@
 							<span class="text-xs">({holding.unrealisedGainPercent.toFixed(1)}%)</span>
 						</Table.Cell>
 						<Table.Cell class="text-right">
-							<Button href="/portfolios/{portfolioId}/{holding.id}" size="sm">View</Button>
+							<Button href="/dashboard/portfolios/{portfolioId}/{holding.id}" size="sm">View</Button>
 						</Table.Cell>
 					</Table.Row>
 				{/each}

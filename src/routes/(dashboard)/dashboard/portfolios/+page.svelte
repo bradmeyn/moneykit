@@ -11,13 +11,13 @@
 	</div>
 	<svelte:boundary>
 		{#snippet pending()}
-			<div class="mb-3 h-7 w-48 animate-pulse rounded bg-gray-200 dark:bg-gray-700"></div>
+			<div class="mb-3 h-7 w-48 animate-pulse rounded bg-muted"></div>
 		{/snippet}
 	</svelte:boundary>
 
 	{#each await getPortfolios() as portfolio}
 		<a
-			href="/portfolios/{portfolio.id}"
+			href="/dashboard/portfolios/{portfolio.id}"
 			class="card flex items-center justify-between transition-all hover:border-primary hover:shadow-sm"
 		>
 			<div>
@@ -33,7 +33,7 @@
 	{/each}
 
 	{#if (await getPortfolios()).length === 0}
-		<div class="rounded-xl bg-gray-50 p-4">
+		<div class="card text-center">
 			<p class="text-center text-muted-foreground">
 				No portfolios found. Add a portfolio to get started.
 			</p>

@@ -4,7 +4,7 @@
 	import Button from '$ui/button/button.svelte';
 	import Input from '$ui/input/input.svelte';
 	import Label from '$ui/label/label.svelte';
-	import { Pencil, Trash, Plus, X } from 'lucide-svelte';
+	import { Pencil, Trash, Plus, X } from '@lucide/svelte';
 	import { type BudgetItem, getBudgetState } from '../budget.svelte';
 	import type { Snippet } from 'svelte';
 

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import * as AlertDialog from '$lib/components/ui/alert-dialog/index';
 	import Button from '$ui/button/button.svelte';
-	import { Trash } from 'lucide-svelte';
+	import { Trash } from '@lucide/svelte';
 	import type { Snippet } from 'svelte';
 
 	let {

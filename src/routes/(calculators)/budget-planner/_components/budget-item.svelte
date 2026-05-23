@@ -3,7 +3,7 @@
 	import { formatAsCurrency } from '$lib/utils/formatters';
 	import { convertToFrequency, type BudgetItem } from '../budget.svelte';
 	import FrequencyInput from '$lib/components/inputs/frequency-select.svelte';
-	import { EllipsisVertical, Pencil, Trash } from 'lucide-svelte';
+	import { EllipsisVertical, Pencil, Trash } from '@lucide/svelte';
 	import { getBudgetState } from '../budget.svelte';
 	import Button from '$ui/button/button.svelte';
 	import { FREQUENCIES } from '$constants/frequencies';

@@ -4,7 +4,7 @@
 	import FrequencySelect from '$lib/components/inputs/frequency-select.svelte';
 	import { formatAsCurrency } from '$lib/utils/formatters';
 	import { FREQUENCIES } from '$lib/constants/frequencies';
-	import { Trash } from 'lucide-svelte';
+	import { Trash } from '@lucide/svelte';
 	import Button from '$ui/button/button.svelte';
 	import AddItemDialog from './add-item-dialog.svelte';
 	import * as Select from '$lib/components/ui/select';

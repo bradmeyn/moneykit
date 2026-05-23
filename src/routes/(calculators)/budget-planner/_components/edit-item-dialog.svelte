@@ -12,7 +12,7 @@
 	import { getBudgetState } from '../budget.svelte';
 
 	import Label from '$ui/label/label.svelte';
-	import { Pencil } from 'lucide-svelte';
+	import { Pencil } from '@lucide/svelte';
 	import { untrack, type Snippet } from 'svelte';
 
 	const {

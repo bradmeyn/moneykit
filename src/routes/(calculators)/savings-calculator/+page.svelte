@@ -2,7 +2,7 @@
 	import { setCalculatorState, getCalculatorState } from './calculator.svelte';
 	import * as Tabs from '$lib/components/ui/tabs';
 	import { formatAsCurrency } from '$lib/utils/formatters';
-	import { CheckCircle, XCircle } from 'lucide-svelte';
+	import { Flame, CheckCircle, XCircle } from '@lucide/svelte';
 	import Inputs from './_components/savings-inputs.svelte';
 	import GrowthChart from './_components/growth-chart.svelte';
 	import ScrollableTable from '$ui/scrollable-table.svelte';
@@ -14,17 +14,17 @@
 </script>
 
 <svelte:head>
-	<title>Savings Calculator | BudgetKit</title>
+	<title>Savings & FIRE Calculator | MoneyKit</title>
 	<meta
 		name="description"
-		content="Calculate your savings growth and track progress towards your savings goal."
+		content="Project your savings growth, track progress towards a savings goal, or calculate your FIRE number and time to financial independence."
 	/>
 </svelte:head>
 
 <main class="container">
 	<div class="flex justify-end items-center mb-4">
 		<CalculatorActions
-			filename={'savings-calculator.csv'}
+			filename="savings-calculator.csv"
 			getCsvData={() => calculator.getTableData()}
 		/>
 	</div>
@@ -50,28 +50,36 @@
 
 				<div class="space-y-4 mb-4">
 					<div class="flex gap-8 flex-wrap">
-						{@render metric(
-							'Value after ' + calculator.years + ' years',
-							calculator.result.totalValue
-						)}
+						{@render metric('Value after ' + calculator.years + ' years', calculator.result.totalValue)}
 						{@render metric('Total Contributions', calculator.result.totalContributions)}
 						{@render metric('Total Interest', calculator.result.totalInterest)}
 					</div>
 
 					<div class="flex gap-8 flex-wrap items-start">
-						{@render metric('Savings Goal', calculator.savingsGoal)}
+						{@render metric(
+							calculator.mode === 'fire' ? 'FIRE Number' : 'Savings Goal',
+							calculator.goal
+						)}
 
 						<div>
-							<p class="text-muted-foreground mb-1">Time to Goal</p>
+							<p class="text-muted-foreground mb-1">
+								{calculator.mode === 'fire' ? 'Time to FIRE' : 'Time to Goal'}
+							</p>
 							{#if calculator.yearsToGoal !== null}
 								<div class="flex items-center gap-2">
-									<CheckCircle class="size-6 text-emerald-500 shrink-0" />
+									{#if calculator.mode === 'fire'}
+										<Flame class="size-6 text-primary shrink-0" />
+									{:else}
+										<CheckCircle class="size-6 text-primary shrink-0" />
+									{/if}
 									<div>
 										<p class="text-3xl md:text-4xl font-bold leading-none">
-											{calculator.yearsToGoal} <span class="text-xl font-semibold text-muted-foreground">yrs</span>
+											{calculator.yearsToGoal}
+											<span class="text-xl font-semibold text-muted-foreground">yrs</span>
 										</p>
 										<p class="text-sm text-muted-foreground mt-0.5">
-											Reach goal in {new Date().getFullYear() + calculator.yearsToGoal}
+											{calculator.mode === 'fire' ? 'Retire in' : 'Reach goal in'}
+											{new Date().getFullYear() + calculator.yearsToGoal}
 										</p>
 									</div>
 								</div>
@@ -89,7 +97,7 @@
 					<Tabs.Content value="chart" class="m-0">
 						<GrowthChart
 							annualData={calculator.result.annualData}
-							savingsGoal={calculator.savingsGoal}
+							savingsGoal={calculator.goal}
 							bandData={calculator.bandData}
 						/>
 					</Tabs.Content>

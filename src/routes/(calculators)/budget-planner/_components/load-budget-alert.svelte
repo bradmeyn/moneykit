@@ -2,7 +2,7 @@
 <script lang="ts">
 	import { getBudgetState } from '../budget.svelte';
 	import Button from '$ui/button/button.svelte';
-	import { X, FileText } from 'lucide-svelte';
+	import { X, FileText } from '@lucide/svelte';
 	import { fade, slide } from 'svelte/transition';
 
 	let budget = getBudgetState();

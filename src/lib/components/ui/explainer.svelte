@@ -1,6 +1,6 @@
 <script lang="ts">
 	import * as Tooltip from '$lib/components/ui/tooltip';
-	import { CircleHelp } from 'lucide-svelte';
+	import { CircleHelp } from '@lucide/svelte';
 	let { text }: { text: string } = $props();
 </script>
 

@@ -9,7 +9,7 @@
 	--card-foreground: oklch(22% 0.01 260);
 	--popover: oklch(100% 0 0);
 	--popover-foreground: oklch(22% 0.01 260);
-	--primary: oklch(52% 0.13 152);
+	--primary: oklch(38.524% 0.11064 255.687);
 	--primary-foreground: oklch(98% 0 0);
 	--secondary: oklch(95% 0.003 240);
 	--secondary-foreground: oklch(30% 0.01 260);
@@ -20,32 +20,32 @@
 	--destructive: oklch(0.577 0.245 27.325);
 	--border: oklch(91% 0.004 240);
 	--input: oklch(91% 0.004 240);
-	--ring: oklch(63% 0.13 152);
-	--chart-1: oklch(0.5 0.12 152);
-	--chart-2: oklch(0.62 0.15 190);
-	--chart-3: oklch(0.55 0.2 285);
-	--chart-4: oklch(0.65 0.16 155);
-	--chart-5: oklch(0.72 0.18 65);
-	--chart-6: oklch(0.6 0.22 20);
-	--chart-7: oklch(0.65 0.2 340);
-	--chart-8: oklch(0.7 0.12 215);
-	--chart-9: oklch(0.5 0.22 275);
-	--chart-10: oklch(0.78 0.14 135);
+	--ring: oklch(70% 0.1 255);
+	--chart-1: oklch(38.524% 0.11064 255.687);
+	--chart-2: oklch(58% 0.15 195);
+	--chart-3: oklch(52% 0.18 280);
+	--chart-4: oklch(65% 0.15 230);
+	--chart-5: oklch(45% 0.2 265);
+	--chart-6: oklch(60% 0.12 210);
+	--chart-7: oklch(55% 0.2 290);
+	--chart-8: oklch(70% 0.12 240);
+	--chart-9: oklch(42% 0.16 270);
+	--chart-10: oklch(62% 0.18 220);
 	--surface-100: oklch(100% 0 0);
 	--surface-200: oklch(93% 0.003 240);
 	--surface-300: oklch(91% 0.004 240);
 	--surface-content: oklch(28% 0.01 260);
 	--sidebar: oklch(99% 0.001 260);
 	--sidebar-foreground: oklch(30% 0.01 260);
-	--sidebar-primary: oklch(52% 0.13 152);
+	--sidebar-primary: oklch(38.524% 0.11064 255.687);
 	--sidebar-primary-foreground: oklch(98% 0 0);
 	--sidebar-accent: oklch(95% 0.01 240);
 	--sidebar-accent-foreground: oklch(30% 0.018 250);
 	--sidebar-border: oklch(90% 0.01 240);
-	--sidebar-ring: oklch(65% 0.15 250);
-	--brand: oklch(52% 0.13 152);
-	--primary-light: oklch(63% 0.13 152);
-	--primary-dark: oklch(40% 0.12 152);
+	--sidebar-ring: oklch(70% 0.1 255);
+	--brand: oklch(62% 0.18 255);
+	--primary-light: oklch(62% 0.16 255);
+	--primary-dark: oklch(26% 0.12 255);
 	--font-serif-display: 'Fraunces', 'Iowan Old Style', 'Palatino Linotype', serif;
 	--font-ui: 'Manrope', 'Avenir Next', 'Segoe UI', sans-serif;
 }
@@ -179,31 +179,31 @@
 /* For Webkit (Chrome, Safari, Edge) */
 .overflow-y-auto::-webkit-scrollbar,
 .overflow-x-auto::-webkit-scrollbar {
-	width: 8px; /* Adjust scrollbar width */
-	height: 8px; /* Adjust scrollbar height for horizontal scroll */
+	width: 8px;
+	height: 8px;
 }
 
 .overflow-y-auto::-webkit-scrollbar-track,
 .overflow-x-auto::-webkit-scrollbar-track {
-	background: oklch(93% 0.002 260); /* Track color */
+	background: oklch(93% 0.002 260);
 }
 
 .overflow-y-auto::-webkit-scrollbar-thumb,
 .overflow-x-auto::-webkit-scrollbar-thumb {
-	background: oklch(80% 0.004 260); /* Handle color */
-	border-radius: 4px; /* Handle border radius */
+	background: oklch(80% 0.004 260);
+	border-radius: 4px;
 }
 
 .overflow-y-auto::-webkit-scrollbar-thumb:hover,
 .overflow-x-auto::-webkit-scrollbar-thumb:hover {
-	background: oklch(72% 0.02 72); /* Handle color on hover */
+	background: oklch(72% 0.02 72);
 }
 
 /* For Firefox */
 .overflow-y-auto,
 .overflow-x-auto {
-	scrollbar-width: thin; /* "auto" or "thin" */
-	scrollbar-color: oklch(82% 0.01 76) oklch(93% 0.006 82); /* Handle color Track color */
+	scrollbar-width: thin;
+	scrollbar-color: oklch(82% 0.01 76) oklch(93% 0.006 82);
 }
 
 .lc-root-container {

@@ -1,5 +1,5 @@
 <script>
-	import { X, Menu } from 'lucide-svelte';
+	import { X, Menu } from '@lucide/svelte';
 	/**
 	 * @typedef {Object} Props
 	 * @property {boolean} [isOpen]

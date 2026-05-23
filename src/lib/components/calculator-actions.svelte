@@ -1,6 +1,6 @@
 <script lang="ts">
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
-	import { EllipsisVertical, Download } from 'lucide-svelte';
+	import { EllipsisVertical, Download } from '@lucide/svelte';
 	import Button from '$ui/button/button.svelte';
 
 	import { downloadCsv, type CsvData } from '$utils/file-download';

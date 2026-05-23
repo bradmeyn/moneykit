@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: moneykit-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: mmt_user
+      POSTGRES_PASSWORD: mmt_pass
+      POSTGRES_DB: mmt_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U mmt_user -d mmt_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: moneykit-app
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: postgres://mmt_user:mmt_pass@db:5432/mmt_db
+      BETTER_AUTH_SECRET: your-secret-key-change-in-production
+      NODE_ENV: production
+      PORT: 3000
+    depends_on:
+      db:
+        condition: service_healthy
+    command: sh -c "npx drizzle-kit push && node build"
+
+volumes:
+  postgres_data:

@@ -7,8 +7,9 @@
 	import { TrendingUp, TrendingDown, CalendarClock, ChevronRight } from '@lucide/svelte';
 
 	const user = $derived(page.data.user);
-	const netWorth = $derived(await getNetWorth());
-	const upcomingSubscriptions = $derived(await getUpcomingSubscriptions());
+	const [netWorth, upcomingSubscriptions] = $derived(
+		await Promise.all([getNetWorth(), getUpcomingSubscriptions()])
+	);
 
 	function formatFrequency(frequency: string) {
 		return frequency.charAt(0).toUpperCase() + frequency.slice(1);
@@ -34,37 +35,41 @@
 	{#snippet pending()}
 		<div class="space-y-6">
 			{#each [1, 2, 3] as _}
-				<div class="h-28 animate-pulse rounded-2xl bg-muted"></div>
+				<div class="h-28 animate-pulse rounded-2xl bg-muted/60"></div>
 			{/each}
 		</div>
 	{/snippet}
 
 	<div class="space-y-8">
 		<div>
-			<h1 class="text-2xl font-semibold">
+			<h1 class="heading-primary">
 				{user?.name ? `Welcome back, ${user.name.split(' ')[0]}` : 'Dashboard'}
 			</h1>
 		</div>
 
 		<!-- Net Worth -->
 		<section>
-			<h2 class="mb-3 text-sm font-medium uppercase tracking-wider text-muted-foreground">
+			<h2 class="mb-3 text-xs font-medium uppercase tracking-wider text-muted-foreground">
 				Net Worth
 			</h2>
 			<div class="grid gap-4 sm:grid-cols-3">
 				<div class="card">
 					<p class="text-sm text-muted-foreground">Portfolio Value</p>
-					<p class="mt-1 text-3xl font-bold">{formatCurrency(netWorth.totalValue)}</p>
+					<p class="mt-1 text-3xl font-medium tracking-tight tabular-nums">
+						{formatCurrency(netWorth.totalValue)}
+					</p>
 				</div>
 				<div class="card">
 					<p class="text-sm text-muted-foreground">Total Invested</p>
-					<p class="mt-1 text-3xl font-bold">{formatCurrency(netWorth.totalCostBase)}</p>
+					<p class="mt-1 text-3xl font-medium tracking-tight tabular-nums">
+						{formatCurrency(netWorth.totalCostBase)}
+					</p>
 				</div>
 				<div class="card">
 					<p class="text-sm text-muted-foreground">Unrealised Gain</p>
 					<div class="mt-1 flex items-center gap-2">
 						<p
-							class="text-3xl font-bold {netWorth.totalGain >= 0
+							class="text-3xl font-medium tracking-tight tabular-nums {netWorth.totalGain >= 0
 								? 'text-emerald-600'
 								: 'text-red-500'}"
 						>
@@ -76,9 +81,7 @@
 							<TrendingDown class="size-5 text-red-500" />
 						{/if}
 					</div>
-					<p
-						class="mt-0.5 text-sm {netWorth.totalGain >= 0 ? 'text-emerald-600' : 'text-red-500'}"
-					>
+					<p class="mt-0.5 text-sm {netWorth.totalGain >= 0 ? 'text-emerald-600' : 'text-red-500'}">
 						{netWorth.totalGain >= 0 ? '+' : ''}{netWorth.totalGainPercent.toFixed(2)}%
 					</p>
 				</div>
@@ -88,7 +91,7 @@
 		<!-- Upcoming Subscriptions -->
 		<section>
 			<div class="mb-3 flex items-center justify-between">
-				<h2 class="text-sm font-medium uppercase tracking-wider text-muted-foreground">
+				<h2 class="text-xs font-medium uppercase tracking-wider text-muted-foreground">
 					Upcoming Subscriptions
 				</h2>
 				<a
@@ -117,7 +120,7 @@
 								</div>
 							</div>
 							<div class="text-right">
-								<p class="font-medium">{formatAsCurrency(sub.amount / 100)}</p>
+								<p class="font-medium tabular-nums">{formatAsCurrency(sub.amount / 100)}</p>
 								<p class="text-xs text-muted-foreground">{formatDueDate(sub.nextDueDate)}</p>
 							</div>
 						</div>
@@ -127,10 +130,7 @@
 				<div class="card flex items-center gap-3 text-muted-foreground">
 					<CalendarClock class="size-5" />
 					<p class="text-sm">No subscriptions due in the next 30 days.</p>
-					<a
-						href="/dashboard/subscriptions"
-						class="ml-auto text-sm text-primary hover:underline"
-					>
+					<a href="/dashboard/subscriptions" class="ml-auto text-sm text-primary hover:underline">
 						Add one
 					</a>
 				</div>

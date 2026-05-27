@@ -6,7 +6,7 @@
 
 <div class="container mx-auto max-w-3xl py-4">
 	<div class="mb-6 flex items-center justify-between pt-6">
-		<h1 class="text-4xl">Portfolios</h1>
+		<h1 class="heading-primary">Portfolios</h1>
 		<AddPortfolioDialog />
 	</div>
 	<svelte:boundary>

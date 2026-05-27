@@ -31,8 +31,12 @@
 	let ioTermStr = $state(String(calc.ioTerm));
 	let fixedTermStr = $state(String(calc.fixedTerm));
 
-	$effect(() => { calc.ioTerm = Number(ioTermStr); });
-	$effect(() => { calc.fixedTerm = Number(fixedTermStr); });
+	$effect(() => {
+		calc.ioTerm = Number(ioTermStr);
+	});
+	$effect(() => {
+		calc.fixedTerm = Number(fixedTermStr);
+	});
 
 	let includeProperty = $state(false);
 
@@ -45,7 +49,7 @@
 </script>
 
 <aside class="min-w-75 max-w-250 space-y-4">
-	<h2 class="card-heading border-b pb-3">Inputs</h2>
+	<h2 class="heading-secondary border-b pb-3">Inputs</h2>
 
 	<div>
 		<Label for="principal">Loan Amount</Label>
@@ -70,7 +74,8 @@
 		</div>
 		<Slider type="single" bind:value={calc.term} min={1} max={30} step={1} id="term" />
 		<p class="text-sm text-muted-foreground mt-1">
-			{calc.term} {calc.term === 1 ? 'year' : 'years'}
+			{calc.term}
+			{calc.term === 1 ? 'year' : 'years'}
 		</p>
 	</div>
 

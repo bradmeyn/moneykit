@@ -22,7 +22,8 @@
 </svelte:head>
 
 <main class="container">
-	<div class="flex justify-end items-center mb-4">
+	<div class="flex justify-between items-center mb-4">
+		<h1 class="heading-primary">Repayments Calculator</h1>
 		<CalculatorActions
 			filename="mortgage-calculator.csv"
 			getCsvData={() => calc.getScheduleData()}
@@ -35,7 +36,7 @@
 		<div class="w-full min-w-0 space-y-4">
 			<div class="card">
 				<div class="flex gap-2 flex-col md:flex-row md:justify-between w-full mb-4">
-					<h2 class="card-heading">Outcome</h2>
+					<h2 class="heading-secondary">Outcome</h2>
 					<Tabs.Root
 						value={selectedView}
 						onValueChange={(value) => (selectedView = value)}

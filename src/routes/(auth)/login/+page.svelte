@@ -12,7 +12,7 @@
 <div class="w-full max-w-sm">
 	<div class="rounded-xl border border-border bg-card p-8 shadow-sm">
 		<div class="mb-6">
-			<h1 class="text-2xl font-semibold tracking-tight">Welcome back</h1>
+			<h1 class="heading-primary">Welcome back</h1>
 			<p class="mt-1 text-sm text-muted-foreground">Log in to your account</p>
 		</div>
 

@@ -13,7 +13,7 @@
 
 <aside class="min-w-75 max-w-250 space-y-4">
 	<div class="flex items-center justify-between border-b pb-3">
-		<h2 class="card-heading">Inputs</h2>
+		<h2 class="heading-secondary">Inputs</h2>
 		<div class="flex rounded-md border border-border text-xs font-medium overflow-hidden">
 			<button
 				onclick={() => (calculator.mode = 'savings')}
@@ -46,7 +46,11 @@
 		</div>
 		<div>
 			<Label for="frequency">Frequency</Label>
-			<FrequencySelect bind:value={calculator.contributionFrequency} id="frequency" name="frequency" />
+			<FrequencySelect
+				bind:value={calculator.contributionFrequency}
+				id="frequency"
+				name="frequency"
+			/>
 		</div>
 	</div>
 
@@ -66,7 +70,14 @@
 			<Label class="mb-0" id="years-invested">Years Invested</Label>
 			<Explainer text="The number of years you plan to invest." />
 		</div>
-		<Slider type="single" bind:value={calculator.years} min={1} max={100} step={1} id="years-invested" />
+		<Slider
+			type="single"
+			bind:value={calculator.years}
+			min={1}
+			max={100}
+			step={1}
+			id="years-invested"
+		/>
 		<div class="text-sm text-muted-foreground mt-1">{calculator.years}</div>
 	</div>
 

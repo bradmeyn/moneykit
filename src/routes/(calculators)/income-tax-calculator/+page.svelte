@@ -23,7 +23,8 @@
 </svelte:head>
 
 <main class="container">
-	<div class="flex justify-end items-center mb-4">
+	<div class="flex justify-between items-center mb-4">
+		<h1 class="heading-primary">Income Tax Calculator</h1>
 		<CalculatorActions
 			filename="income-tax-calculator.csv"
 			getCsvData={() => calc.getTableData()}
@@ -37,7 +38,7 @@
 			<div class="card">
 				<div class="flex gap-2 flex-col md:flex-row md:justify-between w-full mb-4">
 					<div>
-						<h2 class="card-heading">Outcome</h2>
+						<h2 class="heading-secondary">Outcome</h2>
 						<p class="text-xs text-muted-foreground">{CURRENT_FINANCIAL_YEAR} financial year</p>
 					</div>
 					<Tabs.Root

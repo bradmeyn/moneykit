@@ -8,8 +8,9 @@
 	import { formatAsCurrency } from '$lib/utils/formatters';
 	import * as Dialog from '$ui/dialog';
 	import * as Field from '$ui/field';
+	import * as NativeSelect from '$ui/native-select';
 	import Input from '$ui/input/input.svelte';
-	import { Button, buttonVariants } from '$ui/button';
+	import { Button } from '$ui/button';
 	import { Plus, Pencil, Trash2, CalendarClock } from '@lucide/svelte';
 	import DeleteDialog from '$lib/components/delete-dialog.svelte';
 	import type { Subscription } from '$db/schemas/budget';
@@ -40,22 +41,6 @@
 		});
 	}
 
-	async function onAdd({ form, submit }: any) {
-		await submit().updates(getSubscriptions());
-		if (addSubscription.result?.success) {
-			form.reset();
-			addOpen = false;
-		}
-	}
-
-	async function onEdit({ form, submit }: any) {
-		await submit().updates(getSubscriptions());
-		if (updateSubscription.result?.success) {
-			form.reset();
-			editTarget = null;
-		}
-	}
-
 	async function onDelete() {
 		if (!deleteTarget) return;
 		await deleteSubscription({ id: deleteTarget.id });
@@ -72,7 +57,7 @@
 	{#snippet pending()}
 		<div class="space-y-3">
 			{#each [1, 2, 3] as _}
-				<div class="h-16 animate-pulse rounded-2xl bg-muted"></div>
+				<div class="h-16 animate-pulse rounded-2xl bg-muted/60"></div>
 			{/each}
 		</div>
 	{/snippet}
@@ -80,7 +65,7 @@
 	<div class="space-y-6">
 		<div class="flex items-center justify-between">
 			<div>
-				<h1 class="text-2xl font-semibold">Subscriptions</h1>
+				<h1 class="heading-primary">Subscriptions</h1>
 				<p class="mt-1 text-sm text-muted-foreground">Track your recurring expenses.</p>
 			</div>
 			<Button onclick={() => (addOpen = true)}>
@@ -106,12 +91,12 @@
 								</p>
 							</div>
 						</div>
-						<div class="flex items-center gap-6">
+						<div class="flex items-center gap-4">
 							<div class="text-right">
-								<p class="font-medium">{formatAsCurrency(sub.amount / 100)}</p>
+								<p class="font-medium tabular-nums">{formatAsCurrency(sub.amount / 100)}</p>
 								<p class="text-xs text-muted-foreground">Due {formatDueDate(sub.nextDueDate)}</p>
 							</div>
-							<div class="flex gap-1">
+							<div class="flex gap-0.5">
 								<Button
 									variant="ghost"
 									size="icon"
@@ -123,7 +108,10 @@
 								<Button
 									variant="ghost"
 									size="icon"
-									onclick={() => { deleteTarget = sub; deleteOpen = true; }}
+									onclick={() => {
+										deleteTarget = sub;
+										deleteOpen = true;
+									}}
 									aria-label="Delete"
 								>
 									<Trash2 class="size-4 text-destructive" />
@@ -158,7 +146,16 @@
 			<p class="text-sm text-destructive">{issue.message}</p>
 		{/each}
 
-		<form {...addSubscription.enhance(onAdd)} class="space-y-4">
+		<form
+			{...addSubscription.enhance(async ({ form, submit }) => {
+				await submit().updates(getSubscriptions());
+				if (addSubscription.result?.success) {
+					form.reset();
+					addOpen = false;
+				}
+			})}
+			class="space-y-4"
+		>
 			<Field.Field>
 				<Field.Label for="name">Name</Field.Label>
 				<Input id="name" {...addSubscription.fields.name.as('text')} placeholder="e.g., Netflix" />
@@ -178,17 +175,12 @@
 				</Field.Field>
 
 				<Field.Field>
-					<Field.Label for="frequency">Frequency</Field.Label>
-					<select
-						id="frequency"
-						{...addSubscription.fields.frequency.as('text')}
-						class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm"
-					>
+					<Field.Label>Frequency</Field.Label>
+					<NativeSelect.Root {...addSubscription.fields.frequency.as('text')}>
 						{#each FREQUENCIES as f}
-							<option value={f}>{formatFrequency(f)}</option>
+							<NativeSelect.Option value={f}>{formatFrequency(f)}</NativeSelect.Option>
 						{/each}
-					</select>
-					<Field.Error />
+					</NativeSelect.Root>
 				</Field.Field>
 			</div>
 
@@ -199,17 +191,13 @@
 			</Field.Field>
 
 			<Field.Field>
-				<Field.Label for="category">Category (optional)</Field.Label>
-				<select
-					id="category"
-					{...addSubscription.fields.category.as('text')}
-					class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm"
-				>
-					<option value="">None</option>
+				<Field.Label>Category (optional)</Field.Label>
+				<NativeSelect.Root {...addSubscription.fields.category.as('text')}>
+					<NativeSelect.Option value="">None</NativeSelect.Option>
 					{#each CATEGORIES as c}
-						<option value={c}>{c}</option>
+						<NativeSelect.Option value={c}>{c}</NativeSelect.Option>
 					{/each}
-				</select>
+				</NativeSelect.Root>
 			</Field.Field>
 
 			<div class="flex justify-end gap-2">
@@ -221,7 +209,12 @@
 </Dialog.Root>
 
 <!-- Edit Dialog -->
-<Dialog.Root open={!!editTarget} onOpenChange={(o) => { if (!o) editTarget = null; }}>
+<Dialog.Root
+	open={!!editTarget}
+	onOpenChange={(o) => {
+		if (!o) editTarget = null;
+	}}
+>
 	<Dialog.Content>
 		<Dialog.Header>
 			<Dialog.Title>Edit Subscription</Dialog.Title>
@@ -232,8 +225,17 @@
 		{/each}
 
 		{#if editTarget}
-			<form {...updateSubscription.enhance(onEdit)} class="space-y-4">
-				<input type="hidden" {...updateSubscription.fields.id.as('hidden')} value={editTarget.id} />
+			<form
+				{...updateSubscription.enhance(async ({ form, submit }) => {
+					await submit().updates(getSubscriptions());
+					if (updateSubscription.result?.success) {
+						form.reset();
+						editTarget = null;
+					}
+				})}
+				class="space-y-4"
+			>
+				<input {...updateSubscription.fields.id.as('text')} type="hidden" value={editTarget.id} />
 
 				<Field.Field>
 					<Field.Label for="edit-name">Name</Field.Label>
@@ -258,18 +260,15 @@
 					</Field.Field>
 
 					<Field.Field>
-						<Field.Label for="edit-frequency">Frequency</Field.Label>
-						<select
-							id="edit-frequency"
+						<Field.Label>Frequency</Field.Label>
+						<NativeSelect.Root
 							{...updateSubscription.fields.frequency.as('text')}
 							value={editTarget.frequency}
-							class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm"
 						>
 							{#each FREQUENCIES as f}
-								<option value={f}>{formatFrequency(f)}</option>
+								<NativeSelect.Option value={f}>{formatFrequency(f)}</NativeSelect.Option>
 							{/each}
-						</select>
-						<Field.Error />
+						</NativeSelect.Root>
 					</Field.Field>
 				</div>
 
@@ -284,22 +283,21 @@
 				</Field.Field>
 
 				<Field.Field>
-					<Field.Label for="edit-category">Category (optional)</Field.Label>
-					<select
-						id="edit-category"
+					<Field.Label>Category (optional)</Field.Label>
+					<NativeSelect.Root
 						{...updateSubscription.fields.category.as('text')}
 						value={editTarget.category ?? ''}
-						class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm"
 					>
-						<option value="">None</option>
+						<NativeSelect.Option value="">None</NativeSelect.Option>
 						{#each CATEGORIES as c}
-							<option value={c}>{c}</option>
+							<NativeSelect.Option value={c}>{c}</NativeSelect.Option>
 						{/each}
-					</select>
+					</NativeSelect.Root>
 				</Field.Field>
 
 				<div class="flex justify-end gap-2">
-					<Button type="button" variant="outline" onclick={() => (editTarget = null)}>Cancel</Button>
+					<Button type="button" variant="outline" onclick={() => (editTarget = null)}>Cancel</Button
+					>
 					<Button type="submit" disabled={!!updateSubscription.pending}>Save</Button>
 				</div>
 			</form>
@@ -312,5 +310,5 @@
 	bind:open={deleteOpen}
 	showTrigger={false}
 	label={deleteTarget?.name ?? 'subscription'}
-	onDelete={onDelete}
+	{onDelete}
 />

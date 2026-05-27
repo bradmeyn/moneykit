@@ -128,7 +128,7 @@
 		@apply text-xl md:text-2xl font-bold;
 	}
 
-	.card-heading {
+	.heading-secondary {
 		@apply text-lg font-semibold text-primary-light leading-none mb-2;
 	}
 
@@ -170,6 +170,14 @@
 	.tab-trigger--scenarios {
 		@apply bg-transparent px-4 py-2 data-[state=active]:border-b data-[state=active]:bg-transparent border-b-white rounded-none;
 	}
+}
+
+.heading-primary {
+	@apply text-3xl font-semibold mb-4;
+}
+
+.heading-secondary {
+	@apply text-xl font-semibold mb-2;
 }
 
 .app-shell {

@@ -9,7 +9,7 @@
 </script>
 
 <aside class="min-w-75 max-w-250 space-y-4">
-	<h2 class="card-heading border-b pb-3">Inputs</h2>
+	<h2 class="heading-secondary">Inputs</h2>
 
 	<div class="grid grid-cols-2 gap-2">
 		<div>
@@ -18,7 +18,11 @@
 		</div>
 		<div>
 			<Label for="income-frequency">Frequency</Label>
-			<FrequencySelect bind:value={calc.incomeFrequency} id="income-frequency" name="income-frequency" />
+			<FrequencySelect
+				bind:value={calc.incomeFrequency}
+				id="income-frequency"
+				name="income-frequency"
+			/>
 		</div>
 	</div>
 

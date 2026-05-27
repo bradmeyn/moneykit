@@ -22,7 +22,8 @@
 </svelte:head>
 
 <main class="container">
-	<div class="flex justify-end items-center mb-4">
+	<div class="flex justify-between items-center mb-4">
+		<h1 class="heading-primary">Savings & FIRE Calculator</h1>
 		<CalculatorActions
 			filename="savings-calculator.csv"
 			getCsvData={() => calculator.getTableData()}
@@ -35,7 +36,7 @@
 		<div class="w-full min-w-0 space-y-4">
 			<div class="card">
 				<div class="flex gap-2 flex-col md:flex-row md:justify-between w-full mb-4">
-					<h2 class="card-heading">Outcome</h2>
+					<h2 class="heading-secondary">Outcome</h2>
 					<Tabs.Root
 						value={selectedView}
 						onValueChange={(value) => (selectedView = value)}
@@ -50,7 +51,10 @@
 
 				<div class="space-y-4 mb-4">
 					<div class="flex gap-8 flex-wrap">
-						{@render metric('Value after ' + calculator.years + ' years', calculator.result.totalValue)}
+						{@render metric(
+							'Value after ' + calculator.years + ' years',
+							calculator.result.totalValue
+						)}
 						{@render metric('Total Contributions', calculator.result.totalContributions)}
 						{@render metric('Total Interest', calculator.result.totalInterest)}
 					</div>

@@ -40,12 +40,15 @@
 <div class="card">
 	<div class="flex items-start justify-between">
 		<div>
-			<h2 class="card-heading mb-2">{title[type]}</h2>
+			<h2 class="heading-secondary mb-2">{title[type]}</h2>
 			<div class="flex items-baseline gap-2">
 				<p class={`text-2xl font-semibold  ${total < 0 ? 'text-red-400' : ''}`}>
 					{formatAsCurrency(total)}
 				</p>
-				<button class="text-muted-foreground hover:text-foreground transition-colors duration-150" onclick={changeFrequency}>
+				<button
+					class="text-muted-foreground hover:text-foreground transition-colors duration-150"
+					onclick={changeFrequency}
+				>
 					/ {FREQUENCIES[budget.frequency].singular}
 				</button>
 			</div>

@@ -29,7 +29,7 @@
 	</a>
 	<div class="mt-4 flex items-start justify-between">
 		<div>
-			<h1 class="text-3xl font-bold">{holding.investment.name}</h1>
+			<h1 class="heading-primary">{holding.investment.name}</h1>
 			<p class="text-lg text-muted-foreground">{holding.investment.code}</p>
 		</div>
 		<AddTransactionsDialog {holdingId} bind:open={addTransactionsOpen} showTrigger={false} />

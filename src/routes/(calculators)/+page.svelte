@@ -9,7 +9,7 @@
 
 <section class="container py-24 md:py-36 flex flex-col items-center text-center">
 	<h1 class="text-4xl md:text-6xl font-semibold tracking-tight mb-8 max-w-2xl leading-[1.05]">
-		My personal financial toolkit.
+		My Financial Toolkit
 	</h1>
 
 	<div class="space-y-4 w-full max-w-xl">

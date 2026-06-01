@@ -15,6 +15,7 @@
 	import AddLiabilityDialog from './_components/add-liability-dialog.svelte';
 	import EditLiabilityDialog from './_components/edit-liability-dialog.svelte';
 	import type { Asset, Liability } from '$db/schemas/budget';
+	import BalanceSheetSummary from './_components/balance-sheet-summary.svelte';
 
 	const [assets, liabilities, netWorth] = $derived(
 		await Promise.all([getAssets(), getLiabilities(), getNetWorth()])
@@ -60,18 +61,9 @@
 	<div class="space-y-6">
 		<div>
 			<h1 class="heading-primary">Balance Sheet</h1>
-			<p class="mt-1 text-sm text-muted-foreground">A snapshot of what you own and what you owe.</p>
 		</div>
 
-		<div class="card">
-			<p class="text-xs font-medium uppercase tracking-wider text-muted-foreground">Net Worth</p>
-			<p class="mt-1 text-4xl font-medium tracking-tight tabular-nums">
-				{formatCurrency(netWorthTotal)}
-			</p>
-			<p class="mt-1 text-sm text-muted-foreground tabular-nums">
-				{formatCurrency(totalAssets)} assets − {formatCurrency(totalLiabilities)} liabilities
-			</p>
-		</div>
+		<BalanceSheetSummary {totalAssets} {totalLiabilities} />
 
 		<div class="grid gap-6 lg:grid-cols-2">
 			<!-- Assets -->

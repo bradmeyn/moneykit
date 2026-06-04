@@ -6,9 +6,6 @@
 		deleteLiability
 	} from '$lib/remotes/balance-sheet.remote';
 	import { getNetWorth } from '$lib/remotes/portfolio.remote';
-	import { formatCurrency } from '$lib/utils';
-	import { Button } from '$ui/button';
-	import { Plus, Pencil, Trash2 } from '@lucide/svelte';
 	import DeleteDialog from '$lib/components/delete-dialog.svelte';
 	import AddAssetDialog from './_components/add-asset-dialog.svelte';
 	import EditAssetDialog from './_components/edit-asset-dialog.svelte';
@@ -16,6 +13,8 @@
 	import EditLiabilityDialog from './_components/edit-liability-dialog.svelte';
 	import type { Asset, Liability } from '$db/schemas/budget';
 	import BalanceSheetSummary from './_components/balance-sheet-summary.svelte';
+	import BalanceSheetSection from './_components/balance-sheet-section.svelte';
+	import BalanceSheetRow from './_components/balance-sheet-row.svelte';
 
 	const [assets, liabilities, netWorth] = $derived(
 		await Promise.all([getAssets(), getLiabilities(), getNetWorth()])
@@ -67,126 +66,62 @@
 
 		<div class="grid gap-6 lg:grid-cols-2">
 			<!-- Assets -->
-			<div class="space-y-3">
-				<div class="flex items-center justify-between">
-					<h2 class="font-medium">
-						Assets <span class="ml-2 text-sm text-muted-foreground tabular-nums"
-							>{formatCurrency(totalAssets)}</span
-						>
-					</h2>
-					<Button size="sm" variant="outline" onclick={() => (addAssetOpen = true)}>
-						<Plus class="mr-1 size-3.5" /> Add
-					</Button>
-				</div>
+			<BalanceSheetSection
+				title="Assets"
+				total={totalAssets}
+				onAdd={() => (addAssetOpen = true)}
+				empty={assets.length === 0 ? 'No manual assets yet.' : ''}
+			>
+				<BalanceSheetRow
+					name="Investment Portfolio"
+					subtitle="Auto-calculated from portfolios"
+					amount={netWorth.totalValue}
+					href="/dashboard/portfolios"
+				/>
 
-				<div class="card divide-y divide-border p-0">
-					<div class="flex items-center justify-between px-5 py-3.5">
-						<div>
-							<p class="font-medium">Investment Portfolio</p>
-							<p class="text-xs text-muted-foreground">Auto-calculated from portfolios</p>
-						</div>
-						<p class="font-medium tabular-nums">{formatCurrency(netWorth.totalValue)}</p>
-					</div>
-
-					{#each assets as asset (asset.id)}
-						<div class="flex items-center justify-between px-5 py-3.5">
-							<div>
-								<p class="font-medium">{asset.name}</p>
-								<p class="text-xs text-muted-foreground">{formatCategory(asset.category)}</p>
-							</div>
-							<div class="flex items-center gap-2">
-								<p class="font-medium tabular-nums">{formatCurrency(asset.value)}</p>
-								<div class="flex gap-0.5">
-									<Button
-										variant="ghost"
-										size="icon"
-										onclick={() => {
-											editAsset = asset;
-											editAssetOpen = true;
-										}}
-									>
-										<Pencil class="size-3.5" />
-									</Button>
-									<Button
-										variant="ghost"
-										size="icon"
-										onclick={() => {
-											deleteAssetTarget = asset;
-											deleteAssetOpen = true;
-										}}
-									>
-										<Trash2 class="size-3.5 text-destructive" />
-									</Button>
-								</div>
-							</div>
-						</div>
-					{/each}
-				</div>
-
-				{#if assets.length === 0}
-					<p class="text-sm text-muted-foreground">No manual assets yet.</p>
-				{/if}
-			</div>
+				{#each assets as asset (asset.id)}
+					<BalanceSheetRow
+						name={asset.name}
+						subtitle={formatCategory(asset.category)}
+						amount={asset.value}
+						onEdit={() => {
+							editAsset = asset;
+							editAssetOpen = true;
+						}}
+						onDelete={() => {
+							deleteAssetTarget = asset;
+							deleteAssetOpen = true;
+						}}
+					/>
+				{/each}
+			</BalanceSheetSection>
 
 			<!-- Liabilities -->
-			<div class="space-y-3">
-				<div class="flex items-center justify-between">
-					<h2 class="font-medium">
-						Liabilities <span class="ml-2 text-sm text-muted-foreground tabular-nums"
-							>{formatCurrency(totalLiabilities)}</span
-						>
-					</h2>
-					<Button size="sm" variant="outline" onclick={() => (addLiabilityOpen = true)}>
-						<Plus class="mr-1 size-3.5" /> Add
-					</Button>
-				</div>
-
-				<div class="card divide-y divide-border p-0">
-					{#each liabilities as liability (liability.id)}
-						<div class="flex items-center justify-between px-5 py-3.5">
-							<div>
-								<p class="font-medium">{liability.name}</p>
-								<p class="text-xs text-muted-foreground">
-									{formatCategory(liability.category)}{liability.interestRate != null
-										? ` · ${(liability.interestRate / 100).toFixed(2)}% p.a.`
-										: ''}
-								</p>
-							</div>
-							<div class="flex items-center gap-2">
-								<p class="font-medium tabular-nums text-red-500">
-									{formatCurrency(liability.balance)}
-								</p>
-								<div class="flex gap-0.5">
-									<Button
-										variant="ghost"
-										size="icon"
-										onclick={() => {
-											editLiability = liability;
-											editLiabilityOpen = true;
-										}}
-									>
-										<Pencil class="size-3.5" />
-									</Button>
-									<Button
-										variant="ghost"
-										size="icon"
-										onclick={() => {
-											deleteLiabilityTarget = liability;
-											deleteLiabilityOpen = true;
-										}}
-									>
-										<Trash2 class="size-3.5 text-destructive" />
-									</Button>
-								</div>
-							</div>
-						</div>
-					{/each}
-
-					{#if liabilities.length === 0}
-						<p class="px-5 py-3.5 text-sm text-muted-foreground">No liabilities yet.</p>
-					{/if}
-				</div>
-			</div>
+			<BalanceSheetSection
+				title="Liabilities"
+				total={totalLiabilities}
+				onAdd={() => (addLiabilityOpen = true)}
+				empty={liabilities.length === 0 ? 'No liabilities yet.' : ''}
+			>
+				{#each liabilities as liability (liability.id)}
+					<BalanceSheetRow
+						name={liability.name}
+						subtitle={formatCategory(liability.category) +
+							(liability.interestRate != null
+								? ` · ${(liability.interestRate / 100).toFixed(2)}% p.a.`
+								: '')}
+						amount={liability.balance}
+						onEdit={() => {
+							editLiability = liability;
+							editLiabilityOpen = true;
+						}}
+						onDelete={() => {
+							deleteLiabilityTarget = liability;
+							deleteLiabilityOpen = true;
+						}}
+					/>
+				{/each}
+			</BalanceSheetSection>
 		</div>
 	</div>
 </svelte:boundary>

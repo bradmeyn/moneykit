@@ -22,8 +22,8 @@
 		{formatCurrency(networth)}
 	</p>
 
-	<div class="h-3 border-red-300 flex rounded-lg overflow-auto mt-4">
-		<div class="bg-green-700 h-full" style="width: {assetPercentage};"></div>
-		<div class="bg-red-700 h-full" style="width: {liabilityPercentage};"></div>
+	<div class="h-3 flex rounded-lg overflow-auto mt-4">
+		<div class="bg-primary h-full" style="width: {assetPercentage};"></div>
+		<div class="bg-red-600 h-full" style="width: {liabilityPercentage};"></div>
 	</div>
 </div>

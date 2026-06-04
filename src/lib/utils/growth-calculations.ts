@@ -1,4 +1,4 @@
-import { formatAsCurrency, formatAsPercentage } from '$utils/formatters';
+import { formatCurrency, formatAsPercentage } from '$utils/formatters';
 
 export type GrowthResult = {
 	totalValue: number;
@@ -49,7 +49,8 @@ export function calculateCompoundInterest(
 
 	for (let i = 0; i < years; i++) {
 		const startingValue = parseFloat(totalValue.toFixed(2));
-		const actualReturn = volatility > 0 ? generateRandomReturn(interestRate, volatility) : interestRate;
+		const actualReturn =
+			volatility > 0 ? generateRandomReturn(interestRate, volatility) : interestRate;
 		const clampedReturn = Math.max(actualReturn, -1);
 		const yearlyInterest = totalValue * clampedReturn;
 		totalInterest += yearlyInterest;
@@ -106,7 +107,14 @@ export function calculateBandData(
 
 export function buildTableData(annualData: AnnualData[], useVolatility: boolean) {
 	const columns = useVolatility
-		? ['Year', 'Starting Value', 'Actual Return %', 'Interest Earned', 'Annual Contribution', 'Total Value']
+		? [
+				'Year',
+				'Starting Value',
+				'Actual Return %',
+				'Interest Earned',
+				'Annual Contribution',
+				'Total Value'
+			]
 		: ['Year', 'Starting Value', 'Interest Earned', 'Annual Contribution', 'Total Value'];
 
 	return {
@@ -114,10 +122,10 @@ export function buildTableData(annualData: AnnualData[], useVolatility: boolean)
 		rows: annualData.map((data) => {
 			const row = [
 				data.year,
-				formatAsCurrency(data.startingValue),
-				formatAsCurrency(data.yearlyInterest),
-				formatAsCurrency(data.yearlyContribution),
-				formatAsCurrency(data.endingValue)
+				formatCurrency(data.startingValue),
+				formatCurrency(data.yearlyInterest),
+				formatCurrency(data.yearlyContribution),
+				formatCurrency(data.endingValue)
 			];
 			if (useVolatility) row.splice(2, 0, formatAsPercentage(data.actualReturn));
 			return row;

@@ -1,7 +1,5 @@
 <script lang="ts">
 	import { Button } from '$lib/components/ui/button';
-	import { buttonVariants } from '$lib/components/ui/button/button.svelte';
-	import { cn } from '$lib/utils/tailwind';
 	import * as Dialog from '$lib/components/ui/dialog';
 	import * as Select from '$lib/components/ui/select';
 	import CurrencyInput from '$lib/components/inputs/currency-input.svelte';
@@ -12,19 +10,17 @@
 	import { getBudgetState } from '../budget.svelte';
 
 	import Label from '$ui/label/label.svelte';
-	import { Pencil } from '@lucide/svelte';
-	import { untrack, type Snippet } from 'svelte';
+	import { untrack } from 'svelte';
 
-	const {
+	let {
 		budgetItem,
-		trigger
+		open = $bindable(false)
 	}: {
 		budgetItem: BudgetItemType;
-		trigger?: Snippet;
+		open?: boolean;
 	} = $props();
 
 	const budget = getBudgetState();
-	let open = $state(false);
 	let editedItem = $state<BudgetItemType>({
 		id: '',
 		name: '',
@@ -66,21 +62,6 @@
 </script>
 
 <Dialog.Root bind:open>
-	{#if trigger}
-		<button
-			type="button"
-			onclick={() => (open = true)}
-			class={cn(buttonVariants({ variant: 'ghost', size: 'icon' }))}
-			aria-label="Edit {budgetItem.name}"
-		>
-			{@render trigger()}
-		</button>
-	{:else}
-		<Dialog.Trigger class={cn(buttonVariants({ variant: 'default', size: 'default' }))}>
-			<Pencil />
-			<span> Edit Item </span>
-		</Dialog.Trigger>
-	{/if}
 	<Dialog.Content class="sm:max-w-[500px] ">
 		<Dialog.Header class="text-start">
 			<Dialog.Title

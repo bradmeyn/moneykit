@@ -6,21 +6,19 @@
 	import Label from '$ui/label/label.svelte';
 	import { Pencil, Trash, Plus, X } from '@lucide/svelte';
 	import { type BudgetItem, getBudgetState } from '../budget.svelte';
-	import type { Snippet } from 'svelte';
 
 	let {
-		trigger,
 		type,
-		categories
+		categories,
+		open = $bindable(false)
 	}: {
-		trigger: Snippet;
 		type: BudgetItem['type'];
 		categories: string[];
+		open?: boolean;
 	} = $props();
 
 	const budget = getBudgetState();
 
-	let open = $state(false);
 	let newCategoryName = $state('');
 	let editingCategory = $state<string | null>(null);
 	let editCategoryName = $state('');
@@ -103,9 +101,6 @@
 </script>
 
 <Dialog.Root bind:open>
-	<Dialog.Trigger onclick={() => (open = true)}>
-		{@render trigger()}
-	</Dialog.Trigger>
 	<Dialog.Content class="max-w-md">
 		<Dialog.Header>
 			<Dialog.Title>Manage {type} Categories</Dialog.Title>

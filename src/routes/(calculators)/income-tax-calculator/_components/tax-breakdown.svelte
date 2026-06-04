@@ -1,7 +1,7 @@
 <script lang="ts">
 	import DoughnutChart from '$lib/components/charts/doughnut-chart.svelte';
 	import { getCalculatorState } from '../calculator.svelte';
-	import { formatAsCurrency } from '$lib/utils/formatters';
+	import { formatCurrency } from '$lib/utils/formatters';
 	import { COLOURS } from '$lib/constants/colours';
 
 	let calc = getCalculatorState();
@@ -9,7 +9,7 @@
 
 {#if calc.chartData.length > 0}
 	<div>
-		<DoughnutChart data={calc.chartData} formatter={formatAsCurrency} />
+		<DoughnutChart data={calc.chartData} formatter={formatCurrency} />
 
 		<ul class="mt-3 space-y-1.5">
 			{#each calc.chartData as item, i (item.label)}
@@ -21,7 +21,7 @@
 						></span>
 						<span class="text-muted-foreground">{item.label}</span>
 					</span>
-					<span class="font-medium">{formatAsCurrency(item.value)}</span>
+					<span class="font-medium">{formatCurrency(item.value)}</span>
 				</li>
 			{/each}
 		</ul>

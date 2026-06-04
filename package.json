@@ -56,6 +56,7 @@
 		"drizzle-orm": "^0.44.5",
 		"layerchart": "^2.0.0-next.46",
 		"postgres": "^3.4.7",
+		"simple-icons": "^16.22.0",
 		"uuid": "^11.1.0",
 		"zod": "^4.1.12"
 	}

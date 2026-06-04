@@ -1,6 +1,6 @@
 import { FREQUENCIES, type FrequencyType } from '$constants/frequencies';
 import { setContext, getContext } from 'svelte';
-import { formatAsCurrency, formatAsPercentage } from '$utils/formatters';
+import { formatCurrency, formatAsPercentage } from '$utils/formatters';
 import { calculatePersonalTax, type TaxResult } from './tax-rates';
 
 const EMPTY_RESULT: TaxResult = {
@@ -33,9 +33,7 @@ class TaxCalculatorState {
 	});
 
 	takeHomePay = $derived(Math.max(0, this.annualIncome - this.result.totalTax));
-	effectiveRate = $derived(
-		this.annualIncome > 0 ? this.result.totalTax / this.annualIncome : 0
-	);
+	effectiveRate = $derived(this.annualIncome > 0 ? this.result.totalTax / this.annualIncome : 0);
 
 	chartData = $derived.by(() => {
 		const items = [
@@ -49,25 +47,25 @@ class TaxCalculatorState {
 
 	getTableData() {
 		const rows: (string | number)[][] = [
-			['Annual Income', formatAsCurrency(this.annualIncome)],
-			['Deductions', formatAsCurrency(this.deductions)],
-			['Taxable Income', formatAsCurrency(this.result.taxableIncome)],
-			['Income Tax', formatAsCurrency(this.result.incomeTax)],
-			['Low Income Tax Offset', formatAsCurrency(this.result.lowIncomeOffset)],
-			['Medicare Levy', formatAsCurrency(this.result.medicareLevy)]
+			['Annual Income', formatCurrency(this.annualIncome)],
+			['Deductions', formatCurrency(this.deductions)],
+			['Taxable Income', formatCurrency(this.result.taxableIncome)],
+			['Income Tax', formatCurrency(this.result.incomeTax)],
+			['Low Income Tax Offset', formatCurrency(this.result.lowIncomeOffset)],
+			['Medicare Levy', formatCurrency(this.result.medicareLevy)]
 		];
 
 		if (this.result.medicareLevySurcharge > 0) {
-			rows.push(['Medicare Levy Surcharge', formatAsCurrency(this.result.medicareLevySurcharge)]);
+			rows.push(['Medicare Levy Surcharge', formatCurrency(this.result.medicareLevySurcharge)]);
 		}
 		if (this.result.helpRepayment > 0) {
-			rows.push(['HELP Repayment', formatAsCurrency(this.result.helpRepayment)]);
+			rows.push(['HELP Repayment', formatCurrency(this.result.helpRepayment)]);
 		}
 
 		rows.push(
-			['Total Tax', formatAsCurrency(this.result.totalTax)],
+			['Total Tax', formatCurrency(this.result.totalTax)],
 			['Effective Tax Rate', formatAsPercentage(this.effectiveRate)],
-			['Take-Home Pay', formatAsCurrency(this.takeHomePay)]
+			['Take-Home Pay', formatCurrency(this.takeHomePay)]
 		);
 
 		return {

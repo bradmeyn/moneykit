@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { getCalculatorState } from '../calculator.svelte';
-	import { formatAsCurrency } from '$lib/utils/formatters';
+	import { formatCurrency } from '$lib/utils/formatters';
 
 	let calc = getCalculatorState();
 
@@ -26,9 +26,7 @@
 	let taxableIncome = $derived(calc.result.taxableIncome);
 
 	let activeBracketIndex = $derived(
-		taxableIncome <= 0
-			? -1
-			: BRACKETS.findIndex((b) => taxableIncome <= b.max)
+		taxableIncome <= 0 ? -1 : BRACKETS.findIndex((b) => taxableIncome <= b.max)
 	);
 
 	let markerPct = $derived(
@@ -62,9 +60,9 @@
 							? 'opacity-60'
 							: 'opacity-40'}"
 					style="width: {widthPct(bracket)}%; background-color: {COLORS[i]};"
-					title="{bracket.label} — {formatAsCurrency(bracket.min)} to {bracket.max === MAX_DISPLAY
-						? formatAsCurrency(bracket.min) + '+'
-						: formatAsCurrency(bracket.max)}"
+					title="{bracket.label} — {formatCurrency(bracket.min)} to {bracket.max === MAX_DISPLAY
+						? formatCurrency(bracket.min) + '+'
+						: formatCurrency(bracket.max)}"
 				></div>
 			{/each}
 		</div>
@@ -91,7 +89,7 @@
 					class="absolute text-[10px] text-muted-foreground -translate-x-1/2 whitespace-nowrap"
 					style="left: {((bracket.min - 1) / MAX_DISPLAY) * 100}%"
 				>
-					{formatAsCurrency(bracket.min - 1)}
+					{formatCurrency(bracket.min - 1)}
 				</span>
 			{/if}
 		{/each}

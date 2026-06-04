@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { setCalculatorState, getCalculatorState } from './calculator.svelte';
 	import * as Tabs from '$lib/components/ui/tabs';
-	import { formatAsCurrency } from '$lib/utils/formatters';
+	import { formatCurrency } from '$lib/utils/formatters';
 	import Inputs from './_components/mortgage-inputs.svelte';
 	import MortgageChart from './_components/mortgage-chart.svelte';
 	import ScrollableTable from '$ui/scrollable-table.svelte';
@@ -54,23 +54,23 @@
 					<div>
 						<p class="text-muted-foreground text-sm">Repayment</p>
 						<p class="text-3xl md:text-4xl font-bold leading-none">
-							{formatAsCurrency(calc.projection.repayment + calc.extraRepayments)}
+							{formatCurrency(calc.projection.repayment + calc.extraRepayments)}
 							<span class="text-lg font-normal text-muted-foreground">
 								/ {FREQUENCIES[calc.frequency].singular}
 							</span>
 						</p>
 						{#if calc.loanType === 'Interest Only'}
 							<p class="text-sm text-muted-foreground mt-1">
-								Interest only: {formatAsCurrency(calc.projection.ioRepayment)} / {FREQUENCIES[
+								Interest only: {formatCurrency(calc.projection.ioRepayment)} / {FREQUENCIES[
 									calc.frequency
-								].singular}, then {formatAsCurrency(calc.projection.repayment)} / {FREQUENCIES[
+								].singular}, then {formatCurrency(calc.projection.repayment)} / {FREQUENCIES[
 									calc.frequency
 								].singular}
 							</p>
 						{/if}
 						{#if calc.extraRepayments > 0}
 							<p class="text-xs text-muted-foreground mt-0.5">
-								Includes {formatAsCurrency(calc.extraRepayments)} extra per {FREQUENCIES[
+								Includes {formatCurrency(calc.extraRepayments)} extra per {FREQUENCIES[
 									calc.frequency
 								].singular}
 							</p>
@@ -85,7 +85,7 @@
 							<div>
 								<p class="text-muted-foreground text-sm">Interest Saved</p>
 								<p class="font-semibold text-xl md:text-2xl text-emerald-600">
-									{formatAsCurrency(calc.interestSaved)}
+									{formatCurrency(calc.interestSaved)}
 								</p>
 							</div>
 						{/if}
@@ -108,6 +108,6 @@
 {#snippet metric(label: string, value: number)}
 	<div>
 		<p class="text-muted-foreground text-sm">{label}</p>
-		<p class="font-semibold text-xl md:text-2xl">{formatAsCurrency(value)}</p>
+		<p class="font-semibold text-xl md:text-2xl">{formatCurrency(value)}</p>
 	</div>
 {/snippet}

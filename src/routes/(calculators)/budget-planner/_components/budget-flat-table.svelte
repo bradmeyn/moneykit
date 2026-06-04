@@ -2,7 +2,7 @@
 	import { getBudgetState, convertToFrequency, type BudgetItem } from '../budget.svelte';
 	import CurrencyInput from '$lib/components/inputs/currency-input.svelte';
 	import FrequencySelect from '$lib/components/inputs/frequency-select.svelte';
-	import { formatAsCurrency } from '$lib/utils/formatters';
+	import { formatCurrency } from '$lib/utils/formatters';
 	import { FREQUENCIES } from '$lib/constants/frequencies';
 	import { Trash } from '@lucide/svelte';
 	import Button from '$ui/button/button.svelte';
@@ -83,7 +83,7 @@
 							/>
 						</td>
 						<td class="text-right font-semibold py-1.5 pr-2 min-w-[80px]">
-							{formatAsCurrency(convertToFrequency(item.amount, item.frequency, budget.frequency))}
+							{formatCurrency(convertToFrequency(item.amount, item.frequency, budget.frequency))}
 						</td>
 						<td class="py-1.5 px-0">
 							<Button

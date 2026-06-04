@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { LineChart, Tooltip } from 'layerchart';
-	import { formatAsCurrency } from '$lib/utils/formatters';
+	import { formatCurrency } from '$lib/utils/formatters';
 	import { getCalculatorState, type BreakdownPeriod } from '../calculator.svelte';
 	import { COLOURS } from '$lib/constants/colours';
 	import { LC_TOOLTIP_PROPS, LC_AXIS_PROPS, LC_GRID } from '$constants/chart-config';
@@ -16,10 +16,7 @@
 	);
 
 	let yMax = $derived(
-		Math.max(
-			...chartData.map((d) => d.balance),
-			...chartData.map((d) => d.propertyValue ?? 0)
-		)
+		Math.max(...chartData.map((d) => d.balance), ...chartData.map((d) => d.propertyValue ?? 0))
 	);
 
 	let series = $derived.by(() => {
@@ -70,7 +67,7 @@
 			},
 			yAxis: {
 				...LC_AXIS_PROPS,
-				format: (value: unknown) => formatAsCurrency(Number(value), false)
+				format: (value: unknown) => formatCurrency(Number(value), false)
 			},
 			legend: {
 				classes: { label: 'text-foreground text-sm', swatch: 'size-2.5' }
@@ -90,7 +87,7 @@
 								label={p.name}
 								value={p.value}
 								color={p.color}
-								format={(v: unknown) => formatAsCurrency(Number(v), false)}
+								format={(v: unknown) => formatCurrency(Number(v), false)}
 								valueAlign="right"
 								{...LC_TOOLTIP_PROPS.item}
 							/>

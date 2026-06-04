@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { setCalculatorState, getCalculatorState } from './calculator.svelte';
 	import * as Tabs from '$lib/components/ui/tabs';
-	import { formatAsCurrency } from '$lib/utils/formatters';
+	import { formatCurrency } from '$lib/utils/formatters';
 	import { Flame, CheckCircle, XCircle } from '@lucide/svelte';
 	import Inputs from './_components/savings-inputs.svelte';
 	import GrowthChart from './_components/growth-chart.svelte';
@@ -117,6 +117,6 @@
 {#snippet metric(label: string, value: number)}
 	<div>
 		<p class="text-muted-foreground">{label}</p>
-		<p class="font-semibold text-xl md:text-2xl">{formatAsCurrency(value)}</p>
+		<p class="font-semibold text-xl md:text-2xl">{formatCurrency(value)}</p>
 	</div>
 {/snippet}

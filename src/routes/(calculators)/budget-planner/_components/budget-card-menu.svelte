@@ -1,14 +1,15 @@
 <script lang="ts">
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
-	import { EllipsisVertical, Pencil, Plus, Trash } from '@lucide/svelte';
+	import { EllipsisVertical, Pencil, Trash } from '@lucide/svelte';
 	import { type BudgetItem, getBudgetState } from '../budget.svelte';
-	import Button from '$ui/button/button.svelte';
 	import ClearAllDialog from './clear-all-dialog.svelte';
 	import CategoryManager from './category-manager.svelte';
 
 	let { type }: { type: BudgetItem['type'] } = $props();
 	const budget = getBudgetState();
-	const handleDelete = () => budget.deleteItemsByType(type);
+
+	let manageCategoriesOpen = $state(false);
+	let deleteItemsOpen = $state(false);
 </script>
 
 <DropdownMenu.Root>
@@ -19,26 +20,25 @@
 	</DropdownMenu.Trigger>
 	<DropdownMenu.Content>
 		<DropdownMenu.Group>
-			<DropdownMenu.Item onSelect={(e) => e.preventDefault()}>
-				<CategoryManager {type} categories={budget.categories[type]}>
-					{#snippet trigger()}
-						<div class="flex items-center gap-2">
-							<Pencil />
-							<span> Manage Categories </span>
-						</div>
-					{/snippet}
-				</CategoryManager>
+			<DropdownMenu.Item onSelect={() => (manageCategoriesOpen = true)}>
+				<Pencil />
+				<span>Manage Categories</span>
 			</DropdownMenu.Item>
-			<DropdownMenu.Item onSelect={(e) => e.preventDefault()}>
-				<ClearAllDialog onDelete={handleDelete}>
-					{#snippet trigger()}
-						<div class="flex items-center gap-2">
-							<Trash />
-							<span> Delete Items </span>
-						</div>
-					{/snippet}
-				</ClearAllDialog>
+			<DropdownMenu.Item
+				onSelect={() => (deleteItemsOpen = true)}
+				class="text-destructive data-highlighted:text-destructive"
+			>
+				<Trash class="text-destructive" />
+				<span>Delete Items</span>
 			</DropdownMenu.Item>
 		</DropdownMenu.Group>
 	</DropdownMenu.Content>
 </DropdownMenu.Root>
+
+<CategoryManager {type} categories={budget.categories[type]} bind:open={manageCategoriesOpen} />
+
+<ClearAllDialog
+	text="all {type} items"
+	onDelete={() => budget.deleteItemsByType(type)}
+	bind:open={deleteItemsOpen}
+/>

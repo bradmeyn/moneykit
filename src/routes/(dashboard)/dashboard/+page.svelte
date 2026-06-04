@@ -2,8 +2,8 @@
 	import { page } from '$app/state';
 	import { getNetWorth } from '$lib/remotes/portfolio.remote';
 	import { getUpcomingSubscriptions } from '$lib/remotes/subscription.remote';
-	import { formatCurrency } from '$lib/utils';
-	import { formatAsCurrency } from '$lib/utils/formatters';
+
+	import { formatCurrency } from '$lib/utils/formatters';
 	import { TrendingUp, TrendingDown, CalendarClock, ChevronRight } from '@lucide/svelte';
 
 	const user = $derived(page.data.user);
@@ -120,7 +120,7 @@
 								</div>
 							</div>
 							<div class="text-right">
-								<p class="font-medium tabular-nums">{formatAsCurrency(sub.amount / 100)}</p>
+								<p class="font-medium tabular-nums">{formatCurrency(sub.amount / 100)}</p>
 								<p class="text-xs text-muted-foreground">{formatDueDate(sub.nextDueDate)}</p>
 							</div>
 						</div>

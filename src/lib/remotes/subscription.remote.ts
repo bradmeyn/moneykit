@@ -34,7 +34,11 @@ export const getUpcomingSubscriptions = query(async () => {
 export const addSubscription = form(
 	z.object({
 		name: z.string().min(1, 'Name is required'),
-		amount: z.coerce.number().positive('Amount must be positive'),
+		amount: z
+			.string()
+			.min(1, 'Amount is required')
+			.transform((s) => parseFloat(s))
+			.refine((n) => !Number.isNaN(n) && n > 0, 'Amount must be positive'),
 		frequency: z.enum(['weekly', 'fortnightly', 'monthly', 'quarterly', 'yearly']),
 		nextDueDate: z.string().min(1, 'Due date is required'),
 		category: z.string()
@@ -59,7 +63,11 @@ export const updateSubscription = form(
 	z.object({
 		id: z.string(),
 		name: z.string().min(1, 'Name is required'),
-		amount: z.coerce.number().positive('Amount must be positive'),
+		amount: z
+			.string()
+			.min(1, 'Amount is required')
+			.transform((s) => parseFloat(s))
+			.refine((n) => !Number.isNaN(n) && n > 0, 'Amount must be positive'),
 		frequency: z.enum(['weekly', 'fortnightly', 'monthly', 'quarterly', 'yearly']),
 		nextDueDate: z.string().min(1, 'Due date is required'),
 		category: z.string()
@@ -79,8 +87,7 @@ export const updateSubscription = form(
 				amount: Math.round(data.amount * 100),
 				frequency: data.frequency,
 				nextDueDate: new Date(data.nextDueDate),
-				category: data.category || null,
-				notes: data.notes || null
+				category: data.category || null
 			})
 			.where(eq(subscriptionTable.id, data.id));
 		await getSubscriptions().refresh();

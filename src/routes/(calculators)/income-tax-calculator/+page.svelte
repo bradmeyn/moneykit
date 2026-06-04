@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { setCalculatorState, getCalculatorState } from './calculator.svelte';
 	import * as Tabs from '$lib/components/ui/tabs';
-	import { formatAsCurrency, formatAsPercentage } from '$lib/utils/formatters';
+	import { formatCurrency, formatAsPercentage } from '$lib/utils/formatters';
 	import Inputs from './_components/tax-inputs.svelte';
 	import TaxBreakdown from './_components/tax-breakdown.svelte';
 	import ScrollableTable from '$ui/scrollable-table.svelte';
@@ -57,15 +57,15 @@
 				<div class="mb-4">
 					<p class="text-muted-foreground text-sm">Take-Home Pay</p>
 					<p class="text-3xl md:text-4xl font-bold leading-none">
-						{formatAsCurrency(calc.takeHomePay)}
+						{formatCurrency(calc.takeHomePay)}
 						<span class="text-lg font-normal text-muted-foreground">/ year</span>
 					</p>
 				</div>
 
 				<!-- Secondary metrics -->
 				<div class="flex gap-8 flex-wrap mb-6">
-					{@render metric('Taxable Income', formatAsCurrency(calc.result.taxableIncome))}
-					{@render metric('Total Tax', formatAsCurrency(calc.result.totalTax))}
+					{@render metric('Taxable Income', formatCurrency(calc.result.taxableIncome))}
+					{@render metric('Total Tax', formatCurrency(calc.result.totalTax))}
 					{@render metric('Effective Rate', formatAsPercentage(calc.effectiveRate))}
 				</div>
 

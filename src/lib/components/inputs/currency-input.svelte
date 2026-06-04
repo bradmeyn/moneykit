@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { formatAsCurrency, parseCurrency } from '$lib/utils/formatters';
+	import { formatCurrency, parseCurrency } from '$lib/utils/formatters';
 	import Input from '$lib/components/ui/input/input.svelte';
 
 	type Props = {
@@ -12,7 +12,7 @@
 
 	let { value = $bindable(), id = '', onchange, class: className, placeholder }: Props = $props();
 
-	let displayValue = $state(formatAsCurrency(value));
+	let displayValue = $state(formatCurrency(value));
 
 	function handleChange(event: Event) {
 		const input = event.target as HTMLInputElement;
@@ -23,7 +23,7 @@
 	}
 
 	function handleBlur() {
-		displayValue = formatAsCurrency(value);
+		displayValue = formatCurrency(value);
 	}
 </script>
 

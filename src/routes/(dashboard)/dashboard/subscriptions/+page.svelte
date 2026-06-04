@@ -5,20 +5,47 @@
 		updateSubscription,
 		deleteSubscription
 	} from '$lib/remotes/subscription.remote';
-	import { formatAsCurrency } from '$lib/utils/formatters';
+	import { formatCurrency } from '$lib/utils/formatters';
 	import * as Dialog from '$ui/dialog';
 	import * as Field from '$ui/field';
 	import * as NativeSelect from '$ui/native-select';
 	import Input from '$ui/input/input.svelte';
 	import { Button } from '$ui/button';
-	import { Plus, Pencil, Trash2, CalendarClock } from '@lucide/svelte';
+	import { Plus, CalendarClock } from '@lucide/svelte';
 	import DeleteDialog from '$lib/components/delete-dialog.svelte';
+	import RowActionsMenu from '$lib/components/row-actions-menu.svelte';
+	import SubscriptionAvatar from './_components/subscription-avatar.svelte';
+	import { brandStyle } from '$lib/constants/subscription-brands';
 	import type { Subscription } from '$db/schemas/budget';
 
 	const subscriptions = $derived(await getSubscriptions());
 
 	const FREQUENCIES = ['weekly', 'fortnightly', 'monthly', 'quarterly', 'yearly'] as const;
 	const CATEGORIES = ['Entertainment', 'Software', 'Health', 'Finance', 'Utilities', 'Other'];
+
+	function toMonthly(amount: number, frequency: string): number {
+		switch (frequency) {
+			case 'weekly':
+				return (amount * 52) / 12;
+			case 'fortnightly':
+				return (amount * 26) / 12;
+			case 'quarterly':
+				return amount / 3;
+			case 'yearly':
+				return amount / 12;
+			default:
+				return amount;
+		}
+	}
+
+	// monthly spend per subscription (dollars), sorted high → low
+	const spend = $derived(
+		subscriptions
+			.map((s) => ({ ...s, monthly: toMonthly(s.amount / 100, s.frequency) }))
+			.sort((a, b) => b.monthly - a.monthly)
+	);
+	const totalMonthly = $derived(spend.reduce((sum, s) => sum + s.monthly, 0));
+	const maxMonthly = $derived(Math.max(0, ...spend.map((s) => s.monthly)));
 
 	let addOpen = $state(false);
 	let editTarget = $state<Subscription | null>(null);
@@ -75,15 +102,46 @@
 		</div>
 
 		{#if subscriptions.length > 0}
+			<!-- Spend overview + bar chart -->
+			<div class="card space-y-5">
+				<div class="flex items-baseline justify-between">
+					<div>
+						<p class="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+							Monthly spend
+						</p>
+						<p class="mt-1 text-3xl font-medium tracking-tight tabular-nums">
+							{formatCurrency(totalMonthly)}
+						</p>
+					</div>
+					<p class="text-sm text-muted-foreground tabular-nums">
+						{formatCurrency(totalMonthly * 12)} / year
+					</p>
+				</div>
+
+				<div class="space-y-2.5">
+					{#each spend as s (s.id)}
+						<div class="flex items-center gap-3">
+							<span class="w-28 shrink-0 truncate text-sm" title={s.name}>{s.name}</span>
+							<div class="h-2.5 flex-1 overflow-hidden rounded-full bg-muted">
+								<div
+									class="h-full rounded-full"
+									style="width: {maxMonthly > 0 ? (s.monthly / maxMonthly) * 100 : 0}%; background-color: {brandStyle(s.name).colour};"
+								></div>
+							</div>
+							<span class="w-16 shrink-0 text-right text-sm tabular-nums">
+								{formatCurrency(s.monthly)}
+							</span>
+						</div>
+					{/each}
+				</div>
+			</div>
+
+			<!-- List -->
 			<div class="card divide-y divide-border p-0">
 				{#each subscriptions as sub (sub.id)}
 					<div class="flex items-center justify-between px-5 py-4">
 						<div class="flex items-center gap-3">
-							<div
-								class="flex size-9 items-center justify-center rounded-full bg-muted text-muted-foreground"
-							>
-								<CalendarClock class="size-4" />
-							</div>
+							<SubscriptionAvatar name={sub.name} />
 							<div>
 								<p class="font-medium">{sub.name}</p>
 								<p class="text-xs text-muted-foreground">
@@ -93,30 +151,17 @@
 						</div>
 						<div class="flex items-center gap-4">
 							<div class="text-right">
-								<p class="font-medium tabular-nums">{formatAsCurrency(sub.amount / 100)}</p>
+								<p class="font-medium tabular-nums">{formatCurrency(sub.amount / 100)}</p>
 								<p class="text-xs text-muted-foreground">Due {formatDueDate(sub.nextDueDate)}</p>
 							</div>
-							<div class="flex gap-0.5">
-								<Button
-									variant="ghost"
-									size="icon"
-									onclick={() => (editTarget = sub)}
-									aria-label="Edit"
-								>
-									<Pencil class="size-4" />
-								</Button>
-								<Button
-									variant="ghost"
-									size="icon"
-									onclick={() => {
-										deleteTarget = sub;
-										deleteOpen = true;
-									}}
-									aria-label="Delete"
-								>
-									<Trash2 class="size-4 text-destructive" />
-								</Button>
-							</div>
+							<RowActionsMenu
+								label={sub.name}
+								onEdit={() => (editTarget = sub)}
+								onDelete={() => {
+									deleteTarget = sub;
+									deleteOpen = true;
+								}}
+							/>
 						</div>
 					</div>
 				{/each}
@@ -167,8 +212,8 @@
 					<Field.Label for="amount">Amount ($)</Field.Label>
 					<Input
 						id="amount"
-						{...addSubscription.fields.amount.as('number')}
-						step="0.01"
+						{...addSubscription.fields.amount.as('text')}
+						inputmode="decimal"
 						placeholder="0.00"
 					/>
 					<Field.Error />
@@ -252,8 +297,8 @@
 						<Field.Label for="edit-amount">Amount ($)</Field.Label>
 						<Input
 							id="edit-amount"
-							{...updateSubscription.fields.amount.as('number')}
-							step="0.01"
+							{...updateSubscription.fields.amount.as('text')}
+							inputmode="decimal"
 							value={editTarget.amount / 100}
 						/>
 						<Field.Error />

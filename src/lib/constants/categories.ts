@@ -1,15 +1,13 @@
-export const ASSET_CATEGORIES = {
-	property: 'Property',
-	car: 'Car',
-	savings: 'Savings',
-	investments: 'Investments',
-	other: 'Other'
-} as const;
-export type AssetCategory = keyof typeof ASSET_CATEGORIES;
+export const ASSET_CATEGORIES = ['Property', 'Car', 'Investments', 'Other'];
+export const OWNERS = ['Brad', 'Emily', 'Joint'];
 
-export const OWNERS = {
-	brad: 'Brad',
-	emily: 'Emily',
-	joint: 'Joint'
-} as const;
-export type Owner = keyof typeof OWNERS;
+export const INCOME_CATEGORIES = ['Wages & Salary', 'Investments', 'Rental', 'Business', 'Other'];
+export const EXPENSE_CATEGORIES = [
+	'Housing & Utilities',
+	'Food',
+	'Transport',
+	'Health',
+	'Entertainment & Leisure',
+	'Savings',
+	'Other'
+];

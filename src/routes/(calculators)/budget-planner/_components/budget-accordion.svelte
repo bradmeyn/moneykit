@@ -1,6 +1,6 @@
 <script lang="ts">
 	import * as Accordion from '$lib/components/ui/accordion';
-	import { formatAsCurrency } from '$lib/utils/formatters';
+	import { formatCurrency } from '$lib/utils/formatters';
 	import { type BudgetItem } from '../budget.svelte';
 
 	let {
@@ -20,7 +20,7 @@
 		<Accordion.Trigger class="flex justify-between py-2 w-full border-b rounded-none">
 			<div class="text-left">
 				<h3 class="text-sm text-muted-foreground">{category}</h3>
-				<p class="text-lg">{formatAsCurrency(categoryTotal, false)}</p>
+				<p class="text-lg">{formatCurrency(categoryTotal, false)}</p>
 			</div>
 		</Accordion.Trigger>
 		<Accordion.Content>

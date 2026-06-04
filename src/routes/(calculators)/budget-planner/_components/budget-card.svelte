@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { FREQUENCIES } from '$lib/constants/frequencies';
-	import { formatAsCurrency } from '$lib/utils/formatters';
+	import { formatCurrency } from '$lib/utils/formatters';
 	import BudgetCardMenu from './budget-card-menu.svelte';
 	import { getBudgetState, calculateCategoryTotal, type BudgetItem } from '../budget.svelte';
 	import BudgetTable from './budget-table.svelte';
@@ -43,7 +43,7 @@
 			<h2 class="heading-secondary mb-2">{title[type]}</h2>
 			<div class="flex items-baseline gap-2">
 				<p class={`text-2xl font-semibold  ${total < 0 ? 'text-red-400' : ''}`}>
-					{formatAsCurrency(total)}
+					{formatCurrency(total)}
 				</p>
 				<button
 					class="text-muted-foreground hover:text-foreground transition-colors duration-150"

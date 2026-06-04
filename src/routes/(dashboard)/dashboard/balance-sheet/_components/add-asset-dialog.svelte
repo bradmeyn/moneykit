@@ -5,9 +5,7 @@
 	import * as NativeSelect from '$ui/native-select';
 	import Input from '$ui/input/input.svelte';
 	import { Button } from '$ui/button';
-	import { OWNERS } from '$lib/constants/categories';
-
-	const ASSET_CATEGORIES = ['cash', 'property', 'vehicle', 'other'] as const;
+	import { OWNERS, ASSET_CATEGORIES } from '$lib/constants/categories';
 
 	let { open = $bindable(false) }: { open?: boolean } = $props();
 

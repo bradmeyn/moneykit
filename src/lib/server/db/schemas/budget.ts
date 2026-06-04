@@ -41,9 +41,9 @@ export const budgetItemTable = pgTable('budget_items', {
 	userId,
 	type: text('type').notNull(), // 'income' | 'expense'
 	name: text('name').notNull(),
-	amount: integer('amount').notNull(),
+	amount: integer('amount').notNull(), // in cents
 	frequency: text('frequency').notNull(), // 'weekly' | 'fortnightly' | 'monthly' | 'quarterly' | 'yearly'
-	category: text('category'),
+	category: text('category').notNull(),
 	owner: text('owner'),
 	...timestamps
 });
@@ -64,3 +64,4 @@ export const subscriptionTable = pgTable('subscriptions', {
 export type Subscription = typeof subscriptionTable.$inferSelect;
 export type Asset = typeof assetTable.$inferSelect;
 export type Liability = typeof liabilityTable.$inferSelect;
+export type BudgetItem = typeof budgetItemTable.$inferSelect;

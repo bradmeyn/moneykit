@@ -1,4 +1,4 @@
-import { formatAsCurrency } from '$utils/formatters';
+import { formatCurrency } from '$utils/formatters';
 
 export type LoanType = 'Principal & Interest' | 'Interest Only' | 'Variable';
 
@@ -270,12 +270,12 @@ export function buildScheduleData(breakdown: BreakdownPeriod[], includeProperty:
 		columns,
 		rows: breakdown.map((p) => [
 			p.period,
-			formatAsCurrency(p.principal),
-			formatAsCurrency(p.interest),
-			formatAsCurrency(p.balance),
-			formatAsCurrency(p.totalInterestPaid),
-			...(includeProperty ? [formatAsCurrency(p.propertyValue)] : []),
-			formatAsCurrency(p.extraRepayment)
+			formatCurrency(p.principal),
+			formatCurrency(p.interest),
+			formatCurrency(p.balance),
+			formatCurrency(p.totalInterestPaid),
+			...(includeProperty ? [formatCurrency(p.propertyValue)] : []),
+			formatCurrency(p.extraRepayment)
 		])
 	};
 }

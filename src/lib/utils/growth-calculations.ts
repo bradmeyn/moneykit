@@ -1,4 +1,4 @@
-import { formatCurrency, formatAsPercentage } from '$utils/formatters';
+import { formatCurrency, formatPercentage } from '$utils/formatters';
 
 export type GrowthResult = {
 	totalValue: number;
@@ -127,7 +127,7 @@ export function buildTableData(annualData: AnnualData[], useVolatility: boolean)
 				formatCurrency(data.yearlyContribution),
 				formatCurrency(data.endingValue)
 			];
-			if (useVolatility) row.splice(2, 0, formatAsPercentage(data.actualReturn));
+			if (useVolatility) row.splice(2, 0, formatPercentage(data.actualReturn));
 			return row;
 		})
 	};

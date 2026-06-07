@@ -6,6 +6,7 @@
 		deleteSubscription
 	} from '$lib/remotes/subscription.remote';
 	import { formatCurrency } from '$lib/utils/formatters';
+	import { toMonthly, formatFrequency } from '$lib/utils/cashflow';
 	import * as Dialog from '$ui/dialog';
 	import * as Field from '$ui/field';
 	import * as NativeSelect from '$ui/native-select';
@@ -23,21 +24,6 @@
 	const FREQUENCIES = ['weekly', 'fortnightly', 'monthly', 'quarterly', 'yearly'] as const;
 	const CATEGORIES = ['Entertainment', 'Software', 'Health', 'Finance', 'Utilities', 'Other'];
 
-	function toMonthly(amount: number, frequency: string): number {
-		switch (frequency) {
-			case 'weekly':
-				return (amount * 52) / 12;
-			case 'fortnightly':
-				return (amount * 26) / 12;
-			case 'quarterly':
-				return amount / 3;
-			case 'yearly':
-				return amount / 12;
-			default:
-				return amount;
-		}
-	}
-
 	// monthly spend per subscription (dollars), sorted high → low
 	const spend = $derived(
 		subscriptions
@@ -50,14 +36,9 @@
 	let addOpen = $state(false);
 	let editTarget = $state<Subscription | null>(null);
 	let deleteTarget = $state<Subscription | null>(null);
-	let deleteOpen = $state(false);
 
 	function toDateInputValue(date: Date | string) {
 		return new Date(date).toISOString().split('T')[0];
-	}
-
-	function formatFrequency(f: string) {
-		return f.charAt(0).toUpperCase() + f.slice(1);
 	}
 
 	function formatDueDate(date: Date | string) {
@@ -72,7 +53,6 @@
 		if (!deleteTarget) return;
 		await deleteSubscription({ id: deleteTarget.id });
 		deleteTarget = null;
-		deleteOpen = false;
 	}
 </script>
 
@@ -125,7 +105,9 @@
 							<div class="h-2.5 flex-1 overflow-hidden rounded-full bg-muted">
 								<div
 									class="h-full rounded-full"
-									style="width: {maxMonthly > 0 ? (s.monthly / maxMonthly) * 100 : 0}%; background-color: {brandStyle(s.name).colour};"
+									style="width: {maxMonthly > 0
+										? (s.monthly / maxMonthly) * 100
+										: 0}%; background-color: {brandStyle(s.name).colour};"
 								></div>
 							</div>
 							<span class="w-16 shrink-0 text-right text-sm tabular-nums">
@@ -157,10 +139,7 @@
 							<RowActionsMenu
 								label={sub.name}
 								onEdit={() => (editTarget = sub)}
-								onDelete={() => {
-									deleteTarget = sub;
-									deleteOpen = true;
-								}}
+								onDelete={() => (deleteTarget = sub)}
 							/>
 						</div>
 					</div>
@@ -192,10 +171,10 @@
 		{/each}
 
 		<form
-			{...addSubscription.enhance(async ({ form, submit }) => {
-				await submit().updates(getSubscriptions());
-				if (addSubscription.result?.success) {
-					form.reset();
+			{...addSubscription.enhance(async (form) => {
+				await form.submit().updates(getSubscriptions());
+				if (form.result?.success) {
+					form.element.reset();
 					addOpen = false;
 				}
 			})}
@@ -271,10 +250,10 @@
 
 		{#if editTarget}
 			<form
-				{...updateSubscription.enhance(async ({ form, submit }) => {
-					await submit().updates(getSubscriptions());
-					if (updateSubscription.result?.success) {
-						form.reset();
+				{...updateSubscription.enhance(async (form) => {
+					await form.submit().updates(getSubscriptions());
+					if (form.result?.success) {
+						form.element.reset();
 						editTarget = null;
 					}
 				})}
@@ -352,7 +331,8 @@
 
 <!-- Delete Dialog -->
 <DeleteDialog
-	bind:open={deleteOpen}
+	open={!!deleteTarget}
+	onOpenChange={(o) => !o && (deleteTarget = null)}
 	showTrigger={false}
 	label={deleteTarget?.name ?? 'subscription'}
 	{onDelete}

@@ -21,7 +21,7 @@
 		children: Snippet;
 	} = $props();
 
-	let dotColour = title == 'Assets' ? 'bg-primary' : 'bg-red-500';
+	let dotColour = $derived(title == 'Assets' ? 'bg-primary' : 'bg-red-500');
 </script>
 
 <div class="space-y-3">

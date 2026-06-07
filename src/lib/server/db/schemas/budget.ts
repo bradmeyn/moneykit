@@ -29,7 +29,7 @@ export const liabilityTable = pgTable('liabilities', {
 	userId,
 	name: text('name').notNull(),
 	balance: integer('balance').notNull(), // in cents
-	interestRate: integer('interest_rate'), // basis points e.g. 500 = 5.00%
+	interestRate: integer('interest_rate').notNull(), // basis points e.g. 500 = 5.00%
 	category: text('category').notNull(), // 'mortgage' | 'personal_loan' | 'credit_card' | 'other'
 	notes: text('notes'),
 	owner: text('owner'),
@@ -61,7 +61,21 @@ export const subscriptionTable = pgTable('subscriptions', {
 	...timestamps
 });
 
+export const insuranceTable = pgTable('insurances', {
+	id: uuid('id').defaultRandom().primaryKey(),
+	userId,
+	name: text('name').notNull(),
+	provider: text('provider').notNull(),
+	category: text('category').notNull(), // insurance type, e.g. 'Health' | 'Life' | 'Car' | ...
+	premium: integer('premium').notNull(), // in cents
+	frequency: text('frequency').notNull(), // 'weekly' | 'fortnightly' | 'monthly' | 'quarterly' | 'yearly'
+	renewalDate: timestamp('renewal_date').notNull(),
+	owner: text('owner'),
+	...timestamps
+});
+
 export type Subscription = typeof subscriptionTable.$inferSelect;
 export type Asset = typeof assetTable.$inferSelect;
 export type Liability = typeof liabilityTable.$inferSelect;
 export type BudgetItem = typeof budgetItemTable.$inferSelect;
+export type Insurance = typeof insuranceTable.$inferSelect;

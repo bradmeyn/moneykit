@@ -47,17 +47,6 @@
 
 	// Ensure field has initial ISO value for submission
 	updateTransaction.fields.transactionDate.set(formatDate(transaction.transactionDate));
-
-	async function onSubmitEnhance({ form, submit }: any) {
-		try {
-			await submit();
-			if (updateTransaction.for(transactionId).result?.success) {
-				open = false;
-			}
-		} catch (e) {
-			console.error('Error editing transaction', e);
-		}
-	}
 </script>
 
 <Dialog.Root bind:open>
@@ -71,7 +60,19 @@
 			<p class="text-sm text-red-600">{issue.message}</p>
 		{/each}
 
-		<form {...updateTransaction.for(transactionId).enhance(onSubmitEnhance)} class="space-y-4">
+		<form
+			{...updateTransaction.for(transactionId).enhance(async (form) => {
+				try {
+					await form.submit();
+					if (form.result?.success) {
+						open = false;
+					}
+				} catch (e) {
+					console.error('Error editing transaction', e);
+				}
+			})}
+			class="space-y-4"
+		>
 			<Field.Field>
 				<Field.Label for="type">Transaction Type</Field.Label>
 				<select

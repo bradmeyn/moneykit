@@ -15,6 +15,7 @@
 	import BalanceSheetSummary from './_components/balance-sheet-summary.svelte';
 	import BalanceSheetSection from './_components/balance-sheet-section.svelte';
 	import BalanceSheetRow from './_components/balance-sheet-row.svelte';
+	import { formatPercentage } from '$utils/formatters';
 
 	const [assets, liabilities, netWorth] = $derived(
 		await Promise.all([getAssets(), getLiabilities(), getNetWorth()])
@@ -23,29 +24,17 @@
 	const totalManualAssets = $derived(assets.reduce((s, a) => s + a.value, 0));
 	const totalAssets = $derived(totalManualAssets + netWorth.totalValue);
 	const totalLiabilities = $derived(liabilities.reduce((s, l) => s + l.balance, 0));
-	const netWorthTotal = $derived(totalAssets - totalLiabilities);
 
-	let addAssetOpen = $state(false);
-	let editAsset = $state<Asset | null>(null);
-	let editAssetOpen = $state(false);
-	let addLiabilityOpen = $state(false);
-	let editLiability = $state<Liability | null>(null);
-	let editLiabilityOpen = $state(false);
+	type Dialog =
+		| { kind: 'add-asset' }
+		| { kind: 'edit-asset'; asset: Asset }
+		| { kind: 'delete-asset'; asset: Asset }
+		| { kind: 'add-liability' }
+		| { kind: 'edit-liability'; liability: Liability }
+		| { kind: 'delete-liability'; liability: Liability }
+		| null;
 
-	$effect(() => {
-		if (!editAssetOpen) editAsset = null;
-	});
-	$effect(() => {
-		if (!editLiabilityOpen) editLiability = null;
-	});
-	let deleteAssetTarget = $state<Asset | null>(null);
-	let deleteAssetOpen = $state(false);
-	let deleteLiabilityTarget = $state<Liability | null>(null);
-	let deleteLiabilityOpen = $state(false);
-
-	function formatCategory(c: string) {
-		return c.replace('_', ' ').replace(/\b\w/g, (l) => l.toUpperCase());
-	}
+	let dialog = $state<Dialog>(null);
 </script>
 
 <svelte:head><title>Balance Sheet | MoneyKit</title></svelte:head>
@@ -69,7 +58,7 @@
 			<BalanceSheetSection
 				title="Assets"
 				total={totalAssets}
-				onAdd={() => (addAssetOpen = true)}
+				onAdd={() => (dialog = { kind: 'add-asset' })}
 				empty={assets.length === 0 ? 'No manual assets yet.' : ''}
 			>
 				<BalanceSheetRow
@@ -82,16 +71,10 @@
 				{#each assets as asset (asset.id)}
 					<BalanceSheetRow
 						name={asset.name}
-						subtitle={formatCategory(asset.category)}
+						subtitle={asset.category}
 						amount={asset.value}
-						onEdit={() => {
-							editAsset = asset;
-							editAssetOpen = true;
-						}}
-						onDelete={() => {
-							deleteAssetTarget = asset;
-							deleteAssetOpen = true;
-						}}
+						onEdit={() => (dialog = { kind: 'edit-asset', asset })}
+						onDelete={() => (dialog = { kind: 'delete-asset', asset })}
 					/>
 				{/each}
 			</BalanceSheetSection>
@@ -100,25 +83,16 @@
 			<BalanceSheetSection
 				title="Liabilities"
 				total={totalLiabilities}
-				onAdd={() => (addLiabilityOpen = true)}
+				onAdd={() => (dialog = { kind: 'add-liability' })}
 				empty={liabilities.length === 0 ? 'No liabilities yet.' : ''}
 			>
 				{#each liabilities as liability (liability.id)}
 					<BalanceSheetRow
 						name={liability.name}
-						subtitle={formatCategory(liability.category) +
-							(liability.interestRate != null
-								? ` · ${(liability.interestRate / 100).toFixed(2)}% p.a.`
-								: '')}
+						subtitle={liability.category + formatPercentage(liability.interestRate)}
 						amount={liability.balance}
-						onEdit={() => {
-							editLiability = liability;
-							editLiabilityOpen = true;
-						}}
-						onDelete={() => {
-							deleteLiabilityTarget = liability;
-							deleteLiabilityOpen = true;
-						}}
+						onEdit={() => (dialog = { kind: 'edit-liability', liability })}
+						onDelete={() => (dialog = { kind: 'delete-liability', liability })}
 					/>
 				{/each}
 			</BalanceSheetSection>
@@ -126,38 +100,48 @@
 	</div>
 </svelte:boundary>
 
-<AddAssetDialog bind:open={addAssetOpen} />
-{#if editAsset}
-	<EditAssetDialog bind:open={editAssetOpen} asset={editAsset} />
+<AddAssetDialog
+	open={dialog?.kind === 'add-asset'}
+	onOpenChange={(open) => (dialog = open ? { kind: 'add-asset' } : null)}
+/>
+{#if dialog?.kind === 'edit-asset'}
+	<EditAssetDialog open onOpenChange={(open) => !open && (dialog = null)} asset={dialog.asset} />
 {/if}
 
-<AddLiabilityDialog bind:open={addLiabilityOpen} />
-{#if editLiability}
-	<EditLiabilityDialog bind:open={editLiabilityOpen} liability={editLiability} />
+<AddLiabilityDialog
+	open={dialog?.kind === 'add-liability'}
+	onOpenChange={(open) => (dialog = open ? { kind: 'add-liability' } : null)}
+/>
+{#if dialog?.kind === 'edit-liability'}
+	<EditLiabilityDialog
+		open
+		onOpenChange={(open) => !open && (dialog = null)}
+		liability={dialog.liability}
+	/>
 {/if}
 
 <DeleteDialog
-	bind:open={deleteAssetOpen}
+	open={dialog?.kind === 'delete-asset'}
+	onOpenChange={(o) => !o && (dialog = null)}
 	showTrigger={false}
-	label={deleteAssetTarget?.name ?? 'asset'}
+	label={dialog?.kind === 'delete-asset' ? dialog.asset.name : 'asset'}
 	onDelete={async () => {
-		if (deleteAssetTarget) {
-			await deleteAsset({ id: deleteAssetTarget.id });
-			deleteAssetTarget = null;
-			deleteAssetOpen = false;
+		if (dialog?.kind === 'delete-asset') {
+			await deleteAsset({ id: dialog.asset.id });
+			dialog = null;
 		}
 	}}
 />
 
 <DeleteDialog
-	bind:open={deleteLiabilityOpen}
+	open={dialog?.kind === 'delete-liability'}
+	onOpenChange={(o) => !o && (dialog = null)}
 	showTrigger={false}
-	label={deleteLiabilityTarget?.name ?? 'liability'}
+	label={dialog?.kind === 'delete-liability' ? dialog.liability.name : 'liability'}
 	onDelete={async () => {
-		if (deleteLiabilityTarget) {
-			await deleteLiability({ id: deleteLiabilityTarget.id });
-			deleteLiabilityTarget = null;
-			deleteLiabilityOpen = false;
+		if (dialog?.kind === 'delete-liability') {
+			await deleteLiability({ id: dialog.liability.id });
+			dialog = null;
 		}
 	}}
 />

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { formatAsPercentage, parsePercentage } from '$lib/utils/formatters';
+	import { formatPercentage, parsePercentage } from '$lib/utils/formatters';
 	import Input from '$lib/components/ui/input/input.svelte';
 
 	let {
@@ -14,7 +14,7 @@
 		placeholder?: string;
 	} = $props();
 
-	let displayValue = $state(formatAsPercentage(value));
+	let displayValue = $state(formatPercentage(value));
 
 	function handleInput(event: Event) {
 		const input = event.target as HTMLInputElement;
@@ -27,7 +27,7 @@
 	}
 
 	function handleBlur() {
-		displayValue = formatAsPercentage(value);
+		displayValue = formatPercentage(value);
 	}
 </script>
 

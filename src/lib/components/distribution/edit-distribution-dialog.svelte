@@ -63,18 +63,6 @@
 			else if (field === 'taxWithheld') taxWithheld = value;
 		};
 	}
-
-	async function onSubmitEnhance({ form, submit }: any) {
-		try {
-			await submit();
-			if (updateDistribution.for(distribution.id).result?.success) {
-				await getHolding(holdingId).refresh();
-				open = false;
-			}
-		} catch (e) {
-			console.error('Error editing distribution', e);
-		}
-	}
 </script>
 
 <Dialog.Root bind:open>
@@ -88,7 +76,20 @@
 			<p class="text-sm text-red-600">{issue.message}</p>
 		{/each}
 
-		<form {...updateDistribution.for(distribution.id).enhance(onSubmitEnhance)} class="space-y-4">
+		<form
+			{...updateDistribution.for(distribution.id).enhance(async (form) => {
+				try {
+					await form.submit();
+					if (form.result?.success) {
+						await getHolding(holdingId).refresh();
+						open = false;
+					}
+				} catch (e) {
+					console.error('Error editing distribution', e);
+				}
+			})}
+			class="space-y-4"
+		>
 			<input type="hidden" name="id" value={distribution.id} />
 			<input type="hidden" name="holdingId" value={holdingId} />
 			<input type="hidden" {...updateDistribution.fields.datePaid.as('text')} />

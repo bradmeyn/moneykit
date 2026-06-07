@@ -1,7 +1,7 @@
 <script lang="ts">
 	import DoughnutChart from '$lib/components/charts/doughnut-chart.svelte';
 	import LegendList from '$lib/components/charts/legend-list.svelte';
-	import { formatAsPercentage } from '$lib/utils/formatters';
+	import { formatPercentage } from '$lib/utils/formatters';
 	import { setBudgetState } from './budget.svelte';
 	import BudgetCard from './_components/budget-card.svelte';
 	import ActionsMenu from './_components/actions-menu.svelte';
@@ -96,8 +96,8 @@
 			<div class="flex flex-row lg:flex-col flex-wrap gap-4 min-w-75 h-fit">
 				<div class="card flex-1">
 					<h2 class="heading-secondary">Spending Breakdown</h2>
-					<DoughnutChart data={chartData} formatter={formatAsPercentage} />
-					<LegendList data={chartData} formatter={formatAsPercentage} />
+					<DoughnutChart data={chartData} formatter={formatPercentage} />
+					<LegendList data={chartData} formatter={formatPercentage} />
 				</div>
 			</div>
 		{/if}

@@ -11,6 +11,7 @@
 		trigger,
 		loading,
 		open = $bindable(false),
+		onOpenChange,
 		showTrigger = true
 	}: {
 		label: string;
@@ -18,6 +19,7 @@
 		trigger?: Snippet;
 		loading?: boolean;
 		open?: boolean;
+		onOpenChange?: (open: boolean) => void;
 		showTrigger?: boolean;
 	} = $props();
 	let internalLoading = $state(false);
@@ -29,6 +31,7 @@
 			internalLoading = true;
 			await onDelete();
 			open = false;
+			onOpenChange?.(false);
 		} catch (error) {
 			console.error('Failed to delete', error);
 		} finally {
@@ -37,7 +40,7 @@
 	}
 </script>
 
-<AlertDialog.Root bind:open>
+<AlertDialog.Root bind:open {onOpenChange}>
 	{#if showTrigger}
 		<AlertDialog.Trigger>
 			{#if trigger}

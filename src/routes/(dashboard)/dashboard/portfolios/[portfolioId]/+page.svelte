@@ -1,15 +1,32 @@
 <script lang="ts">
-	import { getPortfolio } from '$lib/remotes/portfolio.remote';
+	import { getPortfolio, deletePortfolio } from '$lib/remotes/portfolio.remote';
+	import { deleteHolding } from '$lib/remotes/holding.remote';
 	import { page } from '$app/state';
+	import { goto } from '$app/navigation';
 	import * as Table from '$ui/table';
 	import Button from '$ui/button/button.svelte';
 	import AddHoldingDialog from '$lib/components/holding/add-holding-dialog.svelte';
+	import EditHoldingDialog from '$lib/components/holding/edit-holding-dialog.svelte';
+	import EditPortfolioDialog from '$lib/components/portfolio/edit-portfolio-dialog.svelte';
+	import DeleteDialog from '$lib/components/delete-dialog.svelte';
+	import RowActionsMenu from '$lib/components/row-actions-menu.svelte';
 	import { formatCurrency } from '$lib/utils';
 
 	const portfolio = $derived(await getPortfolio(page.params.portfolioId!));
 	const portfolioId = page.params.portfolioId!;
 
+	type Holding = (typeof portfolio.holdings)[number];
+
 	let addHoldingOpen = $state(false);
+
+	type Dialog =
+		| { kind: 'edit-holding'; holding: Holding }
+		| { kind: 'delete-holding'; holding: Holding }
+		| { kind: 'edit-portfolio' }
+		| { kind: 'delete-portfolio' }
+		| null;
+
+	let dialog = $state<Dialog>(null);
 </script>
 
 <div class="mb-4 flex items-center justify-between">
@@ -20,7 +37,16 @@
 		<span class="text-muted-foreground">/</span>
 		<h1 class="heading-primary">{portfolio.name}</h1>
 	</div>
-	<AddHoldingDialog {portfolioId} bind:open={addHoldingOpen} />
+	<div class="flex items-center gap-1">
+		<AddHoldingDialog {portfolioId} bind:open={addHoldingOpen} />
+		<RowActionsMenu
+			label={portfolio.name}
+			editLabel="Edit portfolio"
+			deleteLabel="Delete portfolio"
+			onEdit={() => (dialog = { kind: 'edit-portfolio' })}
+			onDelete={() => (dialog = { kind: 'delete-portfolio' })}
+		/>
+	</div>
 </div>
 
 <div class="mb-6 flex gap-1 border-b">
@@ -102,8 +128,16 @@
 							<span class="text-xs">({holding.unrealisedGainPercent.toFixed(1)}%)</span>
 						</Table.Cell>
 						<Table.Cell class="text-right">
-							<Button href="/dashboard/portfolios/{portfolioId}/{holding.id}" size="sm">View</Button
-							>
+							<div class="flex items-center justify-end gap-1">
+								<Button href="/dashboard/portfolios/{portfolioId}/{holding.id}" size="sm"
+									>View</Button
+								>
+								<RowActionsMenu
+									label={holding.name}
+									onEdit={() => (dialog = { kind: 'edit-holding', holding })}
+									onDelete={() => (dialog = { kind: 'delete-holding', holding })}
+								/>
+							</div>
 						</Table.Cell>
 					</Table.Row>
 				{/each}
@@ -118,3 +152,47 @@
 		<Button onclick={() => (addHoldingOpen = true)}>Add Holding</Button>
 	</div>
 {/if}
+
+{#if dialog?.kind === 'edit-holding'}
+	<EditHoldingDialog
+		open
+		onOpenChange={(o) => !o && (dialog = null)}
+		holdingId={dialog.holding.id}
+		{portfolioId}
+		holding={{ investmentId: dialog.holding.investmentId }}
+	/>
+{/if}
+
+{#if dialog?.kind === 'edit-portfolio'}
+	<EditPortfolioDialog
+		open
+		onOpenChange={(o) => !o && (dialog = null)}
+		{portfolioId}
+		portfolioName={portfolio.name}
+	/>
+{/if}
+
+<DeleteDialog
+	open={dialog?.kind === 'delete-holding'}
+	onOpenChange={(o) => !o && (dialog = null)}
+	showTrigger={false}
+	label={dialog?.kind === 'delete-holding' ? dialog.holding.name : 'holding'}
+	onDelete={async () => {
+		if (dialog?.kind === 'delete-holding') {
+			await deleteHolding({ id: dialog.holding.id });
+			dialog = null;
+		}
+	}}
+/>
+
+<DeleteDialog
+	open={dialog?.kind === 'delete-portfolio'}
+	onOpenChange={(o) => !o && (dialog = null)}
+	showTrigger={false}
+	label={portfolio.name}
+	onDelete={async () => {
+		await deletePortfolio({ id: portfolioId });
+		dialog = null;
+		await goto('/dashboard/portfolios');
+	}}
+/>

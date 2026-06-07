@@ -63,12 +63,12 @@
 		</Dialog.Header>
 
 		<form
-			{...addDistribution.for(holdingId).enhance(async ({ form, submit }) => {
+			{...addDistribution.for(holdingId).enhance(async (form) => {
 				try {
 					addDistribution.validate({ includeUntouched: true });
-					await submit();
-					if (addDistribution.for(holdingId).result?.success) {
-						form.reset();
+					await form.submit();
+					if (form.result?.success) {
+						form.element.reset();
 						datePaid = undefined;
 						reinvested = false;
 						grossPayment = 0;

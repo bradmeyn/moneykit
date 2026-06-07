@@ -228,11 +228,11 @@
 		{/each}
 
 		<form
-			{...addTransactions.enhance(async ({ form, submit }) => {
+			{...addTransactions.enhance(async (form) => {
 				try {
-					await submit();
-					if (addTransactions.result?.success) {
-						form.reset();
+					await form.submit();
+					if (form.result?.success) {
+						form.element.reset();
 						transactions = [{ id: 0 }];
 						transactionDates = [undefined];
 						open = false;

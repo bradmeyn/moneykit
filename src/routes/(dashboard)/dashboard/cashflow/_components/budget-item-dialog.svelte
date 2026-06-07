@@ -10,11 +10,13 @@
 
 	let {
 		type,
-		open = $bindable(false),
+		open,
+		onOpenChange,
 		item = null
 	}: {
 		type: 'income' | 'expense';
-		open?: boolean;
+		open: boolean;
+		onOpenChange: (open: boolean) => void;
 		/** When set, the dialog edits this item; otherwise it adds a new one. */
 		item?: BudgetItem | null;
 	} = $props();
@@ -28,7 +30,7 @@
 	}
 </script>
 
-<Dialog.Root bind:open>
+<Dialog.Root {open} {onOpenChange}>
 	<Dialog.Content>
 		<Dialog.Header>
 			<Dialog.Title>{item ? `Edit ${noun}` : `Add ${noun}`}</Dialog.Title>
@@ -39,9 +41,9 @@
 				<p class="text-sm text-destructive">{issue.message}</p>
 			{/each}
 			<form
-				{...updateBudgetItem.enhance(async ({ submit }) => {
-					await submit().updates(getBudgetItems());
-					if (updateBudgetItem.result?.success) open = false;
+				{...updateBudgetItem.enhance(async (form) => {
+					await form.submit().updates(getBudgetItems());
+					if (form.result?.success) onOpenChange(false);
 				})}
 				class="space-y-4"
 			>
@@ -85,7 +87,7 @@
 				</Field.Field>
 
 				<div class="flex justify-end gap-2">
-					<Button type="button" variant="outline" onclick={() => (open = false)}>Cancel</Button>
+					<Button type="button" variant="outline" onclick={() => onOpenChange(false)}>Cancel</Button>
 					<Button type="submit" disabled={!!updateBudgetItem.pending}>Save</Button>
 				</div>
 			</form>
@@ -94,11 +96,11 @@
 				<p class="text-sm text-destructive">{issue.message}</p>
 			{/each}
 			<form
-				{...addBudgetItem.enhance(async ({ form, submit }) => {
-					await submit().updates(getBudgetItems());
-					if (addBudgetItem.result?.success) {
-						form.reset();
-						open = false;
+				{...addBudgetItem.enhance(async (form) => {
+					await form.submit().updates(getBudgetItems());
+					if (form.result?.success) {
+						form.element.reset();
+						onOpenChange(false);
 					}
 				})}
 				class="space-y-4"
@@ -142,7 +144,7 @@
 				</Field.Field>
 
 				<div class="flex justify-end gap-2">
-					<Button type="button" variant="outline" onclick={() => (open = false)}>Cancel</Button>
+					<Button type="button" variant="outline" onclick={() => onOpenChange(false)}>Cancel</Button>
 					<Button type="submit" disabled={!!addBudgetItem.pending}>Add</Button>
 				</div>
 			</form>

@@ -1,6 +1,6 @@
 import { FREQUENCIES, type FrequencyType } from '$constants/frequencies';
 import { setContext, getContext } from 'svelte';
-import { formatCurrency, formatAsPercentage } from '$utils/formatters';
+import { formatCurrency, formatPercentage } from '$utils/formatters';
 import { calculatePersonalTax, type TaxResult } from './tax-rates';
 
 const EMPTY_RESULT: TaxResult = {
@@ -64,7 +64,7 @@ class TaxCalculatorState {
 
 		rows.push(
 			['Total Tax', formatCurrency(this.result.totalTax)],
-			['Effective Tax Rate', formatAsPercentage(this.effectiveRate)],
+			['Effective Tax Rate', formatPercentage(this.effectiveRate)],
 			['Take-Home Pay', formatCurrency(this.takeHomePay)]
 		);
 

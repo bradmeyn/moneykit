@@ -12,35 +12,22 @@
 		holdingId,
 		portfolioId,
 		holding,
-		open = $bindable(false)
+		open,
+		onOpenChange
 	}: {
 		holdingId: string;
 		portfolioId: string;
 		holding: {
 			investmentId: string;
 		};
-		open?: boolean;
+		open: boolean;
+		onOpenChange: (open: boolean) => void;
 	} = $props();
 
 	const investments = $derived(await getInvestments());
-
-	async function onSubmitEnhance({ form, submit }: any) {
-		try {
-			await submit().updates(
-				getHolding(holdingId),
-				getHoldings(portfolioId),
-				getPortfolio(portfolioId)
-			);
-			if (updateHolding.result?.success) {
-				open = false;
-			}
-		} catch (e) {
-			console.error('Error editing holding', e);
-		}
-	}
 </script>
 
-<Dialog.Root bind:open>
+<Dialog.Root {open} {onOpenChange}>
 	<Dialog.Content>
 		<Dialog.Header>
 			<Dialog.Title>Edit Holding</Dialog.Title>
@@ -51,7 +38,21 @@
 			<p class="text-sm text-red-600">{issue.message}</p>
 		{/each}
 
-		<form {...updateHolding.for(holdingId).enhance(onSubmitEnhance)} class="space-y-4">
+		<form
+			{...updateHolding.for(holdingId).enhance(async (form) => {
+				try {
+					await form
+						.submit()
+						.updates(getHolding(holdingId), getHoldings(portfolioId), getPortfolio(portfolioId));
+					if (form.result?.success) {
+						onOpenChange(false);
+					}
+				} catch (e) {
+					console.error('Error editing holding', e);
+				}
+			})}
+			class="space-y-4"
+		>
 			<Field.Field>
 				<Field.Label for="investmentId">Investment</Field.Label>
 				<select
@@ -73,7 +74,7 @@
 			<input type="hidden" name="id" value={holdingId} />
 
 			<div class="mt-4 flex justify-end gap-2">
-				<Button type="button" variant="outline" onclick={() => (open = false)}>Cancel</Button>
+				<Button type="button" variant="outline" onclick={() => onOpenChange(false)}>Cancel</Button>
 				<Button type="submit" disabled={!!updateHolding.pending}>
 					{#if updateHolding.pending}
 						<Spinner class="size-4" />

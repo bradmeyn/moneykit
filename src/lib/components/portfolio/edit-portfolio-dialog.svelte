@@ -10,26 +10,17 @@
 	let {
 		portfolioId,
 		portfolioName,
-		open = $bindable(false)
+		open,
+		onOpenChange
 	}: {
 		portfolioId: string;
 		portfolioName: string;
-		open?: boolean;
+		open: boolean;
+		onOpenChange: (open: boolean) => void;
 	} = $props();
-
-	async function onSubmitEnhance({ form, submit }: any) {
-		try {
-			await submit().updates(getPortfolio(portfolioId), getPortfolios());
-			if (updatePortfolio.result?.success) {
-				open = false;
-			}
-		} catch (e) {
-			console.error('Error editing portfolio', e);
-		}
-	}
 </script>
 
-<Dialog.Root bind:open>
+<Dialog.Root {open} {onOpenChange}>
 	<Dialog.Content>
 		<Dialog.Header>
 			<Dialog.Title>Edit Portfolio</Dialog.Title>
@@ -40,7 +31,19 @@
 			<p class="text-sm text-red-600">{issue.message}</p>
 		{/each}
 
-		<form {...updatePortfolio.for(portfolioId).enhance(onSubmitEnhance)} class="space-y-4">
+		<form
+			{...updatePortfolio.for(portfolioId).enhance(async (form) => {
+				try {
+					await form.submit().updates(getPortfolio(portfolioId), getPortfolios());
+					if (form.result?.success) {
+						onOpenChange(false);
+					}
+				} catch (e) {
+					console.error('Error editing portfolio', e);
+				}
+			})}
+			class="space-y-4"
+		>
 			<Field.Field>
 				<Field.Label for="name">Portfolio Name</Field.Label>
 				<Input
@@ -56,7 +59,7 @@
 			<input type="hidden" name="id" value={portfolioId} />
 
 			<div class="mt-4 flex justify-end gap-2">
-				<Button type="button" variant="outline" onclick={() => (open = false)}>Cancel</Button>
+				<Button type="button" variant="outline" onclick={() => onOpenChange(false)}>Cancel</Button>
 				<Button type="submit" disabled={!!updatePortfolio.pending}>
 					{#if updatePortfolio.pending}
 						<Spinner class="size-4" />

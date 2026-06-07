@@ -15,18 +15,6 @@
 		open?: boolean;
 		showTrigger?: boolean;
 	} = $props();
-
-	async function onSubmitEnhance({ form, submit }: any) {
-		try {
-			await submit().updates(getPortfolios());
-			form.reset();
-			if (addPortfolio.result?.success) {
-				open = false;
-			}
-		} catch (e) {
-			console.error('Error adding portfolio', e);
-		}
-	}
 </script>
 
 <Dialog.Root bind:open>
@@ -47,7 +35,20 @@
 			<p class="text-sm text-red-600">{issue.message}</p>
 		{/each}
 
-		<form {...addPortfolio.enhance(onSubmitEnhance)} class="space-y-4">
+		<form
+			{...addPortfolio.enhance(async (form) => {
+				try {
+					await form.submit().updates(getPortfolios());
+					if (form.result?.success) {
+						form.element.reset();
+						open = false;
+					}
+				} catch (e) {
+					console.error('Error adding portfolio', e);
+				}
+			})}
+			class="space-y-4"
+		>
 			<Field.Field>
 				<Field.Label for="name">Portfolio Name</Field.Label>
 				<Input

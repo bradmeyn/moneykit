@@ -1,7 +1,21 @@
 <script lang="ts">
 	import AddPortfolioDialog from '$lib/components/portfolio/add-portfolio-dialog.svelte';
-	import { getPortfolios } from '$lib/remotes/portfolio.remote';
+	import EditPortfolioDialog from '$lib/components/portfolio/edit-portfolio-dialog.svelte';
+	import DeleteDialog from '$lib/components/delete-dialog.svelte';
+	import RowActionsMenu from '$lib/components/row-actions-menu.svelte';
+	import { getPortfolios, deletePortfolio } from '$lib/remotes/portfolio.remote';
 	import { ChevronRight } from '@lucide/svelte';
+
+	const portfolios = $derived(await getPortfolios());
+
+	type Portfolio = (typeof portfolios)[number];
+
+	type Dialog =
+		| { kind: 'edit'; portfolio: Portfolio }
+		| { kind: 'delete'; portfolio: Portfolio }
+		| null;
+
+	let dialog = $state<Dialog>(null);
 </script>
 
 <div class="container mx-auto max-w-3xl py-4">
@@ -9,30 +23,35 @@
 		<h1 class="heading-primary">Portfolios</h1>
 		<AddPortfolioDialog />
 	</div>
-	<svelte:boundary>
-		{#snippet pending()}
-			<div class="mb-3 h-7 w-48 animate-pulse rounded bg-muted"></div>
-		{/snippet}
-	</svelte:boundary>
 
-	{#each await getPortfolios() as portfolio}
-		<a
-			href="/dashboard/portfolios/{portfolio.id}"
-			class="card flex items-center justify-between transition-all hover:border-primary hover:shadow-sm"
+	{#each portfolios as portfolio (portfolio.id)}
+		<div
+			class="card relative mb-3 flex items-center justify-between transition-all hover:border-primary hover:shadow-sm"
 		>
-			<div>
-				<div class="text-lg font-medium">
-					{portfolio.name}
+			<a
+				href="/dashboard/portfolios/{portfolio.id}"
+				class="flex flex-1 items-center justify-between focus:outline-none"
+			>
+				<span class="absolute inset-0" aria-hidden="true"></span>
+				<div>
+					<div class="text-lg font-medium">{portfolio.name}</div>
+					<p class="text-sm text-muted-foreground">
+						{portfolio.holdings ? portfolio.holdings.length : 0} holdings
+					</p>
 				</div>
-				<p class="text-sm text-muted-foreground">
-					{portfolio.holdings ? portfolio.holdings.length : 0} holdings
-				</p>
+				<ChevronRight class="size-5 text-muted-foreground" />
+			</a>
+			<div class="relative z-10 ml-2">
+				<RowActionsMenu
+					label={portfolio.name}
+					onEdit={() => (dialog = { kind: 'edit', portfolio })}
+					onDelete={() => (dialog = { kind: 'delete', portfolio })}
+				/>
 			</div>
-			<ChevronRight class="size-5 text-muted-foreground" />
-		</a>
+		</div>
 	{/each}
 
-	{#if (await getPortfolios()).length === 0}
+	{#if portfolios.length === 0}
 		<div class="card text-center">
 			<p class="text-center text-muted-foreground">
 				No portfolios found. Add a portfolio to get started.
@@ -40,3 +59,25 @@
 		</div>
 	{/if}
 </div>
+
+{#if dialog?.kind === 'edit'}
+	<EditPortfolioDialog
+		open
+		onOpenChange={(o) => !o && (dialog = null)}
+		portfolioId={dialog.portfolio.id}
+		portfolioName={dialog.portfolio.name}
+	/>
+{/if}
+
+<DeleteDialog
+	open={dialog?.kind === 'delete'}
+	onOpenChange={(o) => !o && (dialog = null)}
+	showTrigger={false}
+	label={dialog?.kind === 'delete' ? dialog.portfolio.name : 'portfolio'}
+	onDelete={async () => {
+		if (dialog?.kind === 'delete') {
+			await deletePortfolio({ id: dialog.portfolio.id });
+			dialog = null;
+		}
+	}}
+/>

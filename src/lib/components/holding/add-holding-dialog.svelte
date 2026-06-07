@@ -20,18 +20,6 @@
 	} = $props();
 
 	const investments = $derived(await getInvestments());
-
-	async function onSubmitEnhance({ form, submit }: any) {
-		try {
-			await submit().updates(getHoldings(portfolioId), getPortfolio(portfolioId));
-			form.reset();
-			if (addHolding.result?.success) {
-				open = false;
-			}
-		} catch (e) {
-			console.error('Error adding holding', e);
-		}
-	}
 </script>
 
 <Dialog.Root bind:open>
@@ -55,7 +43,20 @@
 			<p class="text-sm text-red-600">{issue.message}</p>
 		{/each}
 
-		<form {...addHolding.for(portfolioId).enhance(onSubmitEnhance)} class="space-y-4">
+		<form
+			{...addHolding.for(portfolioId).enhance(async (form) => {
+				try {
+					await form.submit().updates(getHoldings(portfolioId), getPortfolio(portfolioId));
+					if (form.result?.success) {
+						form.element.reset();
+						open = false;
+					}
+				} catch (e) {
+					console.error('Error adding holding', e);
+				}
+			})}
+			class="space-y-4"
+		>
 			<Field.Field>
 				<Field.Label for="investmentId">Investment</Field.Label>
 				<select

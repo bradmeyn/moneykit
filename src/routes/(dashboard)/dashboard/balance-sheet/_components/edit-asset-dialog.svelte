@@ -11,27 +11,28 @@
 	const ASSET_CATEGORIES = ['cash', 'property', 'vehicle', 'other'] as const;
 
 	let {
-		open = $bindable(false),
+		open,
+		onOpenChange,
 		asset
 	}: {
-		open?: boolean;
+		open: boolean;
+		onOpenChange: (open: boolean) => void;
 		asset: Asset;
 	} = $props();
-
-	function formatCategory(c: string) {
-		return c.replace('_', ' ').replace(/\b\w/g, (l) => l.toUpperCase());
-	}
 </script>
 
-<Dialog.Root bind:open>
+<Dialog.Root {open} {onOpenChange}>
 	<Dialog.Content>
 		<Dialog.Header>
 			<Dialog.Title>Edit Asset</Dialog.Title>
 		</Dialog.Header>
 		<form
-			{...updateAsset.enhance(async ({ form, submit }) => {
-				await submit().updates(getAssets());
-				if (updateAsset.result?.success) { form.reset(); open = false; }
+			{...updateAsset.enhance(async (form) => {
+				await form.submit().updates(getAssets());
+				if (form.result?.success) {
+					form.element.reset();
+					onOpenChange(false);
+				}
 			})}
 			class="space-y-4"
 		>
@@ -55,22 +56,25 @@
 				<Field.Field>
 					<Field.Label>Category</Field.Label>
 					<NativeSelect.Root {...updateAsset.fields.category.as('text')} value={asset.category}>
-						{#each ASSET_CATEGORIES as c}
-							<NativeSelect.Option value={c}>{formatCategory(c)}</NativeSelect.Option>
+						{#each ASSET_CATEGORIES as category}
+							<NativeSelect.Option value={category}>{category}</NativeSelect.Option>
 						{/each}
 					</NativeSelect.Root>
 				</Field.Field>
 			</div>
 			<Field.Field>
 				<Field.Label>Owner</Field.Label>
-				<NativeSelect.Root {...updateAsset.fields.owner.as('text')} value={asset.owner ?? Object.keys(OWNERS)[0]}>
+				<NativeSelect.Root
+					{...updateAsset.fields.owner.as('text')}
+					value={asset.owner ?? Object.keys(OWNERS)[0]}
+				>
 					{#each Object.entries(OWNERS) as [key, label]}
 						<NativeSelect.Option value={key}>{label}</NativeSelect.Option>
 					{/each}
 				</NativeSelect.Root>
 			</Field.Field>
 			<div class="flex justify-end gap-2">
-				<Button type="button" variant="outline" onclick={() => (open = false)}>Cancel</Button>
+				<Button type="button" variant="outline" onclick={() => onOpenChange(false)}>Cancel</Button>
 				<Button type="submit" disabled={!!updateAsset.pending}>Save</Button>
 			</div>
 		</form>

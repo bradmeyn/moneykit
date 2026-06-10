@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { formatCurrency, formatPercentage } from '$utils/formatters';
+	import SummaryCard from '$lib/components/summary-card.svelte';
 
 	let {
 		totalAssets,
@@ -16,14 +17,9 @@
 	);
 </script>
 
-<div class="card">
-	<p class="text-xs font-medium uppercase tracking-wider text-muted-foreground">Net Worth</p>
-	<p class="mt-1 text-4xl font-medium tracking-tight tabular-nums">
-		{formatCurrency(networth)}
-	</p>
-
-	<div class="h-3 flex rounded-lg overflow-auto mt-4">
+<SummaryCard label="Net Worth" value={formatCurrency(networth)}>
+	<div class="mt-4 flex h-3 overflow-auto rounded-lg">
 		<div class="bg-primary h-full" style="width: {assetPercentage};"></div>
 		<div class="bg-red-600 h-full" style="width: {liabilityPercentage};"></div>
 	</div>
-</div>
+</SummaryCard>

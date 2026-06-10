@@ -76,17 +76,17 @@
 	>
 		{#snippet tooltip({ context })}
 			<Tooltip.Root {context} {...LC_TOOLTIP_PROPS.root}>
-				{#snippet children({ payload })}
+				{#snippet children({ data }: { data: Record<string, number> })}
 					<Tooltip.Header
-						value={`Period ${Math.round(Number(payload[0]?.label))}`}
+						value={`Period ${Math.round(Number(data.period))}`}
 						{...LC_TOOLTIP_PROPS.header}
 					/>
 					<Tooltip.List>
-						{#each payload as p, i (p.key ?? i)}
+						{#each series as s (s.key)}
 							<Tooltip.Item
-								label={p.name}
-								value={p.value}
-								color={p.color}
+								label={s.label}
+								value={data[s.key]}
+								color={s.color}
 								format={(v: unknown) => formatCurrency(Number(v), false)}
 								valueAlign="right"
 								{...LC_TOOLTIP_PROPS.item}

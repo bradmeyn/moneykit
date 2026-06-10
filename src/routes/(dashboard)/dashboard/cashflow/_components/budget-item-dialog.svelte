@@ -5,7 +5,8 @@
 	import Input from '$ui/input/input.svelte';
 	import { Button } from '$ui/button';
 	import { addBudgetItem, updateBudgetItem, getBudgetItems } from '$lib/remotes/budget-item.remote';
-	import { INCOME_CATEGORIES, EXPENSE_CATEGORIES } from '$lib/constants/categories';
+	import { INCOME_CATEGORIES, EXPENSE_CATEGORIES, OWNERS } from '$lib/constants/categories';
+	import { FREQUENCIES, FREQUENCY_ENUM } from '$lib/constants/frequencies';
 	import type { BudgetItem } from '$db/schemas/budget';
 
 	let {
@@ -21,13 +22,8 @@
 		item?: BudgetItem | null;
 	} = $props();
 
-	const FREQUENCIES = ['weekly', 'fortnightly', 'monthly', 'quarterly', 'yearly'] as const;
 	const categories = $derived(type === 'income' ? INCOME_CATEGORIES : EXPENSE_CATEGORIES);
 	const noun = $derived(type === 'income' ? 'Income' : 'Expense');
-
-	function formatFrequency(f: string) {
-		return f.charAt(0).toUpperCase() + f.slice(1);
-	}
 </script>
 
 <Dialog.Root {open} {onOpenChange}>
@@ -68,26 +64,47 @@
 					</Field.Field>
 					<Field.Field>
 						<Field.Label>Frequency</Field.Label>
-						<NativeSelect.Root {...updateBudgetItem.fields.frequency.as('text')} value={item.frequency}>
-							{#each FREQUENCIES as f}
-								<NativeSelect.Option value={f}>{formatFrequency(f)}</NativeSelect.Option>
+						<NativeSelect.Root
+							{...updateBudgetItem.fields.frequency.as('text')}
+							value={item.frequency}
+						>
+							{#each FREQUENCY_ENUM as f}
+								<NativeSelect.Option value={f}>{FREQUENCIES[f].label}</NativeSelect.Option>
 							{/each}
 						</NativeSelect.Root>
 					</Field.Field>
 				</div>
 
-				<Field.Field>
-					<Field.Label>Category</Field.Label>
-					<NativeSelect.Root {...updateBudgetItem.fields.category.as('text')} value={item.category}>
-						{#each categories as c}
-							<NativeSelect.Option value={c}>{c}</NativeSelect.Option>
-						{/each}
-					</NativeSelect.Root>
-					<Field.Error />
-				</Field.Field>
+				<div class="grid grid-cols-2 gap-3">
+					<Field.Field>
+						<Field.Label>Category</Field.Label>
+						<NativeSelect.Root
+							{...updateBudgetItem.fields.category.as('text')}
+							value={item.category}
+						>
+							{#each categories as c}
+								<NativeSelect.Option value={c}>{c}</NativeSelect.Option>
+							{/each}
+						</NativeSelect.Root>
+						<Field.Error />
+					</Field.Field>
+					<Field.Field>
+						<Field.Label>Owner</Field.Label>
+						<NativeSelect.Root
+							{...updateBudgetItem.fields.owner.as('text')}
+							value={item.owner ?? OWNERS[0]}
+						>
+							{#each OWNERS as owner}
+								<NativeSelect.Option value={owner}>{owner}</NativeSelect.Option>
+							{/each}
+						</NativeSelect.Root>
+						<Field.Error />
+					</Field.Field>
+				</div>
 
 				<div class="flex justify-end gap-2">
-					<Button type="button" variant="outline" onclick={() => onOpenChange(false)}>Cancel</Button>
+					<Button type="button" variant="outline" onclick={() => onOpenChange(false)}>Cancel</Button
+					>
 					<Button type="submit" disabled={!!updateBudgetItem.pending}>Save</Button>
 				</div>
 			</form>
@@ -126,25 +143,37 @@
 					<Field.Field>
 						<Field.Label>Frequency</Field.Label>
 						<NativeSelect.Root {...addBudgetItem.fields.frequency.as('text')} value="monthly">
-							{#each FREQUENCIES as f}
-								<NativeSelect.Option value={f}>{formatFrequency(f)}</NativeSelect.Option>
+							{#each FREQUENCY_ENUM as f}
+								<NativeSelect.Option value={f}>{FREQUENCIES[f].label}</NativeSelect.Option>
 							{/each}
 						</NativeSelect.Root>
 					</Field.Field>
 				</div>
 
-				<Field.Field>
-					<Field.Label>Category</Field.Label>
-					<NativeSelect.Root {...addBudgetItem.fields.category.as('text')}>
-						{#each categories as c}
-							<NativeSelect.Option value={c}>{c}</NativeSelect.Option>
-						{/each}
-					</NativeSelect.Root>
-					<Field.Error />
-				</Field.Field>
+				<div class="grid grid-cols-2 gap-3">
+					<Field.Field>
+						<Field.Label>Category</Field.Label>
+						<NativeSelect.Root {...addBudgetItem.fields.category.as('text')}>
+							{#each categories as c}
+								<NativeSelect.Option value={c}>{c}</NativeSelect.Option>
+							{/each}
+						</NativeSelect.Root>
+						<Field.Error />
+					</Field.Field>
+					<Field.Field>
+						<Field.Label>Owner</Field.Label>
+						<NativeSelect.Root {...addBudgetItem.fields.owner.as('text')} value={OWNERS[2]}>
+							{#each OWNERS as owner}
+								<NativeSelect.Option value={owner}>{owner}</NativeSelect.Option>
+							{/each}
+						</NativeSelect.Root>
+						<Field.Error />
+					</Field.Field>
+				</div>
 
 				<div class="flex justify-end gap-2">
-					<Button type="button" variant="outline" onclick={() => onOpenChange(false)}>Cancel</Button>
+					<Button type="button" variant="outline" onclick={() => onOpenChange(false)}>Cancel</Button
+					>
 					<Button type="submit" disabled={!!addBudgetItem.pending}>Add</Button>
 				</div>
 			</form>

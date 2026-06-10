@@ -56,6 +56,7 @@ export const subscriptionTable = pgTable('subscriptions', {
 	frequency: text('frequency').notNull(), // 'weekly' | 'fortnightly' | 'monthly' | 'quarterly' | 'yearly'
 	nextDueDate: timestamp('next_due_date').notNull(),
 	category: text('category'),
+	owner: text('owner'),
 	notes: text('notes'),
 	active: boolean('active').notNull().default(true),
 	...timestamps

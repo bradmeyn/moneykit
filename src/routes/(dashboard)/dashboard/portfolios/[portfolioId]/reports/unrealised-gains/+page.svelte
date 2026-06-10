@@ -4,6 +4,7 @@
 	import * as Table from '$ui/table';
 	import Button from '$ui/button/button.svelte';
 	import { formatCurrency, downloadCSV } from '$lib/utils';
+	import SummaryCard from '$lib/components/summary-card.svelte';
 	import { Check, Download, Minus } from '@lucide/svelte';
 
 	const portfolioId = page.params.portfolioId!;
@@ -61,8 +62,8 @@
 	<span class="text-muted-foreground">/</span>
 	<a
 		href="/dashboard/portfolios/{portfolioId}"
-		class="text-sm text-muted-foreground hover:text-foreground"
-	>Holdings</a>
+		class="text-sm text-muted-foreground hover:text-foreground">Holdings</a
+	>
 </div>
 
 <div class="mb-6 flex items-center justify-between">
@@ -91,26 +92,25 @@
 
 <!-- Summary Cards -->
 <div class="mb-8 grid gap-4 md:grid-cols-3">
-	<div class="card">
-		<p class="text-sm text-muted-foreground">Total Unrealised Gain</p>
-		<p class="text-3xl font-bold {totalUnrealisedGain >= 0 ? '' : 'text-red-600'}">
-			{formatCurrency(totalUnrealisedGain)}
-		</p>
-	</div>
-	<div class="card">
-		<p class="text-sm text-muted-foreground">Long-Term Unrealised Gain</p>
-		<p class="text-3xl font-bold {totalLongTermGain >= 0 ? '' : 'text-red-600'}">
-			{formatCurrency(totalLongTermGain)}
-		</p>
-		<p class="text-xs text-muted-foreground">Held &gt; 12 months (50% discount eligible)</p>
-	</div>
-	<div class="card">
-		<p class="text-sm text-muted-foreground">Short-Term Unrealised Gain</p>
-		<p class="text-3xl font-bold {totalShortTermGain >= 0 ? '' : 'text-red-600'}">
-			{formatCurrency(totalShortTermGain)}
-		</p>
-		<p class="text-xs text-muted-foreground">Held ≤ 12 months</p>
-	</div>
+	<SummaryCard
+		label="Total Unrealised Gain"
+		value={formatCurrency(totalUnrealisedGain)}
+		valueClass={totalUnrealisedGain >= 0 ? '' : 'text-red-600'}
+	/>
+	<SummaryCard
+		label="Long-Term Unrealised Gain"
+		value={formatCurrency(totalLongTermGain)}
+		valueClass={totalLongTermGain >= 0 ? '' : 'text-red-600'}
+	>
+		<p class="mt-1 text-xs text-muted-foreground">Held &gt; 12 months (50% discount eligible)</p>
+	</SummaryCard>
+	<SummaryCard
+		label="Short-Term Unrealised Gain"
+		value={formatCurrency(totalShortTermGain)}
+		valueClass={totalShortTermGain >= 0 ? '' : 'text-red-600'}
+	>
+		<p class="mt-1 text-xs text-muted-foreground">Held ≤ 12 months</p>
+	</SummaryCard>
 </div>
 
 <!-- Unrealised Tax Lots -->

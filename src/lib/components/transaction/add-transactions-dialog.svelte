@@ -7,9 +7,6 @@
 	import { addTransactions } from '$lib/remotes/transaction.remote';
 	import Spinner from '$ui/spinner/spinner.svelte';
 	import { Plus, Trash, Upload } from '@lucide/svelte';
-	import DatePicker from '$ui/date-picker.svelte';
-	import type { DateValue } from '@internationalized/date';
-	import { parseDate } from '@internationalized/date';
 
 	let {
 		holdingId,
@@ -22,25 +19,16 @@
 	} = $props();
 
 	let transactions = $state([{ id: 0 }]);
-	let transactionDates = $state<(DateValue | undefined)[]>([undefined]);
 	let fileInput: HTMLInputElement;
 	let isDragging = $state(false);
 
 	function addMore() {
 		transactions = [...transactions, { id: transactions.length }];
-		transactionDates = [...transactionDates, undefined];
 	}
 
 	function removeAt(index: number) {
 		if (transactions.length <= 1) return;
 		transactions = transactions.filter((_, i) => i !== index);
-		transactionDates = transactionDates.filter((_, i) => i !== index);
-	}
-
-	function handleDateChange(index: number, date: DateValue | undefined) {
-		if (date) {
-			addTransactions.fields.transactions[index].transactionDate.set(date.toString());
-		}
 	}
 
 	function parseCSV(text: string): string[][] {
@@ -90,7 +78,6 @@
 
 		// Reset transactions
 		transactions = [];
-		transactionDates = [];
 
 		// Parse data rows
 		const dataRows = rows.slice(1);
@@ -117,14 +104,9 @@
 				);
 
 				// Parse date (format: YYYY-MM-DD)
-				try {
-					const date = parseDate(row[dateIdx]);
-					transactionDates.push(date);
-					addTransactions.fields.transactions[transactions.length - 1].transactionDate.set(
-						date.toString()
-					);
-				} catch {
-					transactionDates.push(undefined);
+				const dateStr = row[dateIdx]?.trim();
+				if (/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
+					addTransactions.fields.transactions[transactions.length - 1].transactionDate.set(dateStr);
 				}
 			}
 		});
@@ -163,7 +145,6 @@
 
 	function resetForm() {
 		transactions = [{ id: 0 }];
-		transactionDates = [undefined];
 	}
 
 	$effect(() => {
@@ -223,8 +204,8 @@
 			</div>
 		</div>
 
-		{#each addTransactions.for(holdingId).fields.issues() as issue}
-			<p class="text-sm text-red-600">{issue.message}</p>
+		{#each addTransactions.fields.allIssues?.() ?? [] as issue}
+			<p class="text-sm text-destructive">{issue.message}</p>
 		{/each}
 
 		<form
@@ -233,8 +214,7 @@
 					await form.submit();
 					if (form.result?.success) {
 						form.element.reset();
-						transactions = [{ id: 0 }];
-						transactionDates = [undefined];
+						resetForm();
 						open = false;
 					}
 				} catch (e) {
@@ -308,13 +288,10 @@
 							</Field.Field>
 
 							<Field.Field class="flex-[1.5]">
-								<DatePicker
-									bind:value={transactionDates[i]}
-									onValueChange={(date) => handleDateChange(i, date)}
-								/>
-								<input
-									type="hidden"
-									{...addTransactions.fields.transactions[i].transactionDate.as('text')}
+								<Input
+									{...addTransactions.fields.transactions[i].transactionDate.as('date')}
+									disabled={!!addTransactions.pending}
+									class="text-sm"
 								/>
 								<Field.Error />
 							</Field.Field>
@@ -344,7 +321,7 @@
 				Add Another
 			</Button>
 
-			<input type="hidden" name="holdingId" value={holdingId} />
+			<input type="hidden" {...addTransactions.fields.holdingId.as('text')} value={holdingId} />
 
 			<div class="mt-6 flex justify-end gap-2">
 				<Button type="button" variant="outline" onclick={() => (open = false)}>Cancel</Button>

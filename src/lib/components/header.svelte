@@ -13,8 +13,7 @@
 	<div class="container flex items-center justify-between py-3">
 		<div class="flex items-center gap-8">
 			<a href="/" class="text-xl font-medium tracking-tight">
-				Money<span
-					class="text-transparent bg-clip-text bg-linear-to-b from-primary to-primary-dark"
+				Money<span class="text-transparent bg-clip-text bg-linear-to-b from-primary to-primary-dark"
 					>Kit</span
 				>
 			</a>
@@ -42,7 +41,7 @@
 			</nav>
 		</div>
 
-		<form {...logoutUser.enhance()} method="POST">
+		<form {...logoutUser} method="POST">
 			<button
 				type="submit"
 				class="text-sm text-muted-foreground hover:text-foreground transition-colors"

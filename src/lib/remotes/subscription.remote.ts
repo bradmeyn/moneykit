@@ -5,6 +5,7 @@ import { db } from '$db';
 import { subscriptionTable } from '$db/schemas/budget';
 import { and, eq, lte, gte } from 'drizzle-orm';
 import { error } from '@sveltejs/kit';
+import { FREQUENCY_ENUM, type FrequencyType } from '$lib/constants/frequencies';
 
 export const getSubscriptions = query(async () => {
 	const user = await getCurrentUser();
@@ -39,9 +40,10 @@ export const addSubscription = form(
 			.min(1, 'Amount is required')
 			.transform((s) => parseFloat(s))
 			.refine((n) => !Number.isNaN(n) && n > 0, 'Amount must be positive'),
-		frequency: z.enum(['weekly', 'fortnightly', 'monthly', 'quarterly', 'yearly']),
+		frequency: z.enum(FREQUENCY_ENUM as [FrequencyType, ...FrequencyType[]]),
 		nextDueDate: z.string().min(1, 'Due date is required'),
-		category: z.string()
+		category: z.string(),
+		owner: z.string().min(1, 'Owner is required')
 	}),
 	async (data) => {
 		const user = await getCurrentUser();
@@ -52,7 +54,8 @@ export const addSubscription = form(
 			amount: Math.round(data.amount * 100),
 			frequency: data.frequency,
 			nextDueDate: new Date(data.nextDueDate),
-			category: data.category || null
+			category: data.category || null,
+			owner: data.owner
 		});
 		await getSubscriptions().refresh();
 		return { success: true };
@@ -68,9 +71,10 @@ export const updateSubscription = form(
 			.min(1, 'Amount is required')
 			.transform((s) => parseFloat(s))
 			.refine((n) => !Number.isNaN(n) && n > 0, 'Amount must be positive'),
-		frequency: z.enum(['weekly', 'fortnightly', 'monthly', 'quarterly', 'yearly']),
+		frequency: z.enum(FREQUENCY_ENUM as [FrequencyType, ...FrequencyType[]]),
 		nextDueDate: z.string().min(1, 'Due date is required'),
-		category: z.string()
+		category: z.string(),
+		owner: z.string().min(1, 'Owner is required')
 	}),
 	async (data) => {
 		const user = await getCurrentUser();
@@ -87,7 +91,8 @@ export const updateSubscription = form(
 				amount: Math.round(data.amount * 100),
 				frequency: data.frequency,
 				nextDueDate: new Date(data.nextDueDate),
-				category: data.category || null
+				category: data.category || null,
+				owner: data.owner
 			})
 			.where(eq(subscriptionTable.id, data.id));
 		await getSubscriptions().refresh();

@@ -4,7 +4,8 @@
 	import { Plus } from '@lucide/svelte';
 	import RowActionsMenu from '$lib/components/row-actions-menu.svelte';
 	import { formatCurrency } from '$lib/utils/formatters';
-	import { toMonthly, formatFrequency } from '$lib/utils/cashflow';
+	import { convertFrequency, formatFrequency } from '$lib/utils/cashflow';
+	import { FREQUENCIES, type FrequencyType } from '$lib/constants/frequencies';
 	import type { BudgetItem } from '$db/schemas/budget';
 	import type { Snippet } from 'svelte';
 
@@ -15,6 +16,7 @@
 		amountClass,
 		emptyMessage,
 		isEmpty,
+		displayPeriod,
 		onAdd,
 		onEdit,
 		onDelete,
@@ -28,6 +30,8 @@
 		emptyMessage: string;
 		/** Whether to show the empty-state row (lets the parent fold in extra rows). */
 		isEmpty: boolean;
+		/** Frequency the amount column is normalised to. */
+		displayPeriod: FrequencyType;
 		onAdd: () => void;
 		onEdit: (item: BudgetItem) => void;
 		onDelete: (item: BudgetItem) => void;
@@ -54,7 +58,7 @@
 					<Table.Head>Name</Table.Head>
 					<Table.Head>Category</Table.Head>
 					<Table.Head>Frequency</Table.Head>
-					<Table.Head class="text-right">Monthly</Table.Head>
+					<Table.Head class="text-right">{FREQUENCIES[displayPeriod].label}</Table.Head>
 					<Table.Head class="w-10"></Table.Head>
 				</Table.Row>
 			</Table.Header>
@@ -65,7 +69,7 @@
 						<Table.Cell class="text-muted-foreground">{item.category}</Table.Cell>
 						<Table.Cell>{formatFrequency(item.frequency)}</Table.Cell>
 						<Table.Cell class="text-right tabular-nums {amountClass}">
-							{formatCurrency(toMonthly(dollars(item.amount), item.frequency))}
+							{formatCurrency(convertFrequency(dollars(item.amount), item.frequency, displayPeriod))}
 						</Table.Cell>
 						<Table.Cell class="text-right">
 							<RowActionsMenu

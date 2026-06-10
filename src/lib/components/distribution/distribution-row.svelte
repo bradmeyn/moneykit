@@ -16,8 +16,8 @@
 
 	let { distribution, holdingId }: Props = $props();
 
-	let editOpen = $state(false);
-	let deleteOpen = $state(false);
+	type Dialog = 'edit' | 'delete' | null;
+	let dialog = $state<Dialog>(null);
 
 	function formatDate(date: Date | string) {
 		return new Date(date).toLocaleDateString('en-AU', {
@@ -28,14 +28,14 @@
 	}
 
 	// Convert cents to dollars for display
-	const grossPayment = distribution.grossPayment / 100;
-	const taxWithheld = distribution.taxWithheld / 100;
-	const netPayment = grossPayment - taxWithheld;
+	const grossPayment = $derived(distribution.grossPayment / 100);
+	const taxWithheld = $derived(distribution.taxWithheld / 100);
+	const netPayment = $derived(grossPayment - taxWithheld);
 
 	async function handleDelete() {
 		await deleteDistribution({ id: distribution.id });
 		await getHolding(holdingId).refresh();
-		deleteOpen = false;
+		dialog = null;
 	}
 </script>
 
@@ -53,20 +53,24 @@
 	</Table.Cell>
 	<Table.Cell class="text-right">
 		<div class="flex justify-end gap-1">
-			<Button variant="ghost" size="icon" onclick={() => (editOpen = true)}>
+			<Button variant="ghost" size="icon" onclick={() => (dialog = 'edit')}>
 				<Pencil class="size-4" />
 			</Button>
-			<Button variant="ghost" size="icon" onclick={() => (deleteOpen = true)}>
+			<Button variant="ghost" size="icon" onclick={() => (dialog = 'delete')}>
 				<Trash2 class="size-4" />
 			</Button>
 		</div>
 	</Table.Cell>
 </Table.Row>
 
-<EditDistributionDialog {distribution} {holdingId} bind:open={editOpen} />
+<EditDistributionDialog
+	{distribution}
+	{holdingId}
+	bind:open={() => dialog === 'edit', (v) => (dialog = v ? 'edit' : null)}
+/>
 
 <DeleteDialog
-	bind:open={deleteOpen}
+	bind:open={() => dialog === 'delete', (v) => (dialog = v ? 'delete' : null)}
 	label="distribution"
 	onDelete={handleDelete}
 	showTrigger={false}

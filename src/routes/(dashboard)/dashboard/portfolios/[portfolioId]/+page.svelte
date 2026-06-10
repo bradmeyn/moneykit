@@ -10,6 +10,9 @@
 	import EditPortfolioDialog from '$lib/components/portfolio/edit-portfolio-dialog.svelte';
 	import DeleteDialog from '$lib/components/delete-dialog.svelte';
 	import RowActionsMenu from '$lib/components/row-actions-menu.svelte';
+	import SummaryCard from '$lib/components/summary-card.svelte';
+	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
+	import { EllipsisVertical, Pencil, Plus, Trash2 } from '@lucide/svelte';
 	import { formatCurrency } from '$lib/utils';
 
 	const portfolio = $derived(await getPortfolio(page.params.portfolioId!));
@@ -30,24 +33,43 @@
 </script>
 
 <div class="mb-4 flex items-center justify-between">
-	<div class="flex items-center gap-3">
-		<a href="/dashboard/portfolios" class="text-sm text-muted-foreground hover:text-foreground"
+	<div>
+		<a href="/dashboard/portfolios" class="text-sm text-muted-foreground hover:text-foreground pb-4"
 			>← Portfolios</a
 		>
-		<span class="text-muted-foreground">/</span>
 		<h1 class="heading-primary">{portfolio.name}</h1>
 	</div>
-	<div class="flex items-center gap-1">
-		<AddHoldingDialog {portfolioId} bind:open={addHoldingOpen} />
-		<RowActionsMenu
-			label={portfolio.name}
-			editLabel="Edit portfolio"
-			deleteLabel="Delete portfolio"
-			onEdit={() => (dialog = { kind: 'edit-portfolio' })}
-			onDelete={() => (dialog = { kind: 'delete-portfolio' })}
-		/>
-	</div>
+	<DropdownMenu.Root>
+		<DropdownMenu.Trigger
+			class="inline-flex size-9 shrink-0 items-center justify-center rounded-md text-muted-foreground outline-none transition-colors hover:bg-accent hover:text-accent-foreground"
+			aria-label="Portfolio actions for {portfolio.name}"
+		>
+			<EllipsisVertical class="size-4" />
+		</DropdownMenu.Trigger>
+		<DropdownMenu.Content align="end">
+			<DropdownMenu.Group>
+				<DropdownMenu.Item onSelect={() => (addHoldingOpen = true)}>
+					<Plus class="size-4" />
+					<span>Add holding</span>
+				</DropdownMenu.Item>
+				<DropdownMenu.Item onSelect={() => (dialog = { kind: 'edit-portfolio' })}>
+					<Pencil class="size-4" />
+					<span>Edit portfolio</span>
+				</DropdownMenu.Item>
+				<DropdownMenu.Separator />
+				<DropdownMenu.Item
+					onSelect={() => (dialog = { kind: 'delete-portfolio' })}
+					class="text-destructive data-highlighted:text-destructive"
+				>
+					<Trash2 class="size-4 text-destructive" />
+					<span>Delete portfolio</span>
+				</DropdownMenu.Item>
+			</DropdownMenu.Group>
+		</DropdownMenu.Content>
+	</DropdownMenu.Root>
 </div>
+
+<AddHoldingDialog {portfolioId} bind:open={addHoldingOpen} showTrigger={false} />
 
 <div class="mb-6 flex gap-1 border-b">
 	<a
@@ -68,35 +90,18 @@
 
 {#if portfolio.holdings.length > 0}
 	<!-- Portfolio Summary -->
-	<div class="mb-6 grid gap-4 md:grid-cols-4">
-		<div class="card">
-			<p class="text-sm text-muted-foreground">Current Value</p>
-			<p class="text-2xl font-bold">{formatCurrency(portfolio.totalValue)}</p>
-		</div>
-		<div class="card">
-			<p class="text-sm text-muted-foreground">Unrealised Gain</p>
-			<p
-				class="text-2xl font-bold {portfolio.totalUnrealisedGain >= 0
-					? 'text-emerald-600'
-					: 'text-red-600'}"
-			>
-				{portfolio.totalUnrealisedGain >= 0 ? '+' : ''}{formatCurrency(
-					portfolio.totalUnrealisedGain
-				)}
-			</p>
-		</div>
-		<div class="card">
-			<p class="text-sm text-muted-foreground">Return</p>
-			<p
-				class="text-2xl font-bold {portfolio.totalUnrealisedGainPercent >= 0
-					? 'text-emerald-600'
-					: 'text-red-600'}"
-			>
-				{portfolio.totalUnrealisedGainPercent >= 0
-					? '+'
-					: ''}{portfolio.totalUnrealisedGainPercent.toFixed(2)}%
-			</p>
-		</div>
+	<div class="mb-6 grid gap-4 md:grid-cols-3">
+		<SummaryCard label="Current Value" value={formatCurrency(portfolio.totalValue)} />
+		<SummaryCard
+			label="Unrealised Gain"
+			value={`${portfolio.totalUnrealisedGain >= 0 ? '+' : ''}${formatCurrency(portfolio.totalUnrealisedGain)}`}
+			valueClass={portfolio.totalUnrealisedGain >= 0 ? 'text-emerald-600' : 'text-red-600'}
+		/>
+		<SummaryCard
+			label="Return"
+			value={`${portfolio.totalUnrealisedGainPercent >= 0 ? '+' : ''}${portfolio.totalUnrealisedGainPercent.toFixed(2)}%`}
+			valueClass={portfolio.totalUnrealisedGainPercent >= 0 ? 'text-emerald-600' : 'text-red-600'}
+		/>
 	</div>
 	<div class="card">
 		<Table.Root>

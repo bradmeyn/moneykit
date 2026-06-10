@@ -5,7 +5,10 @@ export const distributionSchema = z.object({
 	datePaid: z.string(),
 	grossPayment: z.number().min(0).default(0),
 	taxWithheld: z.number().min(0).default(0),
-	reinvested: z.string().transform((val) => val === 'on')
+	reinvested: z
+		.string()
+		.optional()
+		.transform((val) => val === 'on')
 });
 
 export const updateDistributionSchema = distributionSchema.extend({

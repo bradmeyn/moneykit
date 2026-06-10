@@ -5,8 +5,8 @@
 	import * as NativeSelect from '$ui/native-select';
 	import Input from '$ui/input/input.svelte';
 	import { Button } from '$ui/button';
-	import { OWNERS, INSURANCE_CATEGORIES, FREQUENCIES } from '$lib/constants/categories';
-	import { formatFrequency } from '$lib/utils/cashflow';
+	import { OWNERS, INSURANCE_CATEGORIES } from '$lib/constants/categories';
+	import { FREQUENCIES, FREQUENCY_ENUM } from '$lib/constants/frequencies';
 	import type { Insurance } from '$db/schemas/budget';
 
 	let {
@@ -81,8 +81,8 @@
 						{...updateInsurance.fields.frequency.as('text')}
 						value={insurance.frequency}
 					>
-						{#each FREQUENCIES as f}
-							<NativeSelect.Option value={f}>{formatFrequency(f)}</NativeSelect.Option>
+						{#each FREQUENCY_ENUM as f}
+							<NativeSelect.Option value={f}>{FREQUENCIES[f].label}</NativeSelect.Option>
 						{/each}
 					</NativeSelect.Root>
 				</Field.Field>

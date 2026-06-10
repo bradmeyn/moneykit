@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { FREQUENCY_ENUM, type FrequencyType } from '$lib/constants/frequencies';
 
 export const insuranceSchema = z.object({
 	name: z.string().min(1, 'Name is required'),
@@ -10,7 +11,7 @@ export const insuranceSchema = z.object({
 		.refine((s) => !Number.isNaN(parseFloat(s)), 'Premium must be a number')
 		.refine((s) => parseFloat(s) > 0, 'Premium must be positive')
 		.transform((s) => parseFloat(s)),
-	frequency: z.enum(['weekly', 'fortnightly', 'monthly', 'quarterly', 'yearly']),
+	frequency: z.enum(FREQUENCY_ENUM as [FrequencyType, ...FrequencyType[]]),
 	renewalDate: z.string().min(1, 'Renewal date is required'),
 	owner: z.string().min(1, 'Owner is required')
 });

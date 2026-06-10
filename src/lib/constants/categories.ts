@@ -12,8 +12,6 @@ export const INSURANCE_CATEGORIES = [
 	'Other'
 ];
 
-export const FREQUENCIES = ['weekly', 'fortnightly', 'monthly', 'quarterly', 'yearly'] as const;
-
 export const INCOME_CATEGORIES = ['Wages & Salary', 'Investments', 'Rental', 'Business', 'Other'];
 export const EXPENSE_CATEGORIES = [
 	'Housing & Utilities',

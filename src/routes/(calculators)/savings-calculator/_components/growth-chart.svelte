@@ -107,27 +107,27 @@
 	>
 		{#snippet tooltip({ context })}
 			<Tooltip.Root {context} {...LC_TOOLTIP_PROPS.root}>
-				{#snippet children({ payload })}
+				{#snippet children({ data }: { data: Record<string, number> })}
 					<Tooltip.Header
-						value={`Year ${Math.round(Number(payload[0]?.label))}`}
+						value={`Year ${Math.round(Number(data.year))}`}
 						{...LC_TOOLTIP_PROPS.header}
 					/>
 					<Tooltip.List>
-						{#each payload as p, i (p.key ?? i)}
+						{#each series as s (s.key)}
 							<Tooltip.Item
-								label={p.name}
-								value={p.value}
-								color={p.color}
+								label={s.label}
+								value={data[s.key]}
+								color={s.color}
 								format={(v: unknown) => formatCurrency(Number(v), false)}
 								valueAlign="right"
 								{...LC_TOOLTIP_PROPS.item}
 							/>
 						{/each}
-						{#if payload.length > 1}
+						{#if series.length > 1}
 							<Tooltip.Separator />
 							<Tooltip.Item
 								label="Total"
-								value={payload.reduce((acc, p) => acc + Number(p.value ?? 0), 0)}
+								value={series.reduce((acc, s) => acc + Number(data[s.key] ?? 0), 0)}
 								format={(v: unknown) => formatCurrency(Number(v), false)}
 								valueAlign="right"
 								{...LC_TOOLTIP_PROPS.item}

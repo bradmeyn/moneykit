@@ -1,20 +1,19 @@
-/** Normalise an amount at a given frequency to a monthly figure. */
-export function toMonthly(amount: number, frequency: string): number {
-	switch (frequency) {
-		case 'weekly':
-			return (amount * 52) / 12;
-		case 'fortnightly':
-			return (amount * 26) / 12;
-		case 'quarterly':
-			return amount / 3;
-		case 'yearly':
-			return amount / 12;
-		default:
-			return amount;
-	}
+import { FREQUENCIES, type FrequencyType } from '$lib/constants/frequencies';
+
+/** Convert an amount from one frequency to another (e.g. weekly -> monthly). */
+export function convertFrequency(amount: number, from: string, to: FrequencyType): number {
+	const f = FREQUENCIES[from as FrequencyType];
+	if (!f) return amount;
+	const annual = amount * f.value;
+	return annual / FREQUENCIES[to].value;
 }
 
-/** Capitalise a frequency for display, e.g. "weekly" -> "Weekly". */
+/** Normalise an amount at a given frequency to a monthly figure. */
+export function toMonthly(amount: number, frequency: string): number {
+	return convertFrequency(amount, frequency, 'monthly');
+}
+
+/** Human label for a frequency, e.g. "weekly" -> "Weekly". */
 export function formatFrequency(frequency: string): string {
-	return frequency.charAt(0).toUpperCase() + frequency.slice(1);
+	return FREQUENCIES[frequency as FrequencyType]?.label ?? frequency;
 }

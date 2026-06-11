@@ -7,6 +7,7 @@
 	import TransactionRow from '$lib/components/transaction/transaction-row.svelte';
 	import AddDistributionDialog from '$lib/components/distribution/add-distribution-dialog.svelte';
 	import DistributionRow from '$lib/components/distribution/distribution-row.svelte';
+	import SummaryCard from '$lib/components/summary-card.svelte';
 	import { ArrowLeft } from '@lucide/svelte';
 	import { formatCurrency } from '$lib/utils';
 
@@ -38,50 +39,27 @@
 
 <!-- Holding Summary -->
 <div class="mb-6 grid gap-4 md:grid-cols-3">
-	<div class="card">
-		<p class="text-sm text-muted-foreground">Units</p>
-		<p class="text-2xl font-bold">{holding.units || 0}</p>
-	</div>
-	<div class="card">
-		<p class="text-sm text-muted-foreground">Avg. Price</p>
-		<p class="text-2xl font-bold">
-			{holding.averagePrice ? formatCurrency(holding.averagePrice) : '$0.00'}
-		</p>
-	</div>
-	<div class="card">
-		<p class="text-sm text-muted-foreground">Cost Base</p>
-		<p class="text-2xl font-bold">
-			{formatCurrency(holding.costBase)}
-		</p>
-	</div>
-	<div class="card">
-		<p class="text-sm text-muted-foreground">Current Price</p>
-		<p class="text-2xl font-bold">
-			{formatCurrency(holding.currentPrice)}
-		</p>
-	</div>
-	<div class="card">
-		<p class="text-sm text-muted-foreground">Current Value</p>
-		<p class="text-2xl font-bold">
-			{formatCurrency(holding.currentValue)}
-		</p>
-	</div>
-	<div class="card">
-		<p class="text-sm text-muted-foreground">Unrealised Gain</p>
+	<SummaryCard label="Units" value={String(holding.units || 0)} />
+	<SummaryCard
+		label="Avg. Price"
+		value={holding.averagePrice ? formatCurrency(holding.averagePrice) : '$0.00'}
+	/>
+	<SummaryCard label="Cost Base" value={formatCurrency(holding.costBase)} />
+	<SummaryCard label="Current Price" value={formatCurrency(holding.currentPrice)} />
+	<SummaryCard label="Current Value" value={formatCurrency(holding.currentValue)} />
+	<SummaryCard
+		label="Unrealised Gain"
+		value={formatCurrency(holding.unrealisedGain)}
+		valueClass={holding.unrealisedGain >= 0 ? 'text-emerald-600' : 'text-red-600'}
+	>
 		<p
-			class="text-2xl font-bold {holding.unrealisedGain >= 0 ? 'text-emerald-600' : 'text-red-600'}"
+			class="mt-1 text-sm font-medium {holding.unrealisedGainPercent >= 0
+				? 'text-emerald-600'
+				: 'text-red-600'}"
 		>
-			<span>
-				{formatCurrency(holding.unrealisedGain)}
-			</span>
-
-			<span
-				class="text-sm {holding.unrealisedGainPercent >= 0 ? 'text-emerald-600' : 'text-red-600'}"
-			>
-				({holding.unrealisedGainPercent >= 0 ? '+' : ''}{holding.unrealisedGainPercent.toFixed(2)}%)
-			</span>
+			{holding.unrealisedGainPercent >= 0 ? '+' : ''}{holding.unrealisedGainPercent.toFixed(2)}%
 		</p>
-	</div>
+	</SummaryCard>
 </div>
 
 <!-- Transactions Section -->

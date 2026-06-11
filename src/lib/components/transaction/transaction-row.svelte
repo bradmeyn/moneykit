@@ -26,20 +26,23 @@
 		});
 	};
 
-	const typeClasses = $derived(
-		transaction.type === 'buy'
-			? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
-			: transaction.type === 'sell'
-				? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
-				: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200'
+	const TYPE_BADGES = {
+		buy: { label: 'Buy', dot: 'bg-emerald-500' },
+		sell: { label: 'Sell', dot: 'bg-rose-500' },
+		reinvestment: { label: 'Reinvestment', dot: 'bg-sky-500' }
+	} as const;
+
+	const badge = $derived(
+		TYPE_BADGES[transaction.type as keyof typeof TYPE_BADGES] ?? TYPE_BADGES.buy
 	);
 </script>
 
 <Table.Row>
 	<Table.Cell>{formatDate(transaction.transactionDate)}</Table.Cell>
 	<Table.Cell>
-		<span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium {typeClasses}">
-			{transaction.type.toUpperCase()}
+		<span class="inline-flex items-center gap-2 text-sm">
+			<span class="size-1.5 rounded-full {badge.dot}"></span>
+			{badge.label}
 		</span>
 	</Table.Cell>
 	<Table.Cell class="text-right">{transaction.quantity}</Table.Cell>

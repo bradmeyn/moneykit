@@ -184,7 +184,7 @@
 	label={dialog?.kind === 'delete-holding' ? dialog.holding.name : 'holding'}
 	onDelete={async () => {
 		if (dialog?.kind === 'delete-holding') {
-			await deleteHolding({ id: dialog.holding.id });
+			await deleteHolding({ id: dialog.holding.id }).updates(getPortfolio(portfolioId));
 			dialog = null;
 		}
 	}}

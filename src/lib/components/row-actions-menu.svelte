@@ -12,15 +12,11 @@
 		items,
 		align = 'end'
 	}: {
-		/** Called when the Edit item is selected. Omit to hide Edit. */
 		onEdit?: () => void;
-		/** Called when the Delete item is selected. Omit to hide Delete. */
 		onDelete?: () => void;
 		editLabel?: string;
 		deleteLabel?: string;
-		/** Used for the trigger's aria-label, e.g. the row's name. */
 		label?: string;
-		/** Extra menu items rendered between Edit and Delete. */
 		items?: Snippet;
 		align?: 'start' | 'center' | 'end';
 	} = $props();
